@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<DMX.ViewModels.ViewUsersVM>
+
+<div class="col-3">
+   
+    <a class="btn btn-primary text-white" asp-action="AddUser" asp-controller="Account"><i class="fa fa-fw fa-lg fa-plus-circle"></i> New User</a>
+</div>
+
+
+
+<div class="card-header py-3">
+   
+    <h6 class="m-0 font-weight-bold text-primary text-center">Users</h6>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable">
+            <thead>
+                <tr>
+                
+                    <th>Username</th>
+                    
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                      
+                        <td style="width:33.33%">@user.Username</td>
+                     
+                        <td style="width:33.33%">@user.Role</td>
+                        <td style="width:33.33%">
+                            <div>
+
+
+                                <a asp-action="DetailUser" asp-controller="Account" asp-route-Id="@user.UserId" class="btn btn-primary btn-circle"><i class="fa fa-sm fa-info text-white"></i></a>
+                                <a asp-action="EditUser" asp-controller="Account" asp-route-Id="@user.UserId" class="btn btn-primary btn-circle"><i class="fa fa-sm fa-edit text-white"></i></a>
+                                <a asp-action="DeleteUser" asp-controller="Account" asp-route-Id="@user.UserId" class="btn btn-primary btn-circle"><i class="fa fa-sm fa-trash text-white"></i></a>
+                                <a asp-action="ManageUserRole" asp-controller="Account" asp-route-Id="@user.UserId" class="btn btn-primary btn-circle"><i class="fa fa-sm fa-list text-white"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+@*</div>
+
+    </div>*@
+@*</div>*@

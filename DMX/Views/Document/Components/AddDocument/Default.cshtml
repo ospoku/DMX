@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@model DMX.ViewModels.AddDocumentVM;
+
+
+<div class="card-body justify-content-md-center">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+
+
+            @using (Html.BeginForm("AddDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Add New Letter</h5>
+                        <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <input type="text" asp-for="@Model.ReferenceNumber" class="form-control" placeholder="Reference Number">
+
+                        </div>
+                        <div class="form-group ">
+                            <input type="text" asp-for="@Model.DocumentSource"  class="form-control" placeholder="Document Source">
+                            
+                        </div>
+                        <div class="form-group ">
+
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">Receipt Date</span></div>
+
+
+                                <input type="date" asp-for="@Model.ReceiptDate"  class="form-control" asp-format="{0:dd/MMM/yyyy}">
+                            
+
+                            </div>
+                            </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">Document Date</span></div>
+                                <input type="date" asp-for="@Model.DocumentDate" class="form-control" asp-format="{0:dd/MMM/yyyy}">
+                                </div>
+                            </div>
+                         
+
+
+                            <div class="form-group">
+                                <div class="input-group">
+
+                                    <input class=" form-control custom-custom-file-input" id="formFile" name="formFile" type="file" asp-for="UploadFile" />
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+
+
+                                <textarea class=" form-control" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information"></textarea>
+
+
+                            </div>
+
+                            <button class="btn btn-block btn-primary">Save</button>
+
+
+
+                        </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>

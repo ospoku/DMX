@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@model DMX.ViewModels.ManageUserRolesVM;
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="clearfix">
+</div>
+<div class="col-md-12">
+    <div class="tile">
+
+        <form method="post">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Manage User Roles</h2>
+                    Add/Remove Roles for <b>@ViewBag.UserName</b>
+                </div>
+                <div class="card-body">
+                    @for (int i = 0; i < Model.UserRoles.Count(); i++)
+                    {
+                        <div class="form-check m-1">
+                            <input type="hidden" asp-for="@Model.UserRoles[i].Id" />
+                            <input type="hidden" asp-for="@Model.UserRoles[i].RoleName" />
+                            <input asp-for="@Model.UserRoles[i].Selected" class="form-check-input" />
+                            <label class="form-check-label" asp-for="@Model.UserRoles[i].Selected">
+                                @Model.UserRoles[i].RoleName
+                            </label>
+                        </div>
+                    }
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                <div class="card-footer">
+                    <input type="submit" value="Update" class="btn btn-primary"
+                           style="width:auto" />
+                    <a asp-action="EditUser" asp-route-id="@ViewBag.userId"
+                       class="btn btn-primary" style="width:auto">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

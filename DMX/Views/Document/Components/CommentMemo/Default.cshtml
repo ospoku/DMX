@@ -1,0 +1,112 @@
+﻿
+@model DMX.ViewModels.MemoCommentVM;
+
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@Model.Title</h6>
+            </div>
+            <div class="card-body justify-content-md-center h-100">
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
+
+
+                        @using (Html.BeginForm("MemoComment", "Document", FormMethod.Post))
+                        {
+
+                        <div class="form-group">
+                            
+
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h6 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Memorandum Contents
+                                        </button>
+                                    </h6>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                             @Html.Raw(Model.MemoContent)
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="accordion" id="accordionComment">
+                                <div class="accordion-item">
+                                    <h6 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="true" aria-controls="comments">
+                                            Minutes/Comments
+                                        </button>
+                                    </h6>
+                                    <div id="comments" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionComment">
+                                        <div class="accordion-body">
+
+                                            <div class="container">
+                                                <div class="row d-flex justify-content-center">
+
+
+
+                                                    @foreach (var comment in Model.Comments)
+                                                    {
+
+                                                        <div class="card p-3 mt-1">
+                                                            <div class="justify-content-between align-items-center">
+                                                                <div class="align-items-center">
+
+                                                                    <small class="font-weight-bold text-primary">@comment.CreatedBy</small>
+    <small class="fa-pull-right">
+
+        <time class="timeago" datetime="@comment.CreatedDate.ToString("F")"></time>
+
+    </small>
+
+                                                                    <div>@Html.Raw(@comment.Message)</div>
+
+                                                                   
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+
+
+
+
+                                                    }
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group h-25">
+
+
+                                <textarea class="tinymce form-control" asp-for="@Model.NewComment" type="text"></textarea>
+                                <script src="~/lib/tinymce/plugins/advlist/plugin.js"></script>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <button class="btn btn-block btn-primary">Add Comment</button>
+                            </div>
+                            }
+                        </div>
+                        </div>
+    </div>
+
+   

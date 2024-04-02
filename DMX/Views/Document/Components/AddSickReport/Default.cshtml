@@ -1,0 +1,59 @@
+﻿
+@model DMX.ViewModels.AddSickReportVM;
+<div class="modal fade" id="AddMemo" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Sick Report</h6>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+
+            @using (Html.BeginForm("AddSickReport", "Document"))
+            {
+
+            
+
+                        <div class="form-group">
+                            <input type="text" asp-for="@Model.AdditionalNotes" class="form-control" placeholder="Reference Number">
+
+                        </div>
+
+
+
+                        <div class="form-group ">
+                            <input type="text" asp-for="@Model.AdditionalNotes"  class="form-control" placeholder="Document Source">
+
+                        </div>
+                      
+                          <div class="form-group">
+
+
+                            <textarea class=" form-control" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information"></textarea>
+
+
+                        </div>
+                        <div class="form-group">
+                            <select type="text" id="selectUser" class="select2 form-control" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+
+                        </div>
+
+
+                      
+
+                     
+
+                        <button class="btn btn-block btn-primary">Save</button>
+
+
+
+                   
+            }
+
+
+        </div>
+    </div>
+</div>

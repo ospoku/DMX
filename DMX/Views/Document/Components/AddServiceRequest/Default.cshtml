@@ -1,0 +1,76 @@
+﻿
+@model DMX.ViewModels.AddServiceRequestVM;
+
+
+
+<div class="modal fade" id="AddMemo" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Service Request</h6>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+
+            @using (Html.BeginForm("AddServiceRequest", "Document", FormMethod.Post))
+            {
+
+              
+
+                        <div class="form-group">
+                            <input type="text" asp-for="@Model.ActionToBeTaken" class="form-control" placeholder="Reference Number">
+
+                        </div>
+
+
+
+                        <div class="form-group ">
+                            <input type="text" asp-for="@Model.FaultInspectedBy" name="footer-email" class="form-control" placeholder="Document Source">
+
+                        </div>
+                        <div class="form-group ">
+
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">Receipt Date</span></div>
+
+
+                                <input type="date" asp-for="@Model.RequestDate" class="form-control" asp-format="{0:dd/MMM/yyyy}">
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">Document Date</span></div>
+                                <input type="date" asp-for="@Model.RequestDate" class="form-control" asp-format="{0:dd/MMM/yyyy}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select type="text" id="selectUser" class="select2 form-control" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+
+                            <textarea class=" form-control" asp-for="@Model.RequestNumber" type="text" placeholder="Additional Information"></textarea>
+
+
+                        </div>
+
+                        <button class="btn btn-block btn-primary">Save</button>
+
+
+
+            
+            }
+
+
+        </div>
+    </div>
+</div>

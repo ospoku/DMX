@@ -47,14 +47,9 @@
 
                         </div>
                         <div class="form-group">
-                            <select type="text" id="selectUser" class="select form-control" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+                            <select type="text"  id="selectUser" class="select form-control" width="100%" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
 
                         </div>
-
-
-
-
-
 
                         <button class="btn btn-block btn-primary">Save</button>
 
@@ -63,4 +58,12 @@
 
         </div>
     </div>
+    </div>
 </div>
+
+    <script>
+        $(document).ready(function () {
+   
+            $('#selectUser').select2({dropdownParent:$('#AddMemo')})
+        });
+    </script>

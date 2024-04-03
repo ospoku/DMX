@@ -105,7 +105,7 @@ $(function () {
 });
 $(function () {
 
-    $('.select').select2();
+   /* $('.select').select2();*/
     document.getElementsByTagName("select").select2();
 });
 $(function () {

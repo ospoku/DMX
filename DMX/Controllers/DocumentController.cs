@@ -67,7 +67,7 @@ namespace DMX.Controllers
                 {
                     notyf.Error("Member creation error!!! Please try again");
                 }
-                return ViewComponent("AddClient");
+                return ViewComponent("AddPatient");
 
             }
             else
@@ -131,7 +131,7 @@ namespace DMX.Controllers
                 notyf.Success("Document successfully saved!!!", 5);
 
                 ViewBag.Message = "Document successfully added";
-                return ViewComponent("ViewDocuments");
+                return RedirectToAction("ViewDocuments");
             }
             else
             {

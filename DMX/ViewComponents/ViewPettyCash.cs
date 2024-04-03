@@ -11,8 +11,8 @@ namespace DMX.ViewComponents
         {
             var pcList = dcx.PettyCashes.Where(a => a.IsDeleted == false).Select(a => new ViewPettyCashVM
             {
-                PettyCashId = a.PettyCashId
-
+                PettyCashId = a.PettyCashId,
+                
 
 
 

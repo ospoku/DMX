@@ -9,15 +9,15 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">Clients</h6>
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Leave</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddMemo" data-bs-url="@Url.Action("AddMemo")"><i class="fa fa-fw fa-plus-circle"></i>Add Memo</button>
+        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddLeave" data-bs-url="@Url.Action("AddLeave")"><i class="fa fa-fw fa-plus-circle"></i>Add Leave</button>
 
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="dataTables_wrapper" id="dtMemo">
-                <table class="table" id="dataTable">
+            <table class="dataTables_wrapper">
+            
                 <thead>
                     <tr>
                        
@@ -59,5 +59,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="card-footer">
     </div>
 </div>

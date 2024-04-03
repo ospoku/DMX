@@ -6,10 +6,10 @@ namespace DMX.Data
     {
 
         public bool IsDeleted { get; set; }
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; } 
         [DataType(DataType.Date)]
-        public DateTime CreatedDate { get; set; }
-        public string ModifiedBy { get; set; }
+        public DateTime CreatedDate { get; set; } 
+        public string? ModifiedBy { get; set; }
         [DataType(DataType.Date)]
         public DateTime ModifiedDate { get; set; }
     }

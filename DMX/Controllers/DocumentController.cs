@@ -57,7 +57,7 @@ namespace DMX.Controllers
                 });
 
 
-                if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
+                if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
                 {
                     notyf.Success("Client successfully created.");
                     return RedirectToAction("ViewPatients");
@@ -222,12 +222,13 @@ namespace DMX.Controllers
             {
                 TaskId = addThisMemo.MemoId,
                 SelectedUsers = string.Join(',', addMemoVM.SelectedUsers),
-
+                CreatedBy= User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedDate = DateTime.UtcNow,
             });
 
 
 
-            if (await dcx.SaveChangesAsync() > 0)
+            if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
             {
                 notyf.Success("Memo successfully saved", 5);
 

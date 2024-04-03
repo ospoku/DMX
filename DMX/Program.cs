@@ -4,9 +4,7 @@ using DMX.Data;
 using DMX.Models;
 using DMX.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DMX.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

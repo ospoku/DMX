@@ -14,7 +14,8 @@
 
 $(function ()
 {
-    $('#dtMemo').DataTable();
+    $('.table').DataTable();
+  
     $('#dataTableAtt').DataTable(
         {
             "lengthMenu": [[-1], ["All"]],
@@ -105,6 +106,7 @@ $(function () {
 $(function () {
 
     $('.select').select2();
+    document.getElementsByTagName("select").select2();
 });
 $(function () {
     tinymce.init({

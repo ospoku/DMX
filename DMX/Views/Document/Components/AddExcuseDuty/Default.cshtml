@@ -34,15 +34,17 @@
                         <label class="did-floating-label">Date of Discharge</label>
                             
                     </div>
+                    <div class="form-group">
                         <textarea class="did-floating-input" type="text" placeholder="Additional Information" asp-for="@Model.OperationDiagnosis" required="required" style="min-height:300px"></textarea>
-                   @*      <div class="form-group">
-
-                            <textarea class=" form-control" asp-for="@Model.Name" type="text" placeholder="Additional Information"></textarea>
-                        </div> *@
-                        <div class="form-group">
-                            <select type="text" id="selectUser" class="select2" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+                   </div>
+                  <div class="form-group">
+                        <div class="did-floating-label-content">
+                            <select type="text" id="modalSelectUser" asp-items="@Model.UsersList" class="did-floating-select" asp-for="@Model.SelectedUsers"></select>
+                            <label class="did-floating-label">Select Users</label>
 
                         </div>
+                      
+                      </div>
                         <button class="btn btn-block btn-primary">Save</button>
             }
 
@@ -53,6 +55,8 @@
     <script>
         $(document).ready(function () {
 
-            $('#selectUser').select2({ dropdownParent: $('#AddExcuseDuty') })
+            $('#modalSelectUser').select2({ dropdownParent: $('#AddTravelRequest'));
+          
+           
         });
     </script>

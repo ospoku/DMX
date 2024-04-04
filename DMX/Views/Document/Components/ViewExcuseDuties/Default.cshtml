@@ -15,19 +15,19 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="dataTables_wrapper">
+            <table class="table dataTables_wrapper">
     
-        <table class="table table-bordered  table-responsive" id="dataTable"  style="width:100%">
+      
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>DoB</th>
-                    <th>Gender</th>
+                    <th>Date</th>
+                    <th>Excuse Days</th>
                
-                    <th>Phone</th>
+                    <th>Diagnosis</th>
                  
-                    <th>Clinic Number</th>
-                    <th>Insurance</th>
+                    <th>Date of Discharge</th>
+                    
                     <th>Action</th>
                 </tr>
             </thead>
@@ -36,7 +36,11 @@
                 @foreach (var Excuse in Model)
                 {
                     <tr>
-            
+                        <td>@Excuse.Name</td>
+            <td>@Excuse.Date</td>
+            <td>@Excuse.ExcuseDays</td>
+            <td>@Excuse.OperationDiagnosis</td>
+            <td>@Excuse.DateofDischarge</td>
                         <td>
                             <div class="text-center">
                                 <a asp-action="Card" asp-controller="Document" asp-route-Id="@Excuse.ExcuseDutyId" class="btn btn-primary btn-circle"><i class="fa fa-sm fa-print text-white"></i></a>
@@ -53,7 +57,7 @@
         </table>
     </div>
 
-
+    </div>
 
         <div class="card-footer">
         </div>

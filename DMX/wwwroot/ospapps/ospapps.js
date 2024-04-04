@@ -104,11 +104,6 @@ $(function () {
     $('.did-floating-select').select2();
 });
 $(function () {
-
-   /* $('.select').select2();*/
-    document.getElementsByTagName("select").select2();
-});
-$(function () {
     tinymce.init({
         selector: 'textarea#additionalNotes',
         height: '400',

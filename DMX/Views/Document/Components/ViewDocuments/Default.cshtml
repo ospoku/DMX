@@ -37,8 +37,8 @@
                           <td>@Document.ReferenceNumber</td>
                         <td> @Document.DocumentSource</td>
 
-                        <td>@Document.ReceiptDate.ToString("yyyy-MM-dd")</td>
-                        <td>@Document.DocumentDate.ToString("yyyy-MM-dd")</td>
+                        <td>@Document.ReceiptDate.ToString("yyyy-MMM-dd")</td>
+                        <td>@Document.DocumentDate.ToString("yyyy-MMM-dd")</td>
                            <td>
                             <div class="text-center">
                                 <a asp-action="DetailDocument" asp-controller="Document" asp-route-Id="@Document.DocumentId" class="btn btn-sm btn-primary  btn-circle"><i class="fa fa-sm fa-info text-white"></i></a>

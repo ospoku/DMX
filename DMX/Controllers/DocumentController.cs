@@ -34,9 +34,6 @@ namespace DMX.Controllers
 
             if (ModelState.IsValid)
             {
-
-
-
                 Patient addThisPatient = new()
                 {
                     Date = addPatientVM.Date,
@@ -52,7 +49,7 @@ namespace DMX.Controllers
 
                 dcx.Assignments.Add(new Assignment
                 {
-                    //SelectedIdArray=  string.Join(',', addPatientVM.SelectedUsers),
+                    SelectedUsers = string.Join(',', addPatientVM.SelectedUsers),
 
                 });
 
@@ -151,7 +148,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> EditDocumentAsync(string Id, Document document, IFormFile formFile)
         {
-            EditDocumentVM edvm = new EditDocumentVM();
+            EditDocumentVM edvm = new();
             Document updateThisDocument = new();
             updateThisDocument = (from a in dcx.Documents where a.DocumentId == Id select a).FirstOrDefault();
             updateThisDocument.ReferenceNumber = document.ReferenceNumber;
@@ -206,7 +203,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVM)
         {
-            Memo addThisMemo = new Memo()
+            Memo addThisMemo = new()
             {
                 Content = addMemoVM.Content,
                 To = addMemoVM.To,
@@ -214,6 +211,7 @@ namespace DMX.Controllers
                 Title = addMemoVM.Title,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,
+                
 
             };
             dcx.Memos.Add(addThisMemo);
@@ -223,6 +221,81 @@ namespace DMX.Controllers
                 TaskId = addThisMemo.MemoId,
                 SelectedUsers = string.Join(',', addMemoVM.SelectedUsers),
                 CreatedBy= User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedDate = DateTime.UtcNow,
+            });
+            if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
+            {
+                notyf.Success("Memo successfully saved", 5);
+
+
+            }
+            else
+            {
+                notyf.Error("Error, Memo could not be saved!!!", 5);
+            }
+
+            return ViewComponent("ViewMemos");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPettyCash(AddPettyCashVM addPettyCashVM)
+        {
+            PettyCash  addThisPettyCash = new()
+            {
+                Date = addPettyCashVM.Date,
+                Amount = addPettyCashVM.Amount,
+                Purpose = addPettyCashVM.Purpose,
+             
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedDate = DateTime.UtcNow,
+
+
+            };
+            dcx.PettyCashes.Add(addThisPettyCash);
+
+            dcx.Assignments.Add(new Assignment
+            {
+                TaskId = addThisPettyCash.PettyCashId,
+                SelectedUsers = string.Join(',', addPettyCashVM.SelectedUsers),
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedDate = DateTime.UtcNow,
+            });
+            if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
+            {
+                notyf.Success("Memo successfully saved", 5);
+
+
+            }
+            else
+            {
+                notyf.Error("Error, Memo could not be saved!!!", 5);
+            }
+
+            return ViewComponent("ViewPettyCash");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExcuseDuty(AddExcuseDutyVM addExcuseDutyVM)
+        {
+            ExcuseDuty addThisExcuseDuty = new()
+            {
+               Date = addExcuseDutyVM.Date,
+                DateofDischarge = addExcuseDutyVM.DateofDischarge,
+                ExcuseDays = addExcuseDutyVM.ExcuseDays,
+                Name = addExcuseDutyVM.Name,
+                OperationDiagnosis=addExcuseDutyVM.OperationDiagnosis,
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedDate = DateTime.UtcNow,
+
+
+            };
+            dcx.ExcuseDuties.Add(addThisExcuseDuty);
+
+            dcx.Assignments.Add(new Assignment
+            {
+                TaskId = addThisExcuseDuty.ExcuseFormId,
+                SelectedUsers = string.Join(',', addExcuseDutyVM.SelectedUsers),
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,
             });
 
@@ -239,8 +312,9 @@ namespace DMX.Controllers
                 notyf.Error("Error, Memo could not be saved!!!", 5);
             }
 
-            return ViewComponent("ViewMemos");
+            return ViewComponent("ViewExcuseDuties");
         }
+
         [HttpGet]
         public IActionResult EditPatient(string Id)
         {
@@ -426,7 +500,7 @@ namespace DMX.Controllers
         public async Task<IActionResult> PettyCashComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new Memo();
+            Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
             Comment addThisComment = new Comment

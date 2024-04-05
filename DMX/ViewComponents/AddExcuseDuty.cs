@@ -6,18 +6,13 @@ using DMX.Models;
 
 namespace DMX.ViewComponents
 {
-    public class AddExcuseDuty :ViewComponent
+    public class AddExcuseDuty(UserManager<AppUser> userManager) : ViewComponent
     {
-        public readonly UserManager<AppUser> usm;
+        public readonly UserManager<AppUser> usm = userManager;
 
-        public AddExcuseDuty(UserManager<AppUser> userManager)
-        {
-            usm = userManager;
-
-        }
         public IViewComponentResult Invoke()
         {
-            AddExcuseDutyVM addExcuseDutyVM = new AddExcuseDutyVM
+            AddExcuseDutyVM addExcuseDutyVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName")
             };

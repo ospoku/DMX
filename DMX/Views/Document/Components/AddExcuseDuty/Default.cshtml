@@ -23,8 +23,14 @@
                         <label class="did-floating-label">Name</label>
                         </div>
                     <div class="did-floating-label-content">
-                        <input type="text" class="did-floating-input" asp-for="@Model.OperationDiagnosis"  placeholder=""/>
-                        <label class="did-floating-label">Diagnosis</label>
+
+                        <input type="date" asp-for="@Model.Date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
+
+                        <label class="did-floating-label">Date</label>
+                        </div>
+                    <div class="did-floating-label-content">
+                        <textarea type="text" class="did-floating-input" asp-for="@Model.OperationDiagnosis"  placeholder="Diagnosis"></textarea>
+                      
                         
                     </div>
                         <div class="did-floating-label-content">
@@ -32,20 +38,21 @@
                         <input type="date" asp-for="@Model.DateofDischarge" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
 
                         <label class="did-floating-label">Date of Discharge</label>
-                            
+
+                    </div> 
+                    <div class="did-floating-label-content">
+                        <input type="text" class="did-floating-input" asp-for="@Model.ExcuseDays" placeholder="" />
+                        <label class="did-floating-label">Excuse Days</label>
                     </div>
-                    <div class="form-group">
-                        <textarea class="did-floating-input" type="text" placeholder="Additional Information" asp-for="@Model.OperationDiagnosis" required="required" style="min-height:300px"></textarea>
-                   </div>
-                  <div class="form-group">
+                  
                         <div class="did-floating-label-content">
                             <select type="text" id="modalSelectUser" asp-items="@Model.UsersList" class="did-floating-select" asp-for="@Model.SelectedUsers"></select>
                             <label class="did-floating-label">Select Users</label>
-
                         </div>
                       
-                      </div>
+                      <div class="form-group">
                         <button class="btn btn-block btn-primary">Save</button>
+                        </div>
             }
 
 

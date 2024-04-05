@@ -37,10 +37,10 @@
                 {
                     <tr>
                         <td>@Excuse.Name</td>
-            <td>@Excuse.Date</td>
+                            <td>@Excuse.Date.ToString("yyyy-MMM-dd")</td>
             <td>@Excuse.ExcuseDays</td>
-            <td>@Excuse.OperationDiagnosis</td>
-            <td>@Excuse.DateofDischarge</td>
+            <td>@Excuse.OperationDiagnosis.Substring(1)</td>
+                            <td>@Excuse.DateofDischarge.ToString("yyyy-MMM-dd")</td>
                         <td>
                             <div class="text-center">
                                 <a asp-action="Card" asp-controller="Document" asp-route-Id="@Excuse.ExcuseDutyId" class="btn btn-primary btn-circle"><i class="fa fa-sm fa-print text-white"></i></a>

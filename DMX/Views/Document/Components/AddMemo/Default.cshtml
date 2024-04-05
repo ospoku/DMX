@@ -39,17 +39,17 @@
                      
                 
                         
-                        <div class="form-group">
+                       
 
 
                             <textarea class="form-control" asp-for="@Model.Content" type="text" placeholder="Memo Content"></textarea>
 
 
-                        </div>
-                        <div class="form-group">
-                            <select type="text"  id="selectMemoUser" class="select form-control" width="100%" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+                     
+                       
+                            <select type="text"  id="selectMemoUser" class="select form-control" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple" placeholder="" style="width:100%"></select>
 
-                        </div>
+                    
 
                         <button class="btn btn-block btn-primary">Save</button>
 
@@ -64,6 +64,10 @@
     <script>
         $(document).ready(function () {
    
-            $('#selectMemoUser').select2({dropdownParent:$('#AddMemo')})
+            $('#selectMemoUser').select2({dropdownParent:$('#AddMemo')});
+             $('#selectMemoUser').select2({placeholder:"Select Users",
+             allowClear:true });
+           
+            
         });
     </script>

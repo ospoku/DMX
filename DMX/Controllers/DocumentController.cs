@@ -64,12 +64,12 @@ namespace DMX.Controllers
                 {
                     notyf.Error("Member creation error!!! Please try again");
                 }
-                return ViewComponent("AddPatient");
+                return RedirectToAction("AddPatient");
 
             }
             else
             {
-                return ViewComponent("AddPatient");
+                return RedirectToAction("AddPatient");
             }
 
 
@@ -101,8 +101,6 @@ namespace DMX.Controllers
             {
                 DocumentSource = addDocumentVM.DocumentSource,
                 DateReceived = addDocumentVM.ReceiptDate,
-
-
                 DocumentDate = addDocumentVM.DocumentDate,
                 ReferenceNumber = addDocumentVM.ReferenceNumber,
                 IsDeleted = false,
@@ -380,10 +378,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> MemoComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new Memo();
+            Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new Comment
+            Comment addThisComment = new()
             {
                 TaskId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
@@ -404,7 +402,7 @@ namespace DMX.Controllers
         public async Task<IActionResult> AddDocumentComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
-            Document documentToComment = new Document();
+            Document documentToComment = new();
             documentToComment = (from d in dcx.Documents where d.DocumentId == Id select d).FirstOrDefault();
 
             Comment addThisComment = new Comment
@@ -428,10 +426,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> LeaveComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new Memo();
+            Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new Comment
+            Comment addThisComment = new()
             {
                 TaskId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
@@ -452,10 +450,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> TravelRequestComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new Memo();
+            Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new Comment
+            Comment addThisComment = new()
             {
                 TaskId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
@@ -476,7 +474,7 @@ namespace DMX.Controllers
         public async Task<IActionResult> MaternityLeaveComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new Memo();
+            Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
             Comment addThisComment = new Comment
@@ -548,10 +546,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> DocumentComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
-            Document documentToComment = new Document();
+            Document documentToComment = new();
             documentToComment = (from a in dcx.Documents where a.DocumentId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new Comment
+            Comment addThisComment = new()
             {
                 TaskId = documentToComment.DocumentId,
                 CreatedDate = DateTime.Now,
@@ -572,10 +570,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> ServiceRequestComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new Memo();
+            Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new Comment
+            Comment addThisComment = new()
             {
                 TaskId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
@@ -596,10 +594,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new Memo();
+            Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new Comment
+            Comment addThisComment = new()
             {
                 TaskId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
@@ -628,7 +626,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddServiceRequest(AddServiceRequestVM addServiceRequestVM)
         {
-            ServiceRequest addThisServiceRequest = new ServiceRequest
+            ServiceRequest addThisServiceRequest = new()
             {
                 ActionToBeTaken = addServiceRequestVM.ActionToBeTaken,
                 FaultInspectedBy = addServiceRequestVM.FaultInspectedBy,
@@ -655,7 +653,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddServiceResquests(AddServiceRequestVM addServiceRequestVM)
         {
-            ServiceRequest addThisServiceRequest = new ServiceRequest()
+            ServiceRequest addThisServiceRequest = new()
             {
                 RequestedBy = addServiceRequestVM.ServiceRequestedBy,
 
@@ -672,10 +670,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> EditServiceRequest(string Id, EditServiceRequestVM editServiceRequestVM)
         {
 
-            ServiceRequest serviceRequestToComment = new ServiceRequest();
+            ServiceRequest serviceRequestToComment = new();
             serviceRequestToComment = (from s in dcx.ServiceRequests where s.ServiceRequestId == Id select s).FirstOrDefault();
 
-            Comment addThisComment = new Comment
+            Comment addThisComment = new()
             {
                 //MemoId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.UtcNow,

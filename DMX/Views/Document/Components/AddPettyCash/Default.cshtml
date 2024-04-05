@@ -17,15 +17,15 @@
 
                
 
-                        <div class="form-group">
-                            <input type="text" asp-for="@Model.Date" class="form-control" placeholder="Reference Number">
-
+                       <div class="did-flaoting-content">
+                        <input type="date" asp-for="@Model.Date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}"/>
+                            <label class="did-floating-label">Date</label>
                         </div>
 
 
 
                         <div class="form-group ">
-                            <input type="text" asp-for="@Model.Description" name="footer-email" class="form-control" placeholder="Document Source">
+                            <input type="text" asp-for="@Model.Purpose" name="footer-email" class="form-control" placeholder="Document Source">
 
                         </div>
                         <div class="form-group ">
@@ -39,12 +39,7 @@
 
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend"><span class="input-group-text">Document Date</span></div>
-                                <input type="date"  class="form-control" asp-format="{0:dd/MMM/yyyy}">
-                            </div>
-                        </div>
+                        
                         <div class="form-group">
                             <select type="text" id="selectPettyCashUser" class="select2 form-control" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
 

@@ -70,8 +70,6 @@ namespace DMX.Controllers
                 Title = addMemoVM.Title,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,
-
-
             };
             dcx.Memos.Add(addThisMemo);
 
@@ -109,10 +107,7 @@ namespace DMX.Controllers
             {
                 TaskId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
-
                 Message = addCommentVM.NewComment,
-
-
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };

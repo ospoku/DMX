@@ -14,15 +14,15 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var user = accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
+            string user = accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
             var memoList = dcx.Memos.Where(a => a.IsDeleted == false & a.CreatedBy == user).Select(a => new ViewMemosVM
             {
                 MemoId = a.MemoId,
 
                 Content = a.Content,
 
-                From=a.From,
-                To= a.To,
+                From=a.Sender,
+                To = a.Recipient,
                 Title = a.Title,
                 //Assignees = string.Join(",", from p in dcx.Assignments where p.MemoId == a.MemoId select p.ApplicationUser.UserName.ToString()),
 

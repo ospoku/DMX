@@ -1,4 +1,5 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -7,30 +8,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewComponents
 {
-    public class EditMemo:ViewComponent
+    public class EditMemo(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
-        public readonly XContext dcx;
-        public readonly UserManager<AppUser> usm;
-        public EditMemo(XContext dContext,UserManager<AppUser> userManager)
-        {
-            dcx = dContext;
-            usm = userManager;
-        }
+        public readonly XContext dcx = dContext;
+        public readonly UserManager<AppUser> usm = userManager;
 
         public IViewComponentResult Invoke(string Id)
         {
 
-            var stringIDs = (from x in dcx.Assignments where x.TaskId == Id select x.SelectedUsers).FirstOrDefault().Split(',');
+            //var stringIDs = (from x in dcx.Assignments where x.TaskId == Id select x.SelectedUsers).FirstOrDefault().Split(',');
         
-            var memoToEdit = (from m in dcx.Memos where m.MemoId == Id select m).FirstOrDefault();
+            var memoToEdit = (from m in dcx.Memos where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
 
-            EditMemoVM editMemoVM = new EditMemoVM
+            EditMemoVM editMemoVM = new()
             {
 
                 Title = memoToEdit.Title,
                 Content = memoToEdit.Content,
-                SelectedUsers = stringIDs,
-                UsersList=  new SelectList(usm.Users.ToList(), "Id", "UserName"),
+               
+            UsersList =  new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                SelectedUsers = (from x in dcx.Assignments where x.TaskId == @Encryption.Decrypt(Id) select x.SelectedUsers).ToList(),
             };
 
 

@@ -105,7 +105,8 @@ $(function () {
 });
 $(function () {
     tinymce.init({
-        selector: 'textarea#additionalNotes',
+        selector: 'texterea',
+      
         height: '400',
         plugins: [
             'advlist autolink lists link image charmap print preview anchor textcolor',
@@ -114,12 +115,13 @@ $(function () {
         toolbar:
             'insert | undo redo | styleselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
     });
+    tinymce.activeEditor.setContent("MemoContent");
 });
     
     $(function () {
     tinymce.init({
         selector: 'textarea#detail',
-
+       
         readonly: true,
         menubar: false,
         statusbar: false,
@@ -206,8 +208,8 @@ $(function GetMessages() {
         momoSection.classList.add("d-block");
     }
 
-jQueryAjaxDeleteClient = form => {
-    if (confirm('Are you sure to delete this Client?'))
+jQueryAjaxDeleteMemo = form => {
+    if (confirm('Are you sure to delete this Memo?'))
     {
         try
         {
@@ -215,21 +217,21 @@ jQueryAjaxDeleteClient = form => {
                 type: 'POST',
                 url: form.action,
             });
-                    LoadClients();
+                    LoadMemos();
                 
            
         }
         catch (e)
         {
-            LoadClients();
+            LoadMemos();
         }
     }
     return false;
 }
-$(function LoadClients() {
+$(function LoadMemos() {
     $.ajax({
         type: "GET",
-        url: "/Client/Clients",
+        url: "/Memo/ViewMemos",
     
     });
 });
@@ -257,3 +259,130 @@ $(function LoadPatients() {
 
     });
 });
+
+jQueryAjaxDeleteLetter = form => {
+    if (confirm('Are you sure to delete this Patient?')) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+            });
+            LoadPatients();
+
+
+        }
+        catch (e) {
+            LoadPatients();
+        }
+    }
+    return false;
+}
+$(function LoadLetters() {
+    $.ajax({
+        type: "GET",
+        url: "/Patient/Patients",
+
+    });
+});
+
+jQueryAjaxDeleteTravelRequest = form => {
+    if (confirm('Are you sure to delete this Patient?')) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+            });
+            LoadPatients();
+
+
+        }
+        catch (e) {
+            LoadPatients();
+        }
+    }
+    return false;
+}
+$(function LoadTravelRequests() {
+    $.ajax({
+        type: "GET",
+        url: "/Patient/Patients",
+
+    });
+});
+
+jQueryAjaxDeleteServiceRequest = form => {
+    if (confirm('Are you sure to delete this Patient?')) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+            });
+            LoadPatients();
+
+
+        }
+        catch (e) {
+            LoadPatients();
+        }
+    }
+    return false;
+}
+$(function LoadServiceRequests() {
+    $.ajax({
+        type: "GET",
+        url: "/Patient/Patients",
+
+    });
+});
+
+jQueryAjaxDeletePettyCash = form => {
+    if (confirm('Are you sure to delete this Patient?')) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+            });
+            LoadPatients();
+
+
+        }
+        catch (e) {
+            LoadPatients();
+        }
+    }
+    return false;
+}
+$(function LoadPatients() {
+    $.ajax({
+        type: "GET",
+        url: "/Patient/Patients",
+
+    });
+});
+
+jQueryAjaxDeleteExcuseDuty = form => {
+    if (confirm('Are you sure to delete this Patient?')) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+            });
+            LoadPatients();
+
+
+        }
+        catch (e) {
+            LoadPatients();
+        }
+    }
+    return false;
+}
+$(function LoadPatients() {
+    $.ajax({
+        type: "GET",
+        url: "/Patient/Patients",
+
+    });
+});
+
+

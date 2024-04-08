@@ -6,7 +6,7 @@ namespace DMX.Data
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
     {
         public DbSet<Message> Messages { get; set; }
-        public DbSet<Document> Documents { get; set; }
+        public DbSet<Letter> Documents { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Leave> Leaves { get; set; }

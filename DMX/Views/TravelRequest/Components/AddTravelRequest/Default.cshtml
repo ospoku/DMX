@@ -1,0 +1,82 @@
+﻿
+@model DMX.ViewModels.AddTravelRequestVM;
+
+
+
+
+<div class="modal fade" id="AddTravelRequest" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Travel Request</h6>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+
+            @using (Html.BeginForm("AddTravelRequest", "Document", FormMethod.Post))
+            {
+
+
+
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" />
+                        <label class="did-floating-label">Name</label>
+                    </div>
+
+
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.NightAbsent"  class="did-floating-input"/>
+                            <label class="did-floating-label">Night Absent</label>
+                        </div>
+                    
+
+                         
+                                <div class="did-floating-label-content">
+
+
+                                <input type="date" asp-for="@Model.DepartureDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}"/>
+                                <label class="did-floating-label">Departure Date</label>
+
+                            </div>
+                     
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.FuelClaim" name="footer-email" class="did-floating-input"/>
+                            <label class="did-floating-label">Fuel Claim</label>
+                        </div>
+                    <div class="did-floating-label-content">
+                        <input type="date" asp-for="@Model.DateofReturn" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
+                        <label class="did-floating-label">Date of Return</label>
+
+                    </div>
+                  
+                    <div class="form-group">
+
+                        <textarea class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information"></textarea>
+
+                        </div>
+                    <div class="form-group">
+                      <div class="did-floating-label-content">
+                            <select type="text" id="selectUserTravelRequest" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" placeholder=""></select>
+                        <label class="did-floating-label">Select User</label>
+                      </div>
+                      </div>
+
+                        <button class="btn btn-block btn-primary">Save</button>
+            }
+
+
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest'));
+
+
+    });
+</script>

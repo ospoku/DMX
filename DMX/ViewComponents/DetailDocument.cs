@@ -20,7 +20,7 @@ namespace DMX.ViewComponents
         {
              var stringIDs = (from x in dcx.Assignments where x.TaskId == Id select x.SelectedUsers).FirstOrDefault().Split(',');
 
-            Document documentDetail = new Document();
+            Letter documentDetail = new Letter();
             documentDetail = (from a in dcx.Documents where a.DocumentId == Id & a.IsDeleted == false select a).FirstOrDefault();
             DetailDocumentVM detailDocumentVM = new DetailDocumentVM()
             {

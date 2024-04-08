@@ -1,0 +1,73 @@
+﻿
+@model DMX.ViewModels.AddExcuseDutyVM;
+
+
+
+
+<div class="modal fade" id="AddExcuseDuty" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Excuse Duty</h6>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+
+            @using (Html.BeginForm("AddExcuseDuty", "Document", FormMethod.Post))
+            {
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder=""/>
+                        <label class="did-floating-label">Name</label>
+                        </div>
+                    <div class="did-floating-label-content">
+
+                        <input type="date" asp-for="@Model.Date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
+
+                        <label class="did-floating-label">Date</label>
+                        </div>
+                    <div class="did-floating-label-content">
+                        <textarea type="text" class="did-floating-input" asp-for="@Model.OperationDiagnosis"  placeholder="Diagnosis"></textarea>
+                      
+                        
+                    </div>
+                        <div class="did-floating-label-content">
+
+                        <input type="date" asp-for="@Model.DateofDischarge" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
+
+                        <label class="did-floating-label">Date of Discharge</label>
+
+                    </div> 
+                    <div class="did-floating-label-content">
+                        <input type="text" class="did-floating-input" asp-for="@Model.ExcuseDays" placeholder="" />
+                        <label class="did-floating-label">Excuse Days</label>
+                    </div>
+                  
+              <div class="did-floating-label-content">
+                            <select  id="modalSelectUser" style="width:100%" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <label class="did-floating-label"> Select Users</label>  
+                        </div>
+                   
+                      
+                      <div class="form-group">
+                        <button class="btn btn-block btn-primary">Save</button>
+                        </div>
+            }
+
+
+        </div>
+    </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+           
+
+            $('#modalSelectUser').select2({
+                dropdownParent: $('#AddExcuseDuty') });
+
+        });
+       
+        
+    </script>

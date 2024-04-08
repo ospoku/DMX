@@ -1,0 +1,59 @@
+﻿
+@model DMX.ViewModels.AddPettyCashVM;
+
+<div class="modal fade" id="AddPettyCash" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Petty Cash</h6>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+            @using (Html.BeginForm("AddPettyCash", "Document", FormMethod.Post))
+            { 
+                       <div class="did-floating-label-content">
+                        <input type="date" asp-for="@Model.Date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required/>
+                            <label class="did-floating-label">Date</label>
+                    </div>
+
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" readonly required/>
+                        <label class="did-floating-label">Name</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Amount" class="did-floating-input" placeholder="" required/>
+                        <label class="did-floating-label">Amount</label>
+                    </div>
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.Purpose"  class="did-floating-input" placeholder="" required/>
+                            <label class="did-floating-label">Purpose</label>
+                        </div>
+               <div class="form-group" > 
+                        <textarea type="text" asp-for="@Model.Description" class="did-floating-input" placeholder="Description" required></textarea>
+                       
+                  </div>
+                        <div class="did-floating-label-content">
+                            <select  id="selectPettyCashUser" class="did-floating-select" required asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            <label class="did-floating-label">Select User(s)</label>
+                        </div>
+
+                        <button class="btn btn-block btn-primary">Save</button>       
+            }
+
+
+        </div>
+    </div>
+</div>
+    <script>
+        $(document).ready(function () {
+
+
+            $('#selectPettyCashUser').select2({
+                dropdownParent: $('#AddPettyCash')
+            });
+
+        });
+        </script>

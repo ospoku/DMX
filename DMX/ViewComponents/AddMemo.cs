@@ -17,10 +17,11 @@ namespace DMX.ViewComponents
         }
         public IViewComponentResult Invoke()
         {
-            AddMemoVM addMemoVM = new AddMemoVM()
+            AddMemoVM addMemoVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-            };
+                From = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+        };
 
             return View(addMemoVM);
         }

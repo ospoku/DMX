@@ -1,0 +1,80 @@
+﻿
+@model DMX.ViewModels.AddDocumentVM;
+
+<div class="modal fade" id="Adddocument" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Memo</h6>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+            @using (Html.BeginForm("AddLetter", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Add New Letter</h5>
+                        <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                    </div>
+                    <div class="card-body">
+
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.ReferenceNumber" class="did-floating-input" placeholder=""/>
+                            <label class="did-floating-label">Reference Number</label>
+                        </div>
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.DocumentSource"  class="did-floating-input" placeholder=""/>
+                            <label class="did-floating-label">Document Source</label>
+                        </div>
+                        
+
+                            <div class="did-floating-label-content">
+                               
+                                <input type="date" asp-for="@Model.ReceiptDate"  class="did-floating-input" asp-format="{0:dd/MMM/yyyy}"/>
+                           
+                          <label>Receipt Date</label>
+                           </div>
+                      
+                            <div class="did-floating-label-content">
+                            
+                                <input type="date" asp-for="@Model.DocumentDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}"/>
+                               <label class="did-floating-label">Document Date</label>
+                            </div>
+                         
+
+
+                            <div class="did-floating-input">
+                             
+
+                                    <input class=" form-control custom-custom-file-input" id="formFile" name="formFile" type="file" asp-for="UploadFile" />
+
+                                <label class="did-floating-label">Upload File</label>
+
+
+                            </div>
+
+                            <div class="form-group">
+
+
+                                <textarea class=" form-control" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information"></textarea>
+
+
+                            </div>
+
+                            <button class="btn btn-block btn-primary">Save</button>
+
+
+
+                        </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+</div>

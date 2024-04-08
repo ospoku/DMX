@@ -26,7 +26,7 @@ namespace DMX.ViewComponents
 
 
 
-            Document documentToEdit = new Document();
+            Letter documentToEdit = new Letter();
             documentToEdit = (from d in dcx.Documents.Include(d => d.Comments.OrderBy(d => d.CreatedDate)) where d.DocumentId == Id select d).FirstOrDefault();
 
             DocumentCommentVM addCommentVM = new DocumentCommentVM

@@ -27,7 +27,7 @@ namespace DMX.Models
         public ICollection<ServiceRequest> ServiceRequests { get; set; }
         public ICollection<TravelRequest> TravelRequests { get; set; }
         public ICollection<SickReport> SickReports { get; set; }
-      public ICollection<Document> Documents { get; set; }
+      public ICollection<Letter> Documents { get; set; }
 
 
     }

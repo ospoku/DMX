@@ -16,12 +16,14 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet"/>
-        <link href="~/lib/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+    <link href="~/lib/datatables/css/datatables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.bootstrap4.css" rel="stylesheet" />
         <link href="~/ospapps/data.css" rel="stylesheet" type="text/css"/>
+        <link href ="~/ospapps/ospapps.css" rel="stylesheet" type="text/css"/>
    <!-- Custom styles for this template-->
  <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet" type="text/css"/>
-    <link href="~/ospapps/data.css" rel="stylesheet" type="text/css" />
+   
 </head>
 
 <body id="page-top">
@@ -68,14 +70,14 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">New Documents</h6>
-                        <a class="collapse-item" asp-action="ViewMemos" asp-controller="Document">Memos</a>
-                        <a class="collapse-item" asp-action="ViewExcuseDuties" asp-controller="Document">Excuse Duty</a>
-                        <a class="collapse-item" asp-action="ViewPettyCash" asp-controller="Document">Petty Cash</a>
-                        <a class="collapse-item" asp-action="ViewTravelRequests" asp-controller="Document">Travel Request</a>
-                        <a class="collapse-item" asp-action="ViewServiceRequests" asp-controller="Document">Service Request</a>
-                        <a class="collapse-item" asp-action="ViewSickReports" asp-controller="Document">Sick Report</a>
-                        <a class="collapse-item" asp-action="ViewPatients" asp-controller="Document">Patient</a>
-                        <a class="collapse-item" asp-action="ViewLetters" asp-controller="Document">Letters</a>
+                        <a class="collapse-item" asp-action="ViewMemos" asp-controller="Memo">Memos</a>
+                        <a class="collapse-item" asp-action="ViewExcuseDuties" asp-controller="ExcuseDuty">Excuse Duty</a>
+                        <a class="collapse-item" asp-action="ViewPettyCash" asp-controller="PettyCash">Petty Cash</a>
+                        <a class="collapse-item" asp-action="ViewTravelRequests" asp-controller="TravelRequest">Travel Request</a>
+                        <a class="collapse-item" asp-action="ViewServiceRequests" asp-controller="ServiceRequest">Service Request</a>
+                        <a class="collapse-item" asp-action="ViewSickReports" asp-controller="SickReport">Sick Report</a>
+                        <a class="collapse-item" asp-action="ViewPatients" asp-controller="Patient">Patient</a>
+                        <a class="collapse-item" asp-action="ViewLetters" asp-controller="Letter">Letters</a>
                     </div>
                 </div>
             </li>
@@ -383,11 +385,11 @@
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
+                @* <div class="container my-auto"> *@
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; Your Website 2021</span>
                     </div>
-                </div>
+               @*  </div> *@
             </footer>
             <!-- End of Footer -->
 
@@ -433,7 +435,8 @@
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
     <script src="~/lib/select2/js/select2.js"></script>
-    <script src="~/ospapps/ospapps.js"></script>
+    <script src="~/lib/tinymce/tinymce.min.js" asp-append-version="true"></script>
+    <script src="~/ospapps/ospapps.js" asp-append-version="true"></script>
     
 </body>
 

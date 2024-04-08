@@ -15,7 +15,7 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-               Document documentToEdit = new Document();
+               Letter documentToEdit = new Letter();
             documentToEdit = (from d in dcx.Documents where d.DocumentId == Id select d).FirstOrDefault();
             PrintDocumentVM printDocumentVM = new PrintDocumentVM
             {

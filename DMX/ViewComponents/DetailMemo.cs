@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using DMX.Data;
 using DMX.Models;
 using DMX.ViewModels;
+using DMX.DataProtection;
 
 namespace DMX.ViewComponents
 {
@@ -14,21 +15,18 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-             var stringIDs = (from x in dcx.Assignments where x.TaskId == Id select x.SelectedUsers).FirstOrDefault().Split(',');
+             
 
             Memo memoDetail = new();
-           memoDetail = (from m in dcx.Memos where m.MemoId == Id & m.IsDeleted == false select m).FirstOrDefault();
+           memoDetail = (from m in dcx.Memos where m.MemoId == @Encryption.Decrypt(Id) & m.IsDeleted == false select m).FirstOrDefault();
             DetailMemoVM detailMemoVM = new()
             {
-
-
-
-              
-                SelectedUsers = (from x in dcx.Assignments where x.TaskId == Id select x.SelectedUsers).FirstOrDefault().Split(','),
+                Content=memoDetail.Content,
+                From = memoDetail.Sender,
+                Title=memoDetail.Title,
+                Recipient=memoDetail.Recipient,
+                SelectedUsers = (from x in dcx.Assignments where x.TaskId == @Encryption.Decrypt(Id) select x.SelectedUsers).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-
-
-
             };
             return View(detailMemoVM);
         }

@@ -32,22 +32,31 @@ namespace DMX.Data
         }
 
 
-        private readonly List<Claim> claimlist = new List<Claim>()
-            {
+        private readonly List<Claim> claimlist =
+            [
 
-                new Claim(ClaimTypes.Name,"SuperAdmin"),
+                new(ClaimTypes.Name,"SuperAdmin"),
                 new Claim(ClaimTypes.Email,"oseipoku@gmail.com"),
                 new Claim(ClaimTypes.Role,"SuperAdmin"),
                 
 
-            };
+            ];
+        private readonly List<Claim> claimlist2 =
+            [
+
+                new Claim(ClaimTypes.Name,"Admin"),
+                new Claim(ClaimTypes.Email,"oseipoku@gmail.com"),
+                new Claim(ClaimTypes.Role,"Admin"),
+
+
+            ];
         IdentityResult identityResult;
         public async Task UserCreation(IServiceProvider serviceProvider)
         {
             var usm = serviceProvider.GetRequiredService<UserManager<AppUser>>();
             if (await usm.FindByNameAsync("SuperAdmin") == null)
             {
-                AppUser superUser = new AppUser()
+                AppUser superUser = new()
                 {
                     UserName = "SuperAdmin",
                     Surname = "SuperAdmin",
@@ -65,7 +74,29 @@ namespace DMX.Data
                     await usm.AddClaimsAsync(superUser, claimlist);
                 };
 
-            }
+            };
+            if (await usm.FindByNameAsync("Admin") == null)
+            {
+                AppUser superUser = new()
+                {
+                    UserName = "Admin",
+                    Surname = "Admin",
+                    Firstname = "Admin",
+                    Email = "admin@gmail.com",
+                    PhoneNumber = "0244139692",
+                    EmailConfirmed = true,
+
+                };
+
+                identityResult = await usm.CreateAsync(superUser, "OSP@Admin12345");
+                if (identityResult.Succeeded)
+                {
+                    await usm.AddToRoleAsync(superUser, "Admin");
+                    await usm.AddClaimsAsync(superUser, claimlist2);
+                };
+
+            };
+
 
 
         }

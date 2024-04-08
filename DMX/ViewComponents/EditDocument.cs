@@ -7,20 +7,16 @@ using DMX.ViewModels;
 
 namespace DMX.ViewComponents
 {
-    public class EditDocument : ViewComponent
+    public class EditDocument(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
-        public readonly XContext dcx;
-        public readonly UserManager<AppUser> usm;
-        public EditDocument(XContext dContext, UserManager<AppUser>userManager)
-        {
-            dcx = dContext;
-            usm = userManager;
-        }
+        public readonly XContext dcx = dContext;
+        public readonly UserManager<AppUser> usm = userManager;
+
         public IViewComponentResult Invoke(string Id)
         {
-            Document documentToEdit = new Document();
+            Letter documentToEdit = new();
             documentToEdit = (from a in dcx.Documents where a.DocumentId == Id & a.IsDeleted == false select a).FirstOrDefault();
-            EditDocumentVM editDocumentVM = new EditDocumentVM()
+            EditDocumentVM editDocumentVM = new()
             {
                 DocumentDate = documentToEdit.DocumentDate,
                 AdditionalNotes=documentToEdit.AdditionalNotes,

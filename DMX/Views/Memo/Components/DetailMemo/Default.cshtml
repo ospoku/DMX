@@ -2,7 +2,7 @@
 @model DMX.ViewModels.DetailMemoVM;
 
 <div class="modal fade" id="DetailMemo" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -10,62 +10,26 @@
                 <h6>Memo Detail</h6>
                 <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
-            <div class="modal-body">
-
-                            
-                                <div class="card">
-    
-            <div class="col-md-8">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Full Name</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                Kenneth Valdez
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                fip@jukmuh.al
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                (239) 816-9029
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-
-                <div class="row gutters-md">
-                   
-                        <div class="card h-100">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                        <div class="col-sm-3">
+            <div class="modal-body">             
+             
+           
+                
+                <div class="row mb-3 ml-3"> 
+                    <div class="card">
+                          <div class="row">
+                                       
+                                        <div class="col-sm-4">
                                             <h6 class="mb-0">Full Name</h6>
                                         </div>
-                                        <div class="col-sm-9 text-secondary">
+                                        <div class="col-sm-8 text-secondary">
                                         @Model.From
                                             </div>
                                         </div>
-                                        <div class="col">
-                                            <div class="col-sm-3">
+                                        <div class="col-6-lg">
+                                            <div class="col-sm-4">
                                                 <h6 class="mb-0">Recipient</h6>
                                             </div>
-                                            <div class="col-sm-9 text-secondary">
+                                            <div class="col-sm-8 text-secondary">
                                                 @Model.Recipient
                                             </div>
                                         </div>
@@ -75,15 +39,20 @@
                                             <h6 class="mb-0">User(s)</h6>
                                </div>
                                         <div class="col-sm-9 text-secondary">
-                           @Model.UsersList
-                                        </div>
-                                    </div>
-                                </div>
+                            @foreach(var user in Model.SelectedUsers)
+                            {
+                                
+                            
+
+                            <span class="badge badge-dark">@user</span>
+                            
+                            }
+
                         </div>
-                    
-                  
+                                    </div>
                 </div>
-                <div class="row gutters-md">
+                </div>
+                <div class="row mb-3">
                  
                         <div class="card h-100">
                             <div class="card-body">
@@ -93,7 +62,7 @@
                   
 
                 </div>
-                <div class="row gutters-md">
+                <div class="row mb-3">
                     
                         <div class="card h-100">
                             <div class="card-body">
@@ -104,10 +73,8 @@
 
                 </div>
                 <a class="btn btn-block btn-primary" asp-action="ViewDocuments" asp-controller="Document">Return</a>
-            </div>
+          
         </div>
 
     </div>
-</div>
-</div>
 </div>

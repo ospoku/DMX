@@ -15,17 +15,19 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-             
+
 
             Memo memoDetail = new();
-           memoDetail = (from m in dcx.Memos where m.MemoId == @Encryption.Decrypt(Id) & m.IsDeleted == false select m).FirstOrDefault();
+            memoDetail = (from m in dcx.Memos where m.MemoId == @Encryption.Decrypt(Id) & m.IsDeleted == false select m).FirstOrDefault();
             DetailMemoVM detailMemoVM = new()
             {
-                Content=memoDetail.Content,
+                Content = memoDetail.Content,
                 From = memoDetail.Sender,
-                Title=memoDetail.Title,
-                Recipient=memoDetail.Recipient,
-                SelectedUsers = (from x in dcx.Assignments where x.TaskId == @Encryption.Decrypt(Id) select x.SelectedUsers).ToList(),
+                Title = memoDetail.Title,
+                Recipient = memoDetail.Recipient,
+
+                
+                SelectedUsers = (from x in dcx.Assignments join u in usm.Users on x.SelectedUsers equals u.Id where x.TaskId == @Encryption.Decrypt(Id) select u.UserName).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             return View(detailMemoVM);

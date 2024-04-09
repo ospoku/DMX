@@ -1,15 +1,19 @@
 ﻿
 @model DMX.ViewModels.MemoCommentVM;
 
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">@Model.Title</h6>
+<div class="modal fade" id="CommentMemo" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Comment</h6>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
-            <div class="card-body justify-content-md-center h-100">
-                <div class="row justify-content-center">
-                    <div class="col-md-11">
+            <div class="modal-body">
 
 
-                        @using (Html.BeginForm("MemoComment", "Document", FormMethod.Post))
+                @using (Html.BeginForm("MemoComment", "Memo", FormMethod.Post))
                         {
 
                         <div class="form-group">
@@ -95,7 +99,7 @@
 
 
                                 <textarea class="tinymce form-control" asp-for="@Model.NewComment" type="text"></textarea>
-                                <script src="~/lib/tinymce/plugins/advlist/plugin.js"></script>
+                             
 
                             </div>
 
@@ -108,5 +112,4 @@
                         </div>
                         </div>
     </div>
-
-   
+    </div>

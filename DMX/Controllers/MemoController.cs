@@ -6,6 +6,7 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DMX.Controllers
 {
@@ -103,16 +104,17 @@ namespace DMX.Controllers
             Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new()
+            MemoComment addThisComment = new()
             {
-                TaskId = memoToUpdate.MemoId,
+                MemoId = memoToUpdate.MemoId,
+
                 CreatedDate = DateTime.Now,
                 Message = addCommentVM.NewComment,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.MemoComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");

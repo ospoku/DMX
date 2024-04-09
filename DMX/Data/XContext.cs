@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DMX.Models;
 
+
 namespace DMX.Data
 {
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
@@ -20,5 +21,7 @@ namespace DMX.Data
         public DbSet<SickReport> SickReports { get; set; }
         public DbSet<ExcuseDuty> ExcuseDuties { get; set; }
         public DbSet<SMSTask> SMSTasks { get; set; }
+        public DbSet<MemoComment> MemoComments { get; set; }
+        public DbSet<ExcuseDutyComment> ExcuseDutyComments { get; set; }
     }
 }

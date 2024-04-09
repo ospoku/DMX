@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using DMX.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewModels
 {

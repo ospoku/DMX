@@ -650,3 +650,25 @@ h5.name {
 }
 
 
+/*accordion start*/
+.accordion-button:not(.collapsed),
+.accordion-button:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.accordion-button::after {
+    width: 11px;
+    height: 11px;
+    border-radius: 100%;
+    background-color: var(--bs-danger);
+    background-image: none !important;
+}
+
+.accordion-button.collapsed::after {
+    background-color: var(--bs-gray-300);
+}
+
+/*accordion end*/

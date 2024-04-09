@@ -12,17 +12,19 @@
             </div>
             <div class="modal-body">             
              
-           
-                
-                <div class="row mb-3 ml-3"> 
+            <div class="row mb-4">
+                <div class="col">
+                    <!-- Add your card content here -->
                     <div class="card">
-                          <div class="row">
-                                       
-                                        <div class="col-sm-4">
-                                            <h6 class="mb-0">Full Name</h6>
-                                        </div>
-                                        <div class="col-sm-8 text-secondary">
-                                        @Model.From
+                        <div class="card-body">
+                            Card 1
+                                        <div class="row">
+                                            <div class="col-6-lg">
+                                            <div class="col-sm-4">
+                                                <h6 class="mb-0">Full Name</h6>
+                                            </div>
+                                            <div class="col-sm-8 text-secondary">
+                                                @Model.From
                                             </div>
                                         </div>
                                         <div class="col-6-lg">
@@ -33,52 +35,20 @@
                                                 @Model.Recipient
                                             </div>
                                         </div>
-                                    </div>
-                           <div class="row">
-                               <div class="col-sm-3">
+                                    
+                                </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
                                             <h6 class="mb-0">User(s)</h6>
-                               </div>
+                                        </div>
                                         <div class="col-sm-9 text-secondary">
-                            @foreach(var user in Model.SelectedUsers)
-                            {
-                                
-                            
-
-                            <span class="badge badge-dark">@user</span>
-                            
-                            }
-
-                        </div>
+                                            @foreach (var user in Model.SelectedUsers)
+                                            {
+                                                <span class="badge badge-dark">@user</span>
+                                            }
+                                        </div>
                                     </div>
-                </div>
-                </div>
-                <div class="row mb-3">
-                 
-                        <div class="card h-100">
-                            <div class="card-body">
-                            @Html.Raw(@Model.Content)
-                            </div>
-                        </div>
-                  
-
-                </div>
-                <div class="row mb-3">
-                    
-                        <div class="card h-100">
-                            <div class="card-body">
-                          
-                            </div>
-                        </div>
-               
-
-                </div>
-            <div class="row mb-4">
-                <div class="col">
-                    <!-- Add your card content here -->
-                    <div class="card">
-                        <div class="card-body">
-                            Card 1
-                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -89,6 +59,7 @@
                     <div class="card">
                         <div class="card-body">
                             Card 2
+                                        @Html.Raw(@Model.Content)
                         </div>
                     </div>
                 </div>
@@ -110,4 +81,6 @@
         </div>
 
     </div>
+</div>
+</div>
 </div>

@@ -13,74 +13,30 @@
             <div class="modal-body">             
              
             <div class="row mb-4">
-                <div class="col">
-                    <!-- Add your card content here -->
-                    <div class="card">
-                        <div class="card-body">
-                            Card 1
-                                        <div class="row">
-                                         <div class="row">
-                                            <div class="col-sm-4">
-                                                <h6 class="mb-0">Full Name</h6>
-                                            </div>
-                                            <div class="col-sm-8 text-secondary">
-                                                @Model.From
-                                            </div>
-                                    </div>
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <h6 class="mb-0">Recipient</h6>
-                                            </div>
-                                            <div class="col-sm-8 text-secondary">
-                                                @Model.Recipient
-                                            </div>
-                                        </div>
-                                    
-                                </div>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">User(s)</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            @foreach (var user in Model.SelectedUsers)
-                                            {
-                                                <span class="badge badge-dark">@user</span>
-                                            }
-                                        </div>
-                                    </div>
-                       
-                    </div>
+                <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6 ">
+                                <h5> Row #2:I'm a col-sm-6 col</h5>
+                            </div>
+                            <div class="col-sm-6">
+                                <h5>I'm a col-sm-6 col</h5>
+                            </div>
+                        </div> <!-- end of row -->
                 </div>
             </div>
-
-            <div class="row mb-4">
-                <div class="col">
-                    <!-- Add your card content here -->
-                    <div class="card">
-                        <div class="card-body">
-                            Card 2
-                                        @Html.Raw(@Model.Content)
-                        </div>
+                <div class="row mb-4">
+                    <div class="card-body">
                     </div>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <!-- Add your card content here -->
-                    <div class="card">
-                        <div class="card-body">
-                            Card 3
-                        </div>
+                <div class="row mb-4">
+                    <div class="card-body">
                     </div>
                 </div>
-            </div>
 
                 <a class="btn btn-block btn-primary" asp-action="ViewDocuments" asp-controller="Document">Return</a>
           
         </div>
 
     </div>
-</div>
 </div>
 </div>

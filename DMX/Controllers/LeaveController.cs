@@ -33,7 +33,7 @@ namespace DMX.Controllers
                 //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.LeaveComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");

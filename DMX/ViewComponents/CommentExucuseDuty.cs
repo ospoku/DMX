@@ -25,12 +25,12 @@ namespace DMX.ViewComponents
             //}
 
             Memo memoToEdit = new();
-            memoToEdit = (from m in dcx.Memos.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.MemoId == Id select m).FirstOrDefault();
+            memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == Id select m).FirstOrDefault();
 
             ExcuseDutyCommentVM addCommentVM = new()
             {
                 MemoContent = memoToEdit.Content,
-                Comments = memoToEdit.Comments,
+              
                 Title = memoToEdit.Title,
                 SelectedUsers = AssignedUsers,
 

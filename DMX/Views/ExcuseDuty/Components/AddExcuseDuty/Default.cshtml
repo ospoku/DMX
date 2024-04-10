@@ -16,7 +16,7 @@
             <div class="modal-body">
 
 
-            @using (Html.BeginForm("AddExcuseDuty", "Document", FormMethod.Post))
+            @using (Html.BeginForm("AddExcuseDuty", "ExcuseDuty", FormMethod.Post))
             {
                     <div class="did-floating-label-content">
                         <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder=""/>

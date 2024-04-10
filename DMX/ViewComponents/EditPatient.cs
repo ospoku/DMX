@@ -21,7 +21,7 @@ namespace DMX.ViewComponents
            
 
             Memo memoToEdit = new Memo();
-            memoToEdit = (from m in dcx.Memos.Include(m => m.Comments.OrderBy(m=>m.CreatedDate)) where m.MemoId==MemoId select m ).FirstOrDefault();
+            memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m=>m.CreatedDate)) where m.MemoId==MemoId select m ).FirstOrDefault();
 
             EditMemoVM editMemoVM = new EditMemoVM
             {

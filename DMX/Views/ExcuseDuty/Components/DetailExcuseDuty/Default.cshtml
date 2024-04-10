@@ -1,42 +1,34 @@
 ﻿
-@model DMX.ViewModels.DetailDocumentVM;
+@model DMX.ViewModels.DetailExcuseDutyVM;
 
-<div class="modal fade" id="AddMemo" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="DetailExcuseDuty" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
-
         <div class="modal-content">
             <div class="modal-header">
-
-                <h6>Add Memo</h6>
+                <h6>Detail </h6>
                 <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
 
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Document Detail</h5>
-                                    <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
-                                </div>
-                                <div class="card-body">
-                                   
+                          
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text">Reference Number</span></div>
-                                            <input type="text" asp-for="@Model.ReferenceNumber" class="form-control"  readonly />
+                                            <input type="text" asp-for="@Model.Name" class="form-control"  readonly />
 
                                         </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">Document Source</span></div>
-                                                <input type="text" asp-for="@Model.DocumentSource" class="form-control"  readonly/>
+                                                <input type="text" asp-for="@Model.Date" class="form-control"  readonly/>
                                             </div>
 
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">Receipt Date</span></div>
-                                                <input  value="@Model.ReceiptDate" class="form-control">
+                                                <input  value="@Model.DateofDischarge" class="form-control">
 
                                             </div>
                                             </div>
@@ -44,7 +36,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">Document Date</span></div>
-                                                <input value="@Model.DocumentDate.ToString("dd/MM/yyyy")" class="form-control"  readonly />
+                                                <input value="@Model.Date.ToString("dd/MM/yyyy")" class="form-control"  readonly />
 
                                                 </div>
                                             </div>
@@ -54,7 +46,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <textarea class=" tinymce form-control" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information" readonly></textarea>
+                                                <textarea class=" tinymce form-control" asp-for="@Model.OperationDiagnosis" type="text" placeholder="Additional Information" readonly></textarea>
 
 
                                             </div>
@@ -62,15 +54,7 @@
                                             <a class="btn btn-block btn-primary" asp-action="ViewDocuments" asp-controller="Document">Return</a>
 
                                         </div>
-                            </div>
-                        </div>
-
-
-           
-
-                       
-                    </div>
-                            </div>
-                        
-    
-
+            </div>
+        </div> 
+ </div>
+            

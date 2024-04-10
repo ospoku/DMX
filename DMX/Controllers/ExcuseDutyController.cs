@@ -21,6 +21,35 @@ namespace DMX.Controllers
         {
             return ViewComponent("ViewExcuseDuties");
         }
+        [HttpGet]
+        public IActionResult DetailExcuseDuty(string Id)
+        {
+            return ViewComponent("DetailExcuseDuty", Id);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CommentExcuseDuty(string Id, MemoCommentVM addCommentVM)
+        {
+
+            ExcuseDuty dutyToComment = new();
+            dutyToComment = (from a in dcx.ExcuseDuties where a.ExcuseFormId == Id select a).FirstOrDefault();
+
+            ExcuseDutyComment addThisComment = new()
+            {
+                ExcuseDutyId = dutyToComment.ExcuseFormId,
+                CreatedDate = DateTime.Now,
+
+                Message = addCommentVM.NewComment,
+
+
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                 UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+            };
+
+            dcx.ExcuseDutyComments.Add(addThisComment);
+            await dcx.SaveChangesAsync();
+
+            return RedirectToAction("ViewExcuseDuties");
+        }
 
         [HttpGet]
         public IActionResult EditExcuseDuty(string Id)
@@ -109,7 +138,13 @@ namespace DMX.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult AddExcuseDuty()
+        {
+            return ViewComponent("AddExcuseDuty");
+        }
 
-     
+
+
     }
 }

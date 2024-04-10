@@ -98,11 +98,11 @@ namespace DMX.Controllers
         public IActionResult EditMemo(string Id)
         => ViewComponent("EditMemo", Id);
         [HttpPost]
-        public async Task<IActionResult> MemoComment(string Id, MemoCommentVM addCommentVM)
+        public async Task<IActionResult> CommentMemo(string Id, MemoCommentVM addCommentVM)
         {
 
             Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
+            memoToUpdate = (from a in dcx.Memos where a.MemoId == @Encryption.Decrypt(Id) select a).FirstOrDefault();
 
             MemoComment addThisComment = new()
             {
@@ -111,7 +111,7 @@ namespace DMX.Controllers
                 CreatedDate = DateTime.Now,
                 Message = addCommentVM.NewComment,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
             dcx.MemoComments.Add(addThisComment);

@@ -35,7 +35,7 @@ namespace DMX.ViewComponents
             MemoCommentVM addCommentVM = new MemoCommentVM
             {
                 MemoContent = travelRequestToEdit.PurposeofJourney,
-                Comments = travelRequestToEdit.Comments,
+               // Comments = travelRequestToEdit.Comments,
                 Title = travelRequestToEdit.ReferenceNumber,
                // SelectedUsers = AssignedUsers,
 

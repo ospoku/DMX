@@ -261,30 +261,6 @@ namespace DMX.Controllers
             return RedirectToAction("ViewMemos");
         }
         [HttpPost]
-        public async Task<IActionResult> ExcuseDutyComment(string Id, MemoCommentVM addCommentVM)
-        {
-
-            Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
-
-            Comment addThisComment = new()
-            {
-                TaskId = memoToUpdate.MemoId,
-                CreatedDate = DateTime.Now,
-
-                Message = addCommentVM.NewComment,
-
-
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
-
-            dcx.Comments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
-
-            return RedirectToAction("ViewMemos");
-        }
-        [HttpPost]
         public async Task<IActionResult> DocumentComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
@@ -333,12 +309,6 @@ namespace DMX.Controllers
             return RedirectToAction("ViewMemos");
         }
 
-        [HttpGet]
-        public IActionResult AddExcuseDuty()
-        {
-            return ViewComponent("AddExcuseDuty");
-        }
-       
        
         
         public IActionResult Card(string Id)

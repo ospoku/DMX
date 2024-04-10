@@ -21,12 +21,12 @@ namespace DMX.ViewComponents
 
 
             Memo memoToEdit = new();
-            memoToEdit = (from m in dcx.Memos.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id )select m).FirstOrDefault();
+            memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id )select m).FirstOrDefault();
 
             MemoCommentVM addCommentVM = new()
             {
                 MemoContent = memoToEdit.Content,
-                Comments = memoToEdit.Comments,
+              Comments=memoToEdit.MemoComments,
                 Title = memoToEdit.Title,
               
 

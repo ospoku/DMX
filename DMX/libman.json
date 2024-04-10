@@ -5,6 +5,10 @@
     {
       "library": "tinymce@7.0.0",
       "destination": "wwwroot/lib/tinymce/"
+    },
+    {
+      "library": "jquery.collapsible@1.2",
+      "destination": "wwwroot/lib/jquery.collapsible/"
     }
   ]
 }

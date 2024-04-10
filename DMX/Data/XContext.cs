@@ -9,7 +9,7 @@ namespace DMX.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Documents { get; set; }
 
-        public DbSet<Comment> Comments { get; set; }
+
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }
         public DbSet<Patient> Patients { get; set; }
@@ -23,5 +23,6 @@ namespace DMX.Data
         public DbSet<SMSTask> SMSTasks { get; set; }
         public DbSet<MemoComment> MemoComments { get; set; }
         public DbSet<ExcuseDutyComment> ExcuseDutyComments { get; set; }
+        public DbSet<LeaveComment> LeaveComments { get; set; }
     }
 }

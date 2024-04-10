@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -18,19 +19,18 @@ namespace DMX.Controllers
         public async Task<IActionResult> LeaveComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
+            Leave leaveToComment =  dcx.Leaves.Where(l=>l.LeaveId==@Encryption.Decrypt(Id)).Select(l=>l).FirstOrDefault();
 
-            Comment addThisComment = new()
+            LeaveComment addThisComment = new()
             {
-                TaskId = memoToUpdate.MemoId,
+                LeaveId = leaveToComment.LeaveId,
                 CreatedDate = DateTime.Now,
 
                 Message = addCommentVM.NewComment,
 
 
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+               UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
             dcx.LeaveComments.Add(addThisComment);
@@ -43,19 +43,19 @@ namespace DMX.Controllers
         public async Task<IActionResult> MaternityLeaveComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Memo memoToUpdate = new();
+            Leave memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new()
+            LeaveComment addThisComment = new()
             {
-                TaskId = memoToUpdate.MemoId,
+                LeaveId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
 
                 Message = addCommentVM.NewComment,
 
 
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                 UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
             dcx.Comments.Add(addThisComment);

@@ -51,6 +51,24 @@ namespace DMX.Controllers
         {
             return ViewComponent("CommentMemo", Id);
         }
+        [HttpPost]
+        public IActionResult PrintMemo(string Id, MemoCommentVM printVM)
+        {
+
+            Memo memoToPrint = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+
+
+            printVM = new MemoCommentVM
+            {
+                Comments = memoToPrint.MemoComments.ToList(),
+                Title = memoToPrint.Title,
+
+            MemoContent = memoToPrint.Content,
+                //SelectedUsers = dcx.Assignments.Where(x => x.TaskId == @Encryption.Decrypt(Id)).Select(p => p.SelectedUsers).ToList(),
+            };
+
+            return View(printVM);
+        }
         public IActionResult ViewMemos()
         {
             return ViewComponent("ViewMemos");

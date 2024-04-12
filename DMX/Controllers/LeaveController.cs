@@ -43,12 +43,12 @@ namespace DMX.Controllers
         public async Task<IActionResult> MaternityLeaveComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Leave memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
+            Leave leaveToComment = new();
+            leaveToComment = (from a in dcx.Leaves where a.LeaveId ==Encryption.Decrypt( Id) select a).FirstOrDefault();
 
             LeaveComment addThisComment = new()
             {
-                LeaveId = memoToUpdate.MemoId,
+                LeaveId = leaveToComment.LeaveId,
                 CreatedDate = DateTime.Now,
 
                 Message = addCommentVM.NewComment,
@@ -58,7 +58,7 @@ namespace DMX.Controllers
                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.LeaveComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");

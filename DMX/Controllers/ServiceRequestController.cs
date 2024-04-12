@@ -31,9 +31,9 @@ namespace DMX.Controllers
             Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new()
+            ServiceRequestComment addThisComment = new()
             {
-                TaskId = memoToUpdate.MemoId,
+                ServiceRequestId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
 
                 Message = addCommentVM.NewComment,
@@ -43,7 +43,7 @@ namespace DMX.Controllers
                 //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.ServiceRequestComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");
@@ -93,7 +93,7 @@ namespace DMX.Controllers
             ServiceRequest serviceRequestToComment = new();
             serviceRequestToComment = (from s in dcx.ServiceRequests where s.ServiceRequestId == Id select s).FirstOrDefault();
 
-            Comment addThisComment = new()
+            ServiceRequestComment addThisComment = new()
             {
                 //MemoId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.UtcNow,
@@ -105,7 +105,7 @@ namespace DMX.Controllers
                 //UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.ServiceRequestComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");

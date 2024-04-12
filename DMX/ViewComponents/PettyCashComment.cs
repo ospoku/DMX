@@ -24,13 +24,13 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            PettyCash pettyCashToEdit = new PettyCash();
-            pettyCashToEdit = (from m in dcx.PettyCashes.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.PettyCashId == Id select m).FirstOrDefault();
+            PettyCash pettyCashToComment = new();
+            pettyCashToComment = (from m in dcx.PettyCashes.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.PettyCashId == Id select m).FirstOrDefault();
 
-            PettyCashCommentVM addCommentVM = new PettyCashCommentVM
+            PettyCashCommentVM addCommentVM = new()
             {
                
-                Comments = pettyCashToEdit.Comments,
+                Comments = pettyCashToComment.Comments,
                 
                 SelectedUsers = AssignedUsers,
 

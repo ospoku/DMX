@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using DMX.Data;
 
 namespace DMX.Models
 {
-    public class ServiceRequestComment
+    public class ServiceRequestComment:TableAudit
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

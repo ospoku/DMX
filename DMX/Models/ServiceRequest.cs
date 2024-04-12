@@ -20,7 +20,7 @@ namespace DMX.Models
 
         public string ActionToBeTaken { get; set; }
         public bool IsDeleted { get; internal set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+     public virtual ICollection<ServiceRequestComment>Comments { get; set; }    
         public virtual ICollection<AppUser> ApplicationUsers { get; set; }
       
     }

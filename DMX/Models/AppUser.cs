@@ -18,7 +18,7 @@ namespace DMX.Models
 
     
         public bool IsDeleted { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+   
         public ICollection<Memo> Memos { get; set; }
         public ICollection<PettyCash> PettyCashes { get; set; }
         public ICollection<Leave> Leaves { get; set; }

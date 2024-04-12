@@ -21,7 +21,7 @@ namespace DMX.ViewComponents
              var stringIDs = (from x in dcx.Assignments where x.TaskId == Id select x.SelectedUsers).FirstOrDefault().Split(',');
 
             Letter documentDetail = new Letter();
-            documentDetail = (from a in dcx.Documents where a.DocumentId == Id & a.IsDeleted == false select a).FirstOrDefault();
+            documentDetail = (from a in dcx.Letters where a.LetterId == Id & a.IsDeleted == false select a).FirstOrDefault();
             DetailDocumentVM detailDocumentVM = new DetailDocumentVM()
             {
 
@@ -29,7 +29,7 @@ namespace DMX.ViewComponents
 
                 DocumentDate = documentDetail.DocumentDate,
 
-                DocumentSource=documentDetail.DocumentSource,
+                DocumentSource=documentDetail.Source,
                 ReceiptDate=documentDetail.DateReceived,
                 ReferenceNumber=documentDetail.ReferenceNumber,
                 AdditionalNotes=documentDetail.AdditionalNotes,

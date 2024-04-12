@@ -13,7 +13,7 @@ namespace DMX.ViewComponents
         {
             ViewDashboardVM viewDashboardVM = new()
             {
-                TotalDocuments = prx.Documents.Where(a => a.IsDeleted == false).Count().ToString(),
+                TotalDocuments = prx.Letters.Where(a => a.IsDeleted == false).Count().ToString(),
                 //TotalFemales=prx.Documents.Where(a=>a.IsDeleted==false&a.Gender.GenderName=="Female").Count().ToString(),
                 //TotalMales = prx.Documents.Where(a => a.IsDeleted == false & a.Gender.GenderName == "Male").Count().ToString(),
            

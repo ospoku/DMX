@@ -2,14 +2,15 @@
 using DMX.Models;
 
 
+
 namespace DMX.Data
 {
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
     {
         public DbSet<Message> Messages { get; set; }
-        public DbSet<Letter> Documents { get; set; }
-
-
+        public DbSet<Letter> Letters { get; set; }
+        public DbSet<LetterComment> LetterComments { get; set; }
+        public DbSet<ServiceRequestComment> ServiceRequestComments { get; set; }    
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }
         public DbSet<Patient> Patients { get; set; }
@@ -24,5 +25,9 @@ namespace DMX.Data
         public DbSet<MemoComment> MemoComments { get; set; }
         public DbSet<ExcuseDutyComment> ExcuseDutyComments { get; set; }
         public DbSet<LeaveComment> LeaveComments { get; set; }
+        public DbSet<PatientComment> PatientComments { get; set; }
+        public  DbSet<PettyCashComment> PettyCashComments { get; set; }
+        public DbSet<TravelRequestComment> TravelRequestComments { get; set;}
+        public DbSet <MaternityLeaveComment> MaternityLeaveComments { get; set; }
     }
 }

@@ -11,108 +11,92 @@
                 <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
-
-
                 @using (Html.BeginForm("CommentMemo", "Memo", FormMethod.Post))
-                        {
-
-                        <div class="form-group">
-                            
-
-                            <div class="accordion" id="accordionExample">
-                                <div class="accordion-item">
-                                    <h6 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Memorandum Contents
-                                        </button>
-                                    </h6>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                             @Html.Raw(Model.MemoContent)
-                                        </div>
-                                    </div>
-                                </div>
+               {
 
 
+         
+                <div class="accordion" id="accordionMemoComment">
+                    <div class="card">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseMemoDetail" aria-expanded="true">
+                            <span class="title">Memo Content</span>
+                            <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span>
+                        </div>
+                        <div id="collapseMemoDetail" class="collapse show" data-parent="#accordionMemoComment">
+                            <div class="card-body">
+                                @Html.Raw(Model.MemoContent)  
                             </div>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="card">
+                        <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseMinutes" aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="title">Minutes/Comments</span>
+                            <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span>
+                        </div>
+                        <div id="collapseMinutes" class="collapse" data-parent="#accordionMemoComment">
+                            <div class="card-body">
+                                @foreach (var comment in Model.Comments)
+                                {
 
-                            <div class="accordion" id="accordionComment">
-                                <div class="accordion-item">
-                                    <h6 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#comments" aria-expanded="true" aria-controls="comments">
-                                            Minutes/Comments
-                                        </button>
-                                    </h6>
-                                    <div id="comments" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionComment">
-                                        <div class="accordion-body">
+                                    <div class="card p-3 mt-1">
+                                        <div class="justify-content-between align-items-center">
+                                            <div class="align-items-center">
 
-                                            <div class="container">
-                                                <div class="row d-flex justify-content-center">
+                                                <small class="font-weight-bold text-primary">@comment.CreatedBy</small>
+                                                <small class="fa-pull-right">
 
+                                                    <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>
 
+                                                </small>
 
-                                                    @foreach (var comment in Model.Comments)
-                                                    {
+                                                <div>@Html.Raw(@comment.Message)</div>
 
-                                                        <div class="card p-3 mt-1">
-                                                            <div class="justify-content-between align-items-center">
-                                                                <div class="align-items-center">
-
-                                                                    <small class="font-weight-bold text-primary">@comment.CreatedBy</small>
-    <small class="fa-pull-right">
-
-        <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>
-
-    </small>
-
-                                                                    <div>@Html.Raw(@comment.Message)</div>
-
-                                                                   
-
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-
-
-
-
-
-                                                    }
-
-                                                </div>
 
 
                                             </div>
                                         </div>
 
                                     </div>
+
+
+
+
+
+
+
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false">
+                            <span class="title">New Comment</span>
+                            <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span>
+                        </div>
+                        <div id="collapseThree" class="collapse" data-parent="#accordionMemoComment">
+                            
+                                    <div class="card-body">
+
+                               
+                                <textarea class="tox-tinymce form-control" asp-for="@Model.NewComment"></textarea>
+                                <div class="form-group">
+
+                                    <button class="btn btn-block btn-primary">Add Comment</button>
                                 </div>
+                                
                             </div>
-                            </div>
-
-                            <div class="form-group h-25">
-
-
-                                <textarea class="tinymce form-control" asp-for="@Model.NewComment" type="text"></textarea>
-                             
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <button class="btn btn-block btn-primary">Add Comment</button>
-                            </div>
-                            }
                         </div>
-                        </div>
+                    </div>
+                </div>
+                     }
+                     </div>
+           
+        </div>
     </div>
     </div>
+
+
     <script>
 
   $(document).ready( function () {

@@ -15,18 +15,18 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke(string Id)
         {
             Letter documentToEdit = new();
-            documentToEdit = (from a in dcx.Documents where a.DocumentId == Id & a.IsDeleted == false select a).FirstOrDefault();
+            documentToEdit = (from a in dcx.Letters where a.LetterId == Id & a.IsDeleted == false select a).FirstOrDefault();
             EditDocumentVM editDocumentVM = new()
             {
                 DocumentDate = documentToEdit.DocumentDate,
                 AdditionalNotes=documentToEdit.AdditionalNotes,
-                DocumentSource=documentToEdit.DocumentSource,
+                DocumentSource=documentToEdit.Source,
                 ReferenceNumber=documentToEdit.ReferenceNumber,
                 DateReceived=documentToEdit.DateReceived,
                
                 SelectedUsers = (from x in dcx.Assignments where x.TaskId
                                  == Id
-                                 select x.SelectedUsers).FirstOrDefault().Split(','),
+                                 select x.SelectedUsers).ToList(),
 
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };

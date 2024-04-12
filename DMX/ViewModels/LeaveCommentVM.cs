@@ -9,7 +9,7 @@ namespace DMX.ViewModels
         public string Title { get; set; }
 
         public string NewComment { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+    public virtual ICollection<LeaveComment> Comments { get; set; } 
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
     }

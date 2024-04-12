@@ -15,12 +15,12 @@ namespace DMX.ViewComponents
         {
 
 
-            var documentList = dcx.Documents.Where(d => d.IsDeleted == false).Select(d => new ViewDocumentsVM
+            var documentList = dcx.Letters.Where(d => d.IsDeleted == false).Select(d => new ViewDocumentsVM
             {
 
-                DocumentId = d.DocumentId,
+                LetterId = d.LetterId,
                 AdditionalNotes = d.AdditionalNotes,
-                DocumentSource = d.DocumentSource,
+                DocumentSource = d.Source,
                 DocumentDate = d.DocumentDate,
                 ReferenceNumber = d.ReferenceNumber,
                 ReceiptDate = d.DateReceived,

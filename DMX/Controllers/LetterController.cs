@@ -90,7 +90,7 @@ namespace DMX.Controllers
 
             Letter addThisDocument = new()
             {
-                DocumentSource = addDocumentVM.DocumentSource,
+                Source = addDocumentVM.DocumentSource,
                 DateReceived = addDocumentVM.ReceiptDate,
                 DocumentDate = addDocumentVM.DocumentDate,
                 ReferenceNumber = addDocumentVM.ReferenceNumber,
@@ -105,11 +105,11 @@ namespace DMX.Controllers
                 await formFile.CopyToAsync(memoryStream);
                 addThisDocument.PDF = memoryStream.ToArray();
             }
-            dcx.Documents.Add(addThisDocument);
+            dcx.Letters.Add(addThisDocument);
 
             dcx.Assignments.Add(new Assignment
             {
-                TaskId = addThisDocument.DocumentId,
+                TaskId = addThisDocument.LetterId,
                 SelectedUsers = string.Join(',', addDocumentVM.SelectedUsers),
             });
             if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
@@ -137,11 +137,11 @@ namespace DMX.Controllers
         {
             EditDocumentVM edvm = new();
             Letter updateThisDocument = new();
-            updateThisDocument = (from a in dcx.Documents where a.DocumentId == Id select a).FirstOrDefault();
+            updateThisDocument = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
             updateThisDocument.ReferenceNumber = document.ReferenceNumber;
             updateThisDocument.DocumentDate = document.DocumentDate;
             updateThisDocument.DateReceived = document.DateReceived;
-            updateThisDocument.DocumentSource = document.DocumentSource;
+            updateThisDocument.Source = document.Source;
             updateThisDocument.DateReceived = document.DateReceived;
             updateThisDocument.IsDeleted = false;
             updateThisDocument.ModifiedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
@@ -153,7 +153,7 @@ namespace DMX.Controllers
                 await formFile.CopyToAsync(memoryStream);
                 updateThisDocument.PDF = memoryStream.ToArray();
             }
-            dcx.Documents.Attach(updateThisDocument);
+            dcx.Letters.Attach(updateThisDocument);
             dcx.Entry(updateThisDocument).State = EntityState.Modified;
             if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
             {
@@ -180,22 +180,22 @@ namespace DMX.Controllers
         public async Task<IActionResult> AddDocumentComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
-            Letter documentToComment = new();
-            documentToComment = (from d in dcx.Documents where d.DocumentId == Id select d).FirstOrDefault();
+            Letter letterToComment = new();
+            letterToComment = (from l in dcx.Letters where l.LetterId == Id select l).FirstOrDefault();
 
-            Comment addThisComment = new()
+            LetterComment addThisComment = new()
             {
-                TaskId = documentToComment.DocumentId,
+                LetterId = letterToComment.LetterId,
                 CreatedDate = DateTime.Now,
 
                 Message = addDocumentCommentVM.NewComment,
 
 
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.LetterComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewDocuments");
@@ -225,91 +225,32 @@ namespace DMX.Controllers
             return ViewComponent("PrintDocument", Id);
         }
 
-     
 
-
-
-
-
-
-       
-       
-     
-
-        [HttpPost]
-        public async Task<IActionResult> PettyCashComment(string Id, MemoCommentVM addCommentVM)
+               [HttpPost]
+        public async Task<IActionResult> LetterComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
-            Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
+            Letter letterToComment = new();
+            letterToComment = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new()
+            LetterComment addThisComment = new()
             {
-                TaskId = memoToUpdate.MemoId,
-                CreatedDate = DateTime.Now,
-
-                Message = addCommentVM.NewComment,
-
-
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
-
-            dcx.Comments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
-
-            return RedirectToAction("ViewMemos");
-        }
-        [HttpPost]
-        public async Task<IActionResult> DocumentComment(string Id, DocumentCommentVM addDocumentCommentVM)
-        {
-
-            Letter documentToComment = new();
-            documentToComment = (from a in dcx.Documents where a.DocumentId == Id select a).FirstOrDefault();
-
-            Comment addThisComment = new()
-            {
-                TaskId = documentToComment.DocumentId,
+                LetterId = letterToComment.LetterId,
                 CreatedDate = DateTime.Now,
 
                 Message = addDocumentCommentVM.NewComment,
 
 
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.LetterComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");
         }
-                [HttpPost]
-        public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
-        {
-
-            Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
-
-            Comment addThisComment = new()
-            {
-                TaskId = memoToUpdate.MemoId,
-                CreatedDate = DateTime.Now,
-
-                Message = addCommentVM.NewComment,
-
-
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
-
-            dcx.Comments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
-
-            return RedirectToAction("ViewMemos");
-        }
-
-       
+                
         
         public IActionResult Card(string Id)
         {
@@ -334,7 +275,7 @@ namespace DMX.Controllers
         [HttpGet]
         public async Task<IActionResult> Download(string Id)
         {
-            var foundDoc = await dcx.Documents.FirstOrDefaultAsync(m => m.DocumentId == Id);
+            var foundDoc = await dcx.Letters.FirstOrDefaultAsync(m => m.LetterId == Id);
             if (foundDoc == null)
             {
                 return NotFound();

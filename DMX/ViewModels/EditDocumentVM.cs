@@ -13,7 +13,7 @@ namespace DMX.ViewModels
         [FileExtensions(Extensions = "jpg,jpeg,png,pdf")]
         public IFormFile UploadFile { get; set; }
         public string AdditionalNotes { get; set; }
-        public string[] SelectedUsers { get; set; }
+        public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
 
 

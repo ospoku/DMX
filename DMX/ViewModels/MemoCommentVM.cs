@@ -11,7 +11,7 @@ namespace DMX.ViewModels
 
         public string NewComment { get; set; }
         public ICollection<MemoComment> Comments { get; set; }
-        public string SelectedUsers { get; set; }
+        public List <string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
     }
 }

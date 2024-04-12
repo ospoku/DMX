@@ -9,7 +9,7 @@ namespace DMX.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string SickReportId { get; set; }
         public virtual ICollection<AppUser> ApplicationUsers { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+       
 
         public string AdditionalNotes { get; set; }
     }

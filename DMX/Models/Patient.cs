@@ -14,6 +14,6 @@ namespace DMX
         public string WardInCharge { get; set; }
         public DateTime Date { get; set; }
         public virtual ICollection<AppUser> ApplicationUsers { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+    public virtual ICollection<PatientComment>PatientComments { get; set; } 
     }
 }

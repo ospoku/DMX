@@ -13,6 +13,6 @@ namespace DMX.ViewModels
         public string AdditionalNotes { get; set; }
         //public List<string> SelectedUsers { get; set; }
         //public SelectList UsersList { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+       public ICollection<LetterComment>Comments { get; set; }  
     }
 }

@@ -73,6 +73,30 @@ namespace DMX.Controllers
 
         [HttpGet]
         public IActionResult AddPettyCash() => ViewComponent("AddPettyCash");
+        [HttpPost]
+        public async Task<IActionResult> PettyCashComment(string Id, MemoCommentVM addCommentVM)
+        {
+
+            Memo memoToUpdate = new();
+            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
+
+            PettyCashComment addThisComment = new()
+            {
+               PettyCashId = memoToUpdate.MemoId,
+                CreatedDate = DateTime.Now,
+
+                Message = addCommentVM.NewComment,
+
+
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+            };
+
+            dcx.PettyCashComments.Add(addThisComment);
+            await dcx.SaveChangesAsync();
+
+            return RedirectToAction("ViewMemos");
+        }
 
     }
 }

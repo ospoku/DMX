@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DMX.Data;
 using DMX.ViewModels;
+using DMX.DataProtection;
 
 namespace DMX.ViewComponents
 {
@@ -10,7 +11,7 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-            var card = prx.Documents.Where(a => a.DocumentId == Id & a.IsDeleted == false).Select(a => new CardVM
+            var card = prx.Letters.Where(a => a.LetterId == @Encryption.Decrypt(Id) & a.IsDeleted == false).Select(a => new CardVM
 
 
             {

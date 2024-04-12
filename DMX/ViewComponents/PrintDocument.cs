@@ -16,11 +16,11 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke(string Id)
         {
                Letter documentToEdit = new Letter();
-            documentToEdit = (from d in dcx.Documents where d.DocumentId == Id select d).FirstOrDefault();
+            documentToEdit = (from d in dcx.Letters where d.LetterId == Id select d).FirstOrDefault();
             PrintDocumentVM printDocumentVM = new PrintDocumentVM
             {
                 AdditionalNotes = documentToEdit.AdditionalNotes,
-                Comments = (from c in dcx.Comments where c.TaskId == documentToEdit.DocumentId select c).ToList(),
+                Comments = (from c in dcx.LetterComments where c.LetterId == documentToEdit.LetterId select c).ToList(),
                 ReferenceNumber = documentToEdit.ReferenceNumber,
                 //SelectedUsers = AssignedUsers,               
             };

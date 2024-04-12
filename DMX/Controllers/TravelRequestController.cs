@@ -83,9 +83,9 @@ public readonly XContext dcx = dContext; private readonly INotyfService notyf = 
             Memo memoToUpdate = new();
             memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
 
-            Comment addThisComment = new()
+            TravelRequestComment addThisComment = new()
             {
-                TaskId = memoToUpdate.MemoId,
+                TravelRequestId = memoToUpdate.MemoId,
                 CreatedDate = DateTime.Now,
 
                 Message = addCommentVM.NewComment,
@@ -95,7 +95,7 @@ public readonly XContext dcx = dContext; private readonly INotyfService notyf = 
                 //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
-            dcx.Comments.Add(addThisComment);
+            dcx.TravelRequestComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");

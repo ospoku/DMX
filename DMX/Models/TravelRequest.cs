@@ -21,8 +21,9 @@ namespace DMX.Models
         public string FuelClaim { get; set; }
         public decimal AmountDue { get; set; }
         public string PurposeofJourney { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+    
         public virtual ICollection<AppUser> ApplicationUsers { get; set; }
+        public virtual ICollection<TravelRequestComment>Comments { get; set; }  
        
     }
 }

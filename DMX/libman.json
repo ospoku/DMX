@@ -9,6 +9,10 @@
     {
       "library": "jquery.collapsible@1.2",
       "destination": "wwwroot/lib/jquery.collapsible/"
+    },
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/lib/bootstrap/"
     }
   ]
 }

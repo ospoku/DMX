@@ -14,7 +14,7 @@ namespace DMX.Models
         public string OperationDiagnosis { get; set; }
         public string ExcuseDays { get; set; }
         public virtual ICollection<AppUser> ApplicationUsers { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+        
 
     }
 }

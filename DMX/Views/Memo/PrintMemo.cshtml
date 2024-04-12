@@ -31,7 +31,7 @@
                             <ul class="timeline">
                                 @foreach (var comment in Model.Comments)
                                 {
-                                    <li class="event" data-date="@comment.CreatedDate">
+                                    <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:G" )">
                                         <h3>@comment.CreatedBy</h3>
                                     <p>@comment.Message</p>
                                 </li>

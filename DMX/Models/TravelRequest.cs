@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DMX.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Models
 {
@@ -12,13 +13,16 @@ namespace DMX.Models
         public string Name { get; set; }
         public string RankId { get; set; }
         public string DepartmentId { get; set; }
+        [Precision(10, 4)]
         public decimal ConferenceFee { get; set; }
         public DateTime DepartureDate { get; set; }
+        [Precision(10, 4)]
         public decimal TransportExpenses { get; set; }
         public int NightAbsent { get; set; }
         public DateTime DateofReturn { get; set; }
         public int Rate { get; set; }
         public string FuelClaim { get; set; }
+        [Precision(10, 4)]
         public decimal AmountDue { get; set; }
         public string PurposeofJourney { get; set; }
     

@@ -62,9 +62,11 @@ namespace DMX.Controllers
             {
                 Comments = memoToPrint.MemoComments.ToList(),
                 Title = memoToPrint.Title,
-
+                Sender=memoToPrint.Sender,
+                Recipient=memoToPrint.Recipient,
+               
             MemoContent = memoToPrint.Content,
-                //SelectedUsers = dcx.Assignments.Where(x => x.TaskId == @Encryption.Decrypt(Id)).Select(p => p.SelectedUsers).ToList(),
+              SelectedUsers = dcx.Assignments.Where(x => x.TaskId == @Encryption.Decrypt(Id)).Select(p => p.SelectedUsers).ToList(),
             };
 
             return View(printVM);

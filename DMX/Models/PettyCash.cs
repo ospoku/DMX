@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DMX.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Models
 {
@@ -11,6 +12,7 @@ namespace DMX.Models
         public virtual ICollection<AppUser> ApplicationUsers { get; set; }
      
         public string Purpose { get; set; }
+        [Precision(10, 4)]
         public decimal Amount { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }

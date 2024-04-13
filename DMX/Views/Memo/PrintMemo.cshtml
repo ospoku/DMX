@@ -17,10 +17,18 @@
 
 
 <body>
-    <div class="border-dark">
-        <div class="row border-dark">
-            <div class="col-md-3"></div><div class="col-md-6"><h4 class="text-center">BOLGATANGA REGIONAL HOSPITAL</h4></div><div class="col-md-3"></div></div>
-        </div>
+    <div>
+        <div class="row">
+            <div class="col-md-3"><image class="logo" style="height:70px;width:70px"></image></div><div class="col-md-6"><h4 class="text-center align-items-center">BOLGATANGA REGIONAL HOSPITAL</h4></div><div class="col-md-3"></div>
+      </div>
+    <div class="row">
+        <div class="col-md-3"></div><div class="col-md-6"><h4 class="text-center">Memorandum</h4></div><div class="col-md-3"></div>
+    </div>
+    
+    <div class="row">
+            <div class="col-md-3"><div class="card border-dark-subtle"><strong>Sender</strong><span>@Model.Sender</span></div></div><div class="col-md-3"><div class="card border-dark-subtle">Recipient<span>@Model.Recipient</span></div></div><div class="col-md-3">Recipient</div><div class="col-md-3">@Model.Recipient</div>
+    </div>
+  <hr />  
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -31,7 +39,7 @@
                             <ul class="timeline">
                                 @foreach (var comment in Model.Comments)
                                 {
-                                    <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:G" )">
+                                    <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:tt" )">
                                         <h3>@comment.CreatedBy</h3>
                                     <p>@comment.Message</p>
                                 </li>

@@ -26,10 +26,19 @@
     </div>
     
     <div class="row">
-            <div class="col-md-3"><div class="card border-dark-subtle"><strong>Sender</strong><span>@Model.Sender</span></div></div><div class="col-md-3"><div class="card border-dark-subtle">Recipient<span>@Model.Recipient</span></div></div><div class="col-md-3">Recipient</div><div class="col-md-3">@Model.Recipient</div>
+            <div class=" col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="card border-dark-subtle"><strong>Sender</strong><span>@Model.Sender</span></div></div><div class=" col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="card border-dark-subtle"><strong>Recipient</strong><span>@Model.Recipient</span></div></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="card border-dark-subtle"><strong>Date</strong><span>@Model.CreatedDate</span></div></div>
     </div>
-  <hr />  
-    <div class="container">
+  <hr />
+        <div class="container mb-1">
+            <div class="row">
+                
+                    <div class="card">
+                        <div class="card-body">@Html.Raw(@Model.MemoContent)</div>
+                        </div>
+                        </div>
+                        </div>
+                    
+                        <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

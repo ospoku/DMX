@@ -16,50 +16,52 @@
             <div class="modal-body">
 
 
-            @using (Html.BeginForm("AddTravelRequest", "Document", FormMethod.Post))
+            @using (Html.BeginForm("AddTravelRequest", "TravelRequest", FormMethod.Post))
             {
-
-
-
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" />
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" required />
                         <label class="did-floating-label">Name</label>
                     </div>
-
+                    <div class="did-floating-label-content">
+                        <select id="selectRank" class="did-floating-select" asp-items="@Model.RankList" asp-for="@Model.RankId" placeholder="" required></select>
+                        <label class="did-floating-label">Select Rank</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <select id="selectDept" class="did-floating-select" asp-items="@Model.DeptList" asp-for="@Model.DepartmentId" placeholder="" required></select>
+                        <label class="did-floating-label">Select Department</label>
+                    </div>
 
                         <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.NightAbsent"  class="did-floating-input"/>
+                            <input type="text" asp-for="@Model.NightAbsent"  class="did-floating-input" required/>
                             <label class="did-floating-label">Night Absent</label>
                         </div>
                     
-
-                         
                                 <div class="did-floating-label-content">
 
 
-                                <input type="date" asp-for="@Model.DepartureDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}"/>
+                                <input type="date" asp-for="@Model.DepartureDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required/>
                                 <label class="did-floating-label">Departure Date</label>
 
                             </div>
                      
                         <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.FuelClaim" name="footer-email" class="did-floating-input"/>
+                            <input type="text" asp-for="@Model.FuelClaim" name="footer-email" class="did-floating-input" required/>
                             <label class="did-floating-label">Fuel Claim</label>
                         </div>
                     <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.DateofReturn" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
+                        <input type="date" asp-for="@Model.DateofReturn" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
                         <label class="did-floating-label">Date of Return</label>
 
                     </div>
                   
                     <div class="form-group">
 
-                        <textarea class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information"></textarea>
+                        <textarea class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information" required></textarea>
 
                         </div>
                     <div class="form-group">
                       <div class="did-floating-label-content">
-                            <select type="text" id="selectUserTravelRequest" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" placeholder=""></select>
+                            <select  id="selectUserTravelRequest" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" placeholder="" required></select>
                         <label class="did-floating-label">Select User</label>
                       </div>
                       </div>
@@ -75,8 +77,9 @@
 <script>
     $(document).ready(function () {
 
-        $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest'));
-
+        $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest') });
+        $('#selectRank').select2({ dropdownParent: $('#AddTravelRequest') });
+        $('#selectDept').select2({ dropdownParent: $('#AddTravelRequest') })
 
     });
 </script>

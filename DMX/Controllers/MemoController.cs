@@ -31,9 +31,9 @@ namespace DMX.Controllers
             updateThisMemo.ModifiedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
             //updateThisMemo.UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id;
 
-            Assignment updateThisAssignment = (from x in dcx.Assignments where x.TaskId == @Encryption.Decrypt(Id) select x).FirstOrDefault();
+            //Assignment updateThisAssignment = (from x in dcx.MemoAssignments where x.TaskId == @Encryption.Decrypt(Id) select x).FirstOrDefault();
 
-            updateThisAssignment.SelectedUsers = string.Join(',', editMemoVM.SelectedUsers);
+           // updateThisAssignment.SelectedUsers = string.Join(',', editMemoVM.SelectedUsers);
             dcx.Memos.Attach(updateThisMemo);
 
             dcx.Entry(updateThisMemo).State = EntityState.Modified;
@@ -64,9 +64,9 @@ namespace DMX.Controllers
                 Title = memoToPrint.Title,
                 Sender=memoToPrint.Sender,
                 Recipient=memoToPrint.Recipient,
-               
+               CreatedDate=memoToPrint.CreatedDate.Value,
             MemoContent = memoToPrint.Content,
-              SelectedUsers = dcx.Assignments.Where(x => x.TaskId == @Encryption.Decrypt(Id)).Select(p => p.SelectedUsers).ToList(),
+              SelectedUsers = dcx.MemoAssignments.Where(x => x.MemoId == @Encryption.Decrypt(Id)).Select(p => p.AppUserId).ToList(),
             };
 
             return View(printVM);
@@ -93,14 +93,17 @@ namespace DMX.Controllers
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.Memos.Add(addThisMemo);
-
-            dcx.Assignments.Add(new Assignment
+            foreach (var user in addMemoVM.SelectedUsers)
             {
-                TaskId = addThisMemo.MemoId,
-                SelectedUsers = string.Join(',', addMemoVM.SelectedUsers),
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                CreatedDate = DateTime.UtcNow,
-            });
+
+                dcx.MemoAssignments.Add(new MemoAssignment
+                {
+                    MemoId = addThisMemo.MemoId,
+                    AppUserId = user,
+                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                    CreatedDate = DateTime.UtcNow,
+                });
+            }
             if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
             {
                 notyf.Success("Memo successfully saved", 5);

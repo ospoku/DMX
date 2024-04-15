@@ -48,10 +48,10 @@ namespace DMX.Controllers
             {
 
 
-                dcx.Assignments.Add(new Assignment
+                dcx.PettyCashAssignments.Add(new PettyCashAssignment
                 {
-                    TaskId = addThisPettyCash.PettyCashId,
-                    SelectedUsers = user,
+                    PettyCashId = addThisPettyCash.PettyCashId,
+                    AppUserId = user,
                     CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                     CreatedDate = DateTime.UtcNow,
                 });
@@ -60,7 +60,7 @@ namespace DMX.Controllers
             {
                 notyf.Success("Petty Cash successfully saved", 5);
 
-
+                return RedirectToAction("ViewPettyCash");
             }
             else
             {

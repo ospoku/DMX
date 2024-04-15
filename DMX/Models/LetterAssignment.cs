@@ -4,14 +4,15 @@ using DMX.Data;
 
 namespace DMX.Models
 {
-    public class Assignment : TableAudit
+    public class LetterAssignment : TableAudit
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string AssignmentId { get; set; }
-        public string TaskId { get; set; }
-        public string SelectedUsers { get; set; }
-        
+        public string Id { get; set; }
+        public string LetterId { get; set; }
+        public Letter Letter { get; set; }  
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
         public bool IsRead { get; set; } = false;
 
     }

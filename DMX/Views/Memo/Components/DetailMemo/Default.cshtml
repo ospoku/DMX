@@ -12,30 +12,35 @@
             </div>
             <div class="modal-body">
 
-                <div class="row mb-4">
-                    <div class="card border-dark">
-                <div class="card-body ">
-                        <div class="row">
-                            <div class="col-md-6 ">
-                                <h5>Sender</h5>@Model.From
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Recipient</h5>@Model.Recipient
-                            </div>
-                        </div> <!-- end of row -->
-                </div>
-            </div>
-            </div>
-                <div class="row mb-4">
-                    <div class="card-body border-dark">
-                    </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="card-body border-dark">
-                    </div>
+                <div class="did-floating-label-content">
+                    <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="" readonly>
+                    <label class="did-floating-label">Memo Title</label>
                 </div>
 
-                <a class="btn btn-block btn-primary" asp-action="ViewDocuments" asp-controller="Document">Return</a>
+                <div class="did-floating-label-content">
+                    <input type="text" asp-for="@Model.From" class="did-floating-input" placeholder="" readonly>
+                    <label class="did-floating-label">Sender</label>
+                </div>
+                <div class="did-floating-label-content">
+                    <input type="text" asp-for="@Model.Recipient" class="did-floating-input" placeholder="" readonly>
+
+                    <label class="did-floating-label">Recipient</label>
+                </div>
+
+                <div class="form-group">
+
+
+                    <textarea class="form-control" id="MemoContent" asp-for="@Html.Raw(@Model.Content)" type="text" placeholder="Memo Content" readonly></textarea>
+                </div>
+
+                <div class="did-floating-label-content">
+
+                    <select id="selectMemoUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple></select>
+                    <label class="did-floating-label">Select Users</label>
+                </div>
+
+
+                <a class="btn btn-block btn-primary" asp-action="ViewMemos" asp-controller="Memo">Return</a>
           
         </div>
 

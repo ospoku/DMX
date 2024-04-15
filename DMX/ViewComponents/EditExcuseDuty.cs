@@ -19,7 +19,7 @@ namespace DMX.ViewComponents
            
 
            ExcuseDuty dutyToUpdate = new();
-            dutyToUpdate = (from d in dcx.ExcuseDuties where d.ExcuseFormId == @Encryption.Decrypt(Id) select d).FirstOrDefault();
+            dutyToUpdate = (from d in dcx.ExcuseDuties where d.Id == @Encryption.Decrypt(Id) select d).FirstOrDefault();
 
             EditExcuseDutyVM editMemoVM = new()
             {
@@ -28,7 +28,7 @@ namespace DMX.ViewComponents
                ExcuseDays=dutyToUpdate.ExcuseDays,  
                OperationDiagnosis=dutyToUpdate.OperationDiagnosis,
                 Name = dutyToUpdate.Name,
-                SelectedUsers=dcx.Assignments.Where(x=>x.TaskId==@Encryption.Decrypt(Id)).Select(u=>u.SelectedUsers).ToList(),  
+                SelectedUsers = dcx.ExcuseDutyAssignments.Where(x => x.ExcuseDutyId == @Encryption.Decrypt(Id)).Select(x => x.AppUserId).ToList(),
                 UsersList =  new SelectList(usm.Users.ToList(), "Id", "UserName"),
                 
             };

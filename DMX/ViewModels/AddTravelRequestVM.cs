@@ -8,6 +8,8 @@ namespace DMX.ViewModels
         public string ReferenceNumber { get; set; }
         public string Name { get; set; }
         public string RankId { get; set; }
+        public SelectList RankList { get; set; }
+        public SelectList DeptList { get; set; }
         public string DepartmentId { get; set; }
         public decimal ConferenceFee { get; set; }
         public DateTime DepartureDate { get; set; }

@@ -14,19 +14,19 @@ namespace DMX.ViewComponents
         {
           
 
-            Task<AppUser> userId = usm.FindByNameAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
+           // Task<AppUser> userId = usm.FindByNameAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
 
-            var stringIds = dcx.Assignments.Where(x => x.SelectedUsers.Contains(userId.Result.Id.ToString())).Select(x => new ViewAssignmentsVM
-            {
+           // var stringIds = dcx.MemoAssignments.Where(x => x.SelectedUsers.Contains(userId.Result.Id.ToString())).Select(x => new ViewAssignmentsVM
+           // {
 
-               TaskId = x.TaskId,
+           //    TaskId = x.TaskId,
 
-           }).ToList();
+           //}).ToList();
 
       
 
 
-            return View(stringIds);
+            return View();
         }
     }
 }

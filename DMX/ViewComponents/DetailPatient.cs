@@ -10,7 +10,7 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-            var documentDetail = dcx.Patients.Where(a => a.IsDeleted == false & a.PatientId == Id).Select(a => new DetailDocumentVM
+            var documentDetail = dcx.Patients.Where(a => a.IsDeleted == false & a.PatientId == Id).Select(a => new DetailLetterVM
 
        
 

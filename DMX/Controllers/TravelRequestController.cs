@@ -15,15 +15,7 @@ public readonly XContext dcx = dContext; private readonly INotyfService notyf = 
         [HttpPost]
         public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVM)
         {
-            if (!ModelState.IsValid)
-            {
-
-
-                return RedirectToAction("AddTravelRequest");
-            }
-
-            if (ModelState.IsValid)
-            {
+            
                 TravelRequest addThisTravelRequest = new()
                 {
 
@@ -48,13 +40,19 @@ public readonly XContext dcx = dContext; private readonly INotyfService notyf = 
                     CreatedDate = DateTime.Now,
                 };
                 dcx.TravelRequests.Add(addThisTravelRequest);
-
-                dcx.Assignments.Add(new Assignment
+                foreach (var user in addTravelRequestVM.SelectedUsers)
                 {
-                    SelectedUsers = string.Join(',', addTravelRequestVM.SelectedUsers),
 
-                });
 
+                    dcx.TravelRequestAssignments.Add(new TravelRequestAssignment
+                    {
+                        TravelRequestId = addThisTravelRequest.TravelRequestId,
+                        AppUserId = user,
+                        CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                        CreatedDate = DateTime.Now,
+
+                    });
+                }
 
                 if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
                 {
@@ -68,11 +66,9 @@ public readonly XContext dcx = dContext; private readonly INotyfService notyf = 
                 }
                 return RedirectToAction("AddTravelREquest");
 
-            }
-            else
-            {
-                return RedirectToAction("AddTravelRequest");
-            }
+           
+     
+              
 
 
         }

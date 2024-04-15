@@ -18,13 +18,13 @@ namespace DMX.Data
         public async Task RoleCreation(IServiceProvider serviceProvider)
         {
             var rol = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
-            if (rol.Roles.Any() == false)
+            if (!rol.Roles.Any())
             {
-                await rol.CreateAsync(new AppRole() { Name = "Basic" ,Rolename="Basic"});
-                await rol.CreateAsync(new AppRole() { Name = "Manager",Rolename="Manager" });
+                await rol.CreateAsync(new AppRole() { Name = "Basic", Rolename = "Basic" });
+                await rol.CreateAsync(new AppRole() { Name = "Manager", Rolename = "Manager" });
                 await rol.CreateAsync(new AppRole() { Name = "SuperAdmin", Rolename = "SuperAdmin" });
-                await rol.CreateAsync(new AppRole() { Name = "Admin" , Rolename = "Admin"   });
-            };
+                await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin" });
+            }
 
 
 

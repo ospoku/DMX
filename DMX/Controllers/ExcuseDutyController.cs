@@ -31,11 +31,11 @@ namespace DMX.Controllers
         {
 
             ExcuseDuty dutyToComment = new();
-            dutyToComment = (from a in dcx.ExcuseDuties where a.ExcuseFormId == Id select a).FirstOrDefault();
+            dutyToComment = (from a in dcx.ExcuseDuties where a.Id == Id select a).FirstOrDefault();
 
             ExcuseDutyComment addThisComment = new()
             {
-                ExcuseDutyId = dutyToComment.ExcuseFormId,
+                ExcuseDutyId = dutyToComment.Id,
                 CreatedDate = DateTime.Now,
 
                 Message = addCommentVM.NewComment,
@@ -70,32 +70,37 @@ namespace DMX.Controllers
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.ExcuseDuties.Add(addThisExcuseDuty);
-
-            dcx.Assignments.Add(new Assignment
+            foreach (var user in addExcuseDutyVM.SelectedUsers)
             {
-                TaskId = addThisExcuseDuty.ExcuseFormId,
-                SelectedUsers = string.Join(',', addExcuseDutyVM.SelectedUsers),
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                CreatedDate = DateTime.UtcNow,
-            });
+                dcx.ExcuseDutyAssignments.Add(
+                    new ExcuseDutyAssignment
+                    {
+                        ExcuseDutyId = addThisExcuseDuty.Id,
+                        AppUserId = user,
+                        CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                        CreatedDate = DateTime.UtcNow
+                    });
+            };
+
+           
             if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
             {
-                notyf.Success("Memo successfully saved", 5);
-
+                notyf.Success("Excuse Duty successfully saved", 5);
+                return RedirectToAction("ViewExcuseDuties");
 
             }
             else
             {
-                notyf.Error("Error, Memo could not be saved!!!", 5);
+                notyf.Error("Error, Excuse Duty could not be saved!!!", 5);
             }
 
-            return ViewComponent("ViewExcuseDuties");
+            return ViewComponent("AddExcuseDuty");
         }
         [HttpPost]
         public async Task<IActionResult> EditExcuseDutyAsync(string Id, EditExcuseDutyVM editExcuseDutyVM)
         {
 
-            ExcuseDuty updateThisExcuseDuty = dcx.ExcuseDuties.Where(e => e.ExcuseFormId == @Encryption.Decrypt(Id)).Select(e => e).FirstOrDefault();
+            ExcuseDuty updateThisExcuseDuty = dcx.ExcuseDuties.Where(e => e.Id == @Encryption.Decrypt(Id)).Select(e => e).FirstOrDefault();
 
 
             updateThisExcuseDuty.Name = editExcuseDutyVM.Name;
@@ -107,9 +112,9 @@ namespace DMX.Controllers
             updateThisExcuseDuty.ModifiedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
 
 
-            foreach (var assignment in dcx.Assignments.Where(a => a.TaskId == @Encryption.Decrypt(Id)))
+            foreach (var assignment in dcx.MemoAssignments.Where(a => a.MemoId == @Encryption.Decrypt(Id)))
             {
-                dcx.Assignments.Remove(assignment);
+                dcx.MemoAssignments.Remove(assignment);
             };
             dcx.SaveChanges();
             dcx.ExcuseDuties.Attach(updateThisExcuseDuty);
@@ -118,12 +123,12 @@ namespace DMX.Controllers
 
             foreach (var user in editExcuseDutyVM.SelectedUsers)
             {
-                dcx.Assignments.Add(new Assignment
-                {
-                    TaskId = @Encryption.Decrypt(Id),
-                    SelectedUsers = user,
-                    ModifiedDate = DateTime.Now,
-                });
+               dcx.ExcuseDutyAssignments.Add(new ExcuseDutyAssignment
+               {
+                    ExcuseDutyId = @Encryption.Decrypt(Id),
+                    AppUserId = user,
+                   ModifiedDate = DateTime.Now,
+               });
             }
             if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
             {

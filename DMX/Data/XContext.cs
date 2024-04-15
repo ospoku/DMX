@@ -15,9 +15,11 @@ namespace DMX.Data
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Memo> Memos { get; set; }
-        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<MemoAssignment> MemoAssignments { get; set; }
         public DbSet<PettyCash> PettyCashes { get; set; }
         public DbSet<ServiceRequest> ServiceRequests { get; set; }
+        public DbSet<PettyCashAssignment> PettyCashAssignments { get; set; }
+        public DbSet<TravelRequestAssignment> TravelRequestAssignments { get; set; }
         public DbSet<TravelRequest> TravelRequests { get; set; }
         public DbSet<SickReport> SickReports { get; set; }
         public DbSet<ExcuseDuty> ExcuseDuties { get; set; }
@@ -27,7 +29,9 @@ namespace DMX.Data
         public DbSet<LeaveComment> LeaveComments { get; set; }
         public DbSet<PatientComment> PatientComments { get; set; }
         public  DbSet<PettyCashComment> PettyCashComments { get; set; }
+        public DbSet<LetterAssignment> LetterAssignments { get; set; }
         public DbSet<TravelRequestComment> TravelRequestComments { get; set;}
         public DbSet <MaternityLeaveComment> MaternityLeaveComments { get; set; }
+        public DbSet<ExcuseDutyAssignment> ExcuseDutyAssignments { get; set; }
     }
 }

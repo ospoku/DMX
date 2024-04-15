@@ -39,7 +39,7 @@
 
                      <div class="did-floating-label-content">
                        
-                            <select   id="selectMemoUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple" style="width:100%"></select>
+                            <select   id="selectMemoUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
                             <label class="did-floating-label">Select Users</label>
                     </div>
 
@@ -55,8 +55,12 @@
 
     <script>
         $(document).ready(function () {
-   
-            $('#selectMemoUser').select2({dropdownParent:$('#AddMemo')});
+
+            $('#selectMemoUser').select2({ dropdownParent: $('#AddMemo') });
+        });
+
+        $(document).ready(function () 
+        {
         tinymce.init({selector: '#MemoContent'});
         });
     </script>

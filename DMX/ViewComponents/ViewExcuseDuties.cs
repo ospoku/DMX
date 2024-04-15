@@ -14,7 +14,7 @@ namespace DMX.ViewComponents
             {
 
                 Name=t.Name,
-                ExcuseDutyId = t.ExcuseFormId,
+                ExcuseDutyId = t.Id,
                 Date = t.Date,
                 DateofDischarge = t.DateofDischarge,
                 ExcuseDays = t.ExcuseDays,

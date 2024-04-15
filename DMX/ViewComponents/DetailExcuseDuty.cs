@@ -18,7 +18,7 @@ namespace DMX.ViewComponents
             
 
             ExcuseDuty excuseDutyDetail = new();
-            excuseDutyDetail = (from a in dcx.ExcuseDuties where a.ExcuseFormId == @Encryption.Decrypt(Id) & a.IsDeleted == false select a).FirstOrDefault();
+            excuseDutyDetail = (from a in dcx.ExcuseDuties where a.Id == @Encryption.Decrypt(Id) & a.IsDeleted == false select a).FirstOrDefault();
             DetailExcuseDutyVM excuseDutyVM = new ()
             {
                 Date = new ExcuseDuty().Date,
@@ -26,7 +26,7 @@ namespace DMX.ViewComponents
                 ExcuseDays=new ExcuseDuty().ExcuseDays,
                 Name=new ExcuseDuty().Name,
                 OperationDiagnosis = new ExcuseDuty().OperationDiagnosis,
-                SelectedUsers = (from x in dcx.Assignments where x.TaskId == @Encryption.Decrypt(Id) select x.SelectedUsers).ToList(),
+               SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == @Encryption.Decrypt(Id) select x.AppUserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             return View(excuseDutyVM);

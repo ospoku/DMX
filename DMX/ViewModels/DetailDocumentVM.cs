@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DMX.ViewModels
 {
-    public class DetailDocumentVM
+    public class DetailLetterVM
     {
         public string ReferenceNumber { get; set; }
         public string DocumentSource { get; set; }

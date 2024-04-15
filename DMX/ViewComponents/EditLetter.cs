@@ -7,7 +7,7 @@ using DMX.ViewModels;
 
 namespace DMX.ViewComponents
 {
-    public class EditDocument(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class EditLetter(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
@@ -24,9 +24,9 @@ namespace DMX.ViewComponents
                 ReferenceNumber=documentToEdit.ReferenceNumber,
                 DateReceived=documentToEdit.DateReceived,
                
-                SelectedUsers = (from x in dcx.Assignments where x.TaskId
-                                 == Id
-                                 select x.SelectedUsers).ToList(),
+               SelectedUsers = (from x in dcx.LetterAssignments where x.LetterId
+                                == Id
+                               select x.AppUserId).ToList(),
 
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };

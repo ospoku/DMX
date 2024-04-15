@@ -20,7 +20,7 @@ namespace DMX.Controllers
         private readonly INotyfService notyf = notyfService;
 
         [HttpGet]
-        public IActionResult AddDocument() => ViewComponent("AddDocument");
+        public IActionResult AddLetter() => ViewComponent("AddLetter");
         [HttpGet]
         public IActionResult AddPatient() => ViewComponent("AddPatient");
         [HttpPost]
@@ -48,9 +48,9 @@ namespace DMX.Controllers
                 };
                 dcx.Patients.Add(addThisPatient);
 
-                dcx.Assignments.Add(new Assignment
+                dcx.MemoAssignments.Add(new MemoAssignment
                 {
-                    SelectedUsers = string.Join(',', addPatientVM.SelectedUsers),
+                   // SelectedUsers = string.Join(',', addPatientVM.SelectedUsers),
 
                 });
 
@@ -78,14 +78,11 @@ namespace DMX.Controllers
                 
        
         [HttpPost]
-        public async Task<IActionResult> AddDocument(AddDocumentVM addDocumentVM, IFormFile formFile)
+        public async Task<IActionResult> AddLetter(AddLetterVM addDocumentVM, IFormFile formFile)
         {
 
 
-            if (!ModelState.IsValid)
-            {
-                return ViewComponent("AddDocument");
-            }
+            
 
 
             Letter addThisDocument = new()
@@ -97,7 +94,7 @@ namespace DMX.Controllers
                 IsDeleted = false,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,
-
+                AdditionalNotes=addDocumentVM.AdditionalNotes,
 
             };
             using (var memoryStream = new MemoryStream())
@@ -107,17 +104,17 @@ namespace DMX.Controllers
             }
             dcx.Letters.Add(addThisDocument);
 
-            dcx.Assignments.Add(new Assignment
-            {
-                TaskId = addThisDocument.LetterId,
-                SelectedUsers = string.Join(',', addDocumentVM.SelectedUsers),
-            });
+            //dcx.MemoAssignments.Add(new Assignment
+            //{
+            //    TaskId = addThisDocument.LetterId,
+            //    SelectedUsers = string.Join(',', addDocumentVM.SelectedUsers),
+            //});
             if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
             {
                 notyf.Success("Document successfully saved!!!", 5);
 
                 ViewBag.Message = "Document successfully added";
-                return RedirectToAction("ViewDocuments");
+                return RedirectToAction("ViewLetters");
             }
             else
             {
@@ -170,14 +167,15 @@ namespace DMX.Controllers
             }
         }
         [HttpGet]
-
         public IActionResult ViewLetters()
         {
-            return ViewComponent("ViewDocuments");
+
+            return ViewComponent("ViewLetters");
         }
 
-        public IActionResult DeleteDocument() => ViewComponent("ViewDocuments"); [HttpPost]
-        public async Task<IActionResult> AddDocumentComment(string Id, DocumentCommentVM addDocumentCommentVM)
+        public IActionResult DeleteLetter() => ViewComponent("ViewLetters"); 
+        [HttpPost]
+        public async Task<IActionResult> AddLetterComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
             Letter letterToComment = new();

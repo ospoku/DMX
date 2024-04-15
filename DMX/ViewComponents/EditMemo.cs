@@ -25,9 +25,8 @@ namespace DMX.ViewComponents
 
                 Title = memoToEdit.Title,
                 Content = memoToEdit.Content,
-               
-            UsersList =  new SelectList(usm.Users.ToList(), "Id", "UserName"),
-                SelectedUsers = (from x in dcx.Assignments where x.TaskId == @Encryption.Decrypt(Id) select x.SelectedUsers).ToList(),
+                SelectedUsers = (from x in dcx.MemoAssignments where x.MemoId == @Encryption.Decrypt(Id) select x.AppUserId).ToList(),
+                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
 
 

@@ -6,13 +6,13 @@ using DMX.Models;
 
 namespace DMX.ViewComponents
 {
-    public class AddMaternityLeave(UserManager<AppUser> userManager) : ViewComponent
+    public class AddLetter(UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly UserManager<AppUser> usm = userManager;
 
         public IViewComponentResult Invoke()
         {
-            AddMaternityLeaveVM addMaternityLeaveVM = new()
+            AddLetterVM addLetterVM = new()
             {
 
                 UsersList = new SelectList(usm.Users.ToList(), "Id","UserName"),
@@ -20,7 +20,7 @@ namespace DMX.ViewComponents
 
             };
 
-            return View(addMaternityLeaveVM);
+            return View(addLetterVM);
         }
 
     }

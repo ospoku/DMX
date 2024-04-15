@@ -18,7 +18,7 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            AddDocumentVM addDocumentVM = new AddDocumentVM
+            AddLetterVM addDocumentVM = new ()
             {
 
                 UsersList = new SelectList(usm.Users.ToList(), "Id","UserName"),

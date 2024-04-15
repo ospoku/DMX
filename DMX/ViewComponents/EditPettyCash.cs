@@ -23,11 +23,13 @@ namespace DMX.ViewComponents
       var      pettyCashToUpdate = (from p in dcx.PettyCashes where p.PettyCashId==@Encryption.Decrypt(Id) select p ).FirstOrDefault();
 
             EditPettyCashVM editMemoVM = new()
-            {Amount=pettyCashToUpdate.Amount,
+            {
+                Amount=pettyCashToUpdate.Amount,
        Date=pettyCashToUpdate.Date,
        Description=pettyCashToUpdate.Description,   
        Purpose=pettyCashToUpdate.Purpose,
-                SelectedUsers = dcx.Assignments.Where(x => x.TaskId == @Encryption.Decrypt(Id)).Select(u => u.SelectedUsers).ToList(),
+       Name=pettyCashToUpdate.Name, 
+                SelectedUsers = dcx.PettyCashAssignments.Where(x => x.PettyCashId == @Encryption.Decrypt(Id)).Select(u => u.AppUserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
 
             };

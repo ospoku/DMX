@@ -25,10 +25,6 @@ namespace DMX.Data
                 await rol.CreateAsync(new AppRole() { Name = "SuperAdmin", Rolename = "SuperAdmin" });
                 await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin" });
             }
-
-
-
-
         }
 
 

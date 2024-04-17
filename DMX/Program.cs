@@ -4,7 +4,9 @@ using DMX.Data;
 using DMX.Models;
 using DMX.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,8 +32,9 @@ builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinute
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
 builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
 
-builder.Services.AddIdentity<AppUser, AppRole>()
+builder.Services.AddDefaultIdentity<AppUser>().AddRoles<AppRole>()
     .AddEntityFrameworkStores<XContext>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

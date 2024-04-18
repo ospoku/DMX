@@ -72,8 +72,7 @@ var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<XContext>();
 db.Database.EnsureCreated();
 var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-init.RoleCreation(scope.ServiceProvider)
-    .Wait();
-init.UserCreation(scope.ServiceProvider).Wait();
+//init.RoleCreation(scope.ServiceProvider).Wait();
+//init.UserCreation(scope.ServiceProvider).Wait();
 
 app.Run();

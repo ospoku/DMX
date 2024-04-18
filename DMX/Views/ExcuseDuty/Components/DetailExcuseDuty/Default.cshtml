@@ -1,12 +1,12 @@
 ﻿
 @model DMX.ViewModels.DetailExcuseDutyVM;
 
-<div class="modal fade" id="DetailExcuseDuty" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="DetailExcuseDuty" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h6>Detail </h6>
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
 
@@ -28,7 +28,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">Receipt Date</span></div>
-                                                <input  value="@Model.DateofDischarge" class="form-control">
+                                                <input  value="@Model.DateofDischarge" class="form-control" readonly>
 
                                             </div>
                                             </div>

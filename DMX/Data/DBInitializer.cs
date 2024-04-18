@@ -17,7 +17,7 @@ namespace DMX.Data
        
         public async Task RoleCreation(IServiceProvider serviceProvider)
         {
-            var rol = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
+            var rol = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             if (!rol.Roles.Any())
             {
                 await rol.CreateAsync(new AppRole() { Name = "Basic", Rolename = "Basic" });

@@ -2,14 +2,14 @@
 @model DMX.ViewModels.EditExcuseDutyVM;
 
 
-<div class="modal fade" id="EditExcuseDuty" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="EditExcuseDuty" data-bs-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
 
                 <h6>Edit Excuse Duty </h6>
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
                 @using (Html.BeginForm("EditExcuseDuty","Document",FormMethod.Post))

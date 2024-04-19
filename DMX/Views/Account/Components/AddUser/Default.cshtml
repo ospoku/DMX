@@ -1,45 +1,55 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿
 @model DMX.ViewModels.AddUserVM 
 
 
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">New User</h6>
-            </div>
-            <div class="card-body justify-content-md-center">
-                <div class="row justify-content-center">
-                    <div class="col-md-7">
-                        @using (Html.BeginForm("AddUser", "Account", FormMethod.Post))
-                        {
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
-                                    <input class="form-control" asp-for="@Model.Username" placeholder="Enter Username" />
-                                </div>
+       
+<div class="modal fade" id="AddUser" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add User</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div> @using (Html.BeginForm("AddUser", "Account", FormMethod.Post))
+            {
+            <div class="modal-body">
+                       
+                                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" asp-for="@Model.Username" placeholder="" required />
+                                <label class="did-floating-label">Username</label>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
-                                    <input class="form-control" type="password" asp-for="@Model.Password" placeholder="Enter Password" />
+
+
+                    <div class="did-floating-label-content">
+   
+                                    <input class="did-floating-input" type="password" asp-for="@Model.Password" placeholder="" required  />
+                        <label class="did-floating-label">Password</label>
                                 </div>
-                            </div>  
-                            <div class="form-group">
-                                <div class="input-group">
-                                    @*<div class="input-group-prepend"><span class="input-group-text">Payment Date</span></div>*@
-                                    <select id="selectRole" class=" select2 form-control" multiple="multiple" style="width:inherit" asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles"></select>
-                                </div>
+                       
+                         
+                                <div class="did-floating-label-content">
+                                 
+                                    <select id="selectRole" class="did-floating-select"   asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" required placeholder=""></select>
+                              <label class="did-floating-label">Select Role(s)</label>
                             </div>
                         
-                            <div class="tile-footer text-center">
-                                <button class="btn btn-primary"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
-                            </div>
-                        }
+                       
+                       
                     </div>
+                <div class="modal-footer">  <button class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button></div>
+                }
                 </div>
             </div>
-
-
+</div>
+<script>
+    $(document).ready(function()
+    {
+        $('#selectRole').select2({
+            dropdownParent: $("AddUser");
+        });
+    });
+</script>
 
 
 

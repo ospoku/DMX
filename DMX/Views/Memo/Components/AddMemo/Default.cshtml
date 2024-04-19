@@ -1,55 +1,58 @@
 ﻿
 @model DMX.ViewModels.AddMemoVM;
 
-<div class="modal fade" id="AddMemo" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="AddMemo" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
 
                 <h6>Add Memo</h6>
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
+             @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post))
+            {
             <div class="modal-body">
 
-            @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post))
-            {
+           
 
 
-                        <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="">
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="">
                         <label class="did-floating-label">Memo Title</label>
-                        </div>
+                    </div>
 
-                        <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.From"  class="did-floating-input" placeholder="" readonly>
-                            <label class="did-floating-label">Sender</label>
-                        </div>
-                        <div class="did-floating-label-content">
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.From"  class="did-floating-input" placeholder="" readonly>
+                        <label class="did-floating-label">Sender</label>
+                    </div>
+                    <div class="did-floating-label-content">
                         <input type="text" asp-for="@Model.To" class="did-floating-input" placeholder="">
 
                         <label class="did-floating-label">Recipient</label>
-                        </div>
-
-                        <div class="form-group">
-
-
-                    <textarea class="form-control" id="MemoContent" asp-for="@Model.Content" type="text" placeholder="Memo Content"></textarea>
                     </div>
 
-                     <div class="did-floating-label-content">
-                       
-                            <select   id="selectMemoUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
-                            <label class="did-floating-label">Select Users</label>
+                    <div class="form-group">
+
+
+                        <textarea class="form-control" id="MemoContent" asp-for="@Model.Content" type="text" placeholder="Memo Content"></textarea>
                     </div>
 
-                        <button class="btn btn-block btn-primary">Save</button>
+                    <div class="did-floating-label-content">
 
-            }
+                        <select   id="selectMemoUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+                        <label class="did-floating-label">Select Users</label>
+                    </div>
+
+                
 
 
-        </div>
-    </div>
+
+
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-block btn-primary">Save</button></div>
+                }
+            </div>
     </div>
 </div>
 

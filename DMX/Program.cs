@@ -30,7 +30,7 @@ builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ONLINE")));
 
 builder.Services.AddDefaultIdentity<AppUser>().AddRoles<AppRole>()
     .AddEntityFrameworkStores<XContext>();

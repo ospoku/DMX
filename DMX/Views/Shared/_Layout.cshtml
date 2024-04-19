@@ -22,7 +22,7 @@
     <link href="~/ospapps/ospapps.css" rel="stylesheet" type="text/css" />
    <!-- Custom styles for this template-->
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" type="text/css" /> 
-    <link href="~/lib/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet"/>
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet" type="text/css" />
   
 </head>
@@ -63,7 +63,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed"  data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Documents</span>
@@ -85,7 +85,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed"  data-toggle="collapse" data-target="#collapseUtilities"
+                <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Utilities</span>
@@ -112,12 +112,12 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed"  data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Settings</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-bs-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">System</h6>
                         <a class="collapse-item" href="login.html">Preferences</a>
@@ -125,7 +125,7 @@
                 
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Permissions</h6>
-                        <a class="collapse-item" href="404.html">Previledges</a>
+                        <a class="collapse-item" asp-action="ManageUserRoles" asp-controller="Account">Previledges</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Account</h6>
                         <a class="collapse-item" asp-action="ViewUsers" asp-controller="Account">Users</a>

@@ -10,7 +10,7 @@ namespace DMX.ViewModels
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string Telephone { get; set; }
-        public string Branch { get; set; }
+      
         public string Role { get; set; }
     }
 }

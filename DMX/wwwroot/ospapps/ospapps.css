@@ -1,30 +1,4 @@
 ﻿
-.dropdown-item-custom {
-    /*display: block;*/
-    width: 100%;
-    padding: 0.25rem 1.5rem;
-    clear: both;
-    font-weight: 400;
-    color: #212529;
-    text-align: inherit;
-    white-space: nowrap;
-  background-color: transparent;
-    border: 0;
-    
-}
-
-    .dropdown-item-custom:hover, .dropdown-item-custom:focus {
-       /* color: #fff;*/
-        text-decoration: none;
-       /* background-color: #448aff;*/
-    }
-
-    .dropdown-item-custom.active, .dropdown-item-custom:active {
-       /* color: #fff;*/
-        text-decoration: none;
-       /* background-color: #448aff;*/
-    }
-
 
 .accordion .card-
 :after {
@@ -46,120 +20,8 @@ hr {
     width: 1px;
 }
 
-.toggle-checkbox {
-    display: none;
-}
 
-.slider {
-    position: relative;
-}
 
-    /* ellipsis */
-    .slider::before {
-        background: lightblue;
-        border-radius: 34px;
-        bottom: 0;
-        content: '';
-        height: 24px;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        width: 40px;
-    }
-
-    /* circle */
-    .slider::after {
-        background: navy;
-        border-radius: 50%;
-        bottom: 0;
-        content: '';
-        height: 16px;
-        left: 4px;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        transition: 0.4s;
-        width: 16px;
-    }
-
-.toggle-switch {
-    margin-left: 50px;
-}
-
-    .toggle-switch.opt1 {
-        color: navy;
-    }
-
-    .toggle-switch.opt2 {
-        color: brown;
-        display: none;
-    }
-
-.toggle-checkbox:checked + .slider::before {
-    background-color: lightsalmon;
-}
-
-.toggle-checkbox:checked + .slider::after {
-    background-color: maroon;
-    transform: translateX(16px);
-}
-
-.toggle-checkbox:checked ~ .slider > .toggle-switch.opt1 {
-    display: none;
-}
-
-.toggle-checkbox:checked ~ .slider > .toggle-switch.opt2 {
-    display: inline-block;
-}
-
-/*dataTables buttons start*/
-.collectionButton {
-    background-color: white;
-    color: #593bdb
-}
-
-.csvButton {
-    background-color: white;
-    color: #593bdb;
-    border-color: #593bdb;
-    margin: 2px;
-    border-radius: 20px;
-}
-.pdfButton {
-    background-color: white;
-    color: #593bdb;
-    border-color: #593bdb;
-    margin: 2px;
-    border-radius: 20px;
-}
-.printButton {
-    background-color: white;
-    color: #593bdb;
-    border-color: #593bdb;
-    margin: 2px;
-    border-radius: 20px;
-}
-.copyButton {
-    background-color: white;
-    color: #593bdb;
-    border-color: #593bdb;
-    margin: 2px;
-    border-radius: 20px;
-}
-.colvisButton {
-    background-color: white;
-    color: #593bdb;
-    border-color: #593bdb;
-    margin: 2px;
-    border-radius:20px;
-}
-.searchBuilderButton {
-    background-color: white;
-    color: #593bdb;
-    border-color: #593bdb;
-    margin: 2px;
-    border-radius: 20px;
-}
 .card-headerStyle {
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -167,9 +29,8 @@ hr {
     padding: 1.25rem 1.25rem 5px;
     
 }
-/*dataTables buttons start*/
 /*styling select2*/
-.select2.select2-container {
+/*.select2.select2-container {
     width: 100% !important;
 }
 
@@ -287,7 +148,7 @@ hr {
             .select2-container .select2-dropdown .select2-results ul .select2-results__option--highlighted[aria-selected] {
                 background-color: #3498db;
             }
-
+*/
 
 .icon-button {
    position: relative;
@@ -442,113 +303,11 @@ hr {
     }
 }
 
-/*radiobuttons*/
 
-
-/*label {
-    display: block;
-    
-}*/
-
-.option-input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-    position: relative;
-    top:auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 13px;
-    width: 13px;
-    transition: all 0.15s ease-out 0s;
-    background: #cbd1d8;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    margin-right: 0.5rem;
-    outline: none;
-    position: relative;
-    vertical-align:middle;
-    
-}
-
-    .option-input:hover {
-        background: #9faab7;
-    }
-
-    .option-input:checked {
-        background: #593bdb;
-    }
-
-        .option-input:checked::before {
-            width: 13px;
-            height: 13px;
-            display: flex;
-            content: '\f00c';
-            font-size: 10px;
-            font-weight: bold;
-            position: absolute;
-            align-items: center;
-            justify-content: center;
-            font-family: 'FontAwesome';
-        }
-
-        .option-input:checked::after {
-            -webkit-animation: click-wave 0.65s;
-            -moz-animation: click-wave 0.65s;
-            animation: click-wave 0.65s;
-            background: #40e0d0;
-            content: '';
-            display: block;
-            position: relative;
-            z-index: 100;
-        }
-
-    .option-input.radio {
-        border-radius: 50%;
-    }
-
-        .option-input.radio::after {
-            border-radius: 50%;
-        }
 
        
 
 
-        /*fieldset*/
-.fieldset {
-    margin: 0 0 30px 0;
-    border: 1px solid #ccc;
-}
-
-.legend {
-    background: #eee;
-   padding: 4px 10px;
-    color: #000;
-    margin: 0 auto;
-    display: block;
-}
-
-#pills-home-tab.active{
-    
-    background-color:white !important;
-                 color:black !important;
-                     font-weight:600;
-}
-#pills-profile-tab.active {
-    background-color: white !important;
-    color: black !important;
-    font-weight: 600;
-}
-#pills-contact-tab.active {
-    background-color: white !important;
-    color: black !important;
-    font-weight: 600;
-}
   .d-none{
       display:none;
   } 

@@ -30,7 +30,7 @@ builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ONLINE")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
 
 builder.Services.AddDefaultIdentity<AppUser>().AddRoles<AppRole>()
     .AddEntityFrameworkStores<XContext>();
@@ -72,7 +72,7 @@ var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<XContext>();
 db.Database.EnsureCreated();
 var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-//init.RoleCreation(scope.ServiceProvider).Wait();
-//init.UserCreation(scope.ServiceProvider).Wait();
+init.RoleCreation(scope.ServiceProvider).Wait();
+init.UserCreation(scope.ServiceProvider).Wait();
 
 app.Run();

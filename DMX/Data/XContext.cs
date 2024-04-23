@@ -6,7 +6,7 @@ using DMX.Models;
 namespace DMX.Data
 {
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
-    {
+    {public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
         public DbSet<LetterComment> LetterComments { get; set; }
@@ -22,6 +22,8 @@ namespace DMX.Data
         public DbSet<TravelRequestAssignment> TravelRequestAssignments { get; set; }
         public DbSet<TravelRequest> TravelRequests { get; set; }
         public DbSet<SickReport> SickReports { get; set; }
+        public DbSet<ExternalTraining> ExternalTrainings { get; set; }  
+        public DbSet<InternalTraining> InternalTrainings { get; set; }
         public DbSet<ExcuseDuty> ExcuseDuties { get; set; }
         public DbSet<SMSTask> SMSTasks { get; set; }
         public DbSet<MemoComment> MemoComments { get; set; }

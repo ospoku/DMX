@@ -1,21 +1,18 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-
-}
+﻿@using DMX.DataProtection
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> usm;
 @model DMX.ViewModels.ManageUserRolesVM;
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="clearfix">
-</div>
-<div class="col-md-12">
-    <div class="tile">
 
-        <form method="post">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Manage User Roles</h2>
-                    Add/Remove Roles for <b>@ViewBag.UserName</b>
+<div class="modal fade" id="ManageUserRoles" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h6>Add/Remove Roles for <b>@usm.FindByIdAsync(@Model.UserId).Result.Fullname</b></h6> <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
                 </div>
-                <div class="card-body">
+                @using (Html.BeginForm("ManageUserRoles","Account",FormMethod.Post))
+                { 
+                <div class="modal-body">
                     @for (int i = 0; i < Model.UserRoles.Count(); i++)
                     {
                         <div class="form-check m-1">
@@ -29,13 +26,12 @@
                     }
                     <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
-                <div class="card-footer">
-                    <input type="submit" value="Update" class="btn btn-primary"
-                           style="width:auto" />
-                    <a asp-action="EditUser" asp-route-id="@ViewBag.userId"
-                       class="btn btn-primary" style="width:auto">Cancel</a>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-block">Update</button>
+              
                 </div>
+                }
             </div>
-        </form>
+      
     </div>
 </div>

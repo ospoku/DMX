@@ -6,14 +6,14 @@ using DMX.ViewModels;
 
 namespace DMX.ViewComponents
 {
-    public class ViewUsers(XContext printContext, UserManager<AppUser> userManager) : ViewComponent
+    public class ViewUsers(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : ViewComponent
     {
-        public readonly XContext dcx = printContext;
-        public readonly UserManager<AppUser> usm;
-
+        public readonly XContext dcx = xContext;
+        public readonly UserManager<AppUser> usm=userManager;
+        public readonly RoleManager<AppRole> rol =roleManager;
         public IViewComponentResult Invoke()
         { 
-            var userList = dcx.Users.Where(u => u.IsDeleted == false).Select(u => new ViewUsersVM
+            var userList = usm.Users.Where(u => u.IsDeleted == false).Select(u => new ViewUsersVM
             {
                 UserId = u.Id,
                 Fullname = u.Fullname,
@@ -24,7 +24,7 @@ namespace DMX.ViewComponents
                 Telephone=u.PhoneNumber,
               
                Role= string.Join(",", from p in dcx.UserRoles
-                                       join role in dcx.Roles on p.RoleId equals role.Id
+                                       join role in rol.Roles on p.RoleId equals role.Id
                                        where p.UserId == u.Id
                                        select role.Name.ToString())
                 

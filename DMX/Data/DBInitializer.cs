@@ -4,26 +4,19 @@ using System.Security.Claims;
 
 namespace DMX.Data
 {
-    public class DBInitializer
+    public class DBInitializer(XContext dContext)
     {
-        public readonly XContext dcx;
+        public readonly XContext dcx = dContext;
 
-        public DBInitializer(XContext dContext)
-
-        {
-            dcx = dContext;
-
-        }
-       
         public async Task RoleCreation(IServiceProvider serviceProvider)
         {
-            var rol = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var rol = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
             if (!rol.Roles.Any())
             {
-                await rol.CreateAsync(new AppRole() { Name = "Basic", Rolename = "Basic" });
-                await rol.CreateAsync(new AppRole() { Name = "Manager", Rolename = "Manager" });
-                await rol.CreateAsync(new AppRole() { Name = "SuperAdmin", Rolename = "SuperAdmin" });
-                await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin" });
+                await rol.CreateAsync(new AppRole() { Name = "Basic", Rolename = "Basic", Description="Role for basic users" });
+                await rol.CreateAsync(new AppRole() { Name = "Manager", Rolename = "Manager", Description = "Role for managers" });
+                await rol.CreateAsync(new AppRole() { Name = "SuperAdmin", Rolename = "SuperAdmin", Description = "Role for superadmin" });
+                await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin", Description = "Role for admin users" });
             }
         }
 

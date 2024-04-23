@@ -4,19 +4,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using DMX.Data;
 using DMX.Models;
 using DMX.ViewModels;
+using DMX.DataProtection;
 
 namespace DMX.ViewComponents
 {
-    public class EditUser(UserManager<AppUser> userManager, RoleManager<AppRole> rolManager, XContext PrintContext) : ViewComponent
+    public class EditUser(UserManager<AppUser> userManager, RoleManager<AppRole> rolManager) : ViewComponent
     {
-        public readonly UserManager<AppUser> USM = userManager;
-        public readonly RoleManager<AppRole> ROL = rolManager;
-        public readonly XContext prx = PrintContext;
+        public readonly UserManager<AppUser> usm = userManager;
+        public readonly RoleManager<AppRole> rol = rolManager;
+        
 
         public IViewComponentResult Invoke(string Id)
         {
 
-            AppUser userToEdit = (from u in USM.Users where u.Id == Id select u).FirstOrDefault();
+            AppUser userToEdit = (from u in usm.Users where u.Id == @Encryption.Decrypt(Id) select u).FirstOrDefault();
 
             EditUserVM editUserVM = new()
             {
@@ -26,9 +27,9 @@ namespace DMX.ViewComponents
                 Username = userToEdit.UserName,
                 Surname = userToEdit.Surname,
                 Telephone = userToEdit.PhoneNumber,
-               ApplicationRoleId = ROL.Roles.Single(r => r.Name == USM.GetRolesAsync(userToEdit).Result.Single()).Id,
+               ApplicationRoleId = rol.Roles.Single(r => r.Name == usm.GetRolesAsync(userToEdit).Result.Single()).Id,
               
-                ApplicationRoles = ROL.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Id }).ToList(),
+                ApplicationRoles = [.. rol.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Id })],
             };
 
             return View(editUserVM);

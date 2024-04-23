@@ -6,6 +6,7 @@ using System.Security.Claims;
 using DMX.ViewModels;
 using DMX.Data;
 using DMX.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DMX.Controllers
 {
@@ -26,7 +27,7 @@ namespace DMX.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser addThisUser = new AppUser
+                AppUser addThisUser = new()
                 {
 
                     UserName = addUserVM.Username,
@@ -166,5 +167,57 @@ namespace DMX.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ManageUserRoles(string Id)
+        {
+            return ViewComponent("ManageUserRoles", Id);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ManageUserroles(string Id, ManageUserRolesVM model)
+        {
+            var user = await usm.FindByIdAsync(Id);
+            var roles = await usm.GetRolesAsync(user);
+            var result = await usm.RemoveFromRolesAsync(user, roles);
+            result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
+            return RedirectToAction("ViewUserRoles");
+        }
+
+
+        [HttpGet]
+        public IActionResult UserRoles()
+        {
+            return ViewComponent("UserRoles");
+        }
+        [HttpGet]
+        public IActionResult ViewUserRoles()
+        {
+            return ViewComponent("ViewUserRoles");
+        }
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync();
+
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult ViewRoles()
+        {
+            return ViewComponent("ViewRoles");
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddRole(string roleName)
+        {
+            if (roleName != null)
+            {
+                await rol.CreateAsync(new  AppRole { Name=roleName});
+            }
+            return RedirectToAction("ViewRoles");
+        }
     }
 }

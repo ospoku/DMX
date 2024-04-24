@@ -42,8 +42,7 @@ namespace DMX.Controllers
             dcx.SaveChangesAsync();
             return View();
         }
-        public IActionResult PrintDocument(string Id)
-      => ViewComponent("PrintDocument", Id);
+      
 
         [HttpGet]
         public IActionResult AddExternalTraining()
@@ -71,7 +70,7 @@ namespace DMX.Controllers
             return RedirectToAction("ViewInternalTrainings");
         }
         [HttpGet]
-        public IActionResult ManageAttendance(string Id) => ViewComponent("ManageAttendance", Id);
+        public IActionResult AddAttendance(string Id) => ViewComponent("AddAttendance", Id);
         [HttpPost]
         public async Task<IActionResult> ManageAttendance(string Id, AttendanceVM attVM)
         {
@@ -79,29 +78,34 @@ namespace DMX.Controllers
             {
                 InternalTraining itr = dcx.InternalTrainings.SingleOrDefault(i => i.TrainingId == Id);
 
-
-
-                var selectedParticipants = attVM.AvailableParticipants.Where(x => x.IsChecked).Select(x => x.Id);
-                // Remove existing devices for the customer
-                // Note following is for EF6
-                dcx.Attendances.RemoveRange(dcx.Attendances.Where(x => x.EventId == Id));
-
-
-                // Add new selections
-                foreach (var user in selectedParticipants)
+                foreach(var attendee in attVM.Participants)
                 {
-                    Attendance att = new()
+                    Attendance addThisAttendnace = new()
                     {
-                        ParticipantId = user,
-                        IsPresent = true,
-                        EventId = itr.TrainingId,
                         CreatedDate = DateTime.UtcNow,
-                        CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                        ParticipantId = attendee.Value,
+                        EventId = Id,
+
                     };
-                    dcx.Attendances.Add(att);
                 }
-                // Save and redirect
+
+               
+             
                 await dcx.SaveChangesAsync();
+                if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
+                {
+                    notyf.Success("Client successfully created.");
+                    return RedirectToAction("ViewMeetings");
+
+                }
+                else
+                {
+                    notyf.Error("Member creation error!!! Please try again");
+                }
+                return RedirectToAction("AddMeeting");
+
+
+
 
             }
 
@@ -163,11 +167,11 @@ namespace DMX.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult ImportFromStaffList()
-        {
-            return ViewComponent("ImportFromStaffList");
-        }
+        //[HttpGet]
+        //public IActionResult ImportFromStaffList()
+        //{
+        //    return ViewComponent("ImportFromStaffList");
+        //}
         //[HttpPost]
         //public async Task<IActionResult> ImportFromStaffList(ImportFromStaffListVM importFromStaffListVM)
         //{
@@ -198,57 +202,57 @@ namespace DMX.Controllers
 
         //    return ViewComponent("ViewParticipants");
         //}
-        [HttpGet]
-        public IActionResult ImportFromExcel()
-        {
-            return ViewComponent("ImportFromExcel");
-        }
-        [HttpPost]
-        public async Task<IActionResult> ImportFromExcel(IFormFile formFile)
-        {
-            var data = new MemoryStream();
-            await formFile.CopyToAsync(data);
+    //    [HttpGet]
+    //    public IActionResult ImportFromExcel()
+    //    {
+    //        return ViewComponent("ImportFromExcel");
+    //    }
+    //    [HttpPost]
+    //    public async Task<IActionResult> ImportFromExcel(IFormFile formFile)
+    //    {
+    //        var data = new MemoryStream();
+    //        await formFile.CopyToAsync(data);
 
-            data.Position = 0;
-            using (var reader = new StreamReader(data))
-            {
-                var bad = new List<string>();
-                var conf = new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    HasHeaderRecord = true,
-                    HeaderValidated = null,
-                    MissingFieldFound = null,
-                    DetectColumnCountChanges = true,
-                    InjectionOptions= InjectionOptions.Exception,
+    //        data.Position = 0;
+    //        using (var reader = new StreamReader(data))
+    //        {
+    //            var bad = new List<string>();
+    //            var conf = new CsvConfiguration(CultureInfo.InvariantCulture)
+    //            {
+    //                HasHeaderRecord = true,
+    //                HeaderValidated = null,
+    //                MissingFieldFound = null,
+    //                DetectColumnCountChanges = true,
+    //                InjectionOptions= InjectionOptions.Exception,
 
-                    BadDataFound = context =>
-                    {
-                        bad.Add(context.RawRecord);
-                    }
-                };
-                using (var csvReader = new CsvReader(reader, conf))
-                {
-                    while (csvReader.Read())
-                    {
-                        var Name = csvReader.GetField(0).ToString();
-                        var Contact = csvReader.GetField(1).ToString();
-                        var DoB = csvReader.GetField(2);
-                        var Department = csvReader.GetField(3).ToString();
+    //                BadDataFound = context =>
+    //                {
+    //                    bad.Add(context.RawRecord);
+    //                }
+    //            };
+    //            using (var csvReader = new CsvReader(reader, conf))
+    //            {
+    //                while (csvReader.Read())
+    //                {
+    //                    var Name = csvReader.GetField(0).ToString();
+    //                    var Contact = csvReader.GetField(1).ToString();
+    //                    var DoB = csvReader.GetField(2);
+    //                    var Department = csvReader.GetField(3).ToString();
 
-                        //await dcx.Participants.AddAsync(new Participant
-                        //{
-                        //    Name = Name.ToString(),
-                        //    Contact = Contact,
-                        //    Department = Department,
-                        //    DateOfBirth = DateTime.Parse(DoB),
+    //                    //await dcx.Participants.AddAsync(new Participant
+    //                    //{
+    //                    //    Name = Name.ToString(),
+    //                    //    Contact = Contact,
+    //                    //    Department = Department,
+    //                    //    DateOfBirth = DateTime.Parse(DoB),
 
-                        //});
-                        dcx.SaveChanges();
-                    }
-                };
-            }
-            return ViewComponent("ViewParticipants");
-        }
+    //                    //});
+    //                    dcx.SaveChanges();
+    //                }
+    //            };
+    //        }
+    //        return ViewComponent("ViewParticipants");
+    //    }
     }
 }
 

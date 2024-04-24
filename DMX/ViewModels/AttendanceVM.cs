@@ -1,10 +1,11 @@
 ﻿
 using DMX.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewModels
 {
     public class AttendanceVM
     {
-        public List<CheckBoxItem> AvailableParticipants { get;  set; }
+        public SelectList Participants { get; set; }
     }
 }

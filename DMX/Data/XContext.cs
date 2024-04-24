@@ -6,7 +6,8 @@ using DMX.Models;
 namespace DMX.Data
 {
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
-    {public DbSet<Attendance> Attendances { get; set; }
+    {
+        public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
         public DbSet<LetterComment> LetterComments { get; set; }
@@ -35,5 +36,8 @@ namespace DMX.Data
         public DbSet<TravelRequestComment> TravelRequestComments { get; set;}
         public DbSet <MaternityLeaveComment> MaternityLeaveComments { get; set; }
         public DbSet<ExcuseDutyAssignment> ExcuseDutyAssignments { get; set; }
+        public DbSet<Meeting> Meetings { get; set; }
+      
+   
     }
 }

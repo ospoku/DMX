@@ -1,5 +1,6 @@
-﻿using CIS.Data;
-using CIS.ViewModels;
+﻿
+using DMX.Data;
+using DMX.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -15,9 +16,9 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            ImportFromStaffListVM fromStaffListVM = new ImportFromStaffListVM()
+            ImportFromStaffListVM fromStaffListVM = new()
             {
-                StaffList = new SelectList(dcx.StaffList.ToList(), "StaffId", "Name"),
+               // StaffList = new SelectList(dcx.StaffList.ToList(), "StaffId", "Name"),
 
             };
 

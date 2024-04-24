@@ -9,17 +9,13 @@ using System.Threading.Tasks;
 
 namespace DMX.ViewComponents
 {
-    public class ImportFromExcel : ViewComponent
+    public class ImportFromExcel(XContext context) : ViewComponent
     {
-        public readonly XContext dcx;
-        public ImportFromExcel(CISContext context)
-        {
-            dcx = context;
-        }
+        public readonly XContext dcx = context;
 
         public IViewComponentResult Invoke()
         {
-            ImportFromExcelVM fromExcelVM = new ImportFromExcelVM()
+            ImportFromExcelVM fromExcelVM = new()
             {
 
 

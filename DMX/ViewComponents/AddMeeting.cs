@@ -1,38 +1,24 @@
-﻿
+﻿using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace DMX.ViewComponents
 {
-    public class AddInternalTraining : ViewComponent
+    public class AddMeeting(UserManager<AppUser> userManager) : ViewComponent
     {
-
-        public AddInternalTraining()
-        {
-
-
-
-        }
+        
 
         public IViewComponentResult Invoke()
         {
-
-            AddInternalTrainingVM trainingVM = new()
+            AddMeetingVM addMeetingVM = new()
             {
-
             };
+            
+        
 
-
-
-
-
-
-            return View(trainingVM);
+            return View(addMeetingVM);
         }
     }
 }
-

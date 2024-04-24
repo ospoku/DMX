@@ -1,4 +1,8 @@
-﻿using DMX.Data;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AspNetCoreHero.ToastNotification.Notyf;
+using CsvHelper;
+using CsvHelper.Configuration;
+using DMX.Data;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -6,10 +10,10 @@ using System.Data;
 using System.Globalization;
 namespace DMX.Controllers
 {
-    public class TrainingController(XContext context) : Controller
+    public class TrainingController(XContext context, INotyfService notyfService) : Controller
     {
         public readonly XContext dcx = context;
-
+        public readonly INotyfService notyf = notyfService;
         public IActionResult ViewExternalTrainings()
          => ViewComponent("ViewExternalTrainings");
         public IActionResult ViewParticipants()
@@ -19,7 +23,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddInternalTraining() => ViewComponent("AddInternalTraining");
         [HttpPost]
-        public IActionResult AddExternalTraining(AddExternalTraningVM addExternalTrainingVM)
+        public IActionResult AddExternalTraining(AddExternalTrainingVM addExternalTrainingVM)
         {
             ExternalTraining addThisExternalTraining = new()
             {
@@ -52,7 +56,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddInternalTraining(AddInternalTrainingVM addTrainingVM)
         {
-            InternalTraining addThisTraining = new InternalTraining()
+            InternalTraining addThisTraining = new()
             {
                 EventName = addTrainingVM.Name,
                 Date = addTrainingVM.Date,
@@ -64,7 +68,7 @@ namespace DMX.Controllers
             dcx.InternalTrainings.Add(addThisTraining);
             await dcx.SaveChangesAsync();
 
-            return ViewComponent("ViewInternalTrainings");
+            return RedirectToAction("ViewInternalTrainings");
         }
         [HttpGet]
         public IActionResult ManageAttendance(string Id) => ViewComponent("ManageAttendance", Id);
@@ -80,17 +84,17 @@ namespace DMX.Controllers
                 var selectedParticipants = attVM.AvailableParticipants.Where(x => x.IsChecked).Select(x => x.Id);
                 // Remove existing devices for the customer
                 // Note following is for EF6
-                dcx.Attendances.RemoveRange(dcx.Attendances.Where(x => x.TrainingId == Id));
+                dcx.Attendances.RemoveRange(dcx.Attendances.Where(x => x.EventId == Id));
 
 
                 // Add new selections
                 foreach (var user in selectedParticipants)
                 {
-                    Attendance att = new Attendance
+                    Attendance att = new()
                     {
                         ParticipantId = user,
                         IsPresent = true,
-                        TrainingId = itr.TrainingId,
+                        EventId = itr.TrainingId,
                         CreatedDate = DateTime.UtcNow,
                         CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                     };
@@ -108,60 +112,92 @@ namespace DMX.Controllers
 
 
         [HttpGet]
-        public IActionResult AddParticipant()
+        public IActionResult AddMeeting()
         {
-            return ViewComponent("AddParticipant");
+            return ViewComponent("AddMeeting");
         }
-        [HttpPost]
-        public async Task<IActionResult> AddParticipant(AddParticipantVM addParticipantVM)
-        {
-            Participant addThisParticipant = new Participant()
-            {
-                Name = addParticipantVM.Name,
-                Email = addParticipantVM.Rank,
-                Department = addParticipantVM.Department,
-                Contact = addParticipantVM.Contact,
-            };
-            dcx.Participants.Add(addThisParticipant);
-            await dcx.SaveChangesAsync();
 
-            return ViewComponent("ViewParticipants");
+        [HttpPost]
+        public async Task< IActionResult> AddMeeting(AddMeetingVM addMeetingVM)
+        {
+            Meeting addThisMeeting = new()
+            { Name=addMeetingVM.Name,
+                Description = addMeetingVM.Description,
+               CreatedDate = DateTime.Now,
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value
+            };
+            dcx.Meetings.Add(addThisMeeting);
+        
+            if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
+            {
+                notyf.Success("Client successfully created.");
+                return RedirectToAction("ViewMeetings");
+
+            }
+            else
+            {
+                notyf.Error("Member creation error!!! Please try again");
+            }
+            return RedirectToAction("AddMeeting");
+
+
+
+       
         }
+
+        [HttpGet]
+        public IActionResult ViewMeetings()
+        {
+            return ViewComponent("ViewMeetings");
+        }
+
+        [HttpGet]
+        public IActionResult AddWorkshop()
+        {
+            return ViewComponent("AddWorkshop");
+        }
+        [HttpGet]
+        public IActionResult ViewWorkshops()
+        {
+            return ViewComponent("ViewWorkshops");
+        }
+
+
         [HttpGet]
         public IActionResult ImportFromStaffList()
         {
             return ViewComponent("ImportFromStaffList");
         }
-        [HttpPost]
-        public async Task<IActionResult> ImportFromStaffList(ImportFromStaffListVM importFromStaffListVM)
-        {
+        //[HttpPost]
+        //public async Task<IActionResult> ImportFromStaffList(ImportFromStaffListVM importFromStaffListVM)
+        //{
 
-            foreach (var staff in importFromStaffListVM.SelectedId)
-            {
+        //    foreach (var staff in importFromStaffListVM.SelectedId)
+        //    {
 
-                var selectedStaff = dcx.StaffList.Where(x => x.StaffId.Contains(staff.ToString())).ToList();
+        //        var selectedStaff = dcx.StaffList.Where(x => x.StaffId.Contains(staff.ToString())).ToList();
 
-                foreach (var staffid in selectedStaff)
-                {
-                    Participant newParticipant = new Participant()
-                    {
-                        DateOfBirth = staffid.DateOfBirth,
-                        Contact = staffid.Contact,
-                        Name = staffid.Name,
-                        Rank = staffid.Rank,
-                        Department = staffid.Department,
-                    };
+        //        foreach (var staffid in selectedStaff)
+        //        {
+        //            Participant newParticipant = new()
+        //            {
+        //                DateOfBirth = staffid.DateOfBirth,
+        //                Contact = staffid.Contact,
+        //                Name = staffid.Name,
+        //                Rank = staffid.Rank,
+        //                Department = staffid.Department,
+        //            };
 
-                    dcx.Participants.Add(newParticipant);
-                    await dcx.SaveChangesAsync();
-                }
+        //            dcx.Participants.Add(newParticipant);
+        //            await dcx.SaveChangesAsync();
+        //        }
 
-            };
+        //    };
 
 
 
-            return ViewComponent("ViewParticipants");
-        }
+        //    return ViewComponent("ViewParticipants");
+        //}
         [HttpGet]
         public IActionResult ImportFromExcel()
         {
@@ -183,7 +219,7 @@ namespace DMX.Controllers
                     HeaderValidated = null,
                     MissingFieldFound = null,
                     DetectColumnCountChanges = true,
-                    SanitizeForInjection = true,
+                    InjectionOptions= InjectionOptions.Exception,
 
                     BadDataFound = context =>
                     {
@@ -199,14 +235,14 @@ namespace DMX.Controllers
                         var DoB = csvReader.GetField(2);
                         var Department = csvReader.GetField(3).ToString();
 
-                        await dcx.Participants.AddAsync(new Participant
-                        {
-                            Name = Name.ToString(),
-                            Contact = Contact,
-                            Department = Department,
-                            DateOfBirth = DateTime.Parse(DoB),
+                        //await dcx.Participants.AddAsync(new Participant
+                        //{
+                        //    Name = Name.ToString(),
+                        //    Contact = Contact,
+                        //    Department = Department,
+                        //    DateOfBirth = DateTime.Parse(DoB),
 
-                        });
+                        //});
                         dcx.SaveChanges();
                     }
                 };

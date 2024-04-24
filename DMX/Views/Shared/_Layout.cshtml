@@ -12,7 +12,7 @@
     <title>SB Admin 2 - Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="~/lib/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"/>
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" type="text/css"/>
     
     <link href="~/lib/datatables/css/datatables.bootstrap4.min.css" rel="stylesheet" />
    
@@ -86,17 +86,18 @@
             <li class="nav-item">
                 <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Utilities</span>
+                    <i class="fas fa-fw fa-list-dots"></i>
+                    <span>Training</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Settings</h6>
-                        <a class="collapse-item" href="utilities-color.html">Preference</a>
-                        <a class="collapse-item" href="utilities-border.html">Setup</a>
-                        <a class="collapse-item" asp-action="ViewUsers" asp-controller="Account">Account</a>
-                     
+                        <a class="collapse-item" asp-action="ViewExternalTrainings" asp-controller="Training">External Trainings</a>
+                        <a class="collapse-item" asp-action="ViewInternalTrainings" asp-controller="Training">Internal Trainings</a>
+                        <a class="collapse-item" asp-action="ViewWorkshops" asp-controller="Training">Workshops</a>
+                        <a class="collapse-item" asp-action="ViewMeetings" asp-controller="Training">Meetings</a>
+                        <a class="collapse-item" asp-action="ViewAttendance" asp-controller="Training">Attendance</a>
                     </div>
                 </div>
             </li>

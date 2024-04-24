@@ -6,23 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DMX.ViewComponents
 {
-    public class AddExternalTraining : ViewComponent
+    public class AddExternalTraining(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
-        public readonly XContext dcx;
-        public readonly UserManager<AppUser> usm;
-
-
-        public AddExternalTraining(XContext dContext, UserManager<AppUser> userManager)
-        {
-            dcx = dContext;
-            usm = userManager;
-
-        }
+        public readonly XContext dcx = dContext;
+        public readonly UserManager<AppUser> usm = userManager;
 
         public IViewComponentResult Invoke()
         {
 
-            AddExternalTraningVM trainingVM = new ()
+            AddExternalTrainingVM trainingVM = new ()
             {
 
             };

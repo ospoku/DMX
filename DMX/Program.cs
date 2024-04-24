@@ -4,6 +4,7 @@ using DMX.Data;
 using DMX.Models;
 using DMX.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,7 @@ builder.Services.AddAuthentication();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-//  builder.  Services.AddSingleton<IAuthorizationHandler, IncidentAuthorizationHandler>();
+  //builder.  Services.AddSingleton<IAuthorizationHandler, IncidentAuthorizationHandler>();
 //    builder.Services.AddAuthorization(options => options.AddPolicy("sameAuthorPolicy",
 //policy =>
 //policy.AddRequirements(

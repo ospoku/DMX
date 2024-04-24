@@ -1,7 +1,7 @@
 ﻿
 namespace DMX.ViewModels
 {
-    public class AddInternalTraningVM
+    public class AddExternalTrainingVM
     {
         public string StaffId { get; internal set; }
         public string WorkshopTitle { get; internal set; }

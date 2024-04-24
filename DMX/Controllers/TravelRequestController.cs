@@ -10,7 +10,8 @@ namespace DMX.Controllers
     public class TravelRequestController(XContext dContext,UserManager<AppUser>userManager,INotyfService notyfService) : Controller
     {
      public readonly UserManager<AppUser>usm= userManager;
-public readonly XContext dcx = dContext; private readonly INotyfService notyf = notyfService;
+public readonly XContext dcx = dContext;
+        public readonly INotyfService notyf = notyfService;
 
         [HttpPost]
         public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVM)

@@ -66,7 +66,7 @@ namespace DMX.Controllers
                 Recipient=memoToPrint.Recipient,
                CreatedDate=memoToPrint.CreatedDate.Value,
             MemoContent = memoToPrint.Content,
-              SelectedUsers = dcx.MemoAssignments.Where(x => x.MemoId == @Encryption.Decrypt(Id)).Select(p => p.AppUserId).ToList(),
+                SelectedUsers = [.. dcx.MemoAssignments.Where(x => x.MemoId == @Encryption.Decrypt(Id)).Select(p => p.AppUserId)],
             };
 
             return View(printVM);

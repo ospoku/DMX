@@ -63,14 +63,15 @@
 
     </div>
 
-<script type="text/javascript">
-    
+
+ <script type="text/javascript">
+    $(document).ready(function () {
         window.print();
         setTimeout("closePrintView()", 3000);
-    
-    $(function closePrintView() {
-        document.location.href = 'somewhere.html';
     });
+    function closePrintView() {
+        document.location.href = 'somewhere.html';
+    }
 </script>
 </body>
 </html>

@@ -1,6 +1,8 @@
-﻿namespace DMX.ViewComponents
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace DMX.ViewComponents
 {
-    public class AddAttendance
+    public class AddAttendance:ViewComponent
     {
     }
 }

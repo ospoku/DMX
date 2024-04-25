@@ -6,19 +6,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewComponents
 {
-    public class AddMeeting() : ViewComponent
+    public class AddWorkshop() : ViewComponent
     {
         
 
         public IViewComponentResult Invoke()
         {
-            AddMeetingVM addMeetingVM = new()
+            AddWorkshopVM addWorkshopVM = new()
             {
             };
             
         
 
-            return View(addMeetingVM);
+            return View(addWorkshopVM);
         }
     }
 }

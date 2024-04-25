@@ -37,6 +37,7 @@ namespace DMX.Data
         public DbSet <MaternityLeaveComment> MaternityLeaveComments { get; set; }
         public DbSet<ExcuseDutyAssignment> ExcuseDutyAssignments { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
+        public DbSet<Workshop> Workshops { get; set; }
       
    
     }

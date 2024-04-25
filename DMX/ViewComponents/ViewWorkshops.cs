@@ -6,31 +6,29 @@ using DMX.ViewModels;
 
 namespace DMX.ViewComponents
 {
-    public class ViewWorkshops(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class ViewWorkshops(XContext dContext) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-        public readonly UserManager<AppUser> usm = userManager;
+       
 
         public IViewComponentResult Invoke()
         {
 
 
-            var documentList = dcx.Letters.Where(d => d.IsDeleted == false).Select(d => new ViewDocumentsVM
+            var workshopList = dcx.Workshops.Where(d => d.IsDeleted == false).Select(d => new ViewWorkshopsVM
             {
 
-                LetterId = d.LetterId,
-                AdditionalNotes = d.AdditionalNotes,
-                DocumentSource = d.Source,
-                DocumentDate = d.DocumentDate,
-                ReferenceNumber = d.ReferenceNumber,
-                ReceiptDate = d.DateReceived,
+                WorkshopId = d.WorkshopId,
+               Description = d.Description,
+               Name = d.Name,
+       
                
                
 
             }).ToList();
 
            
-            return View(documentList);
+            return View(workshopList);
         }
     }
 }

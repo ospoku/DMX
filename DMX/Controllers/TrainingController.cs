@@ -23,7 +23,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddInternalTraining() => ViewComponent("AddInternalTraining");
         [HttpPost]
-        public IActionResult AddExternalTraining(AddExternalTrainingVM addExternalTrainingVM)
+        public async Task< IActionResult> AddExternalTraining(AddExternalTrainingVM addExternalTrainingVM)
         {
             ExternalTraining addThisExternalTraining = new()
             {
@@ -39,8 +39,19 @@ namespace DMX.Controllers
                 Description = addExternalTrainingVM.Description,
             };
             dcx.ExternalTrainings.Add(addThisExternalTraining);
-            dcx.SaveChangesAsync();
-            return View();
+
+            await dcx.SaveChangesAsync();
+            if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
+            {
+                notyf.Success("Client successfully created.");
+                return RedirectToAction("ViewMeetings");
+
+            }
+            else
+            {
+                notyf.Error("Member creation error!!! Please try again");
+            }
+            return RedirectToAction("AddMeeting");
         }
       
 
@@ -92,7 +103,7 @@ namespace DMX.Controllers
                
              
                 await dcx.SaveChangesAsync();
-                if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
+                if (await dcx.SaveChangesAsync( User?.FindFirst(c => c.Type == "Name").Value) > 0)
                 {
                     notyf.Success("Client successfully created.");
                     return RedirectToAction("ViewMeetings");

@@ -81,7 +81,7 @@ namespace DMX.Controllers
             return RedirectToAction("ViewInternalTrainings");
         }
         [HttpGet]
-        public IActionResult AddAttendance(string Id) => ViewComponent("AddAttendance", Id);
+        public IActionResult AddAttendance(string Id) => ViewComponent("AddAttendance");
         [HttpPost]
         public async Task<IActionResult> ManageAttendance(string Id, AttendanceVM attVM)
         {

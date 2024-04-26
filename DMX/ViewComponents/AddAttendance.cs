@@ -1,17 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DMX.Data;
+using DMX.Models;
+using DMX.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewComponents
 {
-    public class AddAttendance:ViewComponent
+    public class AddAttendance(UserManager<AppUser> userManager) : ViewComponent
     {
-        public IViewComponentResult Invoke(string Id)
+        public readonly UserManager<AppUser> usm = userManager;
+
+        public IViewComponentResult Invoke()
         {
-            AddAttendanceVM addAttendanceVM = new()
+
+
+            AddAttendanceVM addAttendanceVM = new() 
             {
 
-            };
+                Attendees = new SelectList(usm.Users.ToList(), "Id", "Fullname"),
 
-            return View();
+            };
+            return View(addAttendanceVM);
         }
     }
 }

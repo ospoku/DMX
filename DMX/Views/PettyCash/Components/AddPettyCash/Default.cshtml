@@ -1,14 +1,14 @@
 ﻿
 @model DMX.ViewModels.AddPettyCashVM;
 
-<div class="modal fade" id="AddPettyCash" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="AddPettyCash" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
 
                 <h6>Add Petty Cash</h6>
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
 
@@ -36,7 +36,7 @@
                        
                   </div>
                         <div class="did-floating-label-content">
-                            <select  id="selectPettyCashUser" class="did-floating-select" required asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectPettyCashUser" class="did-floating-select" style="width:100%" required asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                             <label class="did-floating-label">Select User(s)</label>
                         </div>
 

@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Setup\Components\Organization\" />
-    <Folder Include="Views\Training\Components\AddAttendance\" />
   </ItemGroup>
 
 </Project>

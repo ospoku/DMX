@@ -8,13 +8,13 @@ namespace DMX.ViewModels
         [Required]
         public string Content { get; set; }
 
-        public string[] SelectedUsers { get; set; }
+        public List<string> SelectedUsers { get; set; }
         [Required(ErrorMessage = "Please select assignees")]
 
         public SelectList UsersList { get; set; }
         [Required]
         public string Title { get; set; }
-        public string To { get; set; }
-        public string From { get; set; }
+        public string Receipient { get; set; }
+        public string Sender { get; set; }
     }
 }

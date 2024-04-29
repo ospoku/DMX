@@ -18,18 +18,7 @@
 
             @using (Html.BeginForm("AddTravelRequest", "TravelRequest", FormMethod.Post))
             {
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" required  />
-                        <label class="did-floating-label">Name</label>
-                    </div>
-                    <div class="did-floating-label-content">
-                        <select id="selectRank" class="did-floating-select" asp-items="@Model.RankList" asp-for="@Model.RankId"  style="width:100%"></select>
-                        <label class="did-floating-label">Select Rank</label>
-                    </div>
-                    <div class="did-floating-label-content">
-                        <select id="selectDept" class="did-floating-select" asp-items="@Model.DeptList" asp-for="@Model.DepartmentId" style="width:100%"></select>
-                        <label class="did-floating-label">Select Department</label>
-                    </div>
+                    
 
                         <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.NightAbsent"  class="did-floating-input" required/>

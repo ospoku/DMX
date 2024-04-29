@@ -6,23 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DMX.ViewComponents
 {
-    public class AddExternalTraining(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class AddExternalTraining(XContext xContext) : ViewComponent
     {
-        public readonly XContext dcx = dContext;
-        public readonly UserManager<AppUser> usm = userManager;
+        public readonly XContext dcx = xContext;
 
         public IViewComponentResult Invoke()
         {
 
             AddExternalTrainingVM trainingVM = new ()
             {
-
+                Users = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(dcx.Users.ToList(), "Id", "Fullname"),
             };
-
-
-
-
-
 
             return View(trainingVM);
         }

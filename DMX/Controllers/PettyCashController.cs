@@ -33,7 +33,7 @@ namespace DMX.Controllers
         {
             PettyCash addThisPettyCash = new()
             {
-                Name = addPettyCashVM.Name,
+              
                 Date = addPettyCashVM.Date,
                 Amount = addPettyCashVM.Amount,
                 Purpose = addPettyCashVM.Purpose,

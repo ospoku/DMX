@@ -6,21 +6,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewComponents
 {
-    public class AddPettyCash : ViewComponent
+    public class AddPettyCash(UserManager<AppUser> userManager) : ViewComponent
     {
-        public readonly UserManager<AppUser> usm;
+        public readonly UserManager<AppUser> usm = userManager;
 
-        public AddPettyCash(UserManager<AppUser> userManager)
-        {
-            usm = userManager;
-
-        }
         public IViewComponentResult Invoke()
         {
-            AddPettyCashVM addPettyCashVM = new AddPettyCashVM
+            AddPettyCashVM addPettyCashVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-                Name = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                Name =usm.FindByNameAsync( HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Fullname,
             };
 
             return View(addPettyCashVM);

@@ -75,7 +75,7 @@ namespace DMX.Controllers
         {
             ServiceRequest addThisServiceRequest = new()
             {
-                RequestedBy = addServiceRequestVM.ServiceRequestedBy,
+               
 
             };
             dcx.ServiceRequests.Add(addThisServiceRequest);

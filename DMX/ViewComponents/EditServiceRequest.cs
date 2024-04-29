@@ -25,7 +25,7 @@ namespace DMX.ViewComponents
 
             EditServiceRequestVM editServiceRequestVM = new EditServiceRequestVM
             {
-                RequestedBy = serviceRequestToEdit.RequestedBy,
+           
 
 
             };

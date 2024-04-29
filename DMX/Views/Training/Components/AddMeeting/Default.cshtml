@@ -23,14 +23,18 @@
                     </div>
 
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description"  class="did-floating-input" placeholder=""/>
+                        <input type="date" asp-for="@Model.Date"  class="did-floating-input" placeholder="" asp-format="{0:dd/MMMM/yyyy}"/>
+                        <label class="did-floating-label">Meeting Date</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Description" class="did-floating-input" placeholder="" required />
                         <label class="did-floating-label">Meeting Description</label>
                     </div>
-                    
 
 
 
-                    </div>
+
+                </div>
                     <div class="modal-footer"><button class="btn btn-block btn-primary">Save</button></div>
                 }
             </div>

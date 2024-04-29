@@ -11,7 +11,7 @@ namespace DMX.ViewComponents
         {
             var sList = dcx.ServiceRequests.Where(s => s.IsDeleted == false).Select(s => new ViewServiceRequestsVM
             {
-                ServiceRequestedBy = s.RequestedBy,
+              
 
 
 

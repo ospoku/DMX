@@ -25,6 +25,63 @@ namespace DMX.Controllers
         {
             return ViewComponent("ViewPatients");
         }
+
+        [HttpGet]
+        public IActionResult AddPatient() => ViewComponent("AddPatient");
+        [HttpPost]
+        public async Task<IActionResult> AddPatient(AddPatientVM addPatientVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Message = "Document addition error!!! Please try again";
+
+                return ViewComponent("AddPatient");
+            }
+
+            if (ModelState.IsValid)
+            {
+                Patient addThisPatient = new()
+                {
+                    Date = addPatientVM.Date,
+                    FinalDiagnoses = addPatientVM.FinalDiagnoses,
+
+                    WardInCharge = addPatientVM.WardInCharge,
+
+                    IsDeleted = false,
+                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                    CreatedDate = DateTime.Now,
+                };
+                dcx.Patients.Add(addThisPatient);
+
+                dcx.MemoAssignments.Add(new MemoAssignment
+                {
+                    // SelectedUsers = string.Join(',', addPatientVM.SelectedUsers),
+
+                });
+
+
+                if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
+                {
+                    notyf.Success("Client successfully created.");
+                    return RedirectToAction("ViewPatients");
+
+                }
+                else
+                {
+                    notyf.Error("Member creation error!!! Please try again");
+                }
+                return RedirectToAction("AddPatient");
+
+            }
+            else
+            {
+                return RedirectToAction("AddPatient");
+            }
+
+
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
         {

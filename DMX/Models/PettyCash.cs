@@ -14,9 +14,9 @@ namespace DMX.Models
         public string Purpose { get; set; }
         [Precision(10, 4)]
         public decimal Amount { get; set; }
-        public string Name { get; set; }
+      
         public DateTime Date { get; set; }
         public string Description { get; set; }
-        public ICollection<PettyCashComment> Comments { get; set; } 
+        public virtual ICollection<PettyCashComment> Comments { get; set; } 
     }
 }

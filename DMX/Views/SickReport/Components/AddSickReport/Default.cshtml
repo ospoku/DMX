@@ -1,25 +1,25 @@
 ﻿
 @model DMX.ViewModels.AddSickReportVM;
-<div class="modal fade" id="AddSickReport" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="AddSickReport" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
 
                 <h6>Add Sick Report</h6>
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
 
 
-            @using (Html.BeginForm("AddSickReport", "Document"))
+            @using (Html.BeginForm("AddSickReport", "SickReport"))
             {
 
             
 
-                        <div class="form-group">
-                            <input type="text" asp-for="@Model.AdditionalNotes" class="form-control" placeholder="Reference Number">
-
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.AdditionalNotes" class="did-floating-input" placeholder="">
+                            <label class="did-floating-label"></label>
                         </div>
 
 
@@ -36,9 +36,9 @@
 
 
                         </div>
-                        <div class="form-group">
-                            <select type="text" id="selectSickReportUser" class="select2 form-control" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
-
+                        <div class="did-floating-label-content">
+                            <select  id="selectSickReportUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+                            <label class="did-floating-label">Select Users</label>
                         </div>
 
 
@@ -58,3 +58,6 @@
     </div>
 </div>
 </div>
+<script>
+
+</script>

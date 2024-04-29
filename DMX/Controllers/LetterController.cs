@@ -21,70 +21,13 @@ namespace DMX.Controllers
 
         [HttpGet]
         public IActionResult AddLetter() => ViewComponent("AddLetter");
-        [HttpGet]
-        public IActionResult AddPatient() => ViewComponent("AddPatient");
-        [HttpPost]
-        public async Task<IActionResult> AddPatient(AddPatientVM addPatientVM)
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Message = "Document addition error!!! Please try again";
-
-                return ViewComponent("AddPatient");
-            }
-
-            if (ModelState.IsValid)
-            {
-                Patient addThisPatient = new()
-                {
-                    Date = addPatientVM.Date,
-                    FinalDiagnoses = addPatientVM.FinalDiagnoses,
-
-                    WardInCharge = addPatientVM.WardInCharge,
-
-                    IsDeleted = false,
-                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                    CreatedDate = DateTime.Now,
-                };
-                dcx.Patients.Add(addThisPatient);
-
-                dcx.MemoAssignments.Add(new MemoAssignment
-                {
-                   // SelectedUsers = string.Join(',', addPatientVM.SelectedUsers),
-
-                });
-
-
-                if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
-                {
-                    notyf.Success("Client successfully created.");
-                    return RedirectToAction("ViewPatients");
-
-                }
-                else
-                {
-                    notyf.Error("Member creation error!!! Please try again");
-                }
-                return RedirectToAction("AddPatient");
-
-            }
-            else
-            {
-                return RedirectToAction("AddPatient");
-            }
-
-
-        }
-                
        
         [HttpPost]
-        public async Task<IActionResult> AddLetter(AddLetterVM addDocumentVM, IFormFile formFile)
+        public async Task<IActionResult> AddLetter(AddLetterVM addDocumentVM, List<IFormFile> formFiles)
         {
 
 
-            
-
-
+           
             Letter addThisDocument = new()
             {
                 Source = addDocumentVM.DocumentSource,
@@ -97,18 +40,20 @@ namespace DMX.Controllers
                 AdditionalNotes=addDocumentVM.AdditionalNotes,
 
             };
+        
+        
             using (var memoryStream = new MemoryStream())
             {
-                await formFile.CopyToAsync(memoryStream);
+                foreach (var formFile in formFiles)
+                {
+
+                    await formFile.CopyToAsync(memoryStream);
+                }
                 addThisDocument.PDF = memoryStream.ToArray();
             }
             dcx.Letters.Add(addThisDocument);
 
-            //dcx.MemoAssignments.Add(new Assignment
-            //{
-            //    TaskId = addThisDocument.LetterId,
-            //    SelectedUsers = string.Join(',', addDocumentVM.SelectedUsers),
-            //});
+ 
             if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
             {
                 notyf.Success("Document successfully saved!!!", 5);
@@ -250,30 +195,16 @@ namespace DMX.Controllers
         }
                 
         
-        public IActionResult Card(string Id)
-        {
-            return ViewComponent("Card", Id);
-        }
-
-        public IActionResult ViewAssignments()
-        {
-            return ViewComponent("ViewAssignments");
-        }
+    
 
 
       
-       
-
-        public IActionResult ViewMaternityLeaves()
-        {
-            return ViewComponent("ViewTravelRequests");
-        }
 
 
         [HttpGet]
         public async Task<IActionResult> Download(string Id)
         {
-            var foundDoc = await dcx.Letters.FirstOrDefaultAsync(m => m.LetterId == Id);
+            var foundDoc = await dcx.Letters.FirstOrDefaultAsync(m => m.LetterId == @Encryption.Decrypt(Id));
             if (foundDoc == null)
             {
                 return NotFound();

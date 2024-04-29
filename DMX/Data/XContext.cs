@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DMX.Models;
+using Microsoft.AspNetCore.Identity;
 
 
 
@@ -7,7 +8,20 @@ namespace DMX.Data
 {
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
     {
-        public DbSet<Attendance> Attendances { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.SeedRoles(builder);
+        }
+        public static void SeedRoles(ModelBuilder builder)
+        {
+            builder.Entity<AppRole>().HasData(
+
+                new AppRole()
+                
+                { Name = "Officer",Description="Officer Role", Rolename="Officer role"});
+        }
+        public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
         public DbSet<LetterComment> LetterComments { get; set; }
@@ -37,7 +51,7 @@ namespace DMX.Data
         public DbSet <MaternityLeaveComment> MaternityLeaveComments { get; set; }
         public DbSet<ExcuseDutyAssignment> ExcuseDutyAssignments { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
-        public DbSet<Workshop> Workshops { get; set; }
+       
       
    
     }

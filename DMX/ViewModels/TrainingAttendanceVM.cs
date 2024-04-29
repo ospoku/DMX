@@ -2,7 +2,7 @@
 
 namespace DMX.ViewModels
 {
-    public class AddAttendanceVM
+    public class TrainingAttendanceVM
     {
         public string EventId { get; set; }
         public string EventName { get; set; }

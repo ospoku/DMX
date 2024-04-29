@@ -3,6 +3,7 @@ using AspNetCoreHero.ToastNotification.Notyf;
 using CsvHelper;
 using CsvHelper.Configuration;
 using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -25,20 +26,17 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task< IActionResult> AddExternalTraining(AddExternalTrainingVM addExternalTrainingVM)
         {
-            ExternalTraining addThisExternalTraining = new()
+            ExternalTraining addThisTraining = new()
             {
-                Attendee = addExternalTrainingVM.StaffId,
-
                 WorkshopTitle = addExternalTrainingVM.WorkshopTitle,
-
                 NumberofDays = addExternalTrainingVM.NumberofDays,
                 DepartureDate = addExternalTrainingVM.DepartureDate,
                 ReturnDate = addExternalTrainingVM.ReturnDate,
-                ProposedTrainingDate = addExternalTrainingVM.ProposedTrainingDate,
-                ProposedTrainingGroup = addExternalTrainingVM.ProposedTrainingGroup,
+                ProposedTrainingDate = addExternalTrainingVM.TrainingDate,
+               
                 Description = addExternalTrainingVM.Description,
             };
-            dcx.ExternalTrainings.Add(addThisExternalTraining);
+            dcx.ExternalTrainings.Add(addThisTraining);
 
             await dcx.SaveChangesAsync();
             if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
@@ -68,8 +66,8 @@ namespace DMX.Controllers
         {
             InternalTraining addThisTraining = new()
             {
-                EventName = addTrainingVM.Name,
-                Date = addTrainingVM.Date,
+                EventName = addTrainingVM.WorkshopTitle,
+                Date = addTrainingVM.TrainingDate,
                 Description = addTrainingVM.Description,
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
@@ -81,49 +79,54 @@ namespace DMX.Controllers
             return RedirectToAction("ViewInternalTrainings");
         }
         [HttpGet]
-        public IActionResult AddAttendance(string Id) => ViewComponent("AddAttendance");
+        public IActionResult MeetingAttendance(string Id) => ViewComponent("MeetingAttendance", Id);
         [HttpPost]
-        public async Task<IActionResult> ManageAttendance(string Id, AttendanceVM attVM)
+        public async Task<IActionResult> MeetingAttendance(string Id, MeetingAttendanceVM attVM)
         {
-            if (ModelState.IsValid)
+            //    if (ModelState.IsValid)
+            //    {
+
+            foreach (var attendee in attVM.SelectedParticipants)
             {
-                InternalTraining itr = dcx.InternalTrainings.SingleOrDefault(i => i.TrainingId == Id);
-
-                foreach(var attendee in attVM.Participants)
+                MeetingAttendance addThisAttendnace = new()
                 {
-                    Attendance addThisAttendnace = new()
-                    {
-                        CreatedDate = DateTime.UtcNow,
-                        ParticipantId = attendee.Value,
-                        EventId = Id,
+                    CreatedDate = DateTime.UtcNow,
+                    ParticipantId = attendee,
+                    EventId = @Encryption.Decrypt(Id),
 
-                    };
-                }
+                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+
+                };
+
+                dcx.MeetingAttendance.Add(addThisAttendnace);
+            }
 
                
-             
-                await dcx.SaveChangesAsync();
-                if (await dcx.SaveChangesAsync( User?.FindFirst(c => c.Type == "Name").Value) > 0)
+                if (await dcx.SaveChangesAsync(User? .FindFirst(c => c.Type == "Name").Value) > 0)
                 {
                     notyf.Success("Client successfully created.");
                     return RedirectToAction("ViewMeetings");
-
                 }
                 else
                 {
                     notyf.Error("Member creation error!!! Please try again");
-                }
-                return RedirectToAction("AddMeeting");
 
+
+
+
+                    return ViewComponent("MeetingAttendance");
+                }
 
 
 
             }
+        
+       
 
 
 
-            return ViewComponent("ViewAttendances");
-        }
+         
+        
 
 
         [HttpGet]
@@ -136,13 +139,15 @@ namespace DMX.Controllers
         public async Task< IActionResult> AddMeeting(AddMeetingVM addMeetingVM)
         {
             Meeting addThisMeeting = new()
-            { Name=addMeetingVM.Name,
+            {
+                Name = addMeetingVM.Name,
                 Description = addMeetingVM.Description,
-               CreatedDate = DateTime.Now,
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value
+                CreatedDate = DateTime.Now,
+                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                Date = addMeetingVM.Date,
             };
             dcx.Meetings.Add(addThisMeeting);
-        
+
             if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
             {
                 notyf.Success("Client successfully created.");
@@ -152,9 +157,9 @@ namespace DMX.Controllers
             else
             {
                 notyf.Error("Member creation error!!! Please try again");
-            }
-            return RedirectToAction("AddMeeting");
 
+                return RedirectToAction("AddMeeting");
+            }
 
 
        
@@ -166,17 +171,7 @@ namespace DMX.Controllers
             return ViewComponent("ViewMeetings");
         }
 
-        [HttpGet]
-        public IActionResult AddWorkshop()
-        {
-            return ViewComponent("AddWorkshop");
-        }
-        [HttpGet]
-        public IActionResult ViewWorkshops()
-        {
-            return ViewComponent("ViewWorkshops");
-        }
-
+        
 
         //[HttpGet]
         //public IActionResult ImportFromStaffList()

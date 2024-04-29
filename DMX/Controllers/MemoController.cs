@@ -51,26 +51,32 @@ namespace DMX.Controllers
         {
             return ViewComponent("CommentMemo", Id);
         }
-        [HttpPost]
-        public IActionResult PrintMemo(string Id, MemoCommentVM printVM)
+
+        [HttpGet]
+        public IActionResult PrintMemo(string Id)
         {
-
-            Memo memoToPrint = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
-
-
-            printVM = new MemoCommentVM
-            {
-                Comments = memoToPrint.MemoComments.ToList(),
-                Title = memoToPrint.Title,
-                Sender=memoToPrint.Sender,
-                Recipient=memoToPrint.Recipient,
-               CreatedDate=memoToPrint.CreatedDate.Value,
-            MemoContent = memoToPrint.Content,
-                SelectedUsers = [.. dcx.MemoAssignments.Where(x => x.MemoId == @Encryption.Decrypt(Id)).Select(p => p.AppUserId)],
-            };
-
-            return View(printVM);
+            return ViewComponent("PrintMemo", Id);
         }
+        //[HttpPost]
+        //public IActionResult PrintMemo(string Id, MemoCommentVM printVM)
+        //{
+
+        //    Memo memoToPrint = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+
+
+        //    printVM = new MemoCommentVM
+        //    {
+        //        Comments = memoToPrint.MemoComments.ToList(),
+        //        Title = memoToPrint.Title,
+        //        Sender=memoToPrint.Sender,
+        //        Recipient=memoToPrint.Recipient,
+        //       CreatedDate=memoToPrint.CreatedDate.Value,
+        //    MemoContent = memoToPrint.Content,
+        //        SelectedUsers = [.. dcx.MemoAssignments.Where(x => x.MemoId == @Encryption.Decrypt(Id)).Select(p => p.AppUserId)],
+        //    };
+
+        //    return View(printVM);
+        //}
         public IActionResult ViewMemos()
         {
             return ViewComponent("ViewMemos");
@@ -86,8 +92,8 @@ namespace DMX.Controllers
             Memo addThisMemo = new()
             {
                 Content = addMemoVM.Content,
-                Recipient = addMemoVM.To,
-                Sender = addMemoVM.From,
+                Recipient = addMemoVM.Receipient,
+                Sender = addMemoVM.Sender,
                 Title = addMemoVM.Title,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,

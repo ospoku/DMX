@@ -10,7 +10,7 @@ namespace DMX.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ServiceRequestId { get; set; }
         public string RequestNumber { get; set; }
-        public string RequestedBy { get; set; }
+     
         public DateTime RequestDate { get; set; }
 
         public string Unit { get; set; }

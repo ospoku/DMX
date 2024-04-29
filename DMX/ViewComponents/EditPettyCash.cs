@@ -28,7 +28,7 @@ namespace DMX.ViewComponents
        Date=pettyCashToUpdate.Date,
        Description=pettyCashToUpdate.Description,   
        Purpose=pettyCashToUpdate.Purpose,
-       Name=pettyCashToUpdate.Name, 
+       
                 SelectedUsers = dcx.PettyCashAssignments.Where(x => x.PettyCashId == @Encryption.Decrypt(Id)).Select(u => u.AppUserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
 

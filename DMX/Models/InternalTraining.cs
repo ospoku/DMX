@@ -13,6 +13,6 @@ namespace DMX.Models
         public DateTime Date { get; set; }
 
         public string Description { get; set; }
-        public ICollection<Attendance> Attendances { get; set; }
+        public ICollection<InternalTrainingAttendance> Attendances { get; set; }
     }
 }

@@ -64,7 +64,7 @@ namespace DMX.Controllers
                 Date = addExcuseDutyVM.Date,
                 DateofDischarge = addExcuseDutyVM.DateofDischarge,
                 ExcuseDays = addExcuseDutyVM.ExcuseDays,
-                Name = addExcuseDutyVM.Name,
+          
                 OperationDiagnosis = addExcuseDutyVM.OperationDiagnosis,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,
@@ -103,7 +103,7 @@ namespace DMX.Controllers
             ExcuseDuty updateThisExcuseDuty = dcx.ExcuseDuties.Where(e => e.Id == @Encryption.Decrypt(Id)).Select(e => e).FirstOrDefault();
 
 
-            updateThisExcuseDuty.Name = editExcuseDutyVM.Name;
+           
             updateThisExcuseDuty.DateofDischarge = editExcuseDutyVM.DateofDischarge;
             updateThisExcuseDuty.ExcuseDays = editExcuseDutyVM.ExcuseDays;
 

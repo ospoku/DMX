@@ -22,7 +22,7 @@ namespace DMX.ViewComponents
             DetailMemoVM detailMemoVM = new()
             {
                 Content = memoDetail.Content,
-                From = memoDetail.Sender,
+              
                 Title = memoDetail.Title,
                 Recipient = memoDetail.Recipient,
 

@@ -21,9 +21,7 @@ public readonly XContext dcx = dContext;
                 {
 
                     ReferenceNumber = addTravelRequestVM.ReferenceNumber,
-                    Name = addTravelRequestVM.Name,
-                    RankId = addTravelRequestVM.RankId,
-                    DepartmentId = addTravelRequestVM.DepartmentId,
+                 
                     ConferenceFee = addTravelRequestVM.ConferenceFee,
                     DepartureDate = addTravelRequestVM.DepartureDate,
                     TransportExpenses = addTravelRequestVM.TransportExpenses,

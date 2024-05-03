@@ -10,9 +10,7 @@ namespace DMX.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string TravelRequestId { get; set; }
         public string ReferenceNumber { get; set; }
-        public string Name { get; set; }
-        public string RankId { get; set; }
-        public string DepartmentId { get; set; }
+      
         [Precision(10, 4)]
         public decimal ConferenceFee { get; set; }
         public DateTime DepartureDate { get; set; }
@@ -26,7 +24,7 @@ namespace DMX.Models
         public decimal AmountDue { get; set; }
         public string PurposeofJourney { get; set; }
     
-        public virtual ICollection<AppUser> ApplicationUsers { get; set; }
+      
         public virtual ICollection<TravelRequestComment>Comments { get; set; }  
        
     }

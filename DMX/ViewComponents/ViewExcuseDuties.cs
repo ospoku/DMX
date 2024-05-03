@@ -13,7 +13,7 @@ namespace DMX.ViewComponents
             var lList = dcx.ExcuseDuties.Where(t => t.IsDeleted == false).Select(t => new ViewExcuseDutiesVM
             {
 
-                Name=t.Name,
+               
                 ExcuseDutyId = t.Id,
                 Date = t.Date,
                 DateofDischarge = t.DateofDischarge,

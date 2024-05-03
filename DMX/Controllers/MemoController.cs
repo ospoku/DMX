@@ -93,7 +93,7 @@ namespace DMX.Controllers
             {
                 Content = addMemoVM.Content,
                 Recipient = addMemoVM.Receipient,
-                Sender = addMemoVM.Sender,
+              
                 Title = addMemoVM.Title,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,

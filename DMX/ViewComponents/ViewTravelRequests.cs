@@ -12,7 +12,7 @@ namespace DMX.ViewComponents
         {
             var lList = dcx.TravelRequests.Where(t => t.IsDeleted == false).Select(t => new ViewTravelRequestsVM
             {
-                Name = t.Name,
+              
               
          
 

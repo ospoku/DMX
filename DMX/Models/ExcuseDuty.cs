@@ -8,7 +8,7 @@ namespace DMX.Models
     {[Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public string Name { get; set; }
+       
         public DateTime Date { get; set; }
         public DateTime DateofDischarge { get; set; }
         public string OperationDiagnosis { get; set; }

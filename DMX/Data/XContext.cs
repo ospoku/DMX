@@ -8,25 +8,14 @@ namespace DMX.Data
 {
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
     {
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-            builder.SeedRoles(builder);
-        }
-        public static void SeedRoles(ModelBuilder builder)
-        {
-            builder.Entity<AppRole>().HasData(
 
-                new AppRole()
-                
-                { Name = "Officer",Description="Officer Role", Rolename="Officer role"});
-        }
         public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
         public DbSet<LetterComment> LetterComments { get; set; }
         public DbSet<ServiceRequestComment> ServiceRequestComments { get; set; }    
         public DbSet<Leave> Leaves { get; set; }
+        public DbSet<DeceasedType> DeceasedTypes { get; set; }
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Memo> Memos { get; set; }

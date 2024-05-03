@@ -19,7 +19,11 @@
     <link href="~/ospapps/data.css" rel="stylesheet" type="text/css" />
     <link href="~/ospapps/ospapps.css" rel="stylesheet" type="text/css" />
    <!-- Custom styles for this template-->
+
+   <link href="~/ospapps/pillsTab.css" rel="stylesheet" type="text/css"/>
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/ospapps/select2.css" rel="stylesheet" type="text/css"/>
+    <link href="~/ospapps/radioButton.css" rel="stylesheet" type="text/css"/>
     <link href="~/ospapps/dropdownCustomItem.css" rel="stylesheet" type="text/css"/>
     <link href="~/ospapps/floatingLabel.css" rel="stylesheet" type="text/css"/>
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -119,8 +123,8 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-bs-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">System</h6>
-                        <a class="collapse-item" href="login.html">Preferences</a>
-                        <a class="collapse-item" href="register.html">Setup</a>
+                        <a class="collapse-item" asp-action="Preference" asp-controller="Settings">Preferences</a>
+                        <a class="collapse-item" asp-action="SystemSetup" asp-controller="Settings">Setup</a>
                 
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Roles & Permissions</h6>

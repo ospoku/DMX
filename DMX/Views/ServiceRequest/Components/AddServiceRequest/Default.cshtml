@@ -3,14 +3,14 @@
 
 
 
-<div class="modal fade" id="AddServiceRequest" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="AddServiceRequest" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
 
                 <h6>Add Service Request</h6>
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
 
@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="did-floating-label-content">
-                        <select type="text" id="modalDept" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select  id="modalDept" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Department</label>
                     </div>
 
@@ -44,16 +44,13 @@
                         <input type="text" asp-for="@Model.ActionToBeTaken" class="did-floating-input" placeholder=""/>
                         <label class="did-floating-label">Action to be taken</label>
                     </div>
-
-
-
                         <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.FaultInspectedBy"  class="did-floating-input" placeholder="">
                         <label class="did-floating-label">Fault Inspected By</label>
                         </div>
                                             
                         <div class="did-floating-label-content">
-                            <select  id="selectUsers" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            <select  id="selectUsers" class="did-floating-select" required asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                             <label class="did-floating-label">Select User</label>
                         </div>
 
@@ -80,9 +77,10 @@
 </div>
 </div>
 <script>
-    $(document).ready(function (){
-        $("#selectUsers").select2({
-            dropdownParent: $("#AddServiceRequest")});
+    $(document).ready(function ()
+{
+        $("#selectUsers").select2({dropdownParent: $("#AddServiceRequest")});
+
     $("#modalDept").select2({dropdownParent: $("#AddServiceRequest")});
-    }))
+    });
 </script>

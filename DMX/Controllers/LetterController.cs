@@ -23,7 +23,8 @@ namespace DMX.Controllers
         public IActionResult AddLetter() => ViewComponent("AddLetter");
        
         [HttpPost]
-        public async Task<IActionResult> AddLetter(AddLetterVM addDocumentVM, List<IFormFile> formFiles)
+        [RequestFormLimits(MultipartBodyLengthLimit =104857600)]
+        public async Task<IActionResult> AddLetter(AddLetterVM addDocumentVM, IFormFile formFile)
         {
 
 
@@ -34,22 +35,23 @@ namespace DMX.Controllers
                 DateReceived = addDocumentVM.ReceiptDate,
                 DocumentDate = addDocumentVM.DocumentDate,
                 ReferenceNumber = addDocumentVM.ReferenceNumber,
-                IsDeleted = false,
+           
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,
                 AdditionalNotes=addDocumentVM.AdditionalNotes,
 
             };
         
-        
+
             using (var memoryStream = new MemoryStream())
             {
-                foreach (var formFile in formFiles)
-                {
 
-                    await formFile.CopyToAsync(memoryStream);
-                }
+
+                await formFile.CopyToAsync(memoryStream);
+
+
                 addThisDocument.PDF = memoryStream.ToArray();
+
             }
             dcx.Letters.Add(addThisDocument);
 

@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+string? settingsMail = builder.Configuration["Settings:AppEmail"];
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 builder.Services.AddAuthentication();
@@ -72,8 +72,8 @@ app.MapControllerRoute(
 var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<XContext>();
 db.Database.EnsureCreated();
+
 var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-init.RoleCreation(scope.ServiceProvider).Wait();
-init.UserCreation(scope.ServiceProvider).Wait();
+init.InitializeAsync().Wait();
 
 app.Run();

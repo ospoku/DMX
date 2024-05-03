@@ -29,7 +29,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddPatient() => ViewComponent("AddPatient");
         [HttpPost]
-        public async Task<IActionResult> AddPatient(AddPatientVM addPatientVM)
+        public async Task<IActionResult> AddPatient(AddMorgueVM addMorgueVM)
         {
             if (!ModelState.IsValid)
             {
@@ -42,10 +42,10 @@ namespace DMX.Controllers
             {
                 Patient addThisPatient = new()
                 {
-                    Date = addPatientVM.Date,
-                    FinalDiagnoses = addPatientVM.FinalDiagnoses,
+                    Date = addMorgueVM.Date,
+                    FinalDiagnoses = addMorgueVM.FinalDiagnoses,
 
-                    WardInCharge = addPatientVM.WardInCharge,
+                    WardInCharge = addMorgueVM.WardInCharge,
 
                     IsDeleted = false,
                     CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,

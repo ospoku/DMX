@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using DMX.ViewModels;
 using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using Microsoft.AspNetCore.Authorization;
 
@@ -25,12 +26,11 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserVM addUserVM)
         {
-            if (ModelState.IsValid)
-            {
                 AppUser addThisUser = new()
                 {
 
                     UserName = addUserVM.Username,
+                    Email=addUserVM.Email,
                 };
                 IdentityResult result = await usm.CreateAsync(addThisUser, addUserVM.Password);
                 if (result.Succeeded)
@@ -47,12 +47,9 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewUsers");
                 }
 
-            }
+            
 
-            else
-            {
-                ViewBag.Message = "User creation error";
-            }
+  
 
             return RedirectToAction("AddUser");
         }
@@ -175,7 +172,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> ManageUserroles(string Id, ManageUserRolesVM model)
         {
-            var user = await usm.FindByIdAsync(Id);
+            var user = await usm.FindByIdAsync(@Encryption.Decrypt(Id));
             var roles = await usm.GetRolesAsync(user);
             var result = await usm.RemoveFromRolesAsync(user, roles);
             result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));

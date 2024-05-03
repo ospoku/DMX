@@ -22,6 +22,10 @@
                         <label class="did-floating-label">Workshop Title</label>
                     </div>
                     <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Description" class="did-floating-input" placeholder="" required />
+                        <label class="did-floating-label">Workshop Description</label>
+                    </div>
+                    <div class="did-floating-label-content">
                         <input type="date" asp-for="@Model.TrainingDate" class="did-floating-input" asp-format="dd-MMM-yyyy" placeholder="" required/>
                         <label class="did-floating-label">Date</label>
                     </div>
@@ -37,10 +41,7 @@
                         <input type="date" asp-for="@Model.ReturnDate" class="did-floating-input" asp-format="dd-MMM-yyyy" placeholder="" required />
                         <label class="did-floating-label">Return Date</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description"  class="did-floating-input" placeholder="" required/>
-                        <label class="did-floating-label">Meeting Description</label>
-                    </div>
+                    
 
                     <div class="did-floating-label-content">
 

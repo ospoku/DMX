@@ -1,48 +1,54 @@
 ﻿using DMX.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace DMX.Data
 {
-    public class DBInitializer(XContext dContext)
+    public class DBInitializer(XContext dContext, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
     {
         public readonly XContext dcx = dContext;
-
-        public async Task RoleCreation(IServiceProvider serviceProvider)
+        public readonly RoleManager<AppRole> rol = roleManager;
+        public readonly UserManager<AppUser> usm = userManager;
+        public async Task InitializeAsync()
         {
-            var rol = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
+            if (dcx.Database.GetPendingMigrations().Any())
+            {
+                dcx.Database.Migrate();
+            }
+
+
+
             if (!rol.Roles.Any())
             {
-                await rol.CreateAsync(new AppRole() { Name = "Basic", Rolename = "Basic", Description="Role for basic users" });
+                await rol.CreateAsync(new AppRole() { Name = "Basic", Rolename = "Basic", Description = "Role for basic users" });
                 await rol.CreateAsync(new AppRole() { Name = "Manager", Rolename = "Manager", Description = "Role for managers" });
                 await rol.CreateAsync(new AppRole() { Name = "SuperAdmin", Rolename = "SuperAdmin", Description = "Role for superadmin" });
                 await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin", Description = "Role for admin users" });
             }
-        }
 
-
-        private readonly List<Claim> claimlist =
+            List<Claim> claimlist =
             [
 
                 new(ClaimTypes.Name,"SuperAdmin"),
                 new Claim(ClaimTypes.Email,"oseipoku@gmail.com"),
                 new Claim(ClaimTypes.Role,"SuperAdmin"),
-                
+
 
             ];
-        private readonly List<Claim> claimlist2 =
-            [
 
-                new Claim(ClaimTypes.Name,"Admin"),
+            List<Claim> claimlist2 =
+                 [
+
+                     new Claim(ClaimTypes.Name,"Admin"),
                 new Claim(ClaimTypes.Email,"oseipoku@gmail.com"),
                 new Claim(ClaimTypes.Role,"Admin"),
 
 
             ];
-        IdentityResult identityResult;
-        public async Task UserCreation(IServiceProvider serviceProvider)
-        {
-            var usm = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            IdentityResult identityResult;
+
+
             if (await usm.FindByNameAsync("SuperAdmin") == null)
             {
                 AppUser superUser = new()
@@ -85,11 +91,12 @@ namespace DMX.Data
                 };
 
             };
-
-
-
         }
     }
-};
+}
+
+
+
+  
 
 

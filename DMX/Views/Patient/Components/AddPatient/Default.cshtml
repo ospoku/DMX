@@ -1,0 +1,94 @@
+﻿
+@model DMX.ViewModels.AddMorgueVM;
+
+
+<div class="modal fade" id="AddPatient" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Patient</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+
+             @using (Html.BeginForm("AddPatient", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Deceased" class="did-floating-input" placeholder=""/>
+                        <label class="did-floating-label">Deceased</label>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="did-floating-label-content">
+                                <input type="text" asp-for="@Model.FolderNo" class="did-floating-input" placeholder=""/>
+                                <label class="did-floating-label">Folder No</label>
+                            </div>
+                        </div>
+
+
+                        <div class="col">
+                            <div class="did-floating-label-content">
+                                <input type="text" asp-for="@Model.TagNo" class="did-floating-input" placeholder=""/>
+                                <label class="did-floating-label">Tag No</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="btn-group-sm">
+                         @foreach(var dead in Model.DeceasedTypes )
+                         {
+                               
+                                <label class=" btn btn-sm btn-outline-primary">
+
+                                    <input type="radio" asp-for="@Model.DeceasedTypeId" required class="option-input radio" value="dead" id="Dead@(dead)" />
+                                    @dead.Text
+                                </label>
+
+                         }
+                  
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Depositor" class="did-floating-input" placeholder="">
+                        <label class="did-floating-label">Depositor</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.DepositorAddress" class="did-floating-input" placeholder="">
+                        <label class="did-floating-label">Depositor Address</label>
+                    </div>
+
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Description"  class="did-floating-input" placeholder=""/>
+                        <label class="did-floating-label"> Description</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}"/>
+
+                        <label class="did-floating-label">Date</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <select  id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" required></select>
+                        <label class="did-floating-label">Select Users</label>
+                    </div>
+                    
+
+
+                        <textarea class=" form-control" asp-for="@Model.Description" type="text" placeholder="Additional Information"></textarea>
+
+
+                 
+                </div>
+
+
+                <div class="modal-footer"><button class="btn btn-block btn-primary">Save</button></div>
+            }
+        </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () { $('#selectPatientUser').select2({ dropdownParent: $('#AddPatient') }) });
+</script>

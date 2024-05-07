@@ -239,9 +239,9 @@ namespace DMX.Controllers
             return View("Users");
         }
 
-        public IActionResult Users()
+        public IActionResult ViewPermissions()
         {
-            return ViewComponent("Users");
+            return ViewComponent("ViewPermissions");
         }
         public IActionResult ManageUserRoles(string userId)
         {
@@ -321,9 +321,9 @@ namespace DMX.Controllers
             return RedirectToAction("ViewUsers");
         }
         [HttpGet]
-        public IActionResult Roles()
+        public IActionResult ManagePermissions(string Id)
         {
-            return ViewComponent("Roles");
+            return ViewComponent("ManagePermissions",Id);
         }
     }
 }

@@ -77,7 +77,8 @@
                         <a class="collapse-item" asp-action="ViewMemos" asp-controller="Memo">Memos</a>
                         <a class="collapse-item" asp-action="ViewExcuseDuties" asp-controller="ExcuseDuty">Excuse Duty</a>
                         <a class="collapse-item" asp-action="ViewPettyCash" asp-controller="PettyCash">Petty Cash</a>
-                        <a class="collapse-item" asp-action="ViewTravelRequests" asp-controller="TravelRequest">Travel Request</a>
+                        <a class="collapse-item" asp-action="ViewTravelRequests" asp-controller="TravelRequest">Travel Request
+                        </a>
                         <a class="collapse-item" asp-action="ViewServiceRequests" asp-controller="ServiceRequest">Service Request</a>
                         <a class="collapse-item" asp-action="ViewSickReports" asp-controller="SickReport">Sick Report</a>
                         <a class="collapse-item" asp-action="ViewPatients" asp-controller="Patient">Morgue</a>
@@ -85,7 +86,6 @@
                     </div>
                 </div>
             </li>
-
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseUtilities"
@@ -125,16 +125,17 @@
                         <h6 class="collapse-header">System</h6>
                         <a class="collapse-item" asp-action="Preference" asp-controller="Settings">Preferences</a>
                         <a class="collapse-item" asp-action="SystemSetup" asp-controller="Settings">Setup</a>
-                
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Roles & Permissions</h6>
                         <a class="collapse-item" asp-action="ViewRoles" asp-controller="Account">Roles</a>
                         <a class="collapse-item" asp-action="ViewUserRoles" asp-controller="Account">User Roles</a> 
-                        <a class="collapse-item" asp-action="ViewUserRoles" asp-controller="Account">Role Permissions</a>
+                        <a class="collapse-item" asp-action="ViewPermissions" asp-controller="Permission">Permissions</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Account</h6>
                         <a class="collapse-item" asp-action="ViewUsers" asp-controller="Account">Users</a>
-                 
+                        <a class="collapse-item">
+                            
+                        </a>
                     </div>
                 </div>
             </li>

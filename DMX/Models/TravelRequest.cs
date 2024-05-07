@@ -12,17 +12,17 @@ namespace DMX.Models
         public string ReferenceNumber { get; set; }
       
         [Precision(10, 4)]
-        public decimal ConferenceFee { get; set; }
+        public decimal? ConferenceFee { get; set; }
         public DateTime DepartureDate { get; set; }
         [Precision(10, 4)]
         public decimal TransportExpenses { get; set; }
         public int NightAbsent { get; set; }
         public DateTime DateofReturn { get; set; }
-        public int Rate { get; set; }
+       
         public string FuelClaim { get; set; }
         [Precision(10, 4)]
         public decimal AmountDue { get; set; }
-        public string PurposeofJourney { get; set; }
+        public string Purpose { get; set; }
     
       
         public virtual ICollection<TravelRequestComment>Comments { get; set; }  

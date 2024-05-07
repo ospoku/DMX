@@ -6,17 +6,16 @@ namespace DMX.ViewModels
     {
         
         public string ReferenceNumber { get; set; }
-        public string Name { get; set; }
-        public string RankId { get; set; }
-        public SelectList RankList { get; set; }
-        public SelectList DeptList { get; set; }
-        public string DepartmentId { get; set; }
+      
+    
+        public SelectList TravelTypes { get; set; }
+        public string TravelTypeId { get; set; }
         public decimal ConferenceFee { get; set; }
         public DateTime DepartureDate { get; set; }
         public decimal TransportExpenses { get; set; }
         public int NightAbsent { get; set; }
         public DateTime DateofReturn { get; set; }
-        public int Rate { get; set; }
+       
         public string FuelClaim { get; set; }
         public decimal AmountDue { get; set; }
         public string PurposeofJourney { get; set; }

@@ -25,13 +25,13 @@ public readonly XContext dcx = dContext;
                     ConferenceFee = addTravelRequestVM.ConferenceFee,
                     DepartureDate = addTravelRequestVM.DepartureDate,
                     TransportExpenses = addTravelRequestVM.TransportExpenses,
-                    NightAbsent = addTravelRequestVM.NightAbsent,
+                   
                     DateofReturn = addTravelRequestVM.DateofReturn,
 
-                    Rate = addTravelRequestVM.Rate,
+                
                     FuelClaim = addTravelRequestVM.FuelClaim,
                     AmountDue = addTravelRequestVM.AmountDue,
-                    PurposeofJourney = addTravelRequestVM.PurposeofJourney,
+                    Purpose = addTravelRequestVM.PurposeofJourney,
 
 
                     IsDeleted = false,

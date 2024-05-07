@@ -24,6 +24,7 @@ namespace DMX.Data
         public DbSet<ServiceRequest> ServiceRequests { get; set; }
         public DbSet<PettyCashAssignment> PettyCashAssignments { get; set; }
         public DbSet<TravelRequestAssignment> TravelRequestAssignments { get; set; }
+        public DbSet<TravelType> TravelTypes { get; set; }
         public DbSet<TravelRequest> TravelRequests { get; set; }
         public DbSet<SickReport> SickReports { get; set; }
         public DbSet<ExternalTraining> ExternalTrainings { get; set; }  

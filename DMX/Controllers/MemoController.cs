@@ -114,14 +114,15 @@ namespace DMX.Controllers
             {
                 notyf.Success("Memo successfully saved", 5);
 
-
+                return RedirectToAction("ViewMemos");
             }
             else
             {
                 notyf.Error("Error, Memo could not be saved!!!", 5);
+                return RedirectToAction("ViewMemos");
             }
 
-            return ViewComponent("ViewMemos");
+          
         }
         [HttpGet]
         public IActionResult EditMemo(string Id)

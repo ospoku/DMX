@@ -21,7 +21,7 @@
             <div class="table-responsive">
             <table class="table dataTables_wrapper">
                 <thead>
-                    <tr>
+                    <tr><th>SN</th>
                         <th>Title</th>
                         <th>Sender</th>
                         <th>Recipient</th>  
@@ -33,6 +33,7 @@
                       @foreach (var Memo in Model)
                 {
                     <tr>
+                        <td></td>
                         <td> @Memo.Title</td>
                         
                         <td>@Memo.Sender</td>

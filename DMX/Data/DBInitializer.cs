@@ -91,6 +91,18 @@ namespace DMX.Data
                 };
 
             };
+            if (dcx.TravelTypes.AnyAsync() == null)
+            {
+                TravelType travelType = new()
+                {
+                    Name = "Conference",
+                    Description = "Name for conference types of travels",
+                    Code = "CON",
+
+                };
+                await dcx.TravelTypes.AddAsync(travelType);
+                dcx.SaveChanges();
+            }
         }
     }
 }

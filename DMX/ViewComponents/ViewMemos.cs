@@ -24,7 +24,7 @@ namespace DMX.ViewComponents
              
                 Recipient = a.Recipient,
                 Title = a.Title,
-                //Assignees = string.Join(",", from p in dcx.Assignments where p.MemoId == a.MemoId select p.ApplicationUser.UserName.ToString()),
+                Sender = user,
 
 
             }).ToList();

@@ -89,6 +89,8 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVM)
         {
+            
+
             Memo addThisMemo = new()
             {
                 Content = addMemoVM.Content,

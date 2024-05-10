@@ -18,8 +18,10 @@
 
             @using (Html.BeginForm("AddTravelRequest", "TravelRequest", FormMethod.Post))
             {
-                    <div class="btn-group-sm">
-                        @foreach (var travel in Model.TravelTypes)
+               <fieldset class=" rounded p-1 form-group" style="border: 1px Solid #3d85d8;">
+                                <legend class="float-none w-auto px-1" style="color:#1e4c82;font-size:13px">Select Travel Type</legend>
+                       <div class="btn-group-sm">
+                                @foreach (var travel in Model.TravelTypes)
                         {
 
                             <label class=" btn btn-sm btn-outline-primary">
@@ -31,7 +33,9 @@
                         }
 
                     </div>
-
+                    </fieldset>
+                    <div class="row">
+                        <div class="col">
                     <div class="did-floating-label-content">
 
 
@@ -39,18 +43,23 @@
                         <label class="did-floating-label">Departure Date</label>
 
                     </div>
+                    </div>
+                    <div class="col">
 
+                            <div class="did-floating-label-content">
+
+
+                                <input type="date" asp-for="@Model.DepartureDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
+                                <label class="did-floating-label">Departure Date</label>
+
+                            </div>
+                            </div>
+                            <div class="col">
                         <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.NightAbsent"  class="did-floating-input" required/>
                             <label class="did-floating-label">Night Absent</label>
                         </div>
-                    
-                                <div class="did-floating-label-content">
-
-
-                                <input type="date" asp-for="@Model.DepartureDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required/>
-                                <label class="did-floating-label">Departure Date</label>
-
+                    </div>
                             </div>
                      
                         <div class="did-floating-label-content">

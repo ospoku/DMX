@@ -24,10 +24,10 @@ namespace DMX.ViewComponents
                 DocumentDate = d.DocumentDate,
                 ReferenceNumber = d.ReferenceNumber,
                 ReceiptDate = d.DateReceived,
-               
+               CreatedDate = d.CreatedDate
                
 
-            }).ToList();
+            }).OrderBy(d=>d.CreatedDate).ToList();
 
            
             return View(documentList);

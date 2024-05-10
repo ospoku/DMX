@@ -4,7 +4,7 @@ using DMX.Data;
 
 namespace DMX.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class SettingsController(XContext context) : Controller
     {
         public readonly XContext dcx = context;

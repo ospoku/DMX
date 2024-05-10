@@ -5,19 +5,14 @@ using System.Security.Claims;
 
 namespace DMX.Data
 {
-    public class DBInitializer(XContext dContext, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
+    public  class DBInitializer(XContext dContext, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
     {
         public readonly XContext dcx = dContext;
         public readonly RoleManager<AppRole> rol = roleManager;
         public readonly UserManager<AppUser> usm = userManager;
-        public async Task InitializeAsync()
+        public async Task  Initialize()
         {
-            if (dcx.Database.GetPendingMigrations().Any())
-            {
-                dcx.Database.Migrate();
-            }
-
-
+            dcx.Database.EnsureCreated();
 
             if (!rol.Roles.Any())
             {

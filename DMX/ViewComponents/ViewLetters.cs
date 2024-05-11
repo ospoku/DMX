@@ -27,7 +27,7 @@ namespace DMX.ViewComponents
                CreatedDate = d.CreatedDate
                
 
-            }).OrderBy(d=>d.CreatedDate).ToList();
+            }).OrderByDescending(d=>d.CreatedDate).ToList();
 
            
             return View(documentList);

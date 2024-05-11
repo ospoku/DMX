@@ -23,39 +23,9 @@ namespace DMX.Controllers
 
         [HttpGet]
         public IActionResult AddInternalTraining() => ViewComponent("AddInternalTraining");
-        [HttpPost]
-        public async Task< IActionResult> AddExternalTraining(AddExternalTrainingVM addExternalTrainingVM)
-        {
-            ExternalTraining addThisTraining = new()
-            {
-                WorkshopTitle = addExternalTrainingVM.WorkshopTitle,
-                NumberofDays = addExternalTrainingVM.NumberofDays,
-                DepartureDate = addExternalTrainingVM.DepartureDate,
-                ReturnDate = addExternalTrainingVM.ReturnDate,
-                ProposedTrainingDate = addExternalTrainingVM.TrainingDate,
-               
-                Description = addExternalTrainingVM.Description,
-            };
-            dcx.ExternalTrainings.Add(addThisTraining);
-
-            await dcx.SaveChangesAsync();
-            if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
-            {
-                notyf.Success("Client successfully created.");
-                return RedirectToAction("ViewMeetings");
-
-            }
-            else
-            {
-                notyf.Error("Member creation error!!! Please try again");
-            }
-            return RedirectToAction("AddMeeting");
-        }
+       
       
 
-        [HttpGet]
-        public IActionResult AddExternalTraining()
-         => ViewComponent("AddExternalTraining");
         public IActionResult ViewAttendance()
     => ViewComponent("ViewAttendances");
         [HttpGet]

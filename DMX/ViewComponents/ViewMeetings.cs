@@ -21,13 +21,14 @@ namespace DMX.ViewComponents
                 MeetingId = m.MeetingId,
                 Description = m.Description,
                 Name = m.Name,
-               
-               
-               
 
-            }).ToList();
 
-           
+
+
+                CreatedDate = m.CreatedDate,
+            }).OrderByDescending(m => m.CreatedDate).ToList();
+
+
             return View(meetingList);
         }
     }

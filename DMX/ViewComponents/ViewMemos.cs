@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 using DMX.Data;
-using DMX.Models;
 using DMX.ViewModels;
 
 namespace DMX.ViewComponents
@@ -9,7 +7,7 @@ namespace DMX.ViewComponents
     public class ViewMemos(XContext dContext, IHttpContextAccessor contextAccessor) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-        public readonly UserManager<AppUser> usm;
+        
         private readonly HttpContextAccessor accessor = (HttpContextAccessor)contextAccessor;
 
         public IViewComponentResult Invoke()
@@ -20,14 +18,15 @@ namespace DMX.ViewComponents
                 MemoId = a.MemoId,
 
                 Content = a.Content,
-
+                ReferenceNumber=a.ReferenceId,
              
                 Recipient = a.Recipient,
                 Title = a.Title,
                 Sender = user,
+                CreatedDate = a.CreatedDate,
 
 
-            }).ToList();
+            }).OrderByDescending(a=>a.CreatedDate).ToList();
             return View(memoList);
         }
     }

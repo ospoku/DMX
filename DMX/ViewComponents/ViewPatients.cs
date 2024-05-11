@@ -11,14 +11,15 @@ namespace DMX.ViewComponents
         {
             var pList = dcx.Patients.Where(a => a.IsDeleted == false).Select(a => new ViewPatientsVM
             {
-              
-               
 
 
 
 
 
-            }).ToList();
+
+
+                CreatedDate = a.CreatedDate,
+            }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(pList);
         }
     }

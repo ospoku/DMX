@@ -19,7 +19,8 @@ namespace DMX.ViewComponents
                 Date = a.Date,
                 Description= a.Description,
                 Purpose = a.Purpose,
-            }).ToList();
+                CreatedDate = a.CreatedDate,
+            }).OrderByDescending(a => a.CreatedDate).ToList();
             return View(pcList);
         }
     }

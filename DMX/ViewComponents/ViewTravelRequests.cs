@@ -12,15 +12,16 @@ namespace DMX.ViewComponents
         {
             var lList = dcx.TravelRequests.Where(t => t.IsDeleted == false).Select(t => new ViewTravelRequestsVM
             {
-              
-              
-         
 
 
 
 
 
-            }).ToList();
+
+
+
+                CreatedDate = t.CreatedDate,
+            }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(lList);
         }
     }

@@ -15,7 +15,7 @@ namespace DMX.ViewModels
         public IFormFile UploadFile { get; set; }
         public string AdditionalNotes { get; set; }
         public string Assignees { get; set; }
-
+        
         public string[] SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
         public string LetterId { get; set; }

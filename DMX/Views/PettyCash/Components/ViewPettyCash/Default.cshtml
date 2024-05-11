@@ -23,6 +23,8 @@
                 <thead>
                     <tr>
                        
+                            <th>SN</th>
+                            <th>RefN</th>
                             <th>Date</th>
                     <th>Name</th>
                     <th>Purpose</th>
@@ -37,7 +39,9 @@
                 <tbody>
                       @foreach (var petty in Model)
                 {
-                    <tr>
+                        <tr>
+                            <td></td>
+                        <td>@petty.ReferenceNumber</td>
                         <td>@petty.Date.ToString("dd-MMM-yyyy")</td>
                           <td>@petty.Name</td>
                         <td>@petty.Purpose </td>

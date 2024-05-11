@@ -37,6 +37,9 @@ namespace DMX.Controllers
 
                 return ViewComponent("AddPatient");
             }
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
 
             if (ModelState.IsValid)
             {
@@ -44,7 +47,7 @@ namespace DMX.Controllers
                 {
                     Date = addMorgueVM.Date,
                     FinalDiagnoses = addMorgueVM.FinalDiagnoses,
-
+                    ReferenceNumber=RefN,
                     WardInCharge = addMorgueVM.WardInCharge,
 
                     IsDeleted = false,

@@ -14,12 +14,13 @@ namespace DMX.ViewComponents
             {
 
              SickReportId=t.SickReportId
+,
 
 
 
 
-
-    }).ToList();
+   CreatedDate = t.CreatedDate,
+            }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(lList);
         }
     }

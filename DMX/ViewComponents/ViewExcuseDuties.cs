@@ -19,7 +19,8 @@ namespace DMX.ViewComponents
                 DateofDischarge = t.DateofDischarge,
                 ExcuseDays = t.ExcuseDays,
                 OperationDiagnosis = t.OperationDiagnosis,
-    }).ToList();
+                CreatedDate=t.CreatedDate,
+    }).OrderByDescending(t=>t.CreatedDate).ToList();
             return View(lList);
         }
     }

@@ -11,7 +11,6 @@ namespace DMX.ViewComponents
         {
             var sList = dcx.ServiceRequests.Where(s => s.IsDeleted == false).Select(s => new ViewServiceRequestsVM
             {
-              
 
 
 
@@ -19,7 +18,9 @@ namespace DMX.ViewComponents
 
 
 
-            }).ToList();
+
+                CreatedDate = s.CreatedDate,
+            }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(sList);
         }
     }

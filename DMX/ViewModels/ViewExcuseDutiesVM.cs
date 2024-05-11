@@ -8,5 +8,6 @@
         public DateTime DateofDischarge { get; set; }
         public string OperationDiagnosis { get; set; }
         public string ExcuseDays { get; set; }
+        public  DateTime? CreatedDate { get; set; }
     }
 }

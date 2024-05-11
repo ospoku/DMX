@@ -9,11 +9,11 @@ namespace DMX
     {[Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string PatientId { get; set; }
-        public string DocumentName { get; set; }
+        
         public string FinalDiagnoses { get; set; }
         public string WardInCharge { get; set; }
         public DateTime Date { get; set; }
-        public virtual ICollection<AppUser> ApplicationUsers { get; set; }
+        public string ReferenceNumber { get; set; }
     public virtual ICollection<PatientComment>PatientComments { get; set; } 
     }
 }

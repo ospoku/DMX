@@ -17,5 +17,6 @@
         public string FuelClaim { get; set; }
         public decimal AmountDue { get; set; }
         public string PurposeofJourney { get; set; }
+        public DateTime? CreatedDate { get; internal set; }
     }
 }

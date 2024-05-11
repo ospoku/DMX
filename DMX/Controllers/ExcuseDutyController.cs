@@ -59,12 +59,15 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddExcuseDuty(AddExcuseDutyVM addExcuseDutyVM)
         {
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "E" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
             ExcuseDuty addThisExcuseDuty = new()
             {
                 Date = addExcuseDutyVM.Date,
                 DateofDischarge = addExcuseDutyVM.DateofDischarge,
                 ExcuseDays = addExcuseDutyVM.ExcuseDays,
-          
+                ReferenceNumber = RefN,
                 OperationDiagnosis = addExcuseDutyVM.OperationDiagnosis,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,

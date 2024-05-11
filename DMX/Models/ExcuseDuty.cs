@@ -14,7 +14,7 @@ namespace DMX.Models
         public string OperationDiagnosis { get; set; }
         public string ExcuseDays { get; set; }
       
-        
+        public string ReferenceNumber { get; set; }
 
     }
 }

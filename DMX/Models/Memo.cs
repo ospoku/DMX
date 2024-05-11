@@ -9,7 +9,7 @@ namespace DMX.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string MemoId { get; set; }
-        public string ReferenceIdd { get; set; }
+        public string ReferenceId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         

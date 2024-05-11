@@ -15,7 +15,8 @@
             public string FaultInspectedBy { get; set; }
 
             public string ActionToBeTaken { get; set; }
-        }
+        public object CreatedDate { get; internal set; }
+    }
     }
 
 

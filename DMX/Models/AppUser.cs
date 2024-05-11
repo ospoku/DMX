@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMX.Models
 {
@@ -18,8 +22,12 @@ namespace DMX.Models
 
     
         public bool IsDeleted { get; set; }
-   
-       
+
+        [Precision(10,4)]
+        public decimal Rate { get; set; }
+
+        public string DepartmentId { get; set; }
+        public string RankId { get; set; }
     }
 
     

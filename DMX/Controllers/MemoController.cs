@@ -88,15 +88,16 @@ namespace DMX.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVM)
-        {
-            
+        { var rand = new Random();
+            int digit = 5;
+            string RefN = "M" + rand.Next((int)Math.Pow(10,digit-1),(int)Math.Pow(10,digit));
 
             Memo addThisMemo = new()
             {
                 Content = addMemoVM.Content,
                 Recipient = addMemoVM.Receipient,
-              
-                Title = addMemoVM.Title,
+                ReferenceId = RefN,
+                Title =addMemoVM.Title,
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
                 CreatedDate = DateTime.UtcNow,
             };

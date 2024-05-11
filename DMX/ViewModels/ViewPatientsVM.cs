@@ -11,6 +11,6 @@
         public string WardInCharge { get; set; }
         public string FolderNo { get; set; }
         public string FinalDiagnoses { get; set; }
-
+        public object CreatedDate { get; internal set; }
     }
 }

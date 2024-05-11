@@ -16,7 +16,8 @@ namespace DMX.ViewComponents
             var lList = dcx.Leaves.Where(l => l.IsDeleted == false).Select(l => new ViewLeavesVM
             {
                 LeaveId = l.LeaveId,
-            }).ToList();
+                CreatedDate = l.CreatedDate,
+            }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(lList);
         }
     }

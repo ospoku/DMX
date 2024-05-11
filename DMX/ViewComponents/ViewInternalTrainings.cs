@@ -23,11 +23,12 @@ namespace DMX.ViewComponents
               Description = d.Description,  
                
                EventName = d.EventName,
-              
 
-            }).ToList();
 
-           
+                CreatedDate = d.CreatedDate,
+            }).OrderByDescending(t => t.CreatedDate).ToList();
+
+
             return View(trainingList);
         }
     }

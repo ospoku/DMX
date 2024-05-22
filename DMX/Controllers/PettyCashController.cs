@@ -31,9 +31,13 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPettyCash(AddPettyCashVM addPettyCashVM)
         {
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "P" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+
             PettyCash addThisPettyCash = new()
             {
-              
+              ReferenceNumber=RefN,
                 Date = addPettyCashVM.Date,
                 Amount = addPettyCashVM.Amount,
                 Purpose = addPettyCashVM.Purpose,

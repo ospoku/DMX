@@ -109,11 +109,7 @@ namespace DMX.Controllers
         {
             return ViewComponent("ViewUsers");
         }
-        public IActionResult ManageRoles(string userId)
-        {
-
-            return ViewComponent("ManageRoles", userId);
-        }
+      
         [HttpGet]
         public IActionResult Login(LoginVM loginVM)
         {
@@ -164,32 +160,7 @@ namespace DMX.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult ManageUserRoles(string Id)
-        {
-            return ViewComponent("ManageUserRoles", Id);
-        }
-        [HttpPost]
-        public async Task<IActionResult> ManageUserroles(string Id, ManageUserRolesVM model)
-        {
-            var user = await usm.FindByIdAsync(@Encryption.Decrypt(Id));
-            var roles = await usm.GetRolesAsync(user);
-            var result = await usm.RemoveFromRolesAsync(user, roles);
-            result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
-            return RedirectToAction("ViewUserRoles");
-        }
-
-
-        [HttpGet]
-        public IActionResult UserRoles()
-        {
-            return ViewComponent("UserRoles");
-        }
-        [HttpGet]
-        public IActionResult ViewUserRoles()
-        {
-            return ViewComponent("ViewUserRoles");
-        }
+  
         [HttpGet]
         public IActionResult Logout()
         {
@@ -198,23 +169,6 @@ namespace DMX.Controllers
             return RedirectToAction("Login");
         }
 
-        [HttpGet]
-        [Authorize(Roles = "SuperAdmin")]
-        public IActionResult ViewRoles()
-        {
-            return ViewComponent("ViewRoles");
-        }
-
-
-
-        [HttpPost]
-        public async Task<IActionResult> AddRole(string roleName)
-        {
-            if (roleName != null)
-            {
-                await rol.CreateAsync(new  AppRole { Name=roleName});
-            }
-            return RedirectToAction("ViewRoles");
-        }
+    
     }
 }

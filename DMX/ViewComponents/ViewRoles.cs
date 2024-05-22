@@ -16,7 +16,7 @@ namespace DMX.ViewComponents
             var roles = rol.Roles.Where(r => r.IsDeleted == false).Select(r => new RolesVM
             {
                 Name = r.Name,
-               
+               Description=r.Description,
                 Id=r.Id,
 
             }).ToList();

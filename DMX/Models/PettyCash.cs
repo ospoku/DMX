@@ -9,7 +9,7 @@ namespace DMX.Models
     {[Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string PettyCashId { get; set; }
-        public virtual ICollection<AppUser> ApplicationUsers { get; set; }
+        public string ReferenceNumber {  get; set; }    
      
         public string Purpose { get; set; }
         [Precision(10, 4)]

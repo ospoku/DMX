@@ -12,7 +12,7 @@
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
 
-             @using (Html.BeginForm("AddPatient", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+             @using (Html.BeginForm("AddPatient", "Patient", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="modal-body">
                     <div class="did-floating-label-content">
@@ -26,8 +26,6 @@
                                 <label class="did-floating-label">Folder No</label>
                             </div>
                         </div>
-
-
                         <div class="col">
                             <div class="did-floating-label-content">
                                 <input type="text" asp-for="@Model.TagNo" class="did-floating-input" placeholder=""/>
@@ -70,17 +68,12 @@
 
                         <label class="did-floating-label">Date</label>
                     </div>
+                  
+                        <textarea class="did-floating-input" asp-for="@Model.Description"  placeholder="Additional Information"></textarea>
                     <div class="did-floating-label-content">
-                        <select  id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" required></select>
+                        <select id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" required></select>
                         <label class="did-floating-label">Select Users</label>
                     </div>
-                    
-
-
-                        <textarea class=" form-control" asp-for="@Model.Description" type="text" placeholder="Additional Information"></textarea>
-
-
-                 
                 </div>
 
 

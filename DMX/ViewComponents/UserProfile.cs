@@ -1,19 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DMX.Data;
+﻿using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
-using DMX.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewComponents
 {
-    public class EditUser(UserManager<AppUser> userManager, RoleManager<AppRole> rolManager) : ViewComponent
+    public class UserProfile(UserManager<AppUser>userManager):ViewComponent
     {
         public readonly UserManager<AppUser> usm = userManager;
-        public readonly RoleManager<AppRole> rol = rolManager;
-        
-
         public IViewComponentResult Invoke(string Id)
         {
 
@@ -21,15 +17,19 @@ namespace DMX.ViewComponents
 
             EditUserVM editUserVM = new()
             {
-              
+
                 Email = userToEdit.Email,
                 Firstname = userToEdit.Firstname,
                 Username = userToEdit.UserName,
                 Surname = userToEdit.Surname,
                 Telephone = userToEdit.PhoneNumber,
+
             };
 
-            return View(editUserVM);
+
+
+
+            return View();
         }
     }
 }

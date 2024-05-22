@@ -1,8 +1,11 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
+using DMX.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -311,19 +314,77 @@ namespace DMX.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ManageUserroles(string Id, ManageUserRolesVM model)
-        {
-            var user = await usm.FindByIdAsync(Id);
-            var roles = await usm.GetRolesAsync(user);
-            var result = await usm.RemoveFromRolesAsync(user, roles);
-            result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
-            return RedirectToAction("ViewUsers");
-        }
+     
         [HttpGet]
         public IActionResult ManagePermissions(string Id)
         {
             return ViewComponent("ManagePermissions",Id);
         }
+
+        [HttpGet]
+        public IActionResult ViewUserRoles()
+        {
+            return ViewComponent("ViewUserRoles");
+        }
+        [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult ViewRoles()
+        {
+            return ViewComponent("ViewRoles");
+        }
+
+        [HttpGet]
+        public IActionResult AddRole()
+        {
+            return ViewComponent("AddRole");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddRole(AddRoleVM addRoleVM)
+        {
+            AppRole appRole = new()
+            {
+                Rolename = addRoleVM.Name,
+                Name = addRoleVM.Name,
+                Description = addRoleVM.Description,
+            };
+
+            await rol.CreateAsync(appRole);
+
+            return RedirectToAction("ViewRoles");
+        }
+        [HttpGet]
+        public IActionResult RolePermissions(string Id)
+        {
+            return ViewComponent("RolePermissions", Id);
+        }
+        [HttpPost]
+        public async Task<IActionResult> RolePermission (RolePermissionVM model)
+        {
+            var role = await rol.FindByIdAsync(model.RoleId);
+            var claims = await rol.GetClaimsAsync(role);
+            foreach (var claim in claims)
+            {
+                await rol.RemoveClaimAsync(role, claim);
+            }
+            var selectedClaims = model.RoleClaims.Where(a => a.Selected).ToList();
+            foreach (var claim in selectedClaims)
+            {
+                await rol.AddPermissionClaim(role, claim.Value);
+            }
+            return RedirectToAction("Index", new { roleId = model.RoleId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserRoles(string Id, ManageUserRolesVM model)
+        {
+            var user = await usm.FindByIdAsync(@Encryption.Decrypt(Id));
+            var roles = await usm.GetRolesAsync(user);
+            var result = await usm.RemoveFromRolesAsync(user, roles);
+            result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
+            return RedirectToAction("ViewUserRoles");
+        }
+
     }
 }

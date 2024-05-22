@@ -15,6 +15,10 @@
     font-weight: 600;
    
 }
+#pills-home-tab {
+    color: white !important;
+    font-weight: 600;
+}
 
 #pills-contact-tab.active {
     background-color: white !important;

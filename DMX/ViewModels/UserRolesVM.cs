@@ -1,7 +1,6 @@
 ﻿namespace DMX.ViewModels
 {
-    public class ManageUserRolesViewModel
-    {
+    public class ManageUsRolesVM    {
         public string UserId { get; set; }
         public IList<UserRolesVM> UserRoles { get; set; }
     }

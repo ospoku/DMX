@@ -1,13 +1,12 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using DMX.Authorization;
 using DMX.Data;
 using DMX.Models;
 using DMX.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,14 +18,14 @@ builder.Services.AddAuthentication();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-  //builder.  Services.AddSingleton<IAuthorizationHandler, IncidentAuthorizationHandler>();
-//    builder.Services.AddAuthorization(options => options.AddPolicy("sameAuthorPolicy",
+//  builder.  Services.AddSingleton<IAuthorizationHandler, IncidentAuthorizationHandler>();
+//   builder.Services.AddAuthorization(options => options.AddPolicy("sameAuthorPolicy",
 //policy =>
 //policy.AddRequirements(
 //    new SameAuthorRequirement()
 //)));
-//builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-//builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
@@ -74,6 +73,6 @@ var scope = app.Services.CreateScope();
 //db.Database.EnsureCreatedAsync().Wait();
 
 var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-init.Initialize();
+await init.Initialize();
 
 app.Run();

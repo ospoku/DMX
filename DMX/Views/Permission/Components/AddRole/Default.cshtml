@@ -1,0 +1,45 @@
+﻿
+@model DMX.ViewModels.AddRoleVM 
+
+
+       
+<div class="modal fade" id="AddRole" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Role</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div> 
+            @using (Html.BeginForm("AddRole", "Account", FormMethod.Post))
+            {
+            <div class="modal-body">
+                       
+                                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" asp-for="@Model.Name" placeholder="" required />
+                                <label class="did-floating-label">Name</label>
+                            </div>
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" asp-for="@Model.Description" placeholder="" required />
+                        <label class="did-floating-label">Description</label>
+                    </div>
+        
+                    </div>
+                <div class="modal-footer">  <button class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
+                }
+                </div>
+            </div>
+</div>
+
+   
+
+
+
+
+
+
+
+
+
+

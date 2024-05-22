@@ -54,7 +54,8 @@ namespace DMX.Data
                     Email = "admin@gmail.com",
                     PhoneNumber = "0244139692",
                     EmailConfirmed = true,
-
+                    DepartmentId = "xxxxxxxxxxxxxxxxx",
+                    RankId = "xxxxxxxxxxxxxxxxxx",
                 };
 
                 identityResult = await usm.CreateAsync(superUser, "OSP@SuperAdmin12345");
@@ -75,7 +76,8 @@ namespace DMX.Data
                     Email = "admin@gmail.com",
                     PhoneNumber = "0244139692",
                     EmailConfirmed = true,
-
+                    DepartmentId = "xxxxxxxxxxxxxxxxx",
+                    RankId = "xxxxxxxxxxxxxxxxxx",
                 };
 
                 identityResult = await usm.CreateAsync(superUser, "OSP@Admin12345");
@@ -86,18 +88,7 @@ namespace DMX.Data
                 };
 
             };
-            if (dcx.TravelTypes.AnyAsync() == null)
-            {
-                TravelType travelType = new()
-                {
-                    Name = "Conference",
-                    Description = "Name for conference types of travels",
-                    Code = "CON",
-
-                };
-                await dcx.TravelTypes.AddAsync(travelType);
-                dcx.SaveChanges();
-            }
+          
         }
     }
 }

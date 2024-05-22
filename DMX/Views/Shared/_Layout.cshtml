@@ -16,17 +16,17 @@
     
     <link href="~/lib/datatables/css/datatables.bootstrap4.min.css" rel="stylesheet" />
    
-    <link href="~/ospapps/data.css" rel="stylesheet" type="text/css" />
-    <link href="~/ospapps/ospapps.css" rel="stylesheet" type="text/css" />
+    
    <!-- Custom styles for this template-->
-
+   <link href="~/ospapps/toggleSwitch.css" rel="stylesheet" type="text/css"/>
    <link href="~/ospapps/pillsTab.css" rel="stylesheet" type="text/css"/>
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="~/ospapps/select2.css" rel="stylesheet" type="text/css"/>
     <link href="~/ospapps/radioButton.css" rel="stylesheet" type="text/css"/>
     <link href="~/ospapps/dropdownCustomItem.css" rel="stylesheet" type="text/css"/>
+   <link href="~/ospapps/ospapps.css" rel="stylesheet" type="text/css"/>
     <link href="~/ospapps/floatingLabel.css" rel="stylesheet" type="text/css"/>
-    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"  type="text/css"/>
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -97,8 +97,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Settings</h6>
-                        <a class="collapse-item" asp-action="ViewExternalTrainings" asp-controller="Training">External Trainings</a>
-                        <a class="collapse-item" asp-action="ViewInternalTrainings" asp-controller="Training">Internal Trainings</a>
+                   
+                        <a class="collapse-item" asp-action="ViewInternalTrainings" asp-controller="Training">Trainings</a>
                         <a class="collapse-item" asp-action="ViewMeetings" asp-controller="Training">Meetings</a>
                         <a class="collapse-item" asp-action="ViewAttendance" asp-controller="Training">Attendance</a>
                     </div>
@@ -127,8 +127,8 @@
                         <a class="collapse-item" asp-action="SystemSetup" asp-controller="Settings">Setup</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Roles & Permissions</h6>
-                        <a class="collapse-item" asp-action="ViewRoles" asp-controller="Account">Roles</a>
-                        <a class="collapse-item" asp-action="ViewUserRoles" asp-controller="Account">User Roles</a> 
+                        <a class="collapse-item" asp-action="ViewRoles" asp-controller="Permission">Roles</a>
+                        <a class="collapse-item" asp-action="ViewUserRoles" asp-controller="Permission">User Roles</a> 
                         <a class="collapse-item" asp-action="ViewPermissions" asp-controller="Permission">Permissions</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Account</h6>

@@ -8,8 +8,8 @@ namespace DMX.Models
 {
     public class AppUser:IdentityUser
     {
-        public string Firstname { get; set; }
-        public string Surname { get; set; }
+        public string? Firstname { get; set; }
+        public string? Surname { get; set; }
 
         public string Fullname
         {
@@ -24,10 +24,10 @@ namespace DMX.Models
         public bool IsDeleted { get; set; }
 
         [Precision(10,4)]
-        public decimal Rate { get; set; }
+        public decimal? Rate { get; set; }
 
-        public string DepartmentId { get; set; }
-        public string RankId { get; set; }
+        public string? DepartmentId { get; set; }
+        public string? RankId { get; set; }
     }
 
     

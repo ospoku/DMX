@@ -1,21 +1,17 @@
-﻿@using DMX.Constants
-@using DMX.DataProtection
-@using Microsoft.AspNetCore.Authorization
-@inject IAuthorizationService auth
-@{
+﻿@using DMX.DataProtection
+@* @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+} *@
 @model IEnumerable<DMX.ViewModels.ViewMemosVM>;
-
 
 
 <div id="PlaceHolderHere"></div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">Clients</h6>
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Deceased Types</h6>
         
-            <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddMemo" data-bs-url="@Url.Action("AddMemo")"><i class="fa fa-fw fa-plus-circle"></i>Add Memo</button>
+            <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddDeceasedType" data-bs-url="@Url.Action("AddDeceasedType")"><i class="fa fa-fw fa-plus-circle"></i>Add Type</button>
      
         </div>
         <div class="card-body">
@@ -57,13 +53,10 @@
                                             <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</button>
                                        
                                             </form>
-                                        @if (( await auth.AuthorizeAsync(User ,Permissions.Modules.DeleteMemo)).Succeeded)
-                                        {
                                             <form asp-action="DeleteMemo" asp-route-Id="" onsubmit="return jQueryAjaxDeleteMemo(this);">
-                                                <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                            </form>
-                                        }
-                                    </div>
+                                            <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
+                                    </form>
+                                </div>
                             </div>
 
                         </td>

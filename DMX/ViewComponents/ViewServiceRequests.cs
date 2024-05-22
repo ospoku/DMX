@@ -11,14 +11,11 @@ namespace DMX.ViewComponents
         {
             var sList = dcx.ServiceRequests.Where(s => s.IsDeleted == false).Select(s => new ViewServiceRequestsVM
             {
-
-
-
-
-
-
-
-
+                FaultInspectedBy = s.FaultInspectedBy,
+            Faults = s.Faults,  
+            RequestDate = s.RequestDate,
+            RequestNumber = s.RequestNumber,
+            Unit = s.Unit,
                 CreatedDate = s.CreatedDate,
             }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(sList);

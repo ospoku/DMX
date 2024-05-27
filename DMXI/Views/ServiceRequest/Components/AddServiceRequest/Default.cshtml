@@ -1,0 +1,86 @@
+﻿
+@model DMX.ViewModels.AddServiceRequestVM;
+
+
+
+<div class="modal fade" id="AddServiceRequest" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Service Request</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+
+            @using (Html.BeginForm("AddServiceRequest", "ServiceRequest", FormMethod.Post))
+            {
+
+              
+
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.RequestNumber" class="did-floating-input" placeholder="">
+                            <label class="did-floating-label">Request Number</label>
+                        </div>
+                    <div class="did-floating-label-content">
+                        <input type="date" asp-for="@Model.RequestDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
+                        <label class="did-floating-label">Request Date</label>
+
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.ServiceRequestedBy" class="did-floating-input" placeholder="" />
+                        <label class="did-floating-label">Requested By</label>
+
+                    </div>
+
+                    <div class="did-floating-label-content">
+                        <select  id="modalDept" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <label class="did-floating-label">Select Department</label>
+                    </div>
+
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.ActionToBeTaken" class="did-floating-input" placeholder=""/>
+                        <label class="did-floating-label">Action to be taken</label>
+                    </div>
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.FaultInspectedBy"  class="did-floating-input" placeholder="">
+                        <label class="did-floating-label">Fault Inspected By</label>
+                        </div>
+                                            
+                        <div class="did-floating-label-content">
+                            <select  id="selectUsers" class="did-floating-select" required asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            <label class="did-floating-label">Select User</label>
+                        </div>
+
+
+
+                        <div class="form-group">
+
+
+                            <textarea class="did-floating-input" asp-for="@Model.RequestNumber" type="text" placeholder="Additional Information"></textarea>
+
+
+                        </div>
+
+                        <button class="btn btn-block btn-primary">Save</button>
+
+
+
+            
+            }
+
+
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(document).ready(function ()
+{
+        $("#selectUsers").select2({dropdownParent: $("#AddServiceRequest")});
+
+    $("#modalDept").select2({dropdownParent: $("#AddServiceRequest")});
+    });
+</script>

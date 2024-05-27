@@ -18,12 +18,8 @@ builder.Services.AddAuthentication();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-//  builder.  Services.AddSingleton<IAuthorizationHandler, IncidentAuthorizationHandler>();
-//   builder.Services.AddAuthorization(options => options.AddPolicy("sameAuthorPolicy",
-//policy =>
-//policy.AddRequirements(
-//    new SameAuthorRequirement()
-//)));
+ builder.  Services.AddSingleton<IAuthorizationHandler, OwnerAuthorizationHandler>();
+IServiceCollection serviceCollection = builder.Services.AddAuthorization(options => options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new OwnerRequirement())));
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 

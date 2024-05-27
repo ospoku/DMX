@@ -1,0 +1,72 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+@model DMX.ViewModels.MemoCommentVM;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+   
+    <link href="~/ospapps/timeline.css" rel="stylesheet" />
+</head>
+
+
+<body>
+    <div>
+        <div class="row">
+            <div class="col-md-3"><image class="logo" style="height:70px;width:70px"></image></div><div class="col-md-6"><h4 class="text-center align-items-center">BOLGATANGA REGIONAL HOSPITAL</h4></div><div class="col-md-3"></div>
+      </div>
+    <div class="row">
+        <div class="col-md-3"></div><div class="col-md-6"><h4 class="text-center">Memorandum</h4></div><div class="col-md-3"></div>
+    </div>
+    
+    <div class="row">
+            <div class=" col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="card border-dark-subtle"><strong>Sender</strong><span>@Model.Sender</span></div></div><div class=" col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="card border-dark-subtle"><strong>Recipient</strong><span>@Model.Recipient</span></div></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="card border-dark-subtle"><strong>Date</strong><span>@Model.CreatedDate</span></div></div>
+    </div>
+  <hr />
+        <div class="container mb-1">
+            <div class="row">
+                
+                    <div class="card">
+                        <div class="card-body">@Html.Raw(@Model.MemoContent)</div>
+                        </div>
+                        </div>
+                        </div>
+                    
+                        <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Timeline</h6>
+                        <div id="content">
+                            <ul class="timeline">
+                                @foreach (var comment in Model.Comments)
+                                {
+                                    <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:tt" )">
+                                        <h3>@comment.CreatedBy</h3>
+                                    <p>@comment.Message</p>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+ <script type="text/javascript">
+    
+         window.print();
+</script>
+</body>
+</html>

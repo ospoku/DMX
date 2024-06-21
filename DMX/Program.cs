@@ -14,11 +14,23 @@ var builder = WebApplication.CreateBuilder(args);
 string? settingsMail = builder.Configuration["Settings:AppEmail"];
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
-builder.Services.AddAuthentication();
+
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login"; // Specify the login page URL
+    options.AccessDeniedPath = "/Account/AccessDenied"; // Specify the access denied page URL
+});
+
+
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
- builder.  Services.AddSingleton<IAuthorizationHandler, OwnerAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, OwnerAuthorizationHandler>();
 IServiceCollection serviceCollection = builder.Services.AddAuthorization(options => options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new OwnerRequirement())));
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -28,14 +40,9 @@ builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinute
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
 builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
 
-builder.Services.AddDefaultIdentity<AppUser>().AddRoles<AppRole>()
+builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-}).AddCookie();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<DBInitializer>();
@@ -59,6 +66,7 @@ app.MapRazorPages();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseCookiePolicy();
 //app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllerRoute(

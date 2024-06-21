@@ -23,11 +23,11 @@ namespace DMX.Constants
             public const string ViewLetters = "View Letters";
             public const string CreateLetter = "Permissions.Products.Create";
             public const string EditLetter = "Permissions.Products.Edit";
-            public const string DeleteLetter = "Permissions.Products.Delete";
+            public const string DeleteLetter= "Permissions.Products.Delete";
             public const string ViewMemo = "Permissions.Products.View";
             public const string CreateMemo = "Permissions.Products.Create";
             public const string EditMemo = "Edit Memo";
-            public const string DeleteMemo = "Delete Memo";
+            public const string DeleteMemo = "Permissions.Modules.DeleteMemo";
         }
         public static class Users
         {

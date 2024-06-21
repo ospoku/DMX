@@ -2,18 +2,20 @@
 using DMX.Data;
 using DMX.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using DMX.Models;
 
 namespace DMX.ViewComponents
 {
-    public class ViewMemos(XContext dContext, IHttpContextAccessor contextAccessor) : ViewComponent
+    public class ViewMemos(XContext dContext, UserManager<AppUser>userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-        
-        private readonly HttpContextAccessor accessor = (HttpContextAccessor)contextAccessor;
+
+        private readonly UserManager<AppUser> usm = userManager;
 
         public IViewComponentResult Invoke()
         {
-            string user = accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
+            string user = usm.GetUserAsync(HttpContext.User).Result.UserName;
             var memoList = dcx.MemoAssignments.Where(a=>a.AppUser.UserName==user).Select(a => new ViewMemosVM
             {
                 MemoId = a.Memo.MemoId,

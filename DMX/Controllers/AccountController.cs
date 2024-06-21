@@ -109,12 +109,13 @@ namespace DMX.Controllers
         {
             return ViewComponent("ViewUsers");
         }
-      
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(LoginVM loginVM)
         {
             return View(loginVM);
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> LoginAsync(LoginVM loginVM)
         {
@@ -129,7 +130,7 @@ namespace DMX.Controllers
                 };
                 if (user != null)
                 {
-                    await sim.PasswordSignInAsync(user, loginVM.Password, false, false);
+                    await sim.PasswordSignInAsync(user, loginVM.Password,true,false);
 
                     var userClaims = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                     userClaims.AddClaim(new Claim("Name", user.UserName));
@@ -137,18 +138,11 @@ namespace DMX.Controllers
 
 
 
-                    userClaims.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", from p in dcx.UserRoles
-                                                                                    join role in dcx.Roles on p.RoleId equals role.Id
-                                                                                    where p.UserId == user.Id
-                                                                                    select role.Name.ToString())));
+                    //userClaims.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", from p in dcx.UserRoles
+                    //                                                                join role in dcx.Roles on p.RoleId equals role.Id
+                    //                                                                where p.UserId == user.Id
+                    //                                                                select role.Name.ToString())));
 
-
-
-
-                    //string.Join(",", from p in prx.UserRoles
-                    //                 join role in prx.Roles on p.RoleId equals role.Id
-                    //                 where p.UserId == user.Id
-                    //                 select role.Name.ToString())););
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userClaims), new AuthenticationProperties { IsPersistent = true });
 
                     return RedirectToAction(nameof(HomeController.Index), "Home");
@@ -160,15 +154,16 @@ namespace DMX.Controllers
             return View();
         }
 
-  
-        //[HttpGet]
-        //public IActionResult Logout()
-        //{
-        //    HttpContext.SignOutAsync();
 
-        //    return RedirectToAction("Login");
-        //}
 
-    
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Login");
+        }
+
     }
 }

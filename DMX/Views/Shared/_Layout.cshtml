@@ -347,7 +347,7 @@
 
                         <div class="topbar-divider d-none d-sm-block"></div>
                         
-                        @if (sim.IsSignedIn(User))
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown no-arrow mx-1">
                               Hello @User.Identity?.Name

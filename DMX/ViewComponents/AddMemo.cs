@@ -20,7 +20,7 @@ namespace DMX.ViewComponents
             AddMemoVM addMemoVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-                Sender = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+               
         };
 
             return View(addMemoVM);

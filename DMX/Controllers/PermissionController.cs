@@ -319,6 +319,7 @@ namespace DMX.Controllers
         public IActionResult ManagePermissions(string Id)
         {
             return ViewComponent("ManagePermissions",Id);
+
         }
 
         [HttpGet]
@@ -373,6 +374,7 @@ namespace DMX.Controllers
             {
                 await rol.AddPermissionClaim(role, claim.Value);
             }
+            
             return RedirectToAction("ViewRoles");
         }
 

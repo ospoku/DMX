@@ -1,6 +1,6 @@
 ﻿.dropdown-item-custom {
     /*display: block;*/
-    width: 100%;
+    width: inherit;
     padding: 0.25rem 1.5rem;
     clear: both;
     font-weight: 400;

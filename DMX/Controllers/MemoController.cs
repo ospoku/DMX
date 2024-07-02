@@ -96,10 +96,10 @@ namespace DMX.Controllers
             Memo addThisMemo = new()
             {
                 Content = addMemoVM.Content,
-                Recipient = addMemoVM.Receipient,
+               
                 ReferenceId = RefN,
                 Title =addMemoVM.Title,
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.Memos.Add(addThisMemo);
@@ -110,11 +110,11 @@ namespace DMX.Controllers
                 {
                     MemoId = addThisMemo.MemoId,
                     AppUserId = user,
-                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                    CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                     CreatedDate = DateTime.UtcNow,
                 });
             }
-            if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
                 notyf.Success("Memo successfully saved", 5);
 
@@ -145,8 +145,8 @@ namespace DMX.Controllers
 
                 CreatedDate = DateTime.Now,
                 Message = addCommentVM.NewComment,
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
+                  UserId = usm.GetUserAsync(HttpContext.User).Result.Id,
             };
 
             dcx.MemoComments.Add(addThisComment);

@@ -16,7 +16,7 @@ namespace DMX.Models
          public DateTime LeaveDate { get; set; }
         public string MedicalOfficer { get; set; }
         public DateTime IssueDate { get; set; }
-        public virtual ICollection<AppUser> ApplicationUsers { get; set; }
+       
        public virtual ICollection<MaternityLeaveComment> Comments { get; set; } 
     }
 }

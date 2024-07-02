@@ -15,7 +15,8 @@ namespace DMX.ViewComponents
             AddPettyCashVM addPettyCashVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-                Name =usm.FindByNameAsync( HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Fullname,
+
+                
             };
 
             return View(addPettyCashVM);

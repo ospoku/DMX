@@ -36,7 +36,7 @@ namespace DMX.Controllers
                 DocumentDate = addDocumentVM.DocumentDate,
                 ReferenceNumber = addDocumentVM.ReferenceNumber,
            
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
                 AdditionalNotes=addDocumentVM.AdditionalNotes,
 

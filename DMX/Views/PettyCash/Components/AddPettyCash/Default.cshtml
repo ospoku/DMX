@@ -32,17 +32,19 @@
                         <textarea type="text" asp-for="@Model.Description" class="did-floating-input" placeholder="Description" required></textarea>
                        
                   </div>
+                    <div class="form-group">
                         <div class="did-floating-label-content">
-                        <select id="selectPettyCashUser" class="did-floating-select" style="width:100%" required asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                            <label class="did-floating-label">Select User(s)</label>
+                        <select id="selectPettyCashUser" class="did-floating-select" style="width:100%"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            <label class="did-floating-label">Select Receipient(s)</label>
                         </div>
-
+                        </div>
                         <button class="btn btn-block btn-primary">Save</button>       
             }
 
 
         </div>
     </div>
+</div>
 </div>
     <script>
         $(document).ready(function () {

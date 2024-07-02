@@ -13,7 +13,6 @@ namespace DMX.Data
         public async Task  Initialize()
         {
             dcx.Database.EnsureCreated();
-
             if (!rol.Roles.Any())
             {
                 await rol.CreateAsync(new AppRole() { Name = "Basic", Rolename = "Basic", Description = "Role for basic users" });
@@ -21,6 +20,8 @@ namespace DMX.Data
                 await rol.CreateAsync(new AppRole() { Name = "SuperAdmin", Rolename = "SuperAdmin", Description = "Role for superadmin" });
                 await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin", Description = "Role for admin users" });
             }
+
+          
 
             List<Claim> claimlist =
             [
@@ -36,7 +37,7 @@ namespace DMX.Data
                  [
 
                      new Claim(ClaimTypes.Name,"Admin"),
-                new Claim(ClaimTypes.Email,"oseipoku@gmail.com"),
+                new Claim(ClaimTypes.Email,"oseipoku2@gmail.com"),
                 new Claim(ClaimTypes.Role,"Admin"),
 
 
@@ -51,7 +52,7 @@ namespace DMX.Data
                     UserName = "SuperAdmin",
                     Surname = "SuperAdmin",
                     Firstname = "SuperAdmin",
-                    Email = "admin@gmail.com",
+                    Email = "superadmin@gmail.com",
                     PhoneNumber = "0244139692",
                     EmailConfirmed = true,
                     DepartmentId = "xxxxxxxxxxxxxxxxx",

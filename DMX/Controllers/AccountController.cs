@@ -8,12 +8,14 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using Microsoft.AspNetCore.Authorization;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace DMX.Controllers
 {
-    public class AccountController(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager) : Controller
+    public class AccountController(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, INotyfService  notification) : Controller
     {
         public readonly XContext dcx = dContext;
+        public readonly INotyfService notyf = notification;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = roleManager;
         public readonly SignInManager<AppUser> sim = signinmanager;
@@ -28,7 +30,6 @@ namespace DMX.Controllers
         {
                 AppUser addThisUser = new()
                 {
-
                     UserName = addUserVM.Username,
                     Email=addUserVM.Email,
                 };
@@ -124,10 +125,7 @@ namespace DMX.Controllers
             if (ModelState.IsValid)
             {
                 var user = await usm.FindByNameAsync(loginVM.Username);
-                if (user == null)
-                {
-
-                };
+               
                 if (user != null)
                 {
                     await sim.PasswordSignInAsync(user, loginVM.Password,true,false);
@@ -143,7 +141,7 @@ namespace DMX.Controllers
                     //                                                                where p.UserId == user.Id
                     //                                                                select role.Name.ToString())));
 
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userClaims), new AuthenticationProperties { IsPersistent = true });
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userClaims), new AuthenticationProperties { IsPersistent = loginVM.RememberMe });
 
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
@@ -164,6 +162,38 @@ namespace DMX.Controllers
 
             return RedirectToAction("Login");
         }
+        public async Task <IActionResult>ForgetPassword()
+        {
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult>UserProfile()
+        {
+            return ViewComponent("UserProfile");
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            return ViewComponent("EditProfile");
+        }
+        [HttpPost]
+        public async Task<IActionResult>EditProfile(EditProfileVM editProfileVM)
+        {
+            AppUser profileToEdit= (from u in usm.Users
+                                where u.Id == usm.GetUserId(HttpContext.User) select u).FirstOrDefault();
 
+           
+
+            profileToEdit.Firstname = editProfileVM.Firstname;
+            profileToEdit.Surname = editProfileVM.Surname;
+            profileToEdit.PhoneNumber = editProfileVM.Telephone;
+            
+
+            await usm.UpdateAsync(profileToEdit);
+
+            notyf.Success("Profile successfully updated",5);
+
+            return ViewComponent("UserProfile");
+        }
     }
 }

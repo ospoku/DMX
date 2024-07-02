@@ -17,7 +17,7 @@ namespace DMX.ViewComponents
                 Amount = a.Amount,
                 Name = usm.FindByNameAsync(a.CreatedBy).Result.Fullname,
                 Date = a.Date,
-                Description= a.Description,
+                Description = a.Description,
                 Purpose = a.Purpose,
                 ReferenceNumber=a.ReferenceNumber,
                 CreatedDate = a.CreatedDate,

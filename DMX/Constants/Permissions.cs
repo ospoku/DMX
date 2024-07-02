@@ -20,13 +20,13 @@ namespace DMX.Constants
 
         public static class Modules
         {
-            public const string ViewLetters = "View Letters";
-            public const string CreateLetter = "Permissions.Products.Create";
-            public const string EditLetter = "Permissions.Products.Edit";
-            public const string DeleteLetter= "Permissions.Products.Delete";
-            public const string ViewMemo = "Permissions.Products.View";
-            public const string CreateMemo = "Permissions.Products.Create";
-            public const string EditMemo = "Edit Memo";
+            public const string ViewLetters = "Permissions.Modules.ViewLetters";
+            public const string CreateLetter = "Permissions.Modules.CreateLetter";
+            public const string EditLetter = "Permissions.Modules.EditLetter";
+            public const string DeleteLetter= "Permissions.Modules.DeleteLetter";
+            public const string ViewMemo = "Permissions.Modules.ViewMemo";
+            public const string CreateMemo = "Permissions.Modules.CreateMemo";
+            public const string EditMemo = "Permissions.Modules.EditMemo";
             public const string DeleteMemo = "Permissions.Modules.DeleteMemo";
         }
         public static class Users

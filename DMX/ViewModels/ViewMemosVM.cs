@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace DMX.ViewModels
 {
     public class ViewMemosVM
@@ -9,9 +11,9 @@ namespace DMX.ViewModels
 
         public string Title { get; set; }
         public string Content { get;  set; }
-        public string Recipient { get; set; }
+
         public string Sender { get; set; }
-        public string Assignees { get; set; }
+        public List<string> Assignees { get; set; }
         public string ReferenceNumber { get; set; }
 
         public string MemoId { get; set; }

@@ -1,14 +1,14 @@
 ﻿
 @model DMX.ViewModels.MemoCommentVM;
 
-<div class="modal fade" id="CommentMemo" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="CommentMemo" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
 
                 <h6>Add Comment</h6>
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
                 @using (Html.BeginForm("CommentMemo", "Memo", FormMethod.Post))
@@ -18,9 +18,9 @@
          
                 <div class="accordion" id="accordionMemoComment">
                     <div class="card">
-                        <div class="card-header" data-toggle="collapse" data-target="#collapseMemoDetail" aria-expanded="true">
+                        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapseMemoDetail" aria-expanded="true">
                             <span class="title">Memo Content</span>
-                            <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span>
+                           @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
                         </div>
                         <div id="collapseMemoDetail" class="collapse show" data-parent="#accordionMemoComment">
                             <div class="card-body">
@@ -29,9 +29,9 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseMinutes" aria-expanded="false" aria-controls="collapseTwo">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" data-bs-target="#collapseMinutes" aria-expanded="false" aria-controls="collapseTwo">
                             <span class="title">Minutes/Comments</span>
-                            <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span>
+                           @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
                         </div>
                         <div id="collapseMinutes" class="collapse" data-parent="#accordionMemoComment">
                             <div class="card-body">
@@ -70,20 +70,20 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
                             <span class="title">New Comment</span>
-                            <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span>
+                           @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
                         </div>
                         <div id="collapseThree" class="collapse" data-parent="#accordionMemoComment">
                             
                                     <div class="card-body">
 
-                               
-                                <textarea class="tox-tinymce form-control" asp-for="@Model.NewComment"></textarea>
-                                <div class="form-group">
-
-                                    <button class="btn btn-block btn-primary">Add Comment</button>
+                                    <div class="form-group">
+                                <textarea class="form-control" id="newComment" asp-for="@Model.NewComment"></textarea>
                                 </div>
+
+                                    <button class="btn btn-block btn-primary">Save Comment</button>
+                                
                                 
                             </div>
                         </div>
@@ -103,4 +103,9 @@
 
         $('time.timeago').timeago();
     });
-    </script>
+
+    $(document).ready(function () {
+        tinymce.init({ selector: '#newComment' });
+    });
+</script>
+   

@@ -1,4 +1,7 @@
-﻿@using DMX.DataProtection
+﻿@using DMX.Constants
+@using DMX.DataProtection
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService auth
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -47,10 +50,11 @@
                                         <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo")" class="dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
                                         <button class="dropdown-item-custom" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("MeetingAttendance", new{Id= @Encryption.Encrypt(@meet.MeetingId)})" data-bs-target="#MeetingAttendance"><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Attendance</button>
                                         <a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="@Encryption.Encrypt(meet.MeetingId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
-                                   
-                                        <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDeleteLeave(this);">
-                                            <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                        </form>
+                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteMemo)).Succeeded)
+                                        {
+                                            <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDeleteLeave(this);">
+                                                <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
+                                        </form>}
                                     </div>
                                 </div>
 

@@ -46,11 +46,11 @@
                         <h6 class="card-title">Timeline</h6>
                         <div id="content">
                             <ul class="timeline">
-                                @foreach (var comment in Model.Comments)
+                                @foreach (var comment in Model.Comments.OrderByDescending(c=>c.CreatedDate))
                                 {
                                     <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:tt" )">
                                         <h3>@comment.CreatedBy</h3>
-                                    <p>@comment.Message</p>
+                                    <p>@Html.Raw(@comment.Message)</p>
                                 </li>
                                 }
                             </ul>

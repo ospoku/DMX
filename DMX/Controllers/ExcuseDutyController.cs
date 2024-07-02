@@ -5,6 +5,7 @@ using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -71,7 +72,7 @@ namespace DMX.Controllers
                 ExcuseDays = addExcuseDutyVM.ExcuseDays,
                 ReferenceNumber = RefN,
                 OperationDiagnosis = addExcuseDutyVM.OperationDiagnosis,
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.ExcuseDuties.Add(addThisExcuseDuty);
@@ -82,13 +83,13 @@ namespace DMX.Controllers
                     {
                         ExcuseDutyId = addThisExcuseDuty.Id,
                         AppUserId = user,
-                        CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                        CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                         CreatedDate = DateTime.UtcNow
                     });
             };
 
            
-            if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
+            if (await dcx.SaveChangesAsync( usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
                 notyf.Success("Excuse Duty successfully saved", 5);
                 return RedirectToAction("ViewExcuseDuties");

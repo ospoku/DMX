@@ -2,7 +2,7 @@
 
 namespace DMX.ViewModels
 {
-    public class DetailUserVM
+    public class EditProfileVM
     {
         public string Firstname { get; set; }
         public string Surname { get; set; }

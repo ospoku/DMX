@@ -12,18 +12,12 @@ namespace DMX.ViewComponents
         public readonly UserManager<AppUser> usm = userManager;
         public IViewComponentResult Invoke()
         {
-
             var userList = usm.Users.Where(u => u.IsDeleted == false).Select(u => new ViewUsersVM
             {
                 UserId = u.Id,
                 Fullname = u.Fullname,
-
-
                 Username = u.UserName,
                 Email = u.Email,
-            
-
-
             }).ToList();
 
             return View(userList);

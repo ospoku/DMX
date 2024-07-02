@@ -8,8 +8,8 @@ namespace DMX.Models
     {[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string SickReportId { get; set; }
-        public virtual ICollection<AppUser> ApplicationUsers { get; set; }
-       
+
+
 
         public string AdditionalNotes { get; set; }
     }

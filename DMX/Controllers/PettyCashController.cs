@@ -42,7 +42,7 @@ namespace DMX.Controllers
                 Amount = addPettyCashVM.Amount,
                 Purpose = addPettyCashVM.Purpose,
                 Description = addPettyCashVM.Description,
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
 
 
@@ -56,11 +56,11 @@ namespace DMX.Controllers
                 {
                     PettyCashId = addThisPettyCash.PettyCashId,
                     AppUserId = user,
-                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                    CreatedBy =  usm.GetUserAsync(HttpContext.User).Result.UserName,
                     CreatedDate = DateTime.UtcNow,
                 });
             }
-            if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
                 notyf.Success("Petty Cash successfully saved", 5);
 

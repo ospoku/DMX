@@ -1,0 +1,40 @@
+﻿
+@model DMX.ViewModels.EditProfileVM
+<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Edit Profile</h6>
+</div>
+ @using (Html.BeginForm("EditProfile", "Account", FormMethod.Post))
+    {
+<div class="card-body justify-content-md-center">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" asp-for="@Model.Firstname" placeholder="" />
+                    <label class="did-floating-label">Firstname</label>
+                </div>
+
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" asp-for="@Model.Surname" placeholder="" />
+                    <label class="did-floating-label">Othername</label>
+                </div>
+
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" asp-for="@Model.Username" placeholder="" />
+                    <label class="did-floating-label">Email</label>
+                </div>
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="email" asp-for="@Model.Email" placeholder="" />
+                    <label class="did-floating-label">Email</label>
+                </div>
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" asp-for="@Model.Telephone" placeholder="" />
+                    <label class="did-floating-label">Telephone</label>
+                </div>
+                <button class="btn btn-primary btn-block">Update</button>
+            
+        </div>    
+       </div>
+      </div>
+      }
+    
+        

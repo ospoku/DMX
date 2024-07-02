@@ -6,14 +6,13 @@ using DMX.Models;
 using DMX.DataProtection;
 using DMX.Helpers;
 using DMX.Constants;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 namespace DMX.ViewComponents
 {
     public class RolePermissions(RoleManager<AppRole>roleManager) : ViewComponent
     {
         public readonly RoleManager<AppRole> rol = roleManager;
-
-        
-
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
             var model = new RolePermissionVM();
@@ -36,5 +35,5 @@ namespace DMX.ViewComponents
             model.RoleClaims = allPermissions;
             return View(model);
         }
+        }
     }
-}

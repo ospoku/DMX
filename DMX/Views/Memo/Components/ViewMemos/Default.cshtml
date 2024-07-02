@@ -2,6 +2,7 @@
 @using DMX.DataProtection
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService auth
+@inject DMX.Data.XContext dcx;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -13,7 +14,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">Clients</h6>
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Memos</h6>
         
             <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddMemo" data-bs-url="@Url.Action("AddMemo")"><i class="fa fa-fw fa-plus-circle"></i>Add Memo</button>
      
@@ -26,7 +27,7 @@
                         <th>RefN</th>
                         <th>Title</th>
                         <th>Sender</th>
-                        <th>Recipient</th>  
+                        <th>Assignee(s)</th>  
                      
                         <th>Action</th>
                     </tr>
@@ -40,20 +41,30 @@
                         <td> @Memo.Title</td>
                         
                         <td>@Memo.Sender</td>
-
-                        <td>@Memo.Recipient</td>
-                         
+@foreach(var assignee in @Memo.Assignees)
+{
+                        <td><span class="badge badge-pill badge-dark">@assignee</span></td>
+}
                            <td>
                             <div class="btn-group" role="group">
                                 <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Select Action
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                   
-                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @Encryption.Encrypt(Memo.MemoId) })" class="dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                    
-                                    <button class="dropdown-item-custom" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("DetailMemo", new { Id = @Encryption.Encrypt(Memo.MemoId) })" data-bs-target="#DetailMemo"><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Detail</button>
-                           
+                                   @if(dcx.MemoComments.Any(c=>c.MemoId==Memo.MemoId))
+                                   {
+                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @Encryption.Encrypt(Memo.MemoId) })" class="dropdown-item-custom d-none" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                        }
+                                        else
+                                        {
+                                            @if((await auth.AuthorizeAsync(User,Permissions.Modules.EditMemo)).Succeeded)
+                                            {
+                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @Encryption.Encrypt(Memo.MemoId) })" class=" dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                            }
+                                        }
+
+                                  @*   <button class="dropdown-item-custom" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("DetailMemo", new { Id = @Encryption.Encrypt(Memo.MemoId) })" data-bs-target="#DetailMemo"><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Detail</button>
+ *@                           
                                         <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentMemo", new { Id= @Encryption.Encrypt(Memo.MemoId)})" class="dropdown-item-custom" data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         <form asp-action="PrintMemo" asp-route-Id="@Encryption.Encrypt(Memo.MemoId)" asp-controller="Memo" method="get">
                                             <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</button>

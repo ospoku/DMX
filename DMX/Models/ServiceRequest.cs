@@ -22,7 +22,7 @@ namespace DMX.Models
         public string ActionToBeTaken { get; set; }
      
      public virtual ICollection<ServiceRequestComment>Comments { get; set; }    
-        public virtual ICollection<AppUser> ApplicationUsers { get; set; }
+       
       
     }
 }

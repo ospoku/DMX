@@ -24,7 +24,7 @@ namespace DMX.ViewComponents
                 Content = memoDetail.Content,
               
                 Title = memoDetail.Title,
-                Recipient = memoDetail.Recipient,
+           
 
                 
                SelectedUsers = (from x in dcx.MemoAssignments where x.MemoId == @Encryption.Decrypt(Id) select x.AppUserId).ToList(),

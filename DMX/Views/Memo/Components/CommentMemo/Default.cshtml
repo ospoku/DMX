@@ -42,7 +42,7 @@
                                         <div class="justify-content-between align-items-center">
                                             <div class="align-items-center">
 
-                                                <small class="font-weight-bold text-primary">@comment.CreatedBy</small>
+                                                    <small class="font-weight-bold" style="color:@GenerateRandomColor()">@comment.CreatedBy</small>
                                                 <small class="fa-pull-right">
 
                                                     <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>
@@ -95,7 +95,20 @@
         </div>
     </div>
     </div>
+@functions {
+    Random random = new Random();
 
+    public string GenerateRandomColor()
+    {
+        // Generate random RGB values
+        int r = random.Next(0, 256);
+        int g = random.Next(0, 256);
+        int b = random.Next(0, 256);
+
+        // Return color in hexadecimal format
+        return $"#{r:X2}{g:X2}{b:X2}";
+    }
+}
 
     <script>
 

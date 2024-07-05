@@ -14,11 +14,24 @@ namespace DMX.ViewComponents
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
 
+        public string GenerateRandomColor()
+        {
+            Random random = new Random();
+            string colorCode = String.Format("#{0:X6}", random.Next(0x1000000));
+            return colorCode;
+        }
         public IViewComponentResult Invoke(string Id)
 
 
         {
 
+            string userColor = HttpContext.Session.GetString("UserColor");
+
+            if (string.IsNullOrEmpty(userColor))
+            {
+                userColor = GenerateRandomColor();
+                HttpContext.Session.SetString("UserColor", userColor);
+            }
 
             Memo memoToEdit = new();
             memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id )select m).FirstOrDefault();
@@ -29,8 +42,6 @@ namespace DMX.ViewComponents
               Comments=memoToEdit.MemoComments,
                 Title = memoToEdit.Title,
               
-
-        
                 UsersList= new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             
@@ -39,3 +50,4 @@ namespace DMX.ViewComponents
         }
     }
 }
+

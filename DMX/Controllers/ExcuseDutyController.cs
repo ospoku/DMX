@@ -38,7 +38,7 @@ namespace DMX.Controllers
             ExcuseDutyComment addThisComment = new()
             {
                 ExcuseDutyId = dutyToComment.Id,
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.UtcNow,
 
                 Message = addCommentVM.NewComment,
 

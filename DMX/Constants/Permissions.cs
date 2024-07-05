@@ -29,7 +29,7 @@ namespace DMX.Constants
             public const string EditMemo = "Permissions.Modules.EditMemo";
             public const string DeleteMemo = "Permissions.Modules.DeleteMemo";
         }
-        public static class Users
+        public static class User
         {
             public const string View = "Permissions.Users.View";
             public const string Create = "Permissions.Users.Create";

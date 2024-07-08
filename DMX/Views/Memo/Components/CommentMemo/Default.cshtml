@@ -41,8 +41,10 @@
                                     <div class="card p-3 mt-1">
                                         <div class="justify-content-between align-items-center">
                                             <div class="align-items-center">
-
-                                                    <small class="font-weight-bold" style="color:@GenerateRandomColor()">@comment.CreatedBy</small>
+                                               @foreach(var user in Model.SelectedUsers.Distinct())
+                                               {
+                                                    <small class="font-weight-bold"   style="color:@GenerateRandomColor()">@comment.CreatedBy</small>
+                                               }
                                                 <small class="fa-pull-right">
 
                                                     <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>

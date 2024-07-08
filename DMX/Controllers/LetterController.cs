@@ -56,7 +56,7 @@ namespace DMX.Controllers
             dcx.Letters.Add(addThisDocument);
 
  
-            if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
                 notyf.Success("Document successfully saved!!!", 5);
 

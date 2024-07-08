@@ -31,7 +31,7 @@ namespace DMX.ViewComponents
               
 
         
-                UsersList= new SelectList(usm.Users.ToList(), "Id", "UserName"),
+              
             };
             
 

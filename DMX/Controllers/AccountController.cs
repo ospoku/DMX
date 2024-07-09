@@ -25,13 +25,26 @@ namespace DMX.Controllers
         {
             return ViewComponent("AddUser");
         }
+
+        public string GenerateColorCode()
+        {
+            // Generate a random color code
+            Random random = new();
+            string colorCode= String.Format("#{0:X6}", random.Next(0x1000000));
+            return colorCode;
+        }
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserVM addUserVM)
         {
-                AppUser addThisUser = new()
+           
+        
+
+
+        AppUser addThisUser = new()
                 {
                     UserName = addUserVM.Username,
                     Email=addUserVM.Email,
+            ColorCode = GenerateColorCode(),
                 };
                 IdentityResult result = await usm.CreateAsync(addThisUser, addUserVM.Password);
                 if (result.Succeeded)

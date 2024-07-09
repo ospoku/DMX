@@ -6,17 +6,17 @@
 
 @model DMX.ViewModels.MemoCommentVM;
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-   
-    <link href="~/ospapps/timeline.css" rel="stylesheet" />
-</head>
+<div class="modal fade" id="PrintMemo" data-bs-backdrop="static" data-bs-keyboard="false">
+    
+    <div class="modal-dialog">
 
+        <div class="modal-content">
+            <div class="modal-header">
 
-<body>
+                <h6>Add Comment</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
     
         <div class="row">
             <div class="col-md-3"><image class="logo" style="height:70px;width:70px"></image></div><div class="col-md-6"><h4 class="text-center align-items-center">BOLGATANGA REGIONAL HOSPITAL</h4></div><div class="col-md-3"></div>
@@ -60,11 +60,28 @@
             </div>
         </div>
     </div>
+    </div>
 
+            <div class="modal-footer">
+                <form asp-action="PrintMemo"  asp-controller="Memo" method="get" target="_self">
+                    <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</button>
 
- <script type="text/javascript">
+                </form><button id="printButton" type="button" class="dropdown-item-custom  fa-pull-right">Print
+
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+   
+  <script type="text/javascript">
+    $('#printButton').onclick(function () {
+        var printContents = $('#PrintMemo .modal-body').html();
+        var originalContents = $('body').html();
+
+        $('body').html(printContents);
+        window.print();
+
      
-         window.print();
 </script>
-</body>
-</html>
+

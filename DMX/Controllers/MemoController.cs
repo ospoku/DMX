@@ -147,6 +147,7 @@ namespace DMX.Controllers
                 Message = addCommentVM.NewComment,
                 CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                   UserId = usm.GetUserAsync(HttpContext.User).Result.Id,
+                  UserColor=usm.GetUserAsync(HttpContext.User).Result.ColorCode,
             };
 
             dcx.MemoComments.Add(addThisComment);

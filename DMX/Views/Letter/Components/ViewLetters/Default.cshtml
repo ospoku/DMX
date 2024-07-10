@@ -49,26 +49,24 @@
                                             Select Action
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            @if (( await auth.AuthorizeAsync(User,Permissions.Modules.DeleteMemo)).Succeeded)
+                                            @if (( await auth.AuthorizeAsync(User,Permissions.Modules.EditLetter)).Succeeded)
                                         { <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditLetter")" class="dropdown-item-custom" data-bs-target="#EditLetter"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
                                         }
-                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.DeleteMemo)).Succeeded)
-                                        {
-                                        <button class="dropdown-item-custom" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("DetailLetter", new { Id = @Encryption.Encrypt(Document.LetterId) })" data-bs-target="#DetailLettter"><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Detail</button>
-                                        }
-                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteMemo)).Succeeded)
+                                        
+                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DownloadLetter)).Succeeded)
                                         {
                                             <a class="dropdown-item-custom" asp-action="Download" asp-controller="Letter" asp-route-Id="@Encryption.Encrypt(Document.LetterId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
                                         }
-                                        @if (( await auth.AuthorizeAsync(User,Permissions.Modules.DeleteMemo)).Succeeded)
+                                        @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentLetter)).Succeeded)
                                         {
-                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentLetter") class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>}
-                                       }
-                                            @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteMemo)).Succeeded)
+                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentLetter") class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
+                                        }
+                                            @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteLetter)).Succeeded)
                                         {
                                             <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
                                                 <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                            </form>}
+                                            </form>
+                                        }
                                         </div>
                                     </div>
 

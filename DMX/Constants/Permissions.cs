@@ -24,6 +24,8 @@ namespace DMX.Constants
             public const string CreateLetter = "Permissions.Modules.CreateLetter";
             public const string EditLetter = "Permissions.Modules.EditLetter";
             public const string DeleteLetter= "Permissions.Modules.DeleteLetter";
+            public const string CommentLetter = "Permissions.Modules.CommentLetter";
+            public const string DownloadLetter = "Permissions.Modules.DownloadLetter";
             public const string ViewMemo = "Permissions.Modules.ViewMemo";
             public const string CreateMemo = "Permissions.Modules.CreateMemo";
             public const string EditMemo = "Permissions.Modules.EditMemo";

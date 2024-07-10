@@ -12,6 +12,6 @@ namespace DMX.Data
         public string? ModifiedBy { get; set; }
         [DataType(DataType.Date)]
         public DateTime? ModifiedDate { get; set; }
-        public string? UserColor { get; set; }
+       
     }
 }

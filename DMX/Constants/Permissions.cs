@@ -10,11 +10,14 @@ namespace DMX.Constants
         public static List<string> GeneratePermissionsForModule(string module)
         {
             return new List<string>()
-           {
-            $"Permissions.{module}.Create",
-            $"Permissions.{module}.View",
-            $"Permissions.{module}.Edit",
-            $"Permissions.{module}.Delete",
+            {
+                $"Permissions.{module}.Create",
+                $"Permissions.{module}.View",
+                $"Permissions.{module}.Edit",
+                $"Permissions.{module}.Delete",
+                $"Permissions.{module}.Comment",
+                $"Permissions.{module}.Download",
+                $"Permissions.{module}.Print",
             };
         }
 
@@ -34,17 +37,33 @@ namespace DMX.Constants
             public const string DeleteSickReport = "Permissions.Modules.DeleteSickReport";
             public const string EditSickReport= "Permissions.Modules.EditSickReport";
             public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
-            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
-            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
-            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
-            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
-            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
-            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
-            public const string CommentTravelRequest = "Permissions.Modules.CommentSickReport";
-            public const string CommentServiceRequest = "Permissions.Modules.CommentSickReport";
-            public const string CommentPatient = "Permissions.Modules.CommentSickReport";
-            public const string CommentPettyCash = "Permissions.Modules.CommentSickReport";
-            public const string CommentExcuseDuty = "Permissions.Modules.CommentSickReport";
+  
+            public const string CommentTravelRequest = "Permissions.Modules.CommentTravelRequest";
+            public const string CommentServiceRequest = "Permissions.Modules.CommentServiceRequest";
+            public const string CommentPatient = "Permissions.Modules.CommentPatient";
+            public const string CommentPettyCash = "Permissions.Modules.CommentPettyCash";
+            public const string CommentExcuseDuty = "Permissions.Modules.CommentExcuseDuty";
+            public const string EditTravelRequest = "Permissions.Modules.EditTravelRequest";
+            public const string EditServiceRequest = "Permissions.Modules.EditServiceRequest";
+            public const string EditPatient = "Permissions.Modules.EditPatient";
+            public const string EditPettyCash = "Permissions.Modules.EditPettyCash";
+            public const string EditExcuseDuty = "Permissions.Modules.EditExcuseDuty";
+            public const string CreateTravelRequest = "Permissions.Modules.CreateTravelRequest";
+            public const string CreateServiceRequest = "Permissions.Modules.CreateServiceRequest";
+            public const string CreatePatient = "Permissions.Modules.CreatePatient";
+            public const string CreatePettyCash = "Permissions.Modules.CreatePettyCash";
+            public const string CreateExcuseDuty = "Permissions.Modules.CreateExcuseDuty";
+            public const string DeleteTravelRequest = "Permissions.Modules.DeleteTravelRequest";
+            public const string DeleteServiceRequest = "Permissions.Modules.DeleteServiceRequest";
+            public const string DeletePatient = "Permissions.Modules.DeletePatient";
+            public const string DeletePettyCash = "Permissions.Modules.DeletePettyCash";
+            public const string DeleteExcuseDuty = "Permissions.Modules.DeleteExcuseDuty";
+            public const string PrintTravelRequest = "Permissions.Modules.PrintTravelRequest";
+            public const string PrintServiceRequest = "Permissions.Modules.PrintServiceRequest";
+            public const string PrintPatient = "Permissions.Modules.PrintPatient";
+            public const string PrintPettyCash = "Permissions.Modules.PrintPettyCash";
+            public const string PrintExcuseDuty = "Permissions.Modules.PrintExcuseDuty";
+            public const string PrintSickReport = "Permissions.Modules.PrintSickReport";
         }
         public static class User
         {

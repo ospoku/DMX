@@ -44,7 +44,7 @@ namespace DMX.Controllers
                 {
                     UserName = addUserVM.Username,
                     Email=addUserVM.Email,
-            ColorCode = GenerateColorCode(),
+          
                 };
                 IdentityResult result = await usm.CreateAsync(addThisUser, addUserVM.Password);
                 if (result.Succeeded)

@@ -26,7 +26,7 @@ namespace DMX.Models
         [Precision(10,4)]
         public decimal? Rate { get; set; }
 
-        public string? ColorCode { get; set; }
+     
         public string? DepartmentId { get; set; }
         public string? RankId { get; set; }
     }

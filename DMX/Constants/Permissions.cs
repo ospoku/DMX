@@ -29,7 +29,22 @@ namespace DMX.Constants
             public const string ViewMemo = "Permissions.Modules.ViewMemo";
             public const string CreateMemo = "Permissions.Modules.CreateMemo";
             public const string EditMemo = "Permissions.Modules.EditMemo";
+            public const string CommentMemo = "Permissions.Modules.CommentMemo";
             public const string DeleteMemo = "Permissions.Modules.DeleteMemo";
+            public const string DeleteSickReport = "Permissions.Modules.DeleteSickReport";
+            public const string EditSickReport= "Permissions.Modules.EditSickReport";
+            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
+            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
+            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
+            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
+            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
+            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
+            public const string CommentSickReport = "Permissions.Modules.CommentSickReport";
+            public const string CommentTravelRequest = "Permissions.Modules.CommentSickReport";
+            public const string CommentServiceRequest = "Permissions.Modules.CommentSickReport";
+            public const string CommentPatient = "Permissions.Modules.CommentSickReport";
+            public const string CommentPettyCash = "Permissions.Modules.CommentSickReport";
+            public const string CommentExcuseDuty = "Permissions.Modules.CommentSickReport";
         }
         public static class User
         {

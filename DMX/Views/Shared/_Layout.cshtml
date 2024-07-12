@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>DMX - Home</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" type="text/css"/>
@@ -43,10 +43,10 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-files"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">DMX</div>
             </a>
 
             <!-- Divider -->
@@ -69,23 +69,40 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Documents</span>
                 </a>
-                <div id="collapseTwo" class="collapse"  aria-labelledby="headingTwo" data-bs-parent="#accordionSidebar">
+                <div id="collapseOne" class="collapse"  aria-labelledby="headingTwo" data-bs-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">New Documents</h6>
                         <a class="collapse-item" asp-action="ViewMemos" asp-controller="Memo">Memos</a>
                         <a class="collapse-item" asp-action="ViewExcuseDuties" asp-controller="ExcuseDuty">Excuse Duty</a>
                         <a class="collapse-item" asp-action="ViewPettyCash" asp-controller="PettyCash">Petty Cash</a>
-                        <a class="collapse-item" asp-action="ViewTravelRequests" asp-controller="TravelRequest">Travel Request
-                        </a>
-                        <a class="collapse-item" asp-action="ViewServiceRequests" asp-controller="ServiceRequest">Service Request</a>
+ 
                         <a class="collapse-item" asp-action="ViewSickReports" asp-controller="SickReport">Sick Report</a>
                         <a class="collapse-item" asp-action="ViewPatients" asp-controller="Patient">Morgue</a>
                         <a class="collapse-item" asp-action="ViewLetters" asp-controller="Letter">Letters</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-file"></i>
+                    <span>Requests</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">New Requests</h6>
+                     
+                        <a class="collapse-item" asp-action="ViewTravelRequests" asp-controller="TravelRequest">
+                            Travel Request
+                        </a>
+                        <a class="collapse-item" asp-action="ViewServiceRequests" asp-controller="ServiceRequest">Service Request</a>
+                     
                     </div>
                 </div>
             </li>

@@ -15,7 +15,7 @@ namespace DMX.ViewComponents
             {
                 PettyCashId = a.PettyCashId,
                 Amount = a.Amount,
-                Name = usm.FindByNameAsync(a.CreatedBy).Result.Fullname,
+                Name = a.CreatedBy,
                 Date = a.Date,
                 Description = a.Description,
                 Purpose = a.Purpose,

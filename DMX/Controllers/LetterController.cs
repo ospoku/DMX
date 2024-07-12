@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+
 using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.ViewModels;
 using DMX.Data;
 using DMX.Models;
 using Microsoft.AspNetCore.Authorization;
 using DMX.DataProtection;
+using DMX.ViewComponents;
 
 
 namespace DMX.Controllers
@@ -39,9 +41,10 @@ namespace DMX.Controllers
                 CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
                 AdditionalNotes=addDocumentVM.AdditionalNotes,
-
             };
-        
+
+           
+
 
             using (var memoryStream = new MemoryStream())
             {

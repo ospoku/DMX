@@ -13,7 +13,7 @@ namespace DMX.ViewModels
         public string NewComment { get; set; }  
         public DateTime CreatedDate { get; set; }
         public ICollection<MemoComment> Comments { get; set; }
-        public string UserColor { get; set; }
+       
         
     }
 }

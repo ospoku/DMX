@@ -15,17 +15,15 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke()
         {
             var user = usm.GetUserAsync(HttpContext.User).Result.UserName;
-            var memoList = dcx.Memos.Where(a => a.IsDeleted == false & a.CreatedBy == user).Select(a => new ViewMemosVM
+            var dTypes = dcx.DeceasedTypes.Where(a => a.IsDeleted == false).Select(a => new ViewDTypesVM
             {
-                MemoId = a.MemoId,
-                Content = a.Content,
-                ReferenceNumber=a.ReferenceId,
+                TypeId = a.Id,
+                Code = a.Code,
+                Name= a.Name,
+            Description = a.Description,
             
-                Title = a.Title,
-                Sender = user,
-                CreatedDate = a.CreatedDate,
-            }).OrderByDescending(a=>a.CreatedDate).ToList();
-            return View(memoList);
+            }).ToList();
+            return View(dTypes);
         }
     }
 }

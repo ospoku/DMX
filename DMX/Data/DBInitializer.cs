@@ -21,7 +21,20 @@ namespace DMX.Data
                 await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin", Description = "Role for admin users" });
             }
 
-          
+            if (!dcx.DeceasedTypes.Any()) {
+                dcx.DeceasedTypes.Add(new DeceasedType()
+                {
+                    Name = "Brought In Dead",
+                    Code = "BID",
+                    Description = "Name for a Patient who was broguth in Dead"
+                });
+                dcx.DeceasedTypes.Add(new DeceasedType()
+                {
+                    Name = "Dead In Ward",
+                    Code = "DIW",
+                    Description = "Name for a Patient who Died in Ward"
+                });
+            }
 
             List<Claim> claimlist =
             [

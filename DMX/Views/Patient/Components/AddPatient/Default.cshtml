@@ -69,9 +69,21 @@
                         <label class="did-floating-label">Date</label>
                     </div>
                   
+
+
+
+
+
+
+
+
+
+                    <div class="form-group">
                         <textarea class="did-floating-input" asp-for="@Model.Description"  placeholder="Additional Information"></textarea>
-                    <div class="did-floating-label-content">
-                        <select id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" required></select>
+                   </div>
+                        
+                        <div class="did-floating-label-content">
+                        <select id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Users</label>
                     </div>
                 </div>

@@ -62,13 +62,13 @@ namespace DMX.Controllers
             }
             if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
-                notyf.Success("Petty Cash successfully saved", 5);
+                notyf.Success("Record successfully saved", 5);
 
                 return RedirectToAction("ViewPettyCash");
             }
             else
             {
-                notyf.Error("Error, Petty Cash could not be saved!!!", 5);
+                notyf.Error("Error, Record could not be saved!!!", 5);
             }
 
             return ViewComponent("ViewPettyCash");
@@ -100,6 +100,12 @@ namespace DMX.Controllers
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewMemos");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPettyCash()
+        {
+            return RedirectToAction("ViewPettyCash");
         }
 
     }

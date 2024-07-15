@@ -20,12 +20,7 @@ namespace DMX.Models
                     + Surname;
             }
         }
-public string Initials { get {return Fullname.Split(' ').Where(part => !string.IsNullOrEmpty(part))
-                               .Select(part => part[0])
-                               .Take(2)
-                               .ToArray().ToString();
-            }
-        }
+
 
     
         public bool IsDeleted { get; set; }

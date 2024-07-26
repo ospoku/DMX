@@ -2,37 +2,32 @@
 @model DMX.ViewModels.EditDocumentVM;
 
 
-<div class="modal fade" id="AddMemo" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="EditLetter" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
             <div class="modal-header">
 
-                <h6>Add Memo</h6>
+                <h6>Edit Letter</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Edit Document</h5>
-                                <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
-                            </div>
-                            <div class="card-body">
+                        
 
-                                @using (Html.BeginForm("EditDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                @using (Html.BeginForm("EditLetter", "Letter", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text">Reference Number</span></div>
-                                            <input class="form-control" asp-for="@Model.ReferenceNumber" type="text">
+                                    <div class="did-floating-label-content">
+                                     
+                            <input class="did-floating-input" asp-for="@Model.ReferenceNumber" type="text" placeholder="">   <label class="did-floating-label">Reference Number</label>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text ">Document Source</span></div>
-                                            <input class="form-control" asp-for="@Model.DocumentSource" type="text" placeholder="Document Source">
+                                 
+                                    <div class="did-floating-label-content">
+                                    
+                                       
+                                            <input class="did-floating-input" asp-for="@Model.DocumentSource" type="text" placeholder="">
+                            <label class="did-floating-label">Document Source</label>
                                         </div>
-                                    </div>
+                               
 
                                     <div class="form-group">
                                         <div class="input-group">
@@ -82,6 +77,6 @@
                         </div>
                     </div>
     </div>
-                </div>
+                
 
 

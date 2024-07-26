@@ -8,7 +8,7 @@ namespace DMX.ViewModels
         public string MemoId { get; set; }
         public string MemoContent { get; set; }
         public string Title { get; set; }
-
+        public byte[] Document { get; set; }
         public string NewComment { get; set; }
     public ICollection<LetterComment> Comments { get; set; }  
         public List<string> SelectedUsers { get; set; }

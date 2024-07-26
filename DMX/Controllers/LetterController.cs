@@ -75,10 +75,9 @@ namespace DMX.Controllers
             }
         }
 
-        public IActionResult DetailDocument(string Id)
-      => ViewComponent("DetailDocument", Id);
-        public IActionResult EditDocument(string Id)
-        => ViewComponent("EditDocument", Id);
+       
+        public IActionResult EditLetter(string Id)
+        => ViewComponent("EditLetter", Id);
         [HttpPost]
         public async Task<IActionResult> EditDocumentAsync(string Id, Letter document, IFormFile formFile)
         {
@@ -160,9 +159,9 @@ namespace DMX.Controllers
 
         }
         [HttpGet]
-        public IActionResult CommentDocument(string Id)
+        public IActionResult CommentLetter(string Id)
         {
-            return ViewComponent("CommentDocument", Id);
+            return ViewComponent("CommentLetter", Id);
         }
 
         [HttpGet]

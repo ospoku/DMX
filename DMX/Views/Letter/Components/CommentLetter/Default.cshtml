@@ -1,9 +1,20 @@
 ﻿
 @model DMX.ViewModels.DocumentCommentVM;
 
+<div class="modal fade" id="CommentLetter" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Comment</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
 
 
-        <div class="col-lg-12">
+
+        
 
             <div class="card">
                 <div class="card-header">
@@ -30,13 +41,17 @@
                                     </p>
                                 </div>
                             </div>
+                       
                         </div>
 
                     </div>
-
+                    <object>
+                            <embed src="data:application/pdf;base64, @System.Convert.ToBase64String(@Model.Document)"/>
+                            </object>
+                        </div>
                 </div>
 
-            </div>
+        
 
         </div>
         <div class="col-lg-12">
@@ -127,4 +142,4 @@
             }
 
             </div>
-    
+    </div>

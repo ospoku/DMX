@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using DMX.Data;
 using DMX.Models;
 using DMX.ViewModels;
+using DMX.DataProtection;
 
 namespace DMX.ViewComponents
 {
@@ -15,7 +16,7 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke(string Id)
         {
             Letter documentToEdit = new();
-            documentToEdit = (from a in dcx.Letters where a.LetterId == Id & a.IsDeleted == false select a).FirstOrDefault();
+            documentToEdit = (from a in dcx.Letters where a.LetterId == @Encryption.Decrypt(Id) & a.IsDeleted == false select a).FirstOrDefault();
             EditDocumentVM editDocumentVM = new()
             {
                 DocumentDate = documentToEdit.DocumentDate,

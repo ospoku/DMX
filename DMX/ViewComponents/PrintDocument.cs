@@ -12,7 +12,7 @@ namespace DMX.ViewComponents
 
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-
+        
         public IViewComponentResult Invoke(string Id)
         {
                Letter documentToEdit = new Letter();

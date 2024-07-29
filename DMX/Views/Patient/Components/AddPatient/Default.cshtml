@@ -16,19 +16,19 @@
             {
                 <div class="modal-body">
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Deceased" class="did-floating-input" placeholder=""/>
+                        <input type="text" asp-for="@Model.Deceased" class="did-floating-input" placeholder="" required/>
                         <label class="did-floating-label">Deceased</label>
                     </div>
                     <div class="row">
                         <div class="col">
                             <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.FolderNo" class="did-floating-input" placeholder=""/>
+                                <input type="text" asp-for="@Model.FolderNo" class="did-floating-input" placeholder="" required/>
                                 <label class="did-floating-label">Folder No</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.TagNo" class="did-floating-input" placeholder=""/>
+                                <input type="text" asp-for="@Model.TagNo" class="did-floating-input" placeholder="" required/>
                                 <label class="did-floating-label">Tag No</label>
                             </div>
                         </div>
@@ -51,16 +51,16 @@
 
                     </div>
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Depositor" class="did-floating-input" placeholder="">
+                        <input type="text" asp-for="@Model.Depositor" class="did-floating-input" placeholder="" required>
                         <label class="did-floating-label">Depositor</label>
                     </div>
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.DepositorAddress" class="did-floating-input" placeholder="">
+                        <input type="text" asp-for="@Model.DepositorAddress" class="did-floating-input" placeholder="" required>
                         <label class="did-floating-label">Depositor Address</label>
                     </div>
 
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description"  class="did-floating-input" placeholder=""/>
+                        <input type="text" asp-for="@Model.Description"  class="did-floating-input" placeholder="" required/>
                         <label class="did-floating-label"> Description</label>
                     </div>
                     <div class="did-floating-label-content">
@@ -69,14 +69,6 @@
                         <label class="did-floating-label">Date</label>
                     </div>
                   
-
-
-
-
-
-
-
-
 
                     <div class="form-group">
                         <textarea class="did-floating-input" asp-for="@Model.Description"  placeholder="Additional Information"></textarea>

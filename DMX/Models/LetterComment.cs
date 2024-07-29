@@ -11,7 +11,7 @@ namespace DMX.Models
         public string Id { get; set; }
         public required string Message { get; set; }
         public required string LetterId { get; set; }
-        public required string UserId { get; set; }
+        public  string UserId { get; set; }
         public Letter Letter { get; set; }
         public AppUser AppUser { get; set; }
     }

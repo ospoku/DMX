@@ -31,6 +31,7 @@ namespace DMX.Models
      
         public string? DepartmentId { get; set; }
         public string? RankId { get; set; }
+        public byte[]? Picture { get; set; }
     }
 
     

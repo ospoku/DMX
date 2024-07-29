@@ -5,6 +5,7 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
@@ -12,20 +13,20 @@ namespace DMX.ViewComponents
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-
+        
         public IViewComponentResult Invoke(string Id)
 
 
         {
 
-            Letter? letterToComment = new Letter();
 
-            letterToComment = (from d in dcx.Letters where d.LetterId == @Encryption.Decrypt(Id) select d).FirstOrDefault();
+
+            var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.LetterId == @Encryption.Decrypt(Id) select d).FirstOrDefault();
 
             DocumentCommentVM addCommentVM = new()
             {
                 MemoContent = letterToComment.AdditionalNotes,
-                Comments = (from c in dcx.LetterComments where c.LetterId == letterToComment.LetterId select c).ToList(),
+                Comments = letterToComment.LetterComments.OrderBy(m => m.CreatedDate).ToList(),
                 Title = letterToComment.ReferenceNumber,
                 //SelectedUsers = AssignedUsers,
                 Document=letterToComment.PDF,

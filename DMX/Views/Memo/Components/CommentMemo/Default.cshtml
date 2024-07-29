@@ -97,20 +97,7 @@
         </div>
     </div>
     </div>
-@functions {
-    Random random = new Random();
 
-    public string GenerateRandomColor()
-    {
-        // Generate random RGB values
-        int r = random.Next(0, 256);
-        int g = random.Next(0, 256);
-        int b = random.Next(0, 256);
-
-        // Return color in hexadecimal format
-        return $"#{r:X2}{g:X2}{b:X2}";
-    }
-}
 
     <script>
 

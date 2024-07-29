@@ -379,9 +379,12 @@
                                 @* <span class="mr-2 d-none d-lg-inline text-gray-600 small">         </span> *@
                                <div class="avatar-circle">
                                 <span class="initials">
-                                   
-                                  @string.Concat(@usm.GetUserAsync(User).Result?.Fullname.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length >= 1 && char.IsLetter(x[0])).Select(x => char.ToUpper(x[0])))
-
+                                @if(sim.IsSignedIn(User))
+                                {
+                                @usm.GetUserAsync(User).Result.PhoneNumber }
+                                else{
+                                    @string.Concat(@usm.GetUserAsync(User).Result?.Fullname.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length >= 1 && char.IsLetter(x[0])).Select(x => char.ToUpper(x[0])))
+                                }
                                 </span>
                                 </div>
                             </a>

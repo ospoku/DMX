@@ -61,9 +61,8 @@ namespace DMX.Controllers
  
             if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
-                notyf.Success("Document successfully saved!!!", 5);
+                notyf.Success("Record successfully saved!!!", 5);
 
-                ViewBag.Message = "Document successfully added";
                 return RedirectToAction("ViewLetters");
             }
             else
@@ -124,11 +123,11 @@ namespace DMX.Controllers
 
         public IActionResult DeleteLetter() => ViewComponent("ViewLetters"); 
         [HttpPost]
-        public async Task<IActionResult> AddLetterComment(string Id, DocumentCommentVM addDocumentCommentVM)
+        public async Task<IActionResult> CommentLetter(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
             Letter letterToComment = new();
-            letterToComment = (from l in dcx.Letters where l.LetterId == Id select l).FirstOrDefault();
+            letterToComment = (from l in dcx.Letters where l.LetterId == @Encryption.Decrypt(Id) select l).FirstOrDefault();
 
             LetterComment addThisComment = new()
             {
@@ -138,14 +137,14 @@ namespace DMX.Controllers
                 Message = addDocumentCommentVM.NewComment,
 
 
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
+                UserId = usm.GetUserAsync(HttpContext.User).Result.Id,
             };
 
             dcx.LetterComments.Add(addThisComment);
             await dcx.SaveChangesAsync();
 
-            return RedirectToAction("ViewDocuments");
+            return RedirectToAction("ViewLetters");
         }
         private byte[] ConvertToBytes(IFormFile file)
         {

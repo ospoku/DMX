@@ -8,17 +8,17 @@ namespace DMX.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string LetterId { get; set; }
-        public  string Source { get; set; }
+        public  string LetterId { get; set; }
+        public string Source { get; set; } = "";
         public DateTime DateReceived { get; set; }
         public DateTime DocumentDate { get; set; }
-        public  string ReferenceNumber { get; set; }
+        public string ReferenceNumber { get; set; } = "";
 
-        public string AdditionalNotes { get; set; }
+        public string AdditionalNotes { get; set; } = "";
         [Required]
-        public  byte[] PDF { get; set; }
+        public byte[] PDF { get; set; } = [];
         
-  
+  public ICollection<LetterComment> LetterComments { get; set; } = [];
 
     }
 }

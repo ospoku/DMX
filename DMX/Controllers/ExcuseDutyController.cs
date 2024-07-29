@@ -91,7 +91,7 @@ namespace DMX.Controllers
            
             if (await dcx.SaveChangesAsync( usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
-                notyf.Success("Excuse Duty successfully saved", 5);
+                notyf.Success("Record successfully saved", 5);
                 return RedirectToAction("ViewExcuseDuties");
 
             }

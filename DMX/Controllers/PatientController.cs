@@ -65,7 +65,7 @@ namespace DMX.Controllers
 
                 if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
                 {
-                    notyf.Success("Client successfully created.");
+                    notyf.Success("Record successfully saved.");
                     return RedirectToAction("ViewPatients");
 
                 }

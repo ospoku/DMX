@@ -10,7 +10,8 @@ namespace DMX.ViewModels
         public string Title { get; set; }
         public byte[] Document { get; set; }
         public string NewComment { get; set; }
-    public ICollection<LetterComment> Comments { get; set; }  
+        public DateTime CreatedDate { get; set; }
+        public ICollection<LetterComment> Comments { get; set; }  
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
     }

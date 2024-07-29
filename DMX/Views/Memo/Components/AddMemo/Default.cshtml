@@ -2,7 +2,7 @@
 @model DMX.ViewModels.AddMemoVM;
 
 <div class="modal fade" id="AddMemo" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -14,7 +14,7 @@
             {
             <div class="modal-body">
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="">
+                        <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="" required>
                         <label class="did-floating-label">Memo Title</label>
                     </div>
                 
@@ -23,7 +23,7 @@
                     </div>
                     <div class="did-floating-label-content">
 
-                        <select id="selectMemoUser" class="did-floating-select" style="width:100%" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectMemoUser" class="did-floating-select" style="width:100%" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" required ></select>
                         <label class="did-floating-label">Select Receipient(s)</label>
                     </div>
                     </div>

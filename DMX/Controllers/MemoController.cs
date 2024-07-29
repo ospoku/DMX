@@ -116,7 +116,7 @@ namespace DMX.Controllers
             }
             if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
             {
-                notyf.Success("Memo successfully saved", 5);
+                notyf.Success("Record successfully saved", 5);
 
                 return RedirectToAction("ViewMemos");
             }

@@ -11,135 +11,98 @@
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
-
-
-
-        
-
+                @using (Html.BeginForm("CommentLetter", "Letter", FormMethod.Post))
+                {
+        <div class="accordion" id="accordionMemoComment">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="card-header-text">Document Content</h5>
+                <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapseMemoDetail" aria-expanded="true">
+                    <span class="title">Letter</span>
+                    @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
                 </div>
-                <div class="card-block accordion-block">
-                    <div id="accordion" role="tablist" aria-multiselectable="true">
-                        <div class="accordion-panel">
-                            <div class="accordion-heading" role="tab" id="headingOne">
-                                <h3 class="card-title accordion-title">
-                                    <a class="accordion-msg waves-effect waves-dark" data-toggle="collapse"
-                                       data-parent="#accordion" href="#collapseOne"
-                                       aria-expanded="true" aria-controls="collapseOne">
-                                        @Model.Title
-                                    </a>
-                                </h3>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                <div class="accordion-content accordion-desc">
-                                    <p>
-                                        @Model.MemoContent
-
-                                       
-                                    </p>
-                                </div>
-                            </div>
-                       
-                        </div>
-
+                <div id="collapseMemoDetail" class="collapse show" data-parent="#accordionMemoComment">
+                    <div class="card-body h-100">
+                        <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String(@Model.Document)" class="h-100 w-100"></iframe>
                     </div>
-                    <object>
-                            <embed src="data:application/pdf;base64, @System.Convert.ToBase64String(@Model.Document)"/>
-                            </object>
-                        </div>
                 </div>
-
-        
-
-        </div>
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-header-text">Minutes/Comments</h5>
-                </div>
-               
-                    <div class="card-block accordion-block">
-                        <div id="accordion" role="tablist" aria-multiselectable="true">
-                           
-                            <div class="accordion-panel">
-                                @{ int i = 1;}
-                                @foreach (var comment in Model.Comments.OrderBy(x=>x.CreatedDate))
-                                {
-                                    <div class="accordion-heading" role="tab" id="headingOne">
-
-                                        <h3 class="card-title accordion-title">
-                                            <a class="accordion-msg waves-effect waves-dark" data-toggle="collapse"
-                                               data-parent="#accordion" href="#collapseTwo_@i"
-                                               aria-expanded="true" aria-controls="collapseTwo">
-                                                @comment.CreatedBy <small class="fa-pull-right">
-
-                                                    <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>
-
-                                                </small>
-                                            </a>
-                                        </h3>
-                                    </div>
-
-                                    <div id="collapseTwo_@i" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="accordion-content accordion-desc">
-                                            <p>
-                                                @comment.Message
-                                            </p>
-                                        </div>
-                                    </div>
-                                    i++;
-                                }
-                                </div>
-                            
-                            </div>
-
-                    </div>
-                
-                </div>
-
-        </div>
-        <div class="col-lg-12">
-
-            @using (Html.BeginForm("DocumentComment", "Document", FormMethod.Post))
-            {
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-header-text">Add Your Comments</h5>
-                    </div>
-                    <div class="card-block accordion-block">
-                        <div id="accordion" role="tablist" aria-multiselectable="true">
-                            <div class="accordion-panel">
-                                <div class="accordion-heading" role="tab" id="headingOne">
-                                    <h3 class="card-title accordion-title">
-                                        <a class="accordion-msg waves-effect waves-dark" data-toggle="collapse"
-                                           data-parent="#accordion" href="#collapseThree"
-                                           aria-expanded="true" aria-controls="collapseThree">
-
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="accordion-content accordion-desc">
-                                        <textarea class="form-control" asp-for="@Model.NewComment">
-                                                                
-                                                            </textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-                    <button class="btn btn-block btn-primary btn-sm">Save</button>
-                </div>
-            }
-
             </div>
+            <div class="card">
+                <div class="card-header collapsed" data-bs-toggle="collapse" data-bs-target="#collapseMinutes" aria-expanded="false" aria-controls="collapseTwo">
+                    <span class="title">Minutes/Comments</span>
+                    @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
+                </div>
+                <div id="collapseMinutes" class="collapse" data-parent="#accordionMemoComment">
+                    <div class="card-body">
+                        @foreach (var comment in Model.Comments)
+                        {
+
+                            <div class="card p-3 mt-1">
+                                <div class="justify-content-between align-items-center">
+                                    <div class="align-items-center">
+
+
+                                        <small class="font-weight-bold">@comment.CreatedBy</small>
+
+                                        <small class="fa-pull-right">
+
+                                            <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>
+
+                                        </small>
+
+                                        <div>@Html.Raw(@comment.Message)</div>
+
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+
+
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
+                    <span class="title">New Comment</span>
+                    @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
+                </div>
+                <div id="collapseThree" class="collapse" data-parent="#accordionMemoComment">
+
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <textarea class="form-control" id="newComment" asp-for="@Model.NewComment"></textarea>
+                        </div>
+
+                        <button class="btn btn-block btn-primary">Save Comment</button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
     </div>
+
+</div>
+    </div>
+    </div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('time.timeago').timeago();
+    });
+
+    $(document).ready(function () {
+        tinymce.init({ selector: '#newComment' });
+    });
+</script>

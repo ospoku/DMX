@@ -9,6 +9,7 @@ using DMX.DataProtection;
 using DMX.Models;
 using Microsoft.AspNetCore.Authorization;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Http;
 
 namespace DMX.Controllers
 {
@@ -190,7 +191,7 @@ namespace DMX.Controllers
             return ViewComponent("EditProfile");
         }
         [HttpPost]
-        public async Task<IActionResult>EditProfile(EditProfileVM editProfileVM)
+        public async Task<IActionResult>EditProfile(EditProfileVM editProfileVM,IFormFile? formFile)
         {
             AppUser profileToEdit= (from u in usm.Users
                                 where u.Id == usm.GetUserId(HttpContext.User) select u).FirstOrDefault();
@@ -202,11 +203,22 @@ namespace DMX.Controllers
             profileToEdit.PhoneNumber = editProfileVM.Telephone;
             
 
+            using (var memoryStream = new MemoryStream())
+            {
+
+
+                await formFile.CopyToAsync(memoryStream);
+
+
+                profileToEdit.Picture = memoryStream.ToArray();
+
+            }
+
             await usm.UpdateAsync(profileToEdit);
 
             notyf.Success("Profile successfully updated",5);
 
-            return ViewComponent("UserProfile");
+            return ViewComponent("Login");
         }
     }
 }

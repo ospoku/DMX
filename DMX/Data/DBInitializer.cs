@@ -5,12 +5,12 @@ using System.Security.Claims;
 
 namespace DMX.Data
 {
-    public  class DBInitializer(XContext dContext, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
+    public class DBInitializer(XContext dContext, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
     {
         public readonly XContext dcx = dContext;
         public readonly RoleManager<AppRole> rol = roleManager;
         public readonly UserManager<AppUser> usm = userManager;
-        public async Task  Initialize()
+        public async Task Initialize()
         {
             dcx.Database.EnsureCreated();
             if (!rol.Roles.Any())
@@ -21,7 +21,8 @@ namespace DMX.Data
                 await rol.CreateAsync(new AppRole() { Name = "Admin", Rolename = "Admin", Description = "Role for admin users" });
             }
 
-            if (!dcx.DeceasedTypes.Any()) {
+            if (!dcx.DeceasedTypes.Any())
+            {
                 dcx.DeceasedTypes.Add(new DeceasedType()
                 {
                     Name = "Brought In Dead",
@@ -102,13 +103,13 @@ namespace DMX.Data
                 };
 
             };
-          
+
         }
     }
 }
 
 
 
-  
+
 
 

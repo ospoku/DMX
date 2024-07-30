@@ -381,7 +381,8 @@
                                 <span class="initials">
                                 @if(sim.IsSignedIn(User))
                                 {
-                                @usm.GetUserAsync(User).Result.PhoneNumber }
+                              <img src=" data:image/jpeg;base64,@System.Convert.ToBase64String( @usm.GetUserAsync(User).Result.Picture)" class="avatar-circle"  />
+                                }
                                 else{
                                     @string.Concat(@usm.GetUserAsync(User).Result?.Fullname.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length >= 1 && char.IsLetter(x[0])).Select(x => char.ToUpper(x[0])))
                                 }

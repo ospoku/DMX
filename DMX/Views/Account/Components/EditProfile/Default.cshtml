@@ -4,7 +4,7 @@
 <div class="card-header py-3">
     <h6 class="m-0 font-weight-bold text-primary">Edit Profile</h6>
 </div>
- @using (Html.BeginForm("EditProfile", "Account", FormMethod.Post))
+    @using (Html.BeginForm("EditProfile", "Account",  FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 <div class="card-body">
             <div class="row">
@@ -45,8 +45,9 @@
                         <div class="form-group">
                         <img  class="img-profile"/>
                   </div>
-                    
-                        <input type="file"/>
+                            <div class="form-group">
+                            <input class=" form-control custom-custom-file-input" id="formFile" name="formFile" type="file" asp-for="UploadFile" />
+                            </div>
                         </div>
                        </div>
                 </div>

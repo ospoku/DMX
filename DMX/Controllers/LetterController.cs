@@ -78,7 +78,7 @@ namespace DMX.Controllers
         public IActionResult EditLetter(string Id)
         => ViewComponent("EditLetter", Id);
         [HttpPost]
-        public async Task<IActionResult> EditDocumentAsync(string Id, Letter document, IFormFile formFile)
+        public async Task<IActionResult> EditLetterAsync(string Id, Letter document, IFormFile formFile)
         {
             EditDocumentVM edvm = new();
             Letter updateThisDocument = new();

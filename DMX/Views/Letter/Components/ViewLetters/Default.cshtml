@@ -56,7 +56,7 @@
                                        
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentLetter)).Succeeded)
                                         {
-                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentLetter", new { Id = @Encryption.Encrypt(let.LetterId) })" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
+                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentLetter", new { Id = @Encryption.Encrypt(let.LetterId) })" class="dropdown-item-custom" data-bs-target="#CommentLetter"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         }
 
                                          @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DownloadLetter)).Succeeded)

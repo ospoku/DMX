@@ -201,24 +201,26 @@ namespace DMX.Controllers
             profileToEdit.Firstname = editProfileVM.Firstname;
             profileToEdit.Surname = editProfileVM.Surname;
             profileToEdit.PhoneNumber = editProfileVM.Telephone;
-            
 
-            using (var memoryStream = new MemoryStream())
+            if (formFile != null)
             {
+                using (var memoryStream = new MemoryStream())
+                {
 
 
-                await formFile.CopyToAsync(memoryStream);
+                    await formFile.CopyToAsync(memoryStream);
 
 
-                profileToEdit.Picture = memoryStream.ToArray();
+                    profileToEdit.Picture = memoryStream.ToArray();
 
+                }
             }
 
             await usm.UpdateAsync(profileToEdit);
 
             notyf.Success("Profile successfully updated",5);
 
-            return ViewComponent("Login");
+            return  RedirectToActionPermanent("Login");
         }
     }
 }

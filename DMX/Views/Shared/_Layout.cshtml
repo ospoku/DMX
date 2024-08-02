@@ -377,17 +377,51 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @* <span class="mr-2 d-none d-lg-inline text-gray-600 small">         </span> *@
-                               <div class="avatar-circle">
-                                <span class="initials">
-                                @if(sim.IsSignedIn(User))
+                              
+                                @{
+                                    var user =  usm.GetUserAsync(User).Result;
+                                    string base64Image =string.Empty;
+                                    string userInitials = string.Empty;
+                                    if (user.Picture != null)
+                                    {
+                                        base64Image = Convert.ToBase64String(user.Picture);
+                                    }
+                                    else
+                                    {
+                                        if (!string.IsNullOrEmpty(user.Firstname) && !string.IsNullOrEmpty(user.Surname))
+                                        {
+                                            userInitials = $"{user.Firstname[0]}{user.Surname[0]}".ToUpper();
+                                        }
+                                        else if(!string.IsNullOrEmpty(user.Firstname))
+                                        {
+                                            userInitials = user.Firstname[0].ToString().ToUpper();
+                                        }
+                                                                else if(!string.IsNullOrEmpty(user.Surname))
+                                        {
+                                            userInitials = user.Surname[0].ToString().ToUpper();
+                                        }
+
+                                    }
+                                }
+                                
+                                @if (!string.IsNullOrEmpty(base64Image))
                                 {
-                              <img src=" data:image/jpeg;base64,@System.Convert.ToBase64String( @usm.GetUserAsync(User).Result.Picture)" class="avatar-circle"  />
+
+
+                                    <img src="data:image/jpeg;base64,@base64Image"  class="avatar-circle"  /> 
+                                
                                 }
-                                else{
-                                    @string.Concat(@usm.GetUserAsync(User).Result?.Fullname.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length >= 1 && char.IsLetter(x[0])).Select(x => char.ToUpper(x[0])))
-                                }
+
+                                else
+                                {
+                                    <div class="avatar-circle">
+                                        <span class="initials">
+                                 @*  @string.Concat(@usm.GetUserAsync(User).Result?.Fullname.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length >= 1 && char.IsLetter(x[0])).Select(x => char.ToUpper(x[0])))
+ *@                              
+ @userInitials
                                 </span>
                                 </div>
+                                }
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in"
@@ -489,7 +523,17 @@
     
     <script src="~/lib/jquery-timeago/jquery.timeago.min.js"></script>
     <script src="~/ospapps/ospapps.js" asp-append-version="true"></script>
+
+    <script>
+        function ProfilePicture()
+        {
+
+        }
+    </script>
     @await Component.InvokeAsync("Notyf")
+
+
+  
  
 </body>
 

@@ -5,10 +5,6 @@ namespace DMX.ViewModels
 {
     public class ViewMemosVM
     {
-
-
-
-
         public string Title { get; set; }
         public string Content { get;  set; }
 

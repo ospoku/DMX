@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-
-using AspNetCoreHero.ToastNotification.Abstractions;
-using DMX.ViewModels;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.Models;
-using Microsoft.AspNetCore.Authorization;
 using DMX.DataProtection;
-using DMX.ViewComponents;
+using DMX.Models;
+using DMX.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace DMX.Controllers
 {
-    
+
     public class LetterController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService
            ) : Controller
     {
@@ -80,7 +77,8 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> EditLetterAsync(string Id, Letter document, IFormFile formFile)
         {
-            EditDocumentVM edvm = new();
+            EditDocumentVM editDocumentVM = new();
+            EditDocumentVM edvm = editDocumentVM;
             Letter updateThisDocument = new();
             updateThisDocument = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
             updateThisDocument.ReferenceNumber = document.ReferenceNumber;
@@ -146,7 +144,7 @@ namespace DMX.Controllers
 
             return RedirectToAction("ViewLetters");
         }
-        private byte[] ConvertToBytes(IFormFile file)
+        private static byte[] ConvertToBytes(IFormFile file)
         {
 
             using (var memoryStream = new MemoryStream())

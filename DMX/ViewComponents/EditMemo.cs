@@ -5,6 +5,7 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
@@ -16,10 +17,11 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke(string Id)
         {
 
-            //var stringIDs = (from x in dcx.Assignments where x.TaskId == Id select x.SelectedUsers).FirstOrDefault().Split(',');
+          
         
-            var memoToEdit = (from m in dcx.Memos where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
-
+            //var memoToEdit = (from m in dcx.Memos where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+            Memo memoToEdit = new();
+            memoToEdit = (from m in dcx.Memos where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
             EditMemoVM editMemoVM = new()
             {
 

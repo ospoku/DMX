@@ -21,6 +21,6 @@ namespace DMX.Authorization
             }
             return FallbackPolicyProvider.GetPolicyAsync(policyName);
         }
-        public Task<AuthorizationPolicy> GetFallbackPolicyAsync() => FallbackPolicyProvider.GetDefaultPolicyAsync();
+        public async Task<AuthorizationPolicy> GetFallbackPolicyAsync() => await  FallbackPolicyProvider.GetDefaultPolicyAsync();
     }
 }

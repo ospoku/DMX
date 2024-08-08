@@ -105,7 +105,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> EditPettyCash()
         {
-            return RedirectToAction("ViewPettyCash");
+            return  RedirectToAction("ViewPettyCash");
         }
 
     }

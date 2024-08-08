@@ -11,10 +11,7 @@ namespace DMX.ViewModels
         public string Telephone { get; set; }
         public IFormFile UploadFile { get; set; }
         public string Email { get; set; }
-        public string BranchId { get; set; }
-        public SelectList Branches { get; set; }
-        public string ApplicationRoleId { get; set; }
-        public List<SelectListItem> ApplicationRoles { get; set; }
+        public string Picture { get; set; }
 
     }
 }

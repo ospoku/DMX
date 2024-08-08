@@ -10,6 +10,8 @@ using DMX.Models;
 using Microsoft.AspNetCore.Authorization;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DMX.Controllers
 {
@@ -27,13 +29,7 @@ namespace DMX.Controllers
             return ViewComponent("AddUser");
         }
 
-        public string GenerateColorCode()
-        {
-            // Generate a random color code
-            Random random = new();
-            string colorCode= String.Format("#{0:X6}", random.Next(0x1000000));
-            return colorCode;
-        }
+       
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserVM addUserVM)
         {
@@ -176,10 +172,7 @@ namespace DMX.Controllers
 
             return RedirectToAction("Login");
         }
-        public async Task <IActionResult>ForgetPassword()
-        {
-            return View();
-        }
+        public async Task<IActionResult> ForgetPassword() =>  View();
         [HttpGet]
         public async Task<IActionResult>UserProfile()
         {
@@ -194,7 +187,8 @@ namespace DMX.Controllers
         public async Task<IActionResult>EditProfile(EditProfileVM editProfileVM,IFormFile? formFile)
         {
             AppUser profileToEdit= (from u in usm.Users
-                                where u.Id == usm.GetUserId(HttpContext.User) select u).FirstOrDefault();
+                                    where u.Id == usm.GetUserId(HttpContext.User)
+                                    select u).FirstOrDefault();
 
            
 
@@ -221,6 +215,17 @@ namespace DMX.Controllers
             notyf.Success("Profile successfully updated",5);
 
             return  RedirectToActionPermanent("Login");
+        }
+      
+        [HttpPost]
+        public async Task<IActionResult> DeletePhoto(string Id)
+        {
+            var photoToDelete = (from u in usm.Users where u.Id == Encryption.Decrypt(Id) select u).FirstOrDefault();
+            photoToDelete.Picture=null;
+
+            await usm.UpdateAsync(photoToDelete);
+            notyf.Success("Photo successfully deleted", 5);
+            return RedirectToActionPermanent("UserProfile");
         }
     }
 }

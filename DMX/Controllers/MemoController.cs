@@ -128,10 +128,13 @@ namespace DMX.Controllers
 
           
         }
-        [Authorize(Policy ="OwnerPolicy")]
+        [Authorize(Policy = "OwnerPolicy")]
         [HttpGet]
         public IActionResult EditMemo(string Id)
-        => ViewComponent("EditMemo", Id);
+        {
+            return ViewComponent("EditMemo", Id);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CommentMemo(string Id, MemoCommentVM addCommentVM)
         {
@@ -157,7 +160,7 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteMemo(string Id)
+        public async Task< IActionResult> DeleteMemo(string Id)
         {
             var memoToDelete = (from m in dcx.Memos where m.MemoId == Encryption.Decrypt(Id) select m).FirstOrDefault();
 

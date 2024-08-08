@@ -25,4 +25,11 @@
     <Folder Include="Views\Permission\Components\ManagePermissions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Shared\Components\UserMessages\Default.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

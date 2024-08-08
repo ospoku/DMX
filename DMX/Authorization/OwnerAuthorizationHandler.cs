@@ -1,17 +1,18 @@
 ﻿using DMX.Data;
+using DMX.Models;
 using Humanizer.Localisation;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace DMX.Authorization
 {
-    public class OwnerAuthorizationHandler : AuthorizationHandler<OwnerRequirement, TableAudit>
+    public class OwnerAuthorizationHandler : AuthorizationHandler<OwnerRequirement, Memo>
     {
 
 
-        protected override  Task HandleRequirementAsync(AuthorizationHandlerContext context, OwnerRequirement requirement, TableAudit resource)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OwnerRequirement requirement, Memo resource)
         {
-            if (context.User.HasClaim(ClaimTypes.NameIdentifier, resource.CreatedBy))
+            if (context.User.HasClaim(ClaimTypes.Name,resource.CreatedBy.ToString()))
             {
                 context.Succeed(requirement);
             }

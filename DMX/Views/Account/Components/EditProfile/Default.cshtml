@@ -1,5 +1,8 @@
 ﻿
 @model DMX.ViewModels.EditProfileVM
+@using DMX.DataProtection;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> usm;
 <div class="card">
 <div class="card-header py-3">
     <h6 class="m-0 font-weight-bold text-primary">Edit Profile</h6>
@@ -39,16 +42,32 @@
                         </div>
                         </div>
                         <div class="col">
-                        <div class="card border-1">
+                        <div class="card border-1 text-center">
                             <div class="card-body">
                                 <div class="card-title">Profile Picture</div>
                         <div class="form-group">
-                                <img id="imagePreview" class="img-profile" height="150" width="150" />
-                                
+                             
+                                    <img id="imagePreview" class="img-profile" height="170" width="150" src="data:image/jpeg;base64,@Model.Picture" alt="" />
+                            
                   </div>
-                            <div class="form-group">
-                                <input class=" form-control custom-custom-file-input" id="formFile" name="formFile" type="file" asp-for="@Model.UploadFile" onchange="ShowImagePreview(this)" />
-                                <button class="btn btn-danger"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete Photo</button>
+                            <div class="form-group text-center">
+                       
+                                <div class="btn btn-group" role="group">
+                              @*   <div class="button-wrapper">
+                                    <span class="label">
+                                           <i class="fa fas fa-upload"></i> Upload File
+                                    </span> *@
+                                    
+                                    <input type="file" class="btn border-1 border-dark w-100 mr-3 rounded" id="upload" name="formFile"  asp-for="@Model.UploadFile" onchange="ShowImagePreview(this)"/>
+
+                                    <button  asp-action="DeletePhoto" asp-route-Id="@Encryption.Encrypt(usm.GetUserAsync(User).Result?.Id)" asp-controller="Account" class="btn btn-danger w-100 rounded" onclick="return jQueryAjaxDeletePhoto(this)" >
+                                        <i style="width:15px; height:15px" class="fa fa-trash">
+                                        </i> Delete Photo
+                                     </button>
+                           
+                          </div>
+                          
+                         
                             </div>
                         </div>
                        </div>

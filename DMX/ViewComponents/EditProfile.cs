@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DMX.Data;
-using DMX.Models;
+﻿using DMX.Models;
 using DMX.ViewModels;
-using DMX.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using static DMX.Constants.Permissions;
 
 namespace DMX.ViewComponents
 {
@@ -12,24 +10,38 @@ namespace DMX.ViewComponents
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = rolManager;
-        
+
+
 
         public IViewComponentResult Invoke()
         {
+            var userToEdit = usm.GetUserAsync(HttpContext.User).Result;
 
-            AppUser userToEdit = usm.GetUserAsync(HttpContext.User).Result;
-
-            EditProfileVM editUserVM = new()
+            EditProfileVM editUserVM = new();
             {
-              
-                Email = userToEdit.Email,
-                Firstname = userToEdit.Firstname,
-                Username = userToEdit.UserName,
-                Surname = userToEdit.Surname,
-                Telephone = userToEdit.PhoneNumber,
-            };
+                editUserVM.Email = userToEdit.Email;
+                editUserVM.Firstname = userToEdit.Firstname;
+                editUserVM.Username = userToEdit.UserName;
+                editUserVM.Surname = userToEdit.Surname;
+                editUserVM.Telephone = userToEdit.PhoneNumber;
 
-            return View(editUserVM);
+
+
+                switch (userToEdit.Picture)
+                {
+                    case null:
+                        editUserVM.Picture = null;
+                        break;
+                    default:
+                        editUserVM.Picture = Convert.ToBase64String(userToEdit.Picture);
+                        
+                        break;
+                }
+;
+
+
+                return View(editUserVM);
+            }
         }
     }
 }

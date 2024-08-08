@@ -3,8 +3,9 @@ using DMX.Models;
 using DMX.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace ODS.Controllers
+namespace DMX.Controllers
 {
     public class MessageController(IMessageService messageService, UserManager<AppUser> userManager, XContext context) : Controller
     {
@@ -34,8 +35,21 @@ namespace ODS.Controllers
             return ViewComponent("UserMessages");
         }
 
+        //[HttpPost]
+        //public JsonResult UpdateMessage(string Id)
+        //{
+
+        //    var msg = ctx.Messages.Where(m => m.MessageId == Id).FirstOrDefault();
+        //    if (msg != null)
+        //    {
+        //        msg.MessageId = Id;
+        //        msg.IsRead = 1;
+        //        ctx.SaveChanges();
+        //    }
+        //    return Json(msg);
+        //}
         [HttpPost]
-        public JsonResult UpdateMessage(string Id)
+        public async Task<IActionResult> UpdateMessage(string Id)
         {
 
             var msg = ctx.Messages.Where(m => m.MessageId == Id).FirstOrDefault();
@@ -43,9 +57,11 @@ namespace ODS.Controllers
             {
                 msg.MessageId = Id;
                 msg.IsRead = 1;
+                 ctx.Messages.Attach(msg);
+               ctx.Entry(msg).State = EntityState.Modified;
                 ctx.SaveChanges();
             }
-            return Json(msg);
+            return RedirectToAction("UserMessages");
         }
     }
 }

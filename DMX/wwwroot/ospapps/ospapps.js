@@ -208,23 +208,7 @@ $(function GetMessages() {
         });
         GetMessages();
     });
-    function bankDetails() {
-        let bankSection = document.getElementById('Bank');
-        let momoSection = document.getElementById('Momo');
-        let isShow = true;
-
-
-        bankSection.classList.remove("d-none");
-        bankSection.classList.add("d-block");
-        momoSection.classList.remove("d-block");
-        momoSection.classList.add("d-none");
-    }
-    function momoDetails() {
-        bankSection.classList.remove("d-block");
-        bankSection.classList.add("d-none");
-        momoSection.classList.remove("d-none");
-        momoSection.classList.add("d-block");
-    }
+   
 
 jQueryAjaxDeleteMemo = form => {
     if (confirm('Are you sure to delete this Memo?'))
@@ -399,6 +383,32 @@ $(function LoadPatients() {
     $.ajax({
         type: "GET",
         url: "/Patient/Patients",
+
+    });
+});
+
+jQueryAjaxDeletePhoto = form => {
+    if (confirm('Are you sure to delete this Photo?')) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+            });
+            LoadUserProfile();
+
+
+        }
+        catch (e) {
+            LoadUserProfile();
+        }
+    }
+    return false;
+}
+$(function LoadUserProfile()
+{
+    $.ajax({
+        type: "GET",
+        url: "/Account/UserProfile",
 
     });
 });

@@ -30,15 +30,16 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddAuthorization(options => options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new OwnerRequirement())));
 builder.Services.AddSingleton<IAuthorizationHandler, OwnerAuthorizationHandler>();
-IServiceCollection serviceCollection = builder.Services.AddAuthorization(options => options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new OwnerRequirement())));
+
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ONLINE")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
 
 builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();

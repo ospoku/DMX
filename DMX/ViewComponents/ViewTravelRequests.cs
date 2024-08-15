@@ -1,28 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DMX.Data;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using DMX.Models;
 
 namespace DMX.ViewComponents
 {
-    public class ViewTravelRequests(XContext dContext) : ViewComponent
+    public class ViewTravelRequests(XContext dContext,UserManager<AppUser>userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-
+        public readonly UserManager<AppUser>usm= userManager;
         public IViewComponentResult Invoke()
         {
-            var lList = dcx.TravelRequests.Where(t => t.IsDeleted == false).Select(t => new ViewTravelRequestsVM
+            var user = usm.GetUserAsync(HttpContext.User).Result?.UserName;
+            var travelList = dcx.TravelRequestAssignments.Where(a => a.AppUser.UserName == user || a.TravelRequest.CreatedBy == user).Select(a => 
+             new ViewTravelRequestsVM
             {
 
 
-
-
-
-
-
-
-                CreatedDate = t.CreatedDate,
+                CreatedDate = a.CreatedDate,
             }).OrderByDescending(t => t.CreatedDate).ToList();
-            return View(lList);
+            return View(travelList);
         }
     }
 }

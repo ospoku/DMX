@@ -14,7 +14,7 @@ namespace DMX.ViewComponents
         public readonly XContext dcx = xContext;
         public IViewComponentResult Invoke()
         {
-            AddMorgueVM addPatientVM = new()
+            AddPatientVM addPatientVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
                 DeceasedTypes= new SelectList(dcx.DeceasedTypes.ToList(), "Id","Code")

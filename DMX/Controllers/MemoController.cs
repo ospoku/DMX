@@ -11,11 +11,15 @@ using System.Security.Claims;
 
 namespace DMX.Controllers
 {
-    public class MemoController(XContext dContext, UserManager<AppUser>userManager, INotyfService notyfService) : Controller
+   
+    public class MemoController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService , IAuthorizationService authorizationService) : Controller
     {
         public readonly XContext dcx = dContext;
-        public readonly UserManager<AppUser>usm=userManager;
-        public readonly INotyfService notyf =notyfService;
+        public readonly UserManager<AppUser> usm = userManager;
+        public readonly INotyfService notyf = notyfService;
+        public readonly IAuthorizationService auth=authorizationService;
+
+
         [HttpPost]
         public async Task<IActionResult> EditMemo(string Id, EditMemoVM editMemoVM)
         {
@@ -29,17 +33,27 @@ namespace DMX.Controllers
             updateThisMemo.Title = editMemoVM.Title;
 
 
-            updateThisMemo.ModifiedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
-            //updateThisMemo.UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id;
+            updateThisMemo.ModifiedBy = usm.GetUserAsync(User).Result.UserName;
 
-            //Assignment updateThisAssignment = (from x in dcx.MemoAssignments where x.TaskId == @Encryption.Decrypt(Id) select x).FirstOrDefault();
-
-           // updateThisAssignment.SelectedUsers = string.Join(',', editMemoVM.SelectedUsers);
             dcx.Memos.Attach(updateThisMemo);
 
             dcx.Entry(updateThisMemo).State = EntityState.Modified;
-            if (await dcx.SaveChangesAsync() > 0)
+            foreach (var user in editMemoVM.SelectedUsers)
             {
+
+                dcx.MemoAssignments.Add(new MemoAssignment
+                {
+                    MemoId = editMemoVM.MemoId,
+                    AppUserId = user,
+                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                    CreatedDate = DateTime.UtcNow,
+                });
+            }
+
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+
                 return RedirectToAction("ViewMemos");
             }
             else
@@ -58,26 +72,6 @@ namespace DMX.Controllers
         {
             return ViewComponent("PrintMemo", Id);
         }
-        //[HttpPost]
-        //public IActionResult PrintMemo(string Id, MemoCommentVM printVM)
-        //{
-
-        //    Memo memoToPrint = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
-
-
-        //    printVM = new MemoCommentVM
-        //    {
-        //        Comments = memoToPrint.MemoComments.ToList(),
-        //        Title = memoToPrint.Title,
-        //        Sender=memoToPrint.Sender,
-        //        Recipient=memoToPrint.Recipient,
-        //       CreatedDate=memoToPrint.CreatedDate.Value,
-        //    MemoContent = memoToPrint.Content,
-        //        SelectedUsers = [.. dcx.MemoAssignments.Where(x => x.MemoId == @Encryption.Decrypt(Id)).Select(p => p.AppUserId)],
-        //    };
-
-        //    return View(printVM);
-        //}
         public IActionResult ViewMemos()
         {
             return ViewComponent("ViewMemos");
@@ -91,15 +85,15 @@ namespace DMX.Controllers
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVM)
         { var rand = new Random();
             int digit = 5;
-            string RefN = "M" + rand.Next((int)Math.Pow(10,digit-1),(int)Math.Pow(10,digit));
+            string RefN = "M" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
 
             Memo addThisMemo = new()
             {
                 Content = addMemoVM.Content,
-               
+
                 ReferenceId = RefN,
-                Title =addMemoVM.Title,
-                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
+                Title = addMemoVM.Title,
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.Memos.Add(addThisMemo);
@@ -110,11 +104,11 @@ namespace DMX.Controllers
                 {
                     MemoId = addThisMemo.MemoId,
                     AppUserId = user,
-                    CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
+                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
                     CreatedDate = DateTime.UtcNow,
                 });
             }
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
             {
                 notyf.Success("Record successfully saved", 5);
 
@@ -122,18 +116,38 @@ namespace DMX.Controllers
             }
             else
             {
-                notyf.Error("Error, Memo could not be saved!!!", 5);
+                notyf.Error("Error, Record could not be saved!!!", 5);
                 return RedirectToAction("ViewMemos");
             }
 
-          
+
         }
-        [Authorize(Policy = "OwnerPolicy")]
+        
+
         [HttpGet]
-        public IActionResult EditMemo(string Id)
+
+        
+        public async Task<IActionResult> EditMemoAsync(string Id)
         {
-            return ViewComponent("EditMemo", Id);
+            Memo? memoId = (from x in dcx.Memos where x.MemoId == Encryption.Decrypt(Id) select x).FirstOrDefault();
+            if (memoId == null)
+            {
+                return new NotFoundResult();
+            }
+            var authorizationResult = await auth
+           .AuthorizeAsync(User, memoId, "UserOwnsDocumentPolicy");
+            if (authorizationResult.Succeeded)
+            { 
+                return ViewComponent("EditMemo", Id);
+            }
+            else
+            {
+                notyf.Error("You do not have access to this resource!!!", 5);
+                return ViewComponent("ViewMemos");
+
+            }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CommentMemo(string Id, MemoCommentVM addCommentVM)
@@ -148,15 +162,22 @@ namespace DMX.Controllers
 
                 CreatedDate = DateTime.Now,
                 Message = addCommentVM.NewComment,
-                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
-                  UserId = usm.GetUserAsync(HttpContext.User).Result.Id,
-                
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                UserId = usm.GetUserAsync(User).Result.Id,
+
             };
 
             dcx.MemoComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
 
-            return RedirectToAction("ViewMemos");
+                return RedirectToAction("ViewMemos");
+            }
+            else
+            {
+                notyf.Error("Error, Record could not be saved!!!", 5);
+                return RedirectToAction("ViewMemos");
+            }
         }
 
         [HttpPost]

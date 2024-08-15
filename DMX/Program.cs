@@ -30,8 +30,8 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddAuthorization(options => options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new OwnerRequirement())));
-builder.Services.AddSingleton<IAuthorizationHandler, OwnerAuthorizationHandler>();
+builder.Services.AddAuthorization(options => options.AddPolicy("UserOwnsDocumentPolicy", policy => policy.Requirements.Add(new UserOwnsDocumentRequirement())));
+builder.Services.AddSingleton<IAuthorizationHandler, UserOwnsDocumentHandler>();
 
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -46,7 +46,7 @@ builder.Services.AddIdentity<AppUser,AppRole>()
 
 
 builder.Services.AddControllersWithViews();
-//builder.Services.AddScoped<DBInitializer>();
+builder.Services.AddScoped<DBInitializer>();
 builder.Services.AddSignalR();
 builder.Services.AddDataProtection();
 
@@ -76,10 +76,10 @@ app.MapControllerRoute(
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
 var scope = app.Services.CreateScope();
-//var db = scope.ServiceProvider.GetRequiredService<XContext>();
-//db.Database.EnsureCreatedAsync().Wait();
+var db = scope.ServiceProvider.GetRequiredService<XContext>();
+db.Database.EnsureCreatedAsync().Wait();
 
-//var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-//await init.Initialize();
+var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
+await init.Initialize();
 
 app.Run();

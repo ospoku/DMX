@@ -1,9 +1,9 @@
 ﻿
-@model DMX.ViewModels.AddMorgueVM;
+@model DMX.ViewModels.AddPatientVM;
 
 
 <div class="modal fade" id="AddPatient" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -15,6 +15,11 @@
              @using (Html.BeginForm("AddPatient", "Patient", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="modal-body">
+                    <div class="did-floating-label-content">
+                        <input type="date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
+
+                        <label class="did-floating-label">Date</label>
+                    </div>
                     <div class="did-floating-label-content">
                         <input type="text" asp-for="@Model.Deceased" class="did-floating-input" placeholder="" required/>
                         <label class="did-floating-label">Deceased</label>
@@ -50,6 +55,16 @@
                         </div>
 
                     </div>
+                  
+                        <div class="did-floating-label-content">
+                        <input class="did-floating-input vh-15" asp-for="@Model.FinalDiagnoses" placeholder="" required></input>
+                            <label class="did-floating-label">Final Diagnoses</label>
+                 
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.WardInCharge" class="did-floating-input" placeholder="" required />
+                        <label class="did-floating-label">In-Charge</label>
+                    </div>
                     <div class="did-floating-label-content">
                         <input type="text" asp-for="@Model.Depositor" class="did-floating-input" placeholder="" required>
                         <label class="did-floating-label">Depositor</label>
@@ -59,20 +74,12 @@
                         <label class="did-floating-label">Depositor Address</label>
                     </div>
 
+                    
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description"  class="did-floating-input" placeholder="" required/>
-                        <label class="did-floating-label"> Description</label>
-                    </div>
-                    <div class="did-floating-label-content">
-                        <input type="date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}"/>
-
-                        <label class="did-floating-label">Date</label>
-                    </div>
+                        <input type="text" class="did-floating-input" asp-for="@Model.Description"  placeholder="" />
                   
-
-                    <div class="form-group">
-                        <textarea class="did-floating-input" asp-for="@Model.Description"  placeholder="Additional Information"></textarea>
-                   </div>
+                        <label class="did-floating-label">Additional Information</label>
+                    </div>
                         
                         <div class="did-floating-label-content">
                         <select id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>

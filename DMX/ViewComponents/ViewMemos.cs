@@ -27,7 +27,7 @@ namespace DMX.ViewComponents
                 Title = a.Memo.Title,
                 Sender = a.Memo.CreatedBy,
                 CreatedDate = a.CreatedDate,
-
+                CreatedBy=a.CreatedBy
 
             }).OrderByDescending(a=>a.CreatedDate).ToList();
             return View(memoList);

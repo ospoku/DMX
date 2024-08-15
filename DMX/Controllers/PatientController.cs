@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
 using DMX.Models;
+
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,60 +30,55 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddPatient() => ViewComponent("AddPatient");
         [HttpPost]
-        public async Task<IActionResult> AddPatient(AddMorgueVM addMorgueVM)
+        public async Task<IActionResult> AddPatient(AddPatientVM addPatientVM)
         {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Message = "Document addition error!!! Please try again";
-
-                return ViewComponent("AddPatient");
-            }
+          
             var rand = new Random();
             int digit = 5;
             string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 Patient addThisPatient = new()
                 {
-                    Date = addMorgueVM.Date,
-                    FinalDiagnoses = addMorgueVM.FinalDiagnoses,
-                    ReferenceNumber=RefN,
-                    WardInCharge = addMorgueVM.WardInCharge,
+                    Date = addPatientVM.Date,
+                    FinalDiagnoses = addPatientVM.FinalDiagnoses,
+                    ReferenceNumber = RefN,
+                    WardInCharge = addPatientVM.WardInCharge,
 
-                    IsDeleted = false,
-                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                    
+                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
                     CreatedDate = DateTime.Now,
                 };
                 dcx.Patients.Add(addThisPatient);
 
-                dcx.MemoAssignments.Add(new MemoAssignment
+                foreach (var user in addPatientVM.SelectedUsers)
                 {
-                    // SelectedUsers = string.Join(',', addPatientVM.SelectedUsers),
 
-                });
-
-
-                if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
+                    dcx.PatientAssignments.Add(new PatientAssignment
+                    {
+                        PatientId = addThisPatient.PatientId,
+                        AppUserId = user,
+                        CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                        CreatedDate = DateTime.UtcNow,
+                    });
+                }
+                if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
                 {
-                    notyf.Success("Record successfully saved.");
+                    notyf.Success("Record successfully saved", 5);
+
                     return RedirectToAction("ViewPatients");
-
                 }
-                else
-                {
-                    notyf.Error("Member creation error!!! Please try again");
-                }
-                return RedirectToAction("AddPatient");
+        
 
+
+
+
+
+
+                return ViewComponent("ViewPatients");
             }
-            else
-            {
-                return RedirectToAction("AddPatient");
-            }
-
-
-        }
+        
 
 
         [HttpPost]
@@ -100,12 +96,12 @@ namespace DMX.Controllers
                 Message = addCommentVM.NewComment,
 
 
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                  UserId = usm.GetUserAsync(User).Result.Id,
             };
 
             dcx.PatientComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
+            await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName);
 
             return RedirectToAction("ViewMemos");
         }

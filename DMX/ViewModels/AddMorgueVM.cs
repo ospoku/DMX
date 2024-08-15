@@ -2,7 +2,7 @@
 
 namespace DMX.ViewModels
 {
-    public class AddMorgueVM
+    public class AddPatientVM
     {
         public string PatientId { get; set; }
         public string ReferenceNumber { get; set; }

@@ -11,7 +11,7 @@ namespace DMX.ViewModels
         public string Sender { get; set; }
         public List<string> Assignees { get; set; }
         public string ReferenceNumber { get; set; }
-
+        public string CreatedBy { get; set; }
         public string MemoId { get; set; }
         public DateTime? CreatedDate { get;  set; }
     }

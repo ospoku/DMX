@@ -1,24 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DMX.Data;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using DMX.Models;
 namespace DMX.ViewComponents
 {
-    public class ViewServiceRequests(XContext dContext) : ViewComponent
+    public class ViewServiceRequests(XContext dContext, UserManager<AppUser>userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
+        public readonly  UserManager<AppUser> usm=userManager;
 
         public IViewComponentResult Invoke()
         {
-            var sList = dcx.ServiceRequests.Where(s => s.IsDeleted == false).Select(s => new ViewServiceRequestsVM
+            var user = usm.GetUserAsync(HttpContext.User).Result?.UserName;
+            var servList = dcx.ServiceAssignments.Where(a => a.AppUser.UserName == user || a.ServiceRequest.CreatedBy == user).Select(a => new 
+             ViewServiceRequestsVM
             {
-                FaultInspectedBy = s.FaultInspectedBy,
-            Faults = s.Faults,  
-            RequestDate = s.RequestDate,
-            RequestNumber = s.RequestNumber,
-            Unit = s.Unit,
-                CreatedDate = s.CreatedDate,
+                FaultInspectedBy = a.ServiceRequest.FaultInspectedBy,
+            Faults = a.ServiceRequest.Faults,  
+            RequestDate = a.ServiceRequest.RequestDate,
+            RequestNumber = a.ServiceRequest.RequestNumber,
+            Unit = a.ServiceRequest.Unit,
+                CreatedDate = a.ServiceRequest.CreatedDate,
             }).OrderByDescending(t => t.CreatedDate).ToList();
-            return View(sList);
+            return View(servList);
         }
     }
 }

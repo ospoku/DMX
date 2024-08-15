@@ -11,18 +11,20 @@ namespace DMX.ViewComponents
         public readonly UserManager<AppUser> usm = userManager;
         public IViewComponentResult Invoke()
         {
-            var pcList = dcx.PettyCashes.Where(a => a.IsDeleted == false).Select(a => new ViewPettyCashVM
+            var user = usm.GetUserAsync(HttpContext.User).Result?.UserName;
+            var pettyList = dcx.PettyCashAssignments.Where(a => a.AppUser.UserName == user || a.CreatedBy == user).Select(a => 
+             new ViewPettyCashVM
             {
                 PettyCashId = a.PettyCashId,
-                Amount = a.Amount,
-                Name = a.CreatedBy,
-                Date = a.Date,
-                Description = a.Description,
-                Purpose = a.Purpose,
-                ReferenceNumber=a.ReferenceNumber,
+                Amount = a.PettyCash.Amount,
+
+                Date = a.PettyCash.Date,
+
+                Purpose = a.PettyCash.Purpose,
+                ReferenceNumber=a.PettyCash.ReferenceNumber,
                 CreatedDate = a.CreatedDate,
             }).OrderByDescending(a => a.CreatedDate).ToList();
-            return View(pcList);
+            return View(pettyList);
         }
     }
 }

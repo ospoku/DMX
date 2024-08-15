@@ -18,7 +18,7 @@
          
                 <div class="accordion" id="accordionMemoComment">
                     <div class="card">
-                        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapseMemoDetail" aria-expanded="true">
+                        <div class="card-header bg-primary-subtle" data-bs-toggle="collapse" data-bs-target="#collapseMemoDetail" aria-expanded="true">
                             <span class="title">Memo Content</span>
                            @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
                         </div>
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header collapsed" data-bs-toggle="collapse" data-bs-target="#collapseMinutes" aria-expanded="false" aria-controls="collapseTwo">
+                        <div class="card-header collapsed  bg-primary-subtle" data-bs-toggle="collapse" data-bs-target="#collapseMinutes" aria-expanded="false" aria-controls="collapseTwo">
                             <span class="title">Minutes/Comments</span>
                            @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
                         </div>
@@ -53,18 +53,10 @@
 
                                                 <div>@Html.Raw(@comment.Message)</div>
 
-
-
                                             </div>
                                         </div>
 
                                     </div>
-
-
-
-
-
-
 
                                 }
 
@@ -72,7 +64,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
+                            <div class="card-header collapsed  bg-primary-subtle" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
                             <span class="title">New Comment</span>
                            @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
                         </div>

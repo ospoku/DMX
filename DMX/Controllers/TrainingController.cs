@@ -6,15 +6,17 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Globalization;
 namespace DMX.Controllers
 {
-    public class TrainingController(XContext context, INotyfService notyfService) : Controller
+    public class TrainingController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager) : Controller
     {
         public readonly XContext dcx = context;
         public readonly INotyfService notyf = notyfService;
+        public readonly UserManager<AppUser> usm = userManager;
         public IActionResult ViewExternalTrainings()
          => ViewComponent("ViewExternalTrainings");
         public IActionResult ViewParticipants()
@@ -22,28 +24,28 @@ namespace DMX.Controllers
 
 
         [HttpGet]
-        public IActionResult AddInternalTraining() => ViewComponent("AddInternalTraining");
+        public IActionResult AddTraining() => ViewComponent("AddTraining");
        
       
 
         public IActionResult ViewAttendance()
-    => ViewComponent("ViewAttendances");
+    => ViewComponent("ViewAttendance");
         [HttpGet]
-        public IActionResult ViewInternalTrainings()
-    => ViewComponent("ViewInternalTrainings");
+        public IActionResult ViewTrainings()
+    => ViewComponent("ViewTrainings");
         [HttpPost]
-        public async Task<IActionResult> AddInternalTraining(AddInternalTrainingVM addTrainingVM)
+        public async Task<IActionResult> AddTraining(AddTrainingVM addTrainingVM)
         {
-            InternalTraining addThisTraining = new()
+            Training addThisTraining = new()
             {
                 EventName = addTrainingVM.WorkshopTitle,
                 Date = addTrainingVM.TrainingDate,
                 Description = addTrainingVM.Description,
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
             };
 
-            dcx.InternalTrainings.Add(addThisTraining);
+            dcx.Trainings.Add(addThisTraining);
             await dcx.SaveChangesAsync();
 
             return RedirectToAction("ViewInternalTrainings");
@@ -64,7 +66,7 @@ namespace DMX.Controllers
                     ParticipantId = attendee,
                     EventId = @Encryption.Decrypt(Id),
 
-                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
 
                 };
 
@@ -72,7 +74,7 @@ namespace DMX.Controllers
             }
 
                
-                if (await dcx.SaveChangesAsync(User? .FindFirst(c => c.Type == "Name").Value) > 0)
+                if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
                 {
                     notyf.Success("Client successfully created.");
                     return RedirectToAction("ViewMeetings");
@@ -113,12 +115,12 @@ namespace DMX.Controllers
                 Name = addMeetingVM.Name,
                 Description = addMeetingVM.Description,
                 CreatedDate = DateTime.Now,
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 Date = addMeetingVM.Date,
             };
             dcx.Meetings.Add(addThisMeeting);
 
-            if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
+            if (await dcx.SaveChangesAsync( usm.GetUserAsync(User).Result?.UserName) > 0)
             {
                 notyf.Success("Client successfully created.");
                 return RedirectToAction("ViewMeetings");

@@ -41,7 +41,7 @@ namespace DMX.Controllers
                 Date = addPettyCashVM.Date,
                 Amount = addPettyCashVM.Amount,
                 Purpose = addPettyCashVM.Purpose,
-                Description = addPettyCashVM.Description,
+               
                 CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
 

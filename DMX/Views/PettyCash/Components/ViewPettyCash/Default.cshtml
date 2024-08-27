@@ -31,11 +31,9 @@
                             <th>Date</th>
                     <th>Name</th>
                     <th>Purpose</th>
-               
-
-                 
+              
                     <th>Amount</th>
-                    <th>Description</th>
+                   
                     <th>Action</th>
                     </tr>
                 </thead>
@@ -50,7 +48,7 @@
                         <td>@petty.Purpose </td>
 
                         <td>@petty.Amount</td>
-                        <td>@petty.Description</td>
+                       
                            <td>
                                 <div class="btn-group" role="group">
                                     <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,13 +61,15 @@
                                        
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.PrintPettyCash)).Succeeded)
                                         { <a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="@Encryption.Encrypt(petty.PettyCashId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
-                                        }@if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentPettyCash)).Succeeded)
+                                        }
+                                        @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentPettyCash)).Succeeded)
                                         {  <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ClientProfile")" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         } @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeletePettyCash)).Succeeded)
                                         {
                                             <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
                                                 <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                        </form>}
+                                        </form>
+                                        }
                                     </div>
                                 </div>
 

@@ -26,7 +26,7 @@ namespace DMX.ViewComponents
             {
                 Amount=pettyCashToUpdate.Amount,
        Date=pettyCashToUpdate.Date,
-       Description=pettyCashToUpdate.Description,   
+         
        Purpose=pettyCashToUpdate.Purpose,
        
                 SelectedUsers = dcx.PettyCashAssignments.Where(x => x.PettyCashId == @Encryption.Decrypt(Id)).Select(u => u.AppUserId).ToList(),

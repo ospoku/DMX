@@ -12,6 +12,8 @@
 
 <div id="PlaceHolderHere"></div>
 
+@await Component.InvokeAsync("ViewBreadcrumbs", new { items = ViewBag.BreadcrumbItems as List<DMX.ViewComponents.BreadcrumbItem> })
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Memos</h6>

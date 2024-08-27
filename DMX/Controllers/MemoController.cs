@@ -2,6 +2,7 @@
 using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
+using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -38,19 +39,27 @@ namespace DMX.Controllers
             dcx.Memos.Attach(updateThisMemo);
 
             dcx.Entry(updateThisMemo).State = EntityState.Modified;
-            foreach (var user in editMemoVM.SelectedUsers)
-            {
+            
 
+            foreach (var removeAssignees in dcx.MemoAssignments.Where(x => x.MemoId.Equals(Encryption.Decrypt(Id))))
+            {
+                dcx.MemoAssignments.Remove(removeAssignees);
+            }
+
+            foreach (var user in editMemoVM.SelectedUsers)
+
+            {
                 dcx.MemoAssignments.Add(new MemoAssignment
                 {
-                    MemoId = editMemoVM.MemoId,
-                    AppUserId = user,
-                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                    MemoId = updateThisMemo.MemoId,
+                    AppUserId= user,
+                    CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                     CreatedDate = DateTime.UtcNow,
                 });
             }
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+         
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result?.UserName) > 0)
             {
                 notyf.Success("Record successfully saved", 5);
 
@@ -74,6 +83,15 @@ namespace DMX.Controllers
         }
         public IActionResult ViewMemos()
         {
+
+            var breadcrumbs = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem{Title="Home", Url="/"},
+                new BreadcrumbItem{Title="Memos", Url=@Url.Action("ViewMemos")}
+            };
+
+            ViewBag.BreadcrumbItems = breadcrumbs;
+
             return ViewComponent("ViewMemos");
         }
         [HttpGet]

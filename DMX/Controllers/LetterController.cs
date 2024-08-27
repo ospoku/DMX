@@ -64,7 +64,7 @@ namespace DMX.Controllers
             }
             else
             {
-                ViewBag.Message = "Failed to save document";
+              
                 notyf.Error("Document saving failed");
                 return ViewComponent("AddDocument");
 

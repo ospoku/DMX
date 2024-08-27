@@ -1,0 +1,38 @@
+﻿
+@model DMX.ViewModels.AddDepartmentVM
+
+<div class="slide-in-panel" id="slideInPanel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="card">
+
+        
+            <div class="card-header">
+
+                <h6 class="d-inline">Add Department</h6>
+                <button type="button"  aria-label="Close" class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
+            </div>
+             @using (Html.BeginForm("AddDepartment", "Settings", FormMethod.Post))
+            {
+            <div class="card-body">
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" />
+                        <label class="did-floating-label">Name</label>
+                    </div>
+
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Code" class="did-floating-input" placeholder="" />
+                        <label class="did-floating-label">Code</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Description" class="did-floating-input" placeholder=""/>
+                        <label class="did-floating-label">Description</label>
+                    </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-block btn-primary">Save</button>
+                        </div>
+                }
+            </div>
+    </div>
+
+
+   

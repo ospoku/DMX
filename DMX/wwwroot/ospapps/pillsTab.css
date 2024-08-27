@@ -1,31 +1,49 @@
-﻿#pills-home-tab.active {
+﻿#pills-deceased-tab.active {
     background-color: white !important;
     color: black !important;
+    font-weight: 600;
+}
+#pills-deceased-tab {
+    color: white !important;
     font-weight: 600;
 }
 
-#pills-profile-tab.active {
+#pills-traveltypes-tab.active {
     background-color: white !important;
     color: black !important;
     font-weight: 600;
 }
-#pills-profile-tab {
+#pills-traveltypes-tab {
+    color: white !important;
+    font-weight: 600;
+}
+#pills-fees-tab.active {
+    background-color: white !important;
+    color: black !important;
+    font-weight: 600;
+}
+#pills-fees-tab {
    
     color: white !important;
     font-weight: 600;
    
 }
-#pills-home-tab {
-    color: white !important;
-    font-weight: 600;
-}
-
-#pills-contact-tab.active {
+#pills-perdiem-tab.active {
     background-color: white !important;
     color: black !important;
     font-weight: 600;
 }
-#pills-contact-tab {
+#pills-perdiem-tab {
+    color: white !important;
+    font-weight: 600;
+}
+
+#pills-departments-tab.active {
+    background-color: white !important;
+    color: black !important;
+    font-weight: 600;
+}
+#pills-departments-tab {
   
     color: white !important;
     font-weight: 600;

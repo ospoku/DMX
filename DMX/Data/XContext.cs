@@ -9,7 +9,7 @@ namespace DMX.Data
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
     {
 
-        
+        public DbSet<Fee> Fees { get; set; }
         public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
@@ -28,8 +28,8 @@ namespace DMX.Data
         public DbSet<TravelType> TravelTypes { get; set; }
         public DbSet<TravelRequest> TravelRequests { get; set; }
         public DbSet<SickReport> SickReports { get; set; }
-      
-        public DbSet<InternalTraining> InternalTrainings { get; set; }
+      public DbSet<MorgueCharge> MorgueCharges {  get; set; }
+        public DbSet<Training> Trainings { get; set; }
         public DbSet<ExcuseDuty> ExcuseDuties { get; set; }
         public DbSet<SMSTask> SMSTasks { get; set; }
         public DbSet<MemoComment> MemoComments { get; set; }
@@ -45,6 +45,8 @@ namespace DMX.Data
         public DbSet<PatientAssignment> PatientAssignments { get; set; }
         public DbSet<ServiceAssignment> ServiceAssignments { get; set; }
         public DbSet <SickAssignment> SickAssignments { get; set; }
+        public DbSet<PerDiem> PerDiems { get; set; }
+            public DbSet<Department> Departments { get; set; }
        
       
    

@@ -6,7 +6,7 @@ using DMX.ViewModels;
 
 namespace DMX.ViewComponents
 {
-    public class ViewInternalTrainings(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class ViewTrainings(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
@@ -15,7 +15,7 @@ namespace DMX.ViewComponents
         {
 
 
-            var trainingList = dcx.InternalTrainings.Where(d => d.IsDeleted == false).Select(d => new ViewInternalTrainingsVM
+            var trainingList = dcx.Trainings.Where(d => d.IsDeleted == false).Select(d => new ViewTrainingsVM
             {
 
                TrainingId = d.TrainingId,

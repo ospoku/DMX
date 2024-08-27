@@ -1,0 +1,21 @@
+﻿@using DMX.ViewComponents
+
+@model IEnumerable<DMX.ViewComponents.BreadcrumbItem>
+<nav class="breadcrumb p-sm-0 justify-content-sm-end mt-0 mt-sm-0 d-flex">
+    <ol class="breadcrumb py-sm-0 justify-content-sm-end mt-0 mt-sm-0 d-flex">
+        @foreach (var item in Model)
+        {
+            <li class="breadcrumb-item">
+                @if(string.IsNullOrEmpty(item.Url))
+                {
+                    @item.Title
+                }
+                else
+                {
+                    <a href="@item.Url">@item.Title</a>
+                }
+
+            </li>
+        }
+    </ol>
+</nav>

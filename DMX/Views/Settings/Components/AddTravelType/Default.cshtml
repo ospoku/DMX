@@ -1,0 +1,35 @@
+﻿
+@model DMX.ViewModels.AddTravelTypeVM;
+
+<div class="modal fade" id="AddTravelType" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Travel Type</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+             @using (Html.BeginForm("AddTravelType", "Memo", FormMethod.Post))
+            {
+            <div class="modal-body">
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" required>
+                        <label class="did-floating-label">Memo Title</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" required>
+                        <label class="did-floating-label">Memo Title</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder="" required>
+                        <label class="did-floating-label">Memo Title</label>
+                    </div>
+                   
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-block btn-primary">Save</button></div>
+                }
+            </div>
+    </div>
+</div>
+

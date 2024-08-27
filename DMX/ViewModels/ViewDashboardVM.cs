@@ -7,6 +7,7 @@
         public string TotalMales { get; set; }
         public string TotalUsers { get; set; }
         public string ZeroToFifteen { get; set; }
+        public int PettyCash {  get; set; } 
     }
 
 }

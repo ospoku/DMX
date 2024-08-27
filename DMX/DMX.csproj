@@ -26,6 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Training\Components\ViewTrainings\Default.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Views\Shared\Components\UserMessages\Default.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

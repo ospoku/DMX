@@ -19,7 +19,7 @@ namespace DMX.Authorization
                 policy.AddRequirements(new PermissionRequirement(policyName));
                 return Task.FromResult(policy.Build());
             }
-            return FallbackPolicyProvider.GetPolicyAsync(policyName);
+            return  FallbackPolicyProvider.GetPolicyAsync(policyName);
         }
         public async Task<AuthorizationPolicy> GetFallbackPolicyAsync() => await  FallbackPolicyProvider.GetDefaultPolicyAsync();
     }

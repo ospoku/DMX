@@ -1,6 +1,6 @@
 ﻿namespace DMX.ViewModels
 {
-    public class ViewInternalTrainingsVM
+    public class ViewTrainingsVM
     {
         public string TrainingId { get; set; }
         public string EventName { get; set; }

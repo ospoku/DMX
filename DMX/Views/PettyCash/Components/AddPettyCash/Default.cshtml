@@ -1,5 +1,6 @@
 ﻿
 @model DMX.ViewModels.AddPettyCashVM;
+@inject DMX.Data.XContext ctx;
 
 <div class="modal fade" id="AddPettyCash" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
@@ -21,21 +22,18 @@
 
                 
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Amount" class="did-floating-input" placeholder="" required/>
+                        <input type="number" asp-for="@Model.Amount" class="did-floating-input" max="@Model.Maximum" placeholder="" required/>
                         <label class="did-floating-label">Amount</label>
                     </div>
                         <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.Purpose"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Purpose</label>
                         </div>
-               <div class="form-group" > 
-                        <textarea type="text" asp-for="@Model.Description" class="did-floating-input" placeholder="Description" required></textarea>
-                       
-                  </div>
+            
                     <div class="form-group">
                         <div class="did-floating-label-content">
                         <select id="selectPettyCashUser" class="did-floating-select" style="width:100%"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                            <label class="did-floating-label">Select Receipient(s)</label>
+                            <label class="did-floating-label">Select Approver(s)</label>
                         </div>
                         </div>
                         <button class="btn btn-block btn-primary">Save</button>       

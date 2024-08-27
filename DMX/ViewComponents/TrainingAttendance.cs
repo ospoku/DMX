@@ -18,7 +18,7 @@ namespace DMX.ViewComponents
 
             TrainingAttendanceVM addAttendanceVM = new() 
             {
-                EventName= dcx.InternalTrainings.Where(x=>x.TrainingId==Encryption.Decrypt(Id)).Select(x=>x.EventName).Single(),
+                EventName= dcx.Trainings.Where(x=>x.TrainingId==Encryption.Decrypt(Id)).Select(x=>x.EventName).Single(),
 
                 Attendees = new SelectList(usm.Users.ToList(), "Id", "Fullname"),
 

@@ -18,8 +18,8 @@
         <div class="col">
     <div class="did-floating-label-content">
   
-    <input type="number" asp-for="@Model.Tier1" class="did-floating-input" placeholder="" />
-    <label class="did-floating-label">Morgue Tier 1 Charge</label>
+    <input type="number" asp-for="@Model.Tier1" id="numMorgueT1" class="did-floating-input" placeholder="" />
+    <label class="did-floating-label" for="numMorgueT1" name="numMorgueT1">Morgue Tier 1 Charge</label>
 </div>
                 </div> 
                 <div class="col-sm">
@@ -36,13 +36,13 @@
                 <div class="col-sm">
                     <div class="did-floating-label-content">
 
-                        <input type="number" asp-for="@Model.Tier2" class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label">Morgue Tier 2 Charge</label>
+                        <input type="number" asp-for="@Model.Tier2" id="txtMorgueTier2" name="txtMorgueTier2" class="did-floating-input" placeholder="" />
+                        <label class="did-floating-label" for="txtMorgueTier2">Morgue Tier 2 Charge</label>
                     </div>
                 </div>
                 <div class="col-sm">
                     
-                        <input class="btn btn-md btn-outline-secondary" type="submit" asp-action="EditTier2" value="Edit" />
+                        <input class="btn btn-md btn-outline-secondary" type="submit"id="btnEditTier2" name="btnEditTier2" asp-action="EditTier2" value="Edit" />
                         <input class="btn btn-outline-secondary" asp-action="SaveTier2" type="submit" value="Save" />
                    
                 </div>
@@ -56,8 +56,8 @@
                 <div class="col-sm">
                     <div class="did-floating-label-content">
 
-                <input type="number" asp-for="@Model.PCThreshold" class="did-floating-input" placeholder="" required />
-                <label class="did-floating-label">Petty Cash Threshold</label>
+                        <input type="number" asp-for="@Model.PCThreshold" id="numPettyCashThreshold" name="numPettyCashThreshold" class="did-floating-input" placeholder="" required />
+                <label class="did-floating-label" for="numPettyCashThreshold">Petty Cash Threshold</label>
                 </div>
                 </div>
                 <div class="col-sm">

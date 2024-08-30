@@ -10,16 +10,16 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Types</h6>
 
-        <button id="openPanelBtn" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add Department</button>  @* data-bs-toggle="ajax-modal" data-bs-target="#AddDepartment" *@
+        <button type="button" id="openDepartmentPanel" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add Department</button>  @* data-bs-toggle="ajax-modal" data-bs-target="#AddDepartment" *@
 
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table dataTables_wrapper">
+            <table class=" table dataTables_wrapper" id="tbViewDepartments">
 
                 <thead>
                     <tr>
-
+                        <th>SN</th>
                         <th>Name</th>
                         
                         <th>Description</th>
@@ -31,7 +31,7 @@
                     @foreach (var type in Model)
                     {
                         <tr>
-
+                            <th></th>
                             <td>@type.Name</td>
                            
                             <td>@type.Description</td>

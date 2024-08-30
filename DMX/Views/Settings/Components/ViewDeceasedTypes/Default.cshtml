@@ -20,11 +20,11 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table dataTables_wrapper">
+            <table class="table dataTables_wrapper" id="tbDTypes">
 
                 <thead>
                     <tr>
-
+                        <th>SN</th>
                         <th>Name</th>
                         <th>Code</th>
                         <th>Description</th>
@@ -36,7 +36,7 @@
                     @foreach (var type in Model)
                     {
                         <tr>
-
+                            <th></th>
                             <td>@type.Name</td>
                             <td>@type.Code</td>
                             <td>@type.Description</td>

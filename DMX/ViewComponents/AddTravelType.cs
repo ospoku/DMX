@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DMX.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DMX.ViewComponents
 {
@@ -6,7 +7,9 @@ namespace DMX.ViewComponents
     {
         public IViewComponentResult Invoke()
         {
-            return View();
+            var addTravelTypeVM = new AddTravelTypeVM();    
+
+            return View(addTravelTypeVM);
         }
     }
 }

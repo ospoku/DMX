@@ -3,13 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMX.Models
 {
-    public class Fee
+    public class FeeStructure
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public decimal Tier1 {  get; set; } 
-        public decimal Tier2 { get; set; }
-        public decimal PCThreshold { get; set; }
+        public string Name { get; set; }
+        public int MinDays  {  get; set;} 
+        public int MaxDays { get; set; }
+        public decimal Fee { get; set; }
     }
 }

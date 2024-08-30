@@ -6,24 +6,23 @@ using DMX.Models;
 
 namespace DMX.ViewComponents
 {
-    public class ViewTravelTypes(XContext dContext,UserManager<AppUser>userManager) : ViewComponent
+    public class ViewTravelTypes(XContext dContext) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-        private readonly UserManager<AppUser> usm = userManager;
+       
 
         public IViewComponentResult Invoke()
         {
-            var user = usm.GetUserAsync(HttpContext.User).Result;
-            var memoList = dcx.Memos.Where(a => a.IsDeleted == false & a.CreatedBy == user.UserName).Select(a => new ViewMemosVM
+          
+            var tList = dcx.TravelTypes.Where(a => a.IsDeleted == false).Select(a => new ViewTravelTypesVM
             {
-                MemoId = a.MemoId,
-                Content = a.Content,
-                ReferenceNumber=a.ReferenceId,
-                Title = a.Title,
-                Sender = user.UserName,
-                CreatedDate = a.CreatedDate,
-            }).OrderByDescending(a => a.CreatedDate).ToList();
-            return View(memoList);
+                Id = a.TravelTypeId,
+                Name = a.Name,
+               Code =a.Code,
+               Description = a.Description,
+            
+            }).ToList();
+            return View(tList);
         }
     }
 }

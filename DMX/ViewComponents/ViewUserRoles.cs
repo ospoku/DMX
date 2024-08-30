@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DMX.ViewComponents
 {
-    public class ViewUserRoles(XContext printContext, UserManager<AppUser> userManager) : ViewComponent
+    public class ViewUserRoles(XContext context, UserManager<AppUser> userManager) : ViewComponent
     {
-        public readonly XContext dcx = printContext;
+        public readonly XContext dcx = context;
         public readonly UserManager<AppUser> usm=userManager;
 
         public IViewComponentResult Invoke()

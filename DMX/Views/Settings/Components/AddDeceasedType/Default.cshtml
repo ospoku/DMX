@@ -1,5 +1,5 @@
 ﻿
-@model DMX.ViewModels.AddDepartmentVM
+@model DMX.ViewModels.AddDeceasedTypeVM
 
 <div class="slide-deceased-panel" id="deceasedPanel">
     <div class="card">
@@ -8,9 +8,9 @@
             <div class="card-header">
 
                 <h6 class="d-inline">Add Deceased Type</h6>
-                <button id="closeDeceaesedPanel" type="button" name="nCloseDceasedPanel" aria-label="Close" class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
+                <button id="btnCloseDeceased" type="button" name="nCloseDceasedPanel" class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
             </div>
-             @using (Html.BeginForm("AddDepartment", "Settings", FormMethod.Post))
+             @using (Html.BeginForm("AddDeceasedType", "Settings", FormMethod.Post))
             {
             <div class="card-body">
                     <div class="did-floating-label-content">

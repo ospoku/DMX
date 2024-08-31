@@ -8,7 +8,7 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Fee Structures</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add Fee Structure</button>
+        <button id="openFeePanel" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add Fee Structure</button>
 
     </div>
     <div class="card-body">
@@ -62,3 +62,4 @@
     <div class="card-footer">
     </div>
 </div>
+@await Component.InvokeAsync("AddFeeStructure")

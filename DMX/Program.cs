@@ -39,7 +39,7 @@ builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SOMEE")));
 
 builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();
@@ -76,10 +76,10 @@ app.MapControllerRoute(
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
 var scope = app.Services.CreateScope();
-var db = scope.ServiceProvider.GetRequiredService<XContext>();
-db.Database.EnsureCreatedAsync().Wait();
+//var db = scope.ServiceProvider.GetRequiredService<XContext>();
+//db.Database.EnsureCreatedAsync().Wait();
 
-var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-await init.Initialize();
+//var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
+//await init.Initialize();
 
 app.Run();

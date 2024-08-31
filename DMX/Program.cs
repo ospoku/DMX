@@ -76,10 +76,10 @@ app.MapControllerRoute(
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
 var scope = app.Services.CreateScope();
-//var db = scope.ServiceProvider.GetRequiredService<XContext>();
-//db.Database.EnsureCreatedAsync().Wait();
+var db = scope.ServiceProvider.GetRequiredService<XContext>();
+db.Database.EnsureCreatedAsync().Wait();
 
-//var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-//await init.Initialize();
+var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
+await init.Initialize();
 
 app.Run();

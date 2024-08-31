@@ -6,6 +6,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using AspNetCoreHero.ToastNotification.Notyf;
 using DMX.Models;
 using Microsoft.AspNetCore.Identity;
+using DMX.ViewComponents;
 
 namespace DMX.Controllers
 {
@@ -98,15 +99,96 @@ namespace DMX.Controllers
             return View("/SystemSetup");
 
         }
-        [HttpGet]
-        public IActionResult AddTravelType()
+        [HttpPost]
+        public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
         {
-            return ViewComponent("AddTravelType");
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "T" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+
+          TravelType addThisTravelType = new()
+            {
+                Name = addTravelTypeVM.Name,
+
+                Code = addTravelTypeVM.Code,
+                Description = addTravelTypeVM.Description,
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedDate = DateTime.UtcNow,
+            };
+            dcx.TravelTypes.Add(addThisTravelType);
+
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                notyf.Error("Error, Record could not be saved!!!", 5);
+                return RedirectToAction("SystemSetup");
+            }
         }
-        [HttpGet]
-        public IActionResult AddDeceasedType()
+        [HttpPost]
+        public async Task<IActionResult> AddFeeStructureAsync(AddFeeStructureVM addFeeStructureVM)
         {
-            return ViewComponent("AddDeceasedType");
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "F" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+
+            FeeStructure addThisStructure = new()
+            {
+                Name = addFeeStructureVM.Name,
+
+                MinDays = addFeeStructureVM.Min,
+                MaxDays=addFeeStructureVM.Max,
+                Fee= addFeeStructureVM.Fee,
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedDate = DateTime.UtcNow,
+            };
+            dcx.FeeStructures.Add(addThisStructure);
+
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                notyf.Error("Error, Record could not be saved!!!", 5);
+                return RedirectToAction("SystemSetup");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddDeceasedTypeAsync(AddDeceasedTypeVM addDeceasedTypeVM)
+        {
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+
+            DeceasedType addThisDeceasedType = new()
+            {
+                Name = addDeceasedTypeVM.Name,
+
+                Code = addDeceasedTypeVM.Code,
+                Description = addDeceasedTypeVM.Description,
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedDate = DateTime.UtcNow,
+            };
+            dcx.DeceasedTypes.Add(addThisDeceasedType);
+
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                notyf.Error("Error, Record could not be saved!!!", 5);
+                return RedirectToAction("SystemSetup");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> AddDepartmentAsync(AddDepartmentVM addDepartmentVM )

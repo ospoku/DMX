@@ -12,9 +12,12 @@
 });
 
 $(function () {
-    $('.table').DataTable({
-        "order": [[0, 'desc']]
-    });
+    $('.table').each(function () {
+        DataTable({
+            "order": [[0, 'desc']]
+        })
+    })
+});
 
     $('.table').DataTable().on('order.dt search.dt', function () {
             let i = 1;

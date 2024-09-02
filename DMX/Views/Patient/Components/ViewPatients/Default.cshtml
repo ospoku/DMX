@@ -46,7 +46,7 @@
                         <td>@patient.WardInCharge</td>
                         <td>
                                 <div class="btn-group" role="group">
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Select Action
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -57,7 +57,7 @@
                                    
                                          @if (( await auth.AuthorizeAsync(User,Permissions.Modules.PrintPatient)).Succeeded)
                                         {
-                                            <a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="@Encryption.Encrypt(patient.PatientId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
+                                            <a class="dropdown-item-custom" asp-action="PrintPatient" asp-controller="Patient" asp-route-Id="@Encryption.Encrypt(patient.PatientId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
                                         }
                                          @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentPatient)).Succeeded)
                                         {<button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ClientProfile")" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>

@@ -11,9 +11,14 @@ namespace DMX.ViewComponents
         {
             var pList = dcx.Patients.Where(a => a.IsDeleted == false).Select(a => new ViewPatientsVM
             {
+                PatientId = a.PatientId,
+               PatientName=a.PatientName,
+               Date=a.Date,
+               FinalDiagnoses=a.FinalDiagnoses, 
+               FolderNo=a.FolderNo,
+               WardInCharge=a.WardInCharge,
 
-
-
+                
 
 
 

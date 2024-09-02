@@ -45,8 +45,12 @@ namespace DMX.Controllers
                     FinalDiagnoses = addPatientVM.FinalDiagnoses,
                     ReferenceNumber = RefN,
                     WardInCharge = addPatientVM.WardInCharge,
-
-                    
+                    Depositor=addPatientVM.Depositor,
+                    DepositorAddress=addPatientVM.DepositorAddress,
+                    TagNo=addPatientVM.TagNo,
+                    FolderNo=addPatientVM.FolderNo,
+                    Description=addPatientVM.Description,
+                    DeceasedTypeId=addPatientVM.DeceasedTypeId,
                     CreatedBy = usm.GetUserAsync(User).Result.UserName,
                     CreatedDate = DateTime.Now,
                 };
@@ -106,6 +110,32 @@ namespace DMX.Controllers
             return RedirectToAction("ViewMemos");
         }
 
+        [HttpGet]
+        public IActionResult PrintPatient(string Id)
+        {
+            return ViewComponent("PrintPatient", Id);
+        }
 
+        public decimal FeecalCalculator(int numberOfDays)
+        {
+            decimal totalFee = 0;
+
+            foreach (var day in dcx.FeeStructures.Select(f => f).ToList())
+            {
+
+                if (numberOfDays > day.MaxDays)
+                {
+                    totalFee += (day.MaxDays - day.MinDays + 1) * day.Fee;
+                }
+                else if (numberOfDays >= day.MinDays)
+                {
+                    totalFee += (numberOfDays - day.MinDays + 1) * day.Fee;
+                    break;
+
+                }
+
+            }
+            return totalFee;
+        }
     }
 }

@@ -10,26 +10,30 @@
         });
     });
 });
-
-$(function () {
+$(document).ready(function () {
+    // Initialize DataTables for each table element
     $('.table').each(function () {
-        DataTable({
+        const table = $(this).DataTable({
             "order": [[0, 'desc']]
-        })
-    })
-});
+        });
 
-    $('.table').DataTable().on('order.dt search.dt', function () {
+        // Function to update row numbers in the first column
+        function updateRowNumbers() {
             let i = 1;
-
-           
-        $('.table').DataTable()     .cells(null, 0, { search: 'applied', order: 'applied' })
-                .every(function (cell) {
+            table.cells(null, 0, { search: 'applied', order: 'applied' })
+                .every(function () {
                     this.data(i++);
                 });
-        })
-        .draw();
+
+            table.draw();
+        }
+
+        // Call updateRowNumbers on table initialization and whenever the table is sorted or searched
+        updateRowNumbers();
+        table.on('order.dt search.dt', updateRowNumbers);
+    });
 });
+
 
 
 

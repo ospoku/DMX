@@ -1,5 +1,5 @@
 ﻿
-@model DMX.ViewModels.DetailLetterVM;
+@model DMX.ViewModels.PrintMorgueVM;
 
 
 <div class="modal fade" id="AddMemo" data-backdrop="static" data-keyboard="false">
@@ -59,6 +59,7 @@
 
 
                                             </div>
+                                            <div>@Model.AmountOwing</div>
 
                                             <a class="btn btn-block btn-primary" asp-action="ViewDocuments" asp-controller="Document">Return</a>
 

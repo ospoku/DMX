@@ -17,7 +17,7 @@ namespace DMX.ViewComponents
             AddPatientVM addPatientVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-                DeceasedTypes= new SelectList(dcx.DeceasedTypes.ToList(), "Id","Code")
+                DeceasedTypes= new SelectList(dcx.DeceasedTypes.ToList(), "DeceasedTypeId","Code")
                 
             };
             return View(addPatientVM);

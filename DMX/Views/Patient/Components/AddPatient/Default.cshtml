@@ -44,7 +44,7 @@
                                
                                 <label class=" btn btn-sm btn-outline-primary">
 
-                                    <input type="radio" asp-for="@Model.DeceasedTypeId" required class="option-input radio" value="dead" id="Dead@(dead)" />
+                                    <input type="radio" asp-for="@Model.DeceasedTypeId"  class="option-input radio" value="@dead.Value" id="Dead@(dead)" />
                                     @dead.Text
                                 </label>
 
@@ -57,7 +57,7 @@
                     </div>
                   
                         <div class="did-floating-label-content">
-                        <input class="did-floating-input vh-15" asp-for="@Model.FinalDiagnoses" placeholder="" required></input>
+                        <input class="did-floating-input vh-15" asp-for="@Model.FinalDiagnoses" placeholder="" required/>
                             <label class="did-floating-label">Final Diagnoses</label>
                  
                     </div>

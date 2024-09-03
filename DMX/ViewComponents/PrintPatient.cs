@@ -4,22 +4,23 @@ using DMX.ViewModels;
 using DMX.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using DMX.Controllers;
+using DMX.Services;
 
 namespace DMX.ViewComponents
 {
-    public class PrintPatient(XContext dContext, PatientController settings) : ViewComponent
+    public class PrintPatient(XContext dContext, FeeService feeService) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-        public readonly PatientController pc = settings;
+        public readonly FeeService fs = feeService;
 
         public IViewComponentResult Invoke(string Id)
         {
             var deceased = dcx.Patients.Include(d => d.PatientComments.OrderBy(d => d.CreatedDate)).Where(d => d.IsDeleted == false & d.PatientId == @Encryption.Decrypt(Id)).Select(d => d)
             .FirstOrDefault();
+        
+            TimeSpan difference = DateTime.Now - deceased.CreatedDate.Value;
+            int numberOfDays = (int)difference.TotalDays;
 
-
-            int numberOfDays = (DateTime.Now - deceased.CreatedDate.Value).Days;
-            var calculatedFee = pc.FeecalCalculator(numberOfDays);
             PrintMorgueVM printMorgueVM = new()
             {
                 FinalDiagnoses = deceased.FinalDiagnoses,
@@ -31,7 +32,7 @@ namespace DMX.ViewComponents
                 Description = deceased.Description,
                 TagNo = deceased.TagNo,
                 WardInCharge = deceased.WardInCharge,
-                AmountOwing=calculatedFee
+                AccruedFees= fs.FeecalCalculator(numberOfDays),
             };
 
 

@@ -3,7 +3,7 @@
 namespace DMX.ViewModels
 {
     public class PrintMorgueVM
-    { public decimal AmountOwing { get; set; }
+    { public decimal AccruedFees { get; set; }
 
         public string PatientId { get; set; } = string.Empty;
         public string ReferenceNumber { get; set; } = string.Empty;

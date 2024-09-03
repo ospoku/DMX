@@ -116,26 +116,6 @@ namespace DMX.Controllers
             return ViewComponent("PrintPatient", Id);
         }
 
-        public decimal FeecalCalculator(int numberOfDays)
-        {
-            decimal totalFee = 0;
-
-            foreach (var day in dcx.FeeStructures.Select(f => f).ToList())
-            {
-
-                if (numberOfDays > day.MaxDays)
-                {
-                    totalFee += (day.MaxDays - day.MinDays + 1) * day.Fee;
-                }
-                else if (numberOfDays >= day.MinDays)
-                {
-                    totalFee += (numberOfDays - day.MinDays + 1) * day.Fee;
-                    break;
-
-                }
-
-            }
-            return totalFee;
-        }
+       
     }
 }

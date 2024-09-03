@@ -17,6 +17,7 @@ builder.Services.AddMvc();
 
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
+builder.Services.AddScoped<FeeService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -75,11 +76,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-var scope = app.Services.CreateScope();
-var db = scope.ServiceProvider.GetRequiredService<XContext>();
-db.Database.EnsureCreatedAsync().Wait();
+//var scope = app.Services.CreateScope();
+//var db = scope.ServiceProvider.GetRequiredService<XContext>();
+//db.Database.EnsureCreatedAsync().Wait();
 
-var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-await init.Initialize();
+//var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
+//await init.Initialize();
 
 app.Run();

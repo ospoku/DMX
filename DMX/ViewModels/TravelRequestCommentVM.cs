@@ -5,7 +5,7 @@ namespace DMX.ViewModels
 {
     public class TravelRequestCommentVM
     {
-        public string MemoId { get; set; }
+        public string TravelRequestId { get; set; }
         public string MemoContent { get; set; }
         public string Title { get; set; }
 
@@ -13,5 +13,6 @@ namespace DMX.ViewModels
         public ICollection<TravelRequestComment> Comments { get; set; }
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
+        public decimal FuelClaim { get; set; }
     }
 }

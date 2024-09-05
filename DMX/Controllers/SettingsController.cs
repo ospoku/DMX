@@ -158,7 +158,42 @@ namespace DMX.Controllers
         {
             return ViewComponent("AddPerDiem");
         }
-       
+
+        [HttpPost]
+        public async Task<IActionResult> SavePCLimit(AddDepartmentVM addDepartmentVM)
+        {
+
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+
+            Department addThisDepartment = new()
+            {
+                Name = addDepartmentVM.Name,
+
+                Code = addDepartmentVM.Code,
+                Description = addDepartmentVM.Description,
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedDate = DateTime.UtcNow,
+            };
+            dcx.Departments.Add(addThisDepartment);
+
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                notyf.Error("Error, Record could not be saved!!!", 5);
+                return RedirectToAction("SystemSetup");
+            }
+
+
+        }
+
+
     }
 }
 

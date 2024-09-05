@@ -15,7 +15,7 @@ namespace DMX.ViewComponents
         {
             AddTravelRequestVM addTravelRequestVM = new AddTravelRequestVM
             {
-                TravelTypes = new SelectList(dcx.TravelTypes.ToList(), "TravelTypeId", "Name"),
+                TravelTypes = new SelectList(dcx.TravelTypes.ToList(),nameof(TravelType.TravelTypeId),nameof(TravelType.Name)),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName")
             };
 

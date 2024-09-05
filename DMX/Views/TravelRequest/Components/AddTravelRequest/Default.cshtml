@@ -19,22 +19,7 @@
             <div class="modal-body">
             
 
-               <fieldset class=" rounded p-1 form-group" style="border: 1px Solid #3d85d8;">
-                                <legend class="float-none w-auto px-1" style="color:#1e4c82;font-size:13px">Select Travel Type</legend>
-                       <div class="btn-group-sm">
-                                @foreach (var travel in Model.TravelTypes)
-                        {
-
-                            <label class=" btn btn-sm btn-outline-primary">
-
-                                <input type="radio" asp-for="@Model.TravelTypeId" required class="option-input radio" value="@travel.Value" id="Travel@(travel)" />
-                                @travel.Text
-                            </label>
-
-                        }
-
-                    </div>
-                    </fieldset> 
+              
                     <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.PurposeofJourney"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Purpose</label>

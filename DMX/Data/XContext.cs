@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 namespace DMX.Data
 {
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
-    {
-
+    {public DbSet<ModeOfTransport> ModesOfTransport { get; set; }
+        public DbSet<TransportAllowance> TransportAllowances { get; set; }
         public DbSet<FeeStructure> FeeStructures { get; set; }
         public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }

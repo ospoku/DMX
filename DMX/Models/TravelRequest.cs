@@ -24,7 +24,8 @@ namespace DMX.Models
         public decimal AmountDue { get; set; }
         public string Purpose { get; set; }
     
-      
+      public ModeOfTransport ModeOfTransport { get; set; }
+        public string ModeId { get; set; }
         public virtual ICollection<TravelRequestComment>Comments { get; set; }  
        
     }

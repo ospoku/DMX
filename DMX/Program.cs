@@ -74,7 +74,7 @@ app.UseCookiePolicy();
 //app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Account}/{action=Splash}/{id?}");
 
 var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<XContext>();

@@ -1,19 +1,19 @@
 ﻿@using DMX.DataProtection
 
-@model IEnumerable<DMX.ViewModels.ViewTravelTypesVM>;
+@model IEnumerable<DMX.ViewModels.ViewModesOfTransportVM>;
 
 
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">Travel Types</h6>
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Transport Modes</h6>
 
-        <button id="openTravelPanel" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add Type</button>
+        <button id="openTransportPanel" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add Mode</button>
      
         </div>
         <div class="card-body">
             <div class="table-responsive">
-            <table class="table dataTables_wrapper" id="tbTravelTypes">
+            <table class="table dataTables_wrapper" id="tbTravelModes">
                 <thead>
                     <tr>
                         <th>SN</th>
@@ -63,5 +63,5 @@
     <div class="card-footer">
     </div>
 </div>
-
-@await Component.InvokeAsync("AddTravelType")
+ 
+@await Component.InvokeAsync("AddTransportMode")

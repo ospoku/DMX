@@ -227,5 +227,10 @@ namespace DMX.Controllers
             notyf.Success("Photo successfully deleted", 5);
             return RedirectToActionPermanent("UserProfile");
         }
+        
+        public IActionResult Splash()
+        {
+            return View();
+        }
     }
 }

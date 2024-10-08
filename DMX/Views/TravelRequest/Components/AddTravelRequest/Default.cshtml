@@ -18,18 +18,33 @@
                
             <div class="modal-body">
             
-
-              
+                    <div class="did-floating-label-content">
+                        <select id="selectTravelType" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder="" required></select>
+                        <label class="did-floating-label">Select Travel Type</label>
+                    </div>
                     <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.PurposeofJourney"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Purpose</label>
-                        </div>
+                    </div>
+                    <fieldset class="fieldset border-5">
+                        <legend class="legend">Select Transport Mode</legend>
+                        @foreach (var mode in Model.TransportModes)
+                        {
+
+                            <label class=" btn btn-sm btn-outline-primary">
+
+                                <input type="radio" asp-for="@Model.TransportModeId" class="option-input radio" value="@mode.Value" id="Mode@(mode)" />
+                                @mode.Text
+                            </label>
+
+                        }
+                        </fieldset>
                     <div class="row">
                         <div class="col">
                     <div class="did-floating-label-content">
 
 
-                        <input type="date" asp-for="@Model.DepartureDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
+                        <input type="date" asp-for="@Model.StartDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
                         <label class="did-floating-label">Start Date</label>
 
                     </div>
@@ -39,43 +54,35 @@
                             <div class="did-floating-label-content">
 
 
-                                <input type="date" asp-for="@Model.DepartureDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
+                                <input type="date" asp-for="@Model.EndDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
                                 <label class="did-floating-label">End Date</label>
 
                             </div>
                             </div>
                             <div class="col">
-                        <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.NightAbsent"  class="did-floating-input" required/>
-                            <label class="did-floating-label">Days Absent</label>
-                        </div>
-                    </div>
-                        <div class="col">
                             <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.NightAbsent" class="did-floating-input" required />
-                                <label class="did-floating-label">Amt</label>
+                                <input type="date" asp-for="@Model.DateofReturn" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
+                                <label class="did-floating-label">Date of Return</label>
+
                             </div>
-                        </div>
+                    </div>
+                       
                             </div>
                      
                         
-                    <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.DateofReturn" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
-                        <label class="did-floating-label">Date of Return</label>
-
-                    </div>
+                    
                   
-                    <div class="form-group">
+                    <div class="did-floating-label-content">
 
-                        <textarea class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information" required></textarea>
-
+                        <input class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="" required/>
+                        <label class="did-floating-label">AdditionalNotes</label>
                         </div>
-                    <div class="form-group">
+                   
                       <div class="did-floating-label-content">
-                            <select id="selectUserTravelRequest" class="did-floating-select" style="width:100%" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            <select id="selectUserTravelRequest" class="did-floating-select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Approver(s)</label>
                       </div>
-                      </div>
+                  
 
                         <button class="btn btn-block btn-primary">Save</button>
             
@@ -86,12 +93,12 @@
         </div>
     </div>
 </div>
-</div>
+
 <script>
     $(document).ready(function () {
 
         $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest') });
-        $('#selectRank').select2({ dropdownParent: $('#AddTravelRequest') });
+        $('#selectTravelType').select2({ dropdownParent: $('#AddTravelRequest') });
         $('#selectDept').select2({ dropdownParent: $('#AddTravelRequest') });
 
     });

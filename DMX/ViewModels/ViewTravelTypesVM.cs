@@ -1,6 +1,6 @@
 ﻿namespace DMX.ViewModels
 {
-    public class ViewModeOfTransportVM
+    public class ViewTravelTypesVM
     { public string Id { get; set; }    =string.Empty;
         public string Name {  get; set; }=string.Empty;
         public string Description { get; set; }=string.Empty;

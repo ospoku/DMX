@@ -192,6 +192,37 @@ namespace DMX.Controllers
 
 
         }
+        [HttpPost]
+        public async Task<IActionResult> AddTransportModeAsync(AddTransportModeVM addTransportVM)
+        {
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "T" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+
+            ModeOfTransport addThisTransport = new()
+            {
+                Name = addTransportVM.Name,
+
+                Code = addTransportVM.Code,
+                Description = addTransportVM.Description,
+                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedDate = DateTime.UtcNow,
+            };
+            dcx.ModesOfTransport.Add(addThisTransport);
+
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                notyf.Error("Error, Record could not be saved!!!", 5);
+                return RedirectToAction("SystemSetup");
+            }
+        }
+
 
 
     }

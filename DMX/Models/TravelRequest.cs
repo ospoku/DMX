@@ -13,15 +13,16 @@ namespace DMX.Models
       
         [Precision(10, 4)]
         public decimal? ConferenceFee { get; set; }
-        public DateTime DepartureDate { get; set; }
+        public DateTime EndDate { get; set; }   
+        public DateTime StartDate { get; set; }
         [Precision(10, 4)]
-        public decimal TransportExpenses { get; set; }
-        public int NightAbsent { get; set; }
+        public decimal? OtherExpenses { get; set; }
+      
         public DateTime DateofReturn { get; set; }
-       
-        public string FuelClaim { get; set; }
         [Precision(10, 4)]
-        public decimal AmountDue { get; set; }
+        public decimal? FuelClaim { get; set; }
+       
+        
         public string Purpose { get; set; }
     
       public ModeOfTransport ModeOfTransport { get; set; }

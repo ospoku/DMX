@@ -48,13 +48,13 @@
     color: white !important;
     font-weight: 600;
 }
-    #pills-transportAllowances-tab.active {
+    #pills-transportModes-tab.active {
         background-color: white !important;
         color: black !important;
         font-weight: 600;
     }
 
-#pills-transportAllowances-tab {
+#pills-transportModes-tab {
     color: white !important;
     font-weight: 600;
 }

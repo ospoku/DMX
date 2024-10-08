@@ -19,9 +19,8 @@
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
-      "provider": "cdnjs",
-      "library": "font-awesome@6.5.2",
-      "destination": "wwwroot/lib/font-awesome/"
+      "library": "lottie-web@5.12.2",
+      "destination": "wwwroot/lib/lottie-web/"
     }
   ]
 }

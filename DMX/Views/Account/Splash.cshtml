@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+    <style>
+        /* Centering the animation on the page */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4; /* Optional background color */
+        }
+    </style>
+</head>
+<body>
+    <!-- Animation Container -->
+    <div id="lottie-animation" style="width: 300px; height: 300px;">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+
+    <!-- Lottie Script -->
+    <script>
+        var animation = lottie.loadAnimation({
+            container: document.getElementById('lottie-animation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '/animations/your-lottie-animation.json'
+        });
+        setTimeout(function () {
+            window.location.href = '@Url.Action("Login", "Account")'; // Redirect to login page after 3 seconds
+        }, 40000);
+    </script>
+</body>
+</html>

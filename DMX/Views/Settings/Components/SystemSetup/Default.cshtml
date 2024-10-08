@@ -11,6 +11,12 @@
         </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link  rounded-5" id="pills-departments-tab" data-bs-toggle="pill" data-bs-target="#pills-departments" type="button" role="tab" aria-controls="pills-departments" aria-selected="true">Departments</button>
+
+    
+    </li>
+    <li class="nav-item" role="presentation">
+    
+    <button class="nav-link  rounded-5" id="pills-transportModes-tab" data-bs-toggle="pill" data-bs-target="#pills-transportModes" type="button" role="tab" aria-controls="pills-transportModes" aria-selected="true">Transport Modes</button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link  rounded-5" id="pills-fees-tab" data-bs-toggle="pill" data-bs-target="#pills-pettycash" type="button" role="tab" aria-controls="pills-fees" aria-selected="true">Petty Cash</button>
@@ -19,19 +25,21 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link  rounded-5" id="pills-fees-tab" data-bs-toggle="pill" data-bs-target="#pills-fees" type="button" role="tab" aria-controls="pills-fees" aria-selected="true">Fees & Charges</button>
     </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link  rounded-5" id="pills-transportAllowances-tab" data-bs-toggle="pill" data-bs-target="#pills-transportAllowances" type="button" role="tab" aria-controls="pills-transportAllowances" aria-selected="true">Transport Allowance</button>
-    </li>
+    
     <li class="nav-item" role="presentation">
         <button class="nav-link rounded-5" id="pills-perdiem-tab" data-bs-toggle="pill" data-bs-target="#pills-perdiem" type="button" role="tab" aria-controls="pills-perdiem" aria-selected="true">Per Diems</button>
     </li>
 </ul>
 <div class="tab-content mt-3" id="pills-tabContent">
     <div class="tab-pane fade show active" id="pills-deceased" role="tabpanel" aria-labelledby="pills-deceased-tab">@await Component.InvokeAsync("ViewDeceasedTypes")</div>
-    <div class="tab-pane fade" id="pills-traveltypes" role="tabpanel" aria-labelledby="pills-traveltypes-tab">@await Component.InvokeAsync("ViewTravelTypes")</div>
+    <div class="tab-pane fade" id="pills-traveltypes" role="tabpanel" aria-labelledby="pills-traveltypes-tab">@await Component.InvokeAsync("ViewTravelTypes")</div>  
+    <div class="tab-pane fade" id="pills-transportModes" role="tabpanel" aria-labelledby="pills-transportModes-tab">@await Component.InvokeAsync("ViewModesOfTransport")</div>
+   
+    
+    
     <div class="tab-pane fade" id="pills-departments" role="tabpanel" aria-labelledby="pills-departments-tab">@await Component.InvokeAsync("ViewDepartments")</div>
     <div class="tab-pane fade" id="pills-pettycash" role="tabpanel" aria-labelledby="pills-pettycash-tab">@await Component.InvokeAsync("ViewPettyCashLimit")</div>
-    <div class="tab-pane fade" id="pills-transportAllowances" role="tabpanel" aria-labelledby="pills-transportAllowances-tab">@await Component.InvokeAsync("ViewTransportAllowances")</div>
+ 
 
     <div class="tab-pane fade" id="pills-fees" role="tabpanel" aria-labelledby="pills-fees-tab">@await Component.InvokeAsync("ViewFeeStructures")</div>
     <div class="tab-pane fade" id="pills-perdiem" role="tabpanel" aria-labelledby="pills-perdiem-tab">@await Component.InvokeAsync("ViewPerDiems")</div>

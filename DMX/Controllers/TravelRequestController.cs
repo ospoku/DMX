@@ -16,27 +16,29 @@ public readonly XContext dcx = dContext;
         [HttpPost]
         public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVM)
         {
-            
-                TravelRequest addThisTravelRequest = new()
+            var rand = new Random();
+            int digit = 5;
+            string RefN = "T" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+
+            TravelRequest addThisTravelRequest = new()
                 {
 
-                    ReferenceNumber = addTravelRequestVM.ReferenceNumber,
+                    ReferenceNumber = RefN,
                  
-                    ConferenceFee = addTravelRequestVM.ConferenceFee,
-                    DepartureDate = addTravelRequestVM.DepartureDate,
-                    TransportExpenses = addTravelRequestVM.TransportExpenses,
+                    
+                    EndDate = addTravelRequestVM.EndDate,
+                    StartDate=addTravelRequestVM.StartDate,
                    
                     DateofReturn = addTravelRequestVM.DateofReturn,
 
                 
-                    FuelClaim = addTravelRequestVM.FuelClaim,
-                    AmountDue = addTravelRequestVM.AmountDue,
+              
                     Purpose = addTravelRequestVM.PurposeofJourney,
 
 
-                    IsDeleted = false,
-                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                    CreatedDate = DateTime.Now,
+                  
+                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedDate = DateTime.Now,
                 };
                 dcx.TravelRequests.Add(addThisTravelRequest);
                 foreach (var user in addTravelRequestVM.SelectedUsers)
@@ -47,13 +49,13 @@ public readonly XContext dcx = dContext;
                     {
                         TravelRequestId = addThisTravelRequest.TravelRequestId,
                         AppUserId = user,
-                        CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                        CreatedBy = usm.GetUserAsync(User).Result.UserName,
                         CreatedDate = DateTime.Now,
 
                     });
                 }
 
-                if (await dcx.SaveChangesAsync(userId: User?.FindFirst(c => c.Type == "Name").Value) > 0)
+                if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
                 {
                     notyf.Success("Client successfully created.");
                     return RedirectToAction("ViewTravelRequests");

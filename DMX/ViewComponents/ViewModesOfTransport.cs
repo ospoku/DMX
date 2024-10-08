@@ -14,9 +14,9 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke()
         {
           
-            var tList = dcx.TravelTypes.Where(a => a.IsDeleted == false).Select(a => new ViewModesOfTransportVM
+            var tList = dcx.ModesOfTransport.Where(a => a.IsDeleted == false).Select(a => new ViewModesOfTransportVM
             {
-                Id = a.TravelTypeId,
+                Id = a.ModeId,
                 Name = a.Name,
                Code =a.Code,
                Description = a.Description,

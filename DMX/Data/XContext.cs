@@ -9,7 +9,7 @@ namespace DMX.Data
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
     {
         public DbSet<ModeOfTransport> ModesOfTransport { get; set; }
-       
+       public DbSet<PettyCashLimit> PettyCashLimits { get; set; }
         public DbSet<FeeStructure> FeeStructures { get; set; }
         public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }

@@ -40,12 +40,12 @@ namespace DMX.Controllers
 
                 Code = addTravelTypeVM.Code,
                 Description = addTravelTypeVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.TravelTypes.Add(addThisTravelType);
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result?.UserName) > 0)
             {
                 notyf.Success("Record successfully saved", 5);
 
@@ -71,12 +71,12 @@ namespace DMX.Controllers
                 MinDays = addFeeStructureVM.Min,
                 MaxDays=addFeeStructureVM.Max,
                 Fee= addFeeStructureVM.Fee,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.FeeStructures.Add(addThisStructure);
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result?.UserName) > 0)
             {
                 notyf.Success("Record successfully saved", 5);
 
@@ -101,7 +101,7 @@ namespace DMX.Controllers
 
                 Code = addDeceasedTypeVM.Code,
                 Description = addDeceasedTypeVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.DeceasedTypes.Add(addThisDeceasedType);
@@ -132,7 +132,7 @@ namespace DMX.Controllers
 
                 Code = addDepartmentVM.Code,
                 Description = addDepartmentVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             }; 
             dcx.Departments.Add(addThisDepartment);
@@ -173,7 +173,7 @@ namespace DMX.Controllers
 
                 Code = addDepartmentVM.Code,
                 Description = addDepartmentVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.Departments.Add(addThisDepartment);
@@ -205,7 +205,7 @@ namespace DMX.Controllers
 
                 Code = addTransportVM.Code,
                 Description = addTransportVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.ModesOfTransport.Add(addThisTransport);
@@ -223,7 +223,33 @@ namespace DMX.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult>SaveCashLimit(SaveCashLimitVM saveCashLimitVM)
+        {
+          
 
+            PettyCashLimit addThisLimit = new()
+            {
+                CashLimit = saveCashLimitVM.CashLimit,
+
+            
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
+                CreatedDate = DateTime.UtcNow,
+            };
+            dcx.PettyCashLimits.Add(addThisLimit);
+
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                notyf.Error("Error, Record could not be saved!!!", 5);
+                return RedirectToAction("SystemSetup");
+            }
+        }
 
     }
 }

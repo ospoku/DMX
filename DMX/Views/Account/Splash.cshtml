@@ -3,10 +3,13 @@
 }
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Loading...</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+
+    <script src="~/lib/lottie-web/lottie.min.js"></script>
+    <script src="~/lib/lottie-web/lottie.js"></script>
     <style>
         /* Centering the animation on the page */
         body {
@@ -21,7 +24,7 @@
 </head>
 <body>
     <!-- Animation Container -->
-    <div id="lottie-animation" style="width: 300px; height: 300px;">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+    <div id="lottie-animation" style="width:330px;height:330px"></div>
 
     <!-- Lottie Script -->
     <script>
@@ -30,7 +33,7 @@
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: '/animations/your-lottie-animation.json'
+            path: '/aimations/splash.json',
         });
         setTimeout(function () {
             window.location.href = '@Url.Action("Login", "Account")'; // Redirect to login page after 3 seconds

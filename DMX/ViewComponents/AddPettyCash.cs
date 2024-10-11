@@ -19,6 +19,7 @@ namespace DMX.ViewComponents
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
 
                 //Maximum =(int) ctx.FeeStructures.Select(f=>f.PCThreshold).FirstOrDefault()
+                Maximum = ctx.PettyCashLimits.Select(p => p.PettyCashLimitAmount).FirstOrDefault()
             };
 
             return View(addPettyCashVM);

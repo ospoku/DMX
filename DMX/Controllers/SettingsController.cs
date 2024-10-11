@@ -101,7 +101,7 @@ namespace DMX.Controllers
 
                 Code = addDeceasedTypeVM.Code,
                 Description = addDeceasedTypeVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.DeceasedTypes.Add(addThisDeceasedType);
@@ -132,7 +132,7 @@ namespace DMX.Controllers
 
                 Code = addDepartmentVM.Code,
                 Description = addDepartmentVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             }; 
             dcx.Departments.Add(addThisDepartment);
@@ -160,23 +160,21 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePCLimit(AddDepartmentVM addDepartmentVM)
+        public async Task<IActionResult> SavePCLimit(ViewPettyCashLimitVM addCashLimitVM)
         {
 
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+          
 
-            Department addThisDepartment = new()
+            PettyCashLimit addThisLimit = new()
             {
-                Name = addDepartmentVM.Name,
+                PettyCashLimitAmount = addCashLimitVM.Amount,
 
-                Code = addDepartmentVM.Code,
-                Description = addDepartmentVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+
+             
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
-            dcx.Departments.Add(addThisDepartment);
+            dcx.PettyCashLimits.Add(addThisLimit);
 
             if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
             {

@@ -16,6 +16,7 @@ namespace DMX.Data
         public DbSet<Letter> Letters { get; set; }
         public DbSet<LetterComment> LetterComments { get; set; }
         public DbSet<ServiceRequestComment> ServiceRequestComments { get; set; }    
+        public DbSet<PettyCashLimit> PettyCashLimits { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<DeceasedType> DeceasedTypes { get; set; }
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }

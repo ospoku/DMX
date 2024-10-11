@@ -2,6 +2,6 @@
 {
     public class ViewPettyCashLimitVM
     {
-        public decimal Amount { get; set; }
+        public int Amount { get; set; }
     }
 }

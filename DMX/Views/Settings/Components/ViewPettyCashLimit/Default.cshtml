@@ -19,15 +19,15 @@
 
     </div>
     <div class="card-body">
-     
+     <form>
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input type="text" class="form-control" asp-for="Amount" placeholder="Cash Limit" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Edit</button>
-                <button class="btn btn-outline-secondary" type="button">Save</button>
+                    <button class="btn btn-outline-secondary" type="submit" asp-action="SavePCLimit" asp-controller="Settings" formmethod="post">Edit</button>
+                <button class="btn btn-outline-secondary" type="submit" asp-action="SavePCLimit" asp-controller="Settings" formmethod="post">Save</button>
             </div>
         </div>
-
+        </form>
        
         
     </div>

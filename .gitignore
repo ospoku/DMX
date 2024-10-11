@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/DMX/ViewModels/ViewPettyCashLimitVM.cs
+/DMX/Data/XContext.cs
+/.vscode/launch.json
+/DMX/Controllers/SettingsController.cs
+/DMX/Models/PettyCashLimit.cs
+/DMX/ViewComponents/AddPettyCash.cs
+/DMX/Views/Settings/Components/ViewPettyCashLimit/Default.cshtml

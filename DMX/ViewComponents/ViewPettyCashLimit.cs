@@ -26,7 +26,7 @@ namespace DMX.ViewComponents
 
             //var limitToUpdate = dcx.PettyCashLimits.FirstOrDefault(p => p.PettyCashLimitId ==limit.PettyCashLimitId).PettyCashLimitId;
 
-            ViewPettyCashLimitVM viewPettyCashLimit = new()
+            PettyCashLimitVM viewPettyCashLimit = new()
             {
                 //Amount=limitToUpdate,
                

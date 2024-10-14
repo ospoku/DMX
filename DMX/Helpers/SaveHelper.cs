@@ -3,20 +3,26 @@ using DMX.Data;
 using DMX.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using static DMX.Constants.Permissions;
+
 
 namespace DMX.Helpers
 {
+    public  class SaveHelper
+    {
+        private readonly  XContext dcx;
+        private  readonly  INotyfService notyf;
     
 
-    public static class SaveHelper
-    {
-        private static readonly XContext? dcx;
-        private static readonly INotyfService? notyf;
-       private static readonly UserManager<AppUser>? usm;
+        public SaveHelper(XContext context, INotyfService notyfService)
+        {
+            XContext dcx = context?? throw new ArgumentNullException(nameof(dcx));
+            notyf = notyfService?? throw new ArgumentNullException(nameof(notyf));
+
+
+        }
        
         
-        private static async Task<bool> SaveEntity<T>(T entity,string userId ) where T : class
+        public async Task<bool> SaveEntity<T>(T entity,string userId ) where T : class
         {
             try
             {

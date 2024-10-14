@@ -2,6 +2,7 @@ using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using DMX.Authorization;
 using DMX.Data;
+using DMX.Helpers;
 using DMX.Models;
 using DMX.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,6 +19,7 @@ builder.Services.AddMvc();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
+builder.Services.AddScoped<SaveHelper>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

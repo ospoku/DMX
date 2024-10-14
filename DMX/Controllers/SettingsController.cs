@@ -10,16 +10,17 @@ using DMX.ViewComponents;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using static DMX.Constants.Permissions;
-using static DMX.Helpers.SaveHelper;
+using DMX.Helpers;
 
 namespace DMX.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager) : Controller
+    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, SaveHelper saveHelper) : Controller
     {
         public readonly XContext dcx = context;
-        private readonly INotyfService notyf = notyfService;
+        public readonly INotyfService notyf = notyfService;
         public readonly UserManager<AppUser> usm = userManager;
+        public readonly SaveHelper saveHelper = saveHelper;
 
         public IActionResult Preferences()
         {
@@ -65,9 +66,8 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFeeStructureAsync(AddFeeStructureVM addFeeStructureVM)
         {
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "F" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+          
+            string RefN = "F" + Guid.NewGuid().ToString().Substring(0, 5);
 
             FeeStructure addThisStructure = new()
             {
@@ -96,9 +96,8 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDeceasedTypeAsync(AddDeceasedTypeVM addDeceasedTypeVM)
         {
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+         
+            string RefN = "D" + Guid.NewGuid().ToString().Substring(0, 5);
 
             DeceasedType addThisDeceasedType = new()
             {
@@ -153,10 +152,7 @@ namespace DMX.Controllers
                 notyf.Error("Error, Record could not be saved!!!", 5);
                 return RedirectToAction("SystemSetup");
             }
-
-
         }
-
 
         [HttpGet]
         public IActionResult AddPerDiem()
@@ -225,20 +221,26 @@ namespace DMX.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
+        public async Task<IActionResult> AddTravelTypesAsync(AddTravelTypeVM addTravelTypeVM)
         {
             var user = await usm.GetUserAsync(User);
+            if (user == null || string.IsNullOrEmpty(user.UserName))
+            {
+                // Handle the scenario where the user is not authenticated or UserName is null
+                notyf.Error("User is not authenticated or user information is missing.", 5);
+                return RedirectToAction("Login");  // Or another action to handle unauthenticated users
+            }
 
             TravelType travelType = new()
             {
                 Name = addTravelTypeVM.Name,
                 Code = addTravelTypeVM.Code,
                 Description = addTravelTypeVM.Description,
-                CreatedBy = user.UserName,
+                CreatedBy = user?.UserName,
                 CreatedDate = DateTime.UtcNow
             };
 
-            if (await SaveEntity(travelType, user.UserName))
+            if (await saveHelper.SaveEntity(travelType, user.UserName))
                 return RedirectToAction("SystemSetup");
 
             return RedirectToAction("SystemSetup");

@@ -368,3 +368,5 @@ FodyWeavers.xsd
 /DMX/Models/PettyCashLimit.cs
 /DMX/ViewComponents/AddPettyCash.cs
 /DMX/Views/Settings/Components/ViewPettyCashLimit/Default.cshtml
+/DMX/ViewModels/ViewPettyCashLimitVM.cs
+/DMX/ViewComponents/ViewPettyCashLimit.cs

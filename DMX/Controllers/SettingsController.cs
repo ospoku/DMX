@@ -7,45 +7,50 @@ using AspNetCoreHero.ToastNotification.Notyf;
 using DMX.Models;
 using Microsoft.AspNetCore.Identity;
 using DMX.ViewComponents;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using static DMX.Constants.Permissions;
+using static DMX.Helpers.SaveHelper;
 
 namespace DMX.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser>userManager) : Controller
+    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager) : Controller
     {
         public readonly XContext dcx = context;
         private readonly INotyfService notyf = notyfService;
-        public readonly UserManager<AppUser>usm= userManager;
+        public readonly UserManager<AppUser> usm = userManager;
 
         public IActionResult Preferences()
         {
 
             return ViewComponent("ViewPreferences");
         }
-        public IActionResult SystemSetup() 
-        { 
-            return ViewComponent("SystemSetup","ViewDepartments"); 
+        public IActionResult SystemSetup()
+        {
+            return ViewComponent("SystemSetup", "ViewDepartments");
         }
 
         [HttpPost]
         public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
         {
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "T" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+            var user = await usm.GetUserAsync(User);
 
-          TravelType addThisTravelType = new()
+
+            string RefN = "T" + Guid.NewGuid().ToString().Substring(0, 5);
+
+            TravelType addThisTravelType = new()
             {
                 Name = addTravelTypeVM.Name,
 
                 Code = addTravelTypeVM.Code,
                 Description = addTravelTypeVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = user?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.TravelTypes.Add(addThisTravelType);
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            if (await dcx.SaveChangesAsync(user?.UserName) > 0)
             {
                 notyf.Success("Record successfully saved", 5);
 
@@ -69,8 +74,8 @@ namespace DMX.Controllers
                 Name = addFeeStructureVM.Name,
 
                 MinDays = addFeeStructureVM.Min,
-                MaxDays=addFeeStructureVM.Max,
-                Fee= addFeeStructureVM.Fee,
+                MaxDays = addFeeStructureVM.Max,
+                Fee = addFeeStructureVM.Fee,
                 CreatedBy = usm.GetUserAsync(User).Result.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
@@ -106,7 +111,7 @@ namespace DMX.Controllers
             };
             dcx.DeceasedTypes.Add(addThisDeceasedType);
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result?.UserName) > 0)
             {
                 notyf.Success("Record successfully saved", 5);
 
@@ -119,7 +124,7 @@ namespace DMX.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> AddDepartmentAsync(AddDepartmentVM addDepartmentVM )
+        public async Task<IActionResult> AddDepartmentAsync(AddDepartmentVM addDepartmentVM)
         {
 
             var rand = new Random();
@@ -134,14 +139,14 @@ namespace DMX.Controllers
                 Description = addDepartmentVM.Description,
                 CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
-            }; 
+            };
             dcx.Departments.Add(addThisDepartment);
-           
+
             if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
             {
                 notyf.Success("Record successfully saved", 5);
 
-                return   RedirectToAction("SystemSetup");
+                return RedirectToAction("SystemSetup");
             }
             else
             {
@@ -151,8 +156,8 @@ namespace DMX.Controllers
 
 
         }
-        
-        
+
+
         [HttpGet]
         public IActionResult AddPerDiem()
         {
@@ -160,21 +165,18 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePCLimit(ViewPettyCashLimitVM addCashLimitVM)
+        public async Task<IActionResult> SavePCLimit(ViewPettyCashLimitVM cashLimitVM, PettyCashLimit cashLimit)
         {
+            // Assuming you save the limit in a database or some other store
 
-          
-
-            PettyCashLimit addThisLimit = new()
-            {
-                PettyCashLimitAmount = addCashLimitVM.Amount,
+            PettyCashLimit limitToUpdate = (from a in dcx.PettyCashLimits where a.PettyCashLimitId == cashLimitVM.LimitId select a).FirstOrDefault();
 
 
-             
-                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
-                CreatedDate = DateTime.UtcNow,
-            };
-            dcx.PettyCashLimits.Add(addThisLimit);
+            limitToUpdate.PettyCashLimitAmount = cashLimitVM.Amount;
+            limitToUpdate.CreatedBy = usm.GetUserAsync(User).Result?.UserName;
+            limitToUpdate.CreatedDate = DateTime.UtcNow;
+            dcx.PettyCashLimits.Attach(limitToUpdate);
+            dcx.Entry(limitToUpdate).State = EntityState.Modified;
 
             if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
             {
@@ -203,7 +205,7 @@ namespace DMX.Controllers
 
                 Code = addTransportVM.Code,
                 Description = addTransportVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = usm.GetUserAsync(User)?.Result.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
             dcx.ModesOfTransport.Add(addThisTransport);
@@ -222,7 +224,27 @@ namespace DMX.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
+        {
+            var user = await usm.GetUserAsync(User);
 
+            TravelType travelType = new()
+            {
+                Name = addTravelTypeVM.Name,
+                Code = addTravelTypeVM.Code,
+                Description = addTravelTypeVM.Description,
+                CreatedBy = user.UserName,
+                CreatedDate = DateTime.UtcNow
+            };
+
+            if (await SaveEntity(travelType, user.UserName))
+                return RedirectToAction("SystemSetup");
+
+            return RedirectToAction("SystemSetup");
+        }
+
+        
     }
 }
 

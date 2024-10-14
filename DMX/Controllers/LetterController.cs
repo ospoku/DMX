@@ -40,9 +40,7 @@ namespace DMX.Controllers
                 AdditionalNotes=addDocumentVM.AdditionalNotes,
             };
 
-           
-
-
+          
             using (var memoryStream = new MemoryStream())
             {
 
@@ -56,7 +54,7 @@ namespace DMX.Controllers
             dcx.Letters.Add(addThisDocument);
 
  
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(HttpContext.User).Result.UserName) > 0)
+            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
             {
                 notyf.Success("Record successfully saved!!!", 5);
 
@@ -79,8 +77,8 @@ namespace DMX.Controllers
         {
             EditDocumentVM editDocumentVM = new();
             EditDocumentVM edvm = editDocumentVM;
-            Letter updateThisDocument = new();
-            updateThisDocument = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
+            Letter updateThisDocument  = new();
+            updateThisDocument  = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
             updateThisDocument.ReferenceNumber = document.ReferenceNumber;
             updateThisDocument.DocumentDate = document.DocumentDate;
             updateThisDocument.DateReceived = document.DateReceived;

@@ -15,16 +15,16 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Set Limit</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddPerDiem" data-bs-url="@Url.Action("AddPerDiem")"><i class="fa fa-fw fa-plus-circle"></i>Add Perdiem</button>
 
     </div>
     <div class="card-body">
      <form>
         <div class="input-group">
-            <input type="text" class="form-control" asp-for="Amount" placeholder="Cash Limit" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input type="number" class="form-control"  id="limitValue" name="limitValue" asp-for="@Model.Amount" readonly/>
+<input value="@Model.LimitId" asp-for="@Model.LimitId" type="hidden" hidden />
             <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit" asp-action="SavePCLimit" asp-controller="Settings" formmethod="post">Edit</button>
-                <button class="btn btn-outline-secondary" type="submit" asp-action="SavePCLimit" asp-controller="Settings" formmethod="post">Save</button>
+                    <button class="btn btn-outline-secondary" type="submit" id="editBtn" onclick="enableEdit()">Edit</button>
+                <button class="btn btn-outline-secondary" type="submit" id="saveBtn" disabled asp-action="SavePCLimit" asp-controller="Settings" formmethod="post">Save</button>
             </div>
         </div>
         </form>
@@ -34,3 +34,10 @@
     <div class="card-footer">
     </div>
 </div>
+<script>
+    function enableEdit() {
+        document.getElementById("limitValue").removeAttribute("readonly");
+        document.getElementById("saveBtn").disabled = false;
+        document.getElementById("editBtn").disabled = true;
+    }
+</script>

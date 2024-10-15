@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using DMX.ViewComponents;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using static DMX.Constants.Permissions;
+
 using DMX.Helpers;
 
 namespace DMX.Controllers
@@ -21,7 +21,7 @@ namespace DMX.Controllers
         public readonly INotyfService notyf = notyfService;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly SaveHelper saveHelper = saveHelper;
-
+    
         public IActionResult Preferences()
         {
 
@@ -49,17 +49,17 @@ namespace DMX.Controllers
                 CreatedBy = user?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
-            dcx.TravelTypes.Add(addThisTravelType);
+          
 
-            if (await dcx.SaveChangesAsync(user?.UserName) > 0)
+            if (await saveHelper.SaveEntity(addThisTravelType,user?.UserName))
             {
-                notyf.Success("Record successfully saved", 5);
+             
 
                 return RedirectToAction("SystemSetup");
             }
             else
             {
-                notyf.Error("Error, Record could not be saved!!!", 5);
+               
                 return RedirectToAction("SystemSetup");
             }
         }
@@ -67,7 +67,8 @@ namespace DMX.Controllers
         public async Task<IActionResult> AddFeeStructureAsync(AddFeeStructureVM addFeeStructureVM)
         {
           
-            string RefN = "F" + Guid.NewGuid().ToString().Substring(0, 5);
+            string RefN = "F" + Guid.NewGuid().ToString("N").Substring(0, 5);
+            var user = await usm.GetUserAsync(User);
 
             FeeStructure addThisStructure = new()
             {
@@ -76,28 +77,26 @@ namespace DMX.Controllers
                 MinDays = addFeeStructureVM.Min,
                 MaxDays = addFeeStructureVM.Max,
                 Fee = addFeeStructureVM.Fee,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                CreatedBy = user?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
-            dcx.FeeStructures.Add(addThisStructure);
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+
+            if (await saveHelper.SaveEntity(addThisStructure, user.UserName))
             {
-                notyf.Success("Record successfully saved", 5);
+
 
                 return RedirectToAction("SystemSetup");
             }
-            else
-            {
-                notyf.Error("Error, Record could not be saved!!!", 5);
                 return RedirectToAction("SystemSetup");
             }
-        }
+        
         [HttpPost]
         public async Task<IActionResult> AddDeceasedTypeAsync(AddDeceasedTypeVM addDeceasedTypeVM)
         {
          
             string RefN = "D" + Guid.NewGuid().ToString().Substring(0, 5);
+            var user = await usm.GetUserAsync(User);
 
             DeceasedType addThisDeceasedType = new()
             {
@@ -108,27 +107,25 @@ namespace DMX.Controllers
                 CreatedBy = usm.GetUserAsync(User).Result?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
-            dcx.DeceasedTypes.Add(addThisDeceasedType);
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result?.UserName) > 0)
+
+            if (await saveHelper.SaveEntity(addThisDeceasedType, user?.UserName))
             {
-                notyf.Success("Record successfully saved", 5);
+               
 
                 return RedirectToAction("SystemSetup");
             }
-            else
-            {
-                notyf.Error("Error, Record could not be saved!!!", 5);
+          
+        
                 return RedirectToAction("SystemSetup");
             }
-        }
+        
         [HttpPost]
         public async Task<IActionResult> AddDepartmentAsync(AddDepartmentVM addDepartmentVM)
         {
-
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+            var user = await usm.GetUserAsync(User);
+         
+            string RefN = "D" + Guid.NewGuid().ToString("N").Substring(0, 5);
 
             Department addThisDepartment = new()
             {
@@ -136,23 +133,22 @@ namespace DMX.Controllers
 
                 Code = addDepartmentVM.Code,
                 Description = addDepartmentVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
+                CreatedBy = user?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
-            dcx.Departments.Add(addThisDepartment);
+      
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            if (await saveHelper.SaveEntity(addThisDepartment,user.UserName))
             {
-                notyf.Success("Record successfully saved", 5);
+          
 
                 return RedirectToAction("SystemSetup");
             }
-            else
-            {
-                notyf.Error("Error, Record could not be saved!!!", 5);
+ 
+              
                 return RedirectToAction("SystemSetup");
             }
-        }
+        
 
         [HttpGet]
         public IActionResult AddPerDiem()
@@ -161,20 +157,21 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePCLimit(ViewPettyCashLimitVM cashLimitVM, PettyCashLimit cashLimit)
+        public async Task<IActionResult> SavePCLimit(EditLimitVM limitVM, PettyCashLimit cashLimit)
         {
+            var user = await usm.GetUserAsync(User);
             // Assuming you save the limit in a database or some other store
 
-            PettyCashLimit limitToUpdate = (from a in dcx.PettyCashLimits where a.PettyCashLimitId == cashLimitVM.LimitId select a).FirstOrDefault();
+            PettyCashLimit limitToUpdate = (from a in dcx.PettyCashLimits where a.PettyCashLimitId == cashLimit.PettyCashLimitId select a).FirstOrDefault();
 
 
-            limitToUpdate.PettyCashLimitAmount = cashLimitVM.Amount;
-            limitToUpdate.CreatedBy = usm.GetUserAsync(User).Result?.UserName;
+            limitToUpdate.PettyCashLimitAmount = cashLimit.PettyCashLimitAmount;
+            limitToUpdate.CreatedBy = user?.UserName;
             limitToUpdate.CreatedDate = DateTime.UtcNow;
             dcx.PettyCashLimits.Attach(limitToUpdate);
             dcx.Entry(limitToUpdate).State = EntityState.Modified;
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            if (await saveHelper.SaveEntity(limitToUpdate,user?.UserName))
             {
                 notyf.Success("Record successfully saved", 5);
 
@@ -191,9 +188,9 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTransportModeAsync(AddTransportModeVM addTransportVM)
         {
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "T" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+            var user = await usm.GetUserAsync(User);
+
+            string RefN = "T" + Guid.NewGuid().ToString("N").Substring(0, 5);
 
             ModeOfTransport addThisTransport = new()
             {
@@ -201,23 +198,23 @@ namespace DMX.Controllers
 
                 Code = addTransportVM.Code,
                 Description = addTransportVM.Description,
-                CreatedBy = usm.GetUserAsync(User)?.Result.UserName,
+                CreatedBy = user?.UserName,
                 CreatedDate = DateTime.UtcNow,
             };
-            dcx.ModesOfTransport.Add(addThisTransport);
+       
 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            if (await saveHelper.SaveEntity(addThisTransport,user?.UserName))
             {
-                notyf.Success("Record successfully saved", 5);
+              
 
                 return RedirectToAction("SystemSetup");
             }
-            else
-            {
-                notyf.Error("Error, Record could not be saved!!!", 5);
+      
+      
+     
                 return RedirectToAction("SystemSetup");
             }
-        }
+        
 
 
         [HttpPost]
@@ -226,9 +223,9 @@ namespace DMX.Controllers
             var user = await usm.GetUserAsync(User);
             if (user == null || string.IsNullOrEmpty(user.UserName))
             {
-                // Handle the scenario where the user is not authenticated or UserName is null
+           
                 notyf.Error("User is not authenticated or user information is missing.", 5);
-                return RedirectToAction("Login");  // Or another action to handle unauthenticated users
+                return RedirectToAction("Login");
             }
 
             TravelType travelType = new()
@@ -241,7 +238,11 @@ namespace DMX.Controllers
             };
 
             if (await saveHelper.SaveEntity(travelType, user.UserName))
+            {
+
+
                 return RedirectToAction("SystemSetup");
+            }
 
             return RedirectToAction("SystemSetup");
         }

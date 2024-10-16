@@ -22,13 +22,13 @@ namespace DMX.Services
             dcx = context;
         }
 
-        public async Task<IActionResult> AddEntityAsync<T>(T entity, ClaimsPrincipal userClaim) where T : class
+        public async Task<bool> AddEntityAsync<T>(T entity, ClaimsPrincipal userClaim) where T : class
         {
             var user = await usm.GetUserAsync(userClaim);
             if (user == null)
             {
                 notyf.Error("User is not authenticated.", 5);
-                return new RedirectToActionResult("Login", "Account", null);  // Adjust as necessary
+                return false;
             }
 
             entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user.UserName);
@@ -40,18 +40,18 @@ namespace DMX.Services
                 if (await dcx.SaveChangesAsync(user.UserName) > 0)
                 {
                     notyf.Success("Record successfully saved!", 5);
-                    return new OkResult();  // Return success response
+                    return true;
                 }
                 else
                 {
                     notyf.Error("Error, record could not be saved.", 5);
-                    return new BadRequestResult();  // Return failure response
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 notyf.Error("An error occurred: " + ex.Message, 5);
-                return new StatusCodeResult(500);  // Internal server error
+                return false;
             }
         }
     }

@@ -16,13 +16,13 @@ using DMX.Services;
 namespace DMX.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, EntityService entityService ) : Controller
+    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, EntityService entityService) : Controller
     {
         public readonly XContext dcx = context;
         public readonly INotyfService notyf = notyfService;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly EntityService entityServ = entityService;
-    
+
         public IActionResult Preferences()
         {
 
@@ -33,34 +33,29 @@ namespace DMX.Controllers
             return ViewComponent("SystemSetup", "ViewDepartments");
         }
 
-     
+        //[HttpPost]
+        //public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
+        //{
+           
 
+        //    TravelType travelType = new()
+        //    {
+        //        Name = addTravelTypeVM.Name,
+        //        Code = addTravelTypeVM.Code,
+        //        Description = addTravelTypeVM.Description,
+        //    };
 
-            
+        //    if (await entityServ.AddEntityAsync(travelType, User))
+        //    {
+        //        return RedirectToAction("SystemSetup");
+        //    }
+        //    return RedirectToAction("SystemSetup");
 
-            [HttpPost]
-        public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
-            {
-                string RefN = "T" + Guid.NewGuid().ToString().Substring(0, 5);
-
-                TravelType travelType = new()
-                {
-                    Name = addTravelTypeVM.Name,
-                    Code = addTravelTypeVM.Code,
-                    Description = addTravelTypeVM.Description,
-                };
-
-                if (await entityServ.AddEntityAsync(travelType, User))
-                {
-                    return RedirectToAction("SystemSetup");
-                }
-                return RedirectToAction("SystemSetup");
-            
-        }
+        //}
         [HttpPost]
         public async Task<IActionResult> AddFeeStructureAsync(AddFeeStructureVM addFeeStructureVM)
         {
-          
+
             string RefN = "F" + Guid.NewGuid().ToString("N").Substring(0, 5);
             var user = await usm.GetUserAsync(User);
 
@@ -71,24 +66,29 @@ namespace DMX.Controllers
                 MinDays = addFeeStructureVM.Min,
                 MaxDays = addFeeStructureVM.Max,
                 Fee = addFeeStructureVM.Fee,
-                CreatedBy = user?.UserName,
-                CreatedDate = DateTime.UtcNow,
+
             };
+            // Call the service method, which returns a bool
+            bool result = await entityServ.AddEntityAsync(addThisStructure, User);
 
-
-            if (await saveHelper.SaveEntity(addThisStructure, user.UserName))
+            // Based on the result, redirect or return the appropriate response
+            if (result)
             {
-
-
+                // Success: Redirect to SystemSetup
                 return RedirectToAction("SystemSetup");
             }
-                return RedirectToAction("SystemSetup");
+            else
+            {
+                // Failure: Return an error view or handle as needed
+                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
             }
-        
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> AddDeceasedTypeAsync(AddDeceasedTypeVM addDeceasedTypeVM)
         {
-         
+
             string RefN = "D" + Guid.NewGuid().ToString().Substring(0, 5);
             var user = await usm.GetUserAsync(User);
 
@@ -97,28 +97,29 @@ namespace DMX.Controllers
                 Name = addDeceasedTypeVM.Name,
 
                 Code = addDeceasedTypeVM.Code,
-                Description = addDeceasedTypeVM.Description,
-                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
-                CreatedDate = DateTime.UtcNow,
+                Description = addDeceasedTypeVM.Description
             };
+            // Call the service method, which returns a bool
+            bool result = await entityServ.AddEntityAsync(addThisDeceasedType, User);
 
-
-            if (await saveHelper.SaveEntity(addThisDeceasedType, user?.UserName))
+            // Based on the result, redirect or return the appropriate response
+            if (result)
             {
-               
+                // Success: Redirect to SystemSetup
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                // Failure: Return an error view or handle as needed
+                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+            }
+        }
 
-                return RedirectToAction("SystemSetup");
-            }
-          
-        
-                return RedirectToAction("SystemSetup");
-            }
-        
         [HttpPost]
         public async Task<IActionResult> AddDepartmentAsync(AddDepartmentVM addDepartmentVM)
         {
             var user = await usm.GetUserAsync(User);
-         
+
             string RefN = "D" + Guid.NewGuid().ToString("N").Substring(0, 5);
 
             Department addThisDepartment = new()
@@ -126,59 +127,88 @@ namespace DMX.Controllers
                 Name = addDepartmentVM.Name,
 
                 Code = addDepartmentVM.Code,
-                Description = addDepartmentVM.Description,
-                CreatedBy = user?.UserName,
-                CreatedDate = DateTime.UtcNow,
+                Description = addDepartmentVM.Description
             };
-      
+            // Call the service method, which returns a bool
+            bool result = await entityServ.AddEntityAsync(addThisDepartment, User);
 
-            if (await saveHelper.SaveEntity(addThisDepartment,user.UserName))
+            // Based on the result, redirect or return the appropriate response
+            if (result)
             {
-          
+                // Success: Redirect to SystemSetup
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                // Failure: Return an error view or handle as needed
+                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+            }
+        }
 
-                return RedirectToAction("SystemSetup");
-            }
- 
-              
-                return RedirectToAction("SystemSetup");
-            }
-        
 
         [HttpGet]
         public IActionResult AddPerDiem()
         {
             return ViewComponent("AddPerDiem");
         }
-
         [HttpPost]
-        public async Task<IActionResult> SavePCLimit(EditLimitVM limitVM, CashLimit cashLimit)
+        public async Task<IActionResult> AddCashLimit(EditLimitVM limitVM, CashLimit cashLimit)
         {
-            var user = await usm.GetUserAsync(User);
+
             // Assuming you save the limit in a database or some other store
 
-            CashLimit limitToUpdate = (from a in dcx.CashLimits where a.CashLimitId == cashLimit.CashLimitId select a).FirstOrDefault();
-
-
-            limitToUpdate.Amount = cashLimit.Amount;
-            limitToUpdate.CreatedBy = user?.UserName;
-            limitToUpdate.CreatedDate = DateTime.UtcNow;
-            dcx.CashLimits.Attach(limitToUpdate);
-            dcx.Entry(limitToUpdate).State = EntityState.Modified;
-
-            if (await saveHelper.SaveEntity(limitToUpdate,user?.UserName))
+            CashLimit addThisLimit = new()
             {
-                notyf.Success("Record successfully saved", 5);
 
+
+
+                Amount = cashLimit.Amount,
+            };
+
+            bool result = await entityServ.AddEntityAsync(addThisLimit, User);
+
+            // Based on the result, redirect or return the appropriate response
+            if (result)
+            {
+                // Success: Redirect to SystemSetup
                 return RedirectToAction("SystemSetup");
             }
             else
             {
-                notyf.Error("Error, Record could not be saved!!!", 5);
-                return RedirectToAction("SystemSetup");
+                // Failure: Return an error view or handle as needed
+                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
             }
 
-
         }
+        //[HttpPost]
+        //public async Task<IActionResult> EditCashLimit(EditLimitVM limitVM, CashLimit cashLimit)
+        //{
+        //    var user = await usm.GetUserAsync(User);
+        //    // Assuming you save the limit in a database or some other store
+
+        //    CashLimit limitToUpdate = (from a in dcx.CashLimits where a.CashLimitId == cashLimit.CashLimitId select a).FirstOrDefault();
+
+
+        //    limitToUpdate.Amount = cashLimit.Amount;
+        //    limitToUpdate.CreatedBy = user?.UserName;
+        //    limitToUpdate.CreatedDate = DateTime.UtcNow;
+        //    dcx.CashLimits.Attach(limitToUpdate);
+        //    dcx.Entry(limitToUpdate).State = EntityState.Modified;
+
+        //    if (await saveHelper.SaveEntity(limitToUpdate, user?.UserName))
+        //    {
+        //        notyf.Success("Record successfully saved", 5);
+
+        //        return RedirectToAction("SystemSetup");
+        //    }
+        //    else
+        //    {
+        //        notyf.Error("Error, Record could not be saved!!!", 5);
+        //        return RedirectToAction("SystemSetup");
+        //    }
+
+
+        //}
         [HttpPost]
         public async Task<IActionResult> AddTransportModeAsync(AddTransportModeVM addTransportVM)
         {
@@ -192,58 +222,55 @@ namespace DMX.Controllers
 
                 Code = addTransportVM.Code,
                 Description = addTransportVM.Description,
-                CreatedBy = user?.UserName,
-                CreatedDate = DateTime.UtcNow,
             };
-       
+            // Call the service method, which returns a bool
+            bool result = await entityServ.AddEntityAsync(addThisTransport, User);
 
-            if (await saveHelper.SaveEntity(addThisTransport,user?.UserName))
+            // Based on the result, redirect or return the appropriate response
+            if (result)
             {
-              
+                // Success: Redirect to SystemSetup
+                return RedirectToAction("SystemSetup");
+            }
+            else
+            {
+                // Failure: Return an error view or handle as needed
+                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+            }
 
-                return RedirectToAction("SystemSetup");
-            }
-      
-      
-     
-                return RedirectToAction("SystemSetup");
-            }
-        
+        }
 
 
         [HttpPost]
-        public async Task<IActionResult> AddTravelTypesAsync(AddTravelTypeVM addTravelTypeVM)
+        public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
         {
-            var user = await usm.GetUserAsync(User);
-            if (user == null || string.IsNullOrEmpty(user.UserName))
-            {
-           
-                notyf.Error("User is not authenticated or user information is missing.", 5);
-                return RedirectToAction("Login");
-            }
-
             TravelType travelType = new()
             {
                 Name = addTravelTypeVM.Name,
                 Code = addTravelTypeVM.Code,
                 Description = addTravelTypeVM.Description,
-                CreatedBy = user?.UserName,
-                CreatedDate = DateTime.UtcNow
             };
 
-            if (await saveHelper.SaveEntity(travelType, user.UserName))
+            // Call the service method, which returns a bool
+            bool result = await entityServ.AddEntityAsync(travelType, User);
+
+            // Based on the result, redirect or return the appropriate response
+            if (result)
             {
-
-
+                // Success: Redirect to SystemSetup
                 return RedirectToAction("SystemSetup");
             }
-
-            return RedirectToAction("SystemSetup");
+            else
+            {
+                // Failure: Return an error view or handle as needed
+                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+            }
         }
-
-        
     }
+
+
 }
+
 
 
 

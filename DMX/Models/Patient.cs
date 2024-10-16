@@ -22,7 +22,7 @@ namespace DMX
         public string TagNo { get; set; }=string.Empty;
         public string WardInCharge { get; set; } = string.Empty;
         public DateTime Date { get; set; }
-        public string ReferenceNumber { get; set; } = string.Empty;
+        public string ReferenceNumber { get; set; } = Guid.NewGuid().ToString("N").Substring(0,5);
     public virtual ICollection<PatientComment>PatientComments { get; set; } 
     }
 }

@@ -19,7 +19,7 @@ builder.Services.AddMvc();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
-builder.Services.AddScoped<SaveHelper>();
+builder.Services.AddScoped<EntityService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

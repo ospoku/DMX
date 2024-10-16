@@ -11,16 +11,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
 using DMX.Helpers;
+using DMX.Services;
 
 namespace DMX.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, SaveHelper saveHelper) : Controller
+    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, EntityService entityService ) : Controller
     {
         public readonly XContext dcx = context;
         public readonly INotyfService notyf = notyfService;
         public readonly UserManager<AppUser> usm = userManager;
-        public readonly SaveHelper saveHelper = saveHelper;
+        public readonly EntityService entityServ = entityService;
     
         public IActionResult Preferences()
         {
@@ -32,36 +33,29 @@ namespace DMX.Controllers
             return ViewComponent("SystemSetup", "ViewDepartments");
         }
 
-        [HttpPost]
+     
+
+
+            
+
+            [HttpPost]
         public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
-        {
-            var user = await usm.GetUserAsync(User);
-
-
-            string RefN = "T" + Guid.NewGuid().ToString().Substring(0, 5);
-
-            TravelType addThisTravelType = new()
             {
-                Name = addTravelTypeVM.Name,
+                string RefN = "T" + Guid.NewGuid().ToString().Substring(0, 5);
 
-                Code = addTravelTypeVM.Code,
-                Description = addTravelTypeVM.Description,
-                CreatedBy = user?.UserName,
-                CreatedDate = DateTime.UtcNow,
-            };
-          
+                TravelType travelType = new()
+                {
+                    Name = addTravelTypeVM.Name,
+                    Code = addTravelTypeVM.Code,
+                    Description = addTravelTypeVM.Description,
+                };
 
-            if (await saveHelper.SaveEntity(addThisTravelType,user?.UserName))
-            {
-             
-
+                if (await entityServ.AddEntityAsync(travelType, User))
+                {
+                    return RedirectToAction("SystemSetup");
+                }
                 return RedirectToAction("SystemSetup");
-            }
-            else
-            {
-               
-                return RedirectToAction("SystemSetup");
-            }
+            
         }
         [HttpPost]
         public async Task<IActionResult> AddFeeStructureAsync(AddFeeStructureVM addFeeStructureVM)

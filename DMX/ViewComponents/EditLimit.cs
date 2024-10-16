@@ -20,15 +20,15 @@ namespace DMX.ViewComponents
         {
 
               
-                PettyCashLimit limitToEdit = new();
-                limitToEdit = (from p in dcx.PettyCashLimits where p.PettyCashLimitId == @Encryption.Decrypt(Id) select p).FirstOrDefault();
+                CashLimit limitToEdit = new();
+                limitToEdit = (from p in dcx.CashLimits where p.CashLimitId == @Encryption.Decrypt(Id) select p).FirstOrDefault();
 
                 EditLimitVM editLimitVM = new()
                 {
 
               
                 
-                    Amount = (from x in dcx.PettyCashLimits where x.PettyCashLimitId == @Encryption.Decrypt(Id) select x.PettyCashLimitAmount).FirstOrDefault(),
+                    Amount = (from x in dcx.CashLimits where x.CashLimitId == @Encryption.Decrypt(Id) select x.Amount).FirstOrDefault(),
                    
                 };
 

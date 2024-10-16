@@ -157,18 +157,18 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePCLimit(EditLimitVM limitVM, PettyCashLimit cashLimit)
+        public async Task<IActionResult> SavePCLimit(EditLimitVM limitVM, CashLimit cashLimit)
         {
             var user = await usm.GetUserAsync(User);
             // Assuming you save the limit in a database or some other store
 
-            PettyCashLimit limitToUpdate = (from a in dcx.PettyCashLimits where a.PettyCashLimitId == cashLimit.PettyCashLimitId select a).FirstOrDefault();
+            CashLimit limitToUpdate = (from a in dcx.CashLimits where a.CashLimitId == cashLimit.CashLimitId select a).FirstOrDefault();
 
 
-            limitToUpdate.PettyCashLimitAmount = cashLimit.PettyCashLimitAmount;
+            limitToUpdate.Amount = cashLimit.Amount;
             limitToUpdate.CreatedBy = user?.UserName;
             limitToUpdate.CreatedDate = DateTime.UtcNow;
-            dcx.PettyCashLimits.Attach(limitToUpdate);
+            dcx.CashLimits.Attach(limitToUpdate);
             dcx.Entry(limitToUpdate).State = EntityState.Modified;
 
             if (await saveHelper.SaveEntity(limitToUpdate,user?.UserName))

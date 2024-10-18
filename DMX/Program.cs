@@ -20,6 +20,7 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
 builder.Services.AddScoped<EntityService>();
+builder.Services.AddScoped<AssignmentService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

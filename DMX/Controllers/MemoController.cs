@@ -2,6 +2,7 @@
 using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
+using DMX.Services;
 using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -13,63 +14,68 @@ using System.Security.Claims;
 namespace DMX.Controllers
 {
    
-    public class MemoController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService , IAuthorizationService authorizationService) : Controller
+    public class MemoController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService , IAuthorizationService authorizationService, EntityService entityService, AssignmentService assignmentService) : Controller
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly INotyfService notyf = notyfService;
         public readonly IAuthorizationService auth=authorizationService;
-
+        public readonly EntityService entityServ = entityService;
+        public readonly AssignmentService assignmentServ = assignmentService;
 
         [HttpPost]
         public async Task<IActionResult> EditMemo(string Id, EditMemoVM editMemoVM)
         {
+            // Decrypt the memo ID and fetch the memo to update
+            var decryptedId = Encryption.Decrypt(Id);
+            var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == decryptedId);
 
-            Memo updateThisMemo = (from a in dcx.Memos where a.MemoId == @Encryption.Decrypt(Id) select a).FirstOrDefault();
-
-
-            updateThisMemo.Content = editMemoVM.Content;
-            updateThisMemo.ModifiedDate = DateTime.UtcNow;
-
-            updateThisMemo.Title = editMemoVM.Title;
-
-
-            updateThisMemo.ModifiedBy = usm.GetUserAsync(User).Result.UserName;
-
-            dcx.Memos.Attach(updateThisMemo);
-
-            dcx.Entry(updateThisMemo).State = EntityState.Modified;
-            
-
-            foreach (var removeAssignees in dcx.MemoAssignments.Where(x => x.MemoId.Equals(Encryption.Decrypt(Id))))
+            if (updateThisMemo == null)
             {
-                dcx.MemoAssignments.Remove(removeAssignees);
+                // Handle the case where the memo is not found
+                return NotFound();
             }
 
-            foreach (var user in editMemoVM.SelectedUsers)
+            // Update memo properties
+            updateThisMemo.Content = editMemoVM.Content;
+            updateThisMemo.Title = editMemoVM.Title;
+            updateThisMemo.ModifiedDate = DateTime.UtcNow;
 
+            var currentUser = await usm.GetUserAsync(User);
+            updateThisMemo.ModifiedBy = currentUser?.UserName;
+
+            // Mark the entity as modified
+            dcx.Entry(updateThisMemo).State = EntityState.Modified;
+
+            // Remove existing memo assignments
+            var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
+            dcx.MemoAssignments.RemoveRange(existingAssignments);
+
+            // Add new memo assignments
+            foreach (var userId in editMemoVM.SelectedUsers)
             {
                 dcx.MemoAssignments.Add(new MemoAssignment
                 {
                     MemoId = updateThisMemo.MemoId,
-                    AppUserId= user,
-                    CreatedBy = usm.GetUserAsync(User).Result?.UserName,
+                    AppUserId = userId,
+                    CreatedBy = currentUser?.UserName,
                     CreatedDate = DateTime.UtcNow,
                 });
             }
 
-         
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result?.UserName) > 0)
+            // Save changes to the database
+            var changes = await dcx.SaveChangesAsync(currentUser?.UserName);
+
+            if (changes > 0)
             {
                 notyf.Success("Record successfully saved", 5);
-
                 return RedirectToAction("ViewMemos");
             }
-            else
-            {
-                return ViewComponent("EditMemo");
-            }
+
+            // If saving fails, show the edit memo view with error
+            return ViewComponent("EditMemo");
         }
+
         [HttpGet]
         public IActionResult CommentMemo(string Id)
         {
@@ -101,46 +107,119 @@ namespace DMX.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVM)
-        { var rand = new Random();
-            int digit = 5;
-            string RefN = "M" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
-
-            Memo addThisMemo = new()
+        {
+            try
             {
-                Content = addMemoVM.Content,
-
-                ReferenceId = RefN,
-                Title = addMemoVM.Title,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
-                CreatedDate = DateTime.UtcNow,
-            };
-            dcx.Memos.Add(addThisMemo);
-            foreach (var user in addMemoVM.SelectedUsers)
-            {
-
-                dcx.MemoAssignments.Add(new MemoAssignment
+                Memo addThisMemo = new()
                 {
-                    MemoId = addThisMemo.MemoId,
-                    AppUserId = user,
-                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
-                    CreatedDate = DateTime.UtcNow,
-                });
-            }
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
-            {
-                notyf.Success("Record successfully saved", 5);
+                Content = addMemoVM.Content,
+                Title = addMemoVM.Title,
+                };
+                bool result = await entityServ.AddEntityAsync(addThisMemo, User);
+                if (result)
+                {
+                    try
+                    {
+                        foreach (var user in addMemoVM.SelectedUsers)
+                        {
 
+                            MemoAssignment assignThisMemo = new MemoAssignment()
+                            {
+                                MemoId = addThisMemo.MemoId,
+                                AppUserId = user,
+
+                            };
+                            bool assignResult = await assignmentServ.AssignUsers(assignThisMemo, User);
+
+                            if (assignResult)
+                            {
+                                return RedirectToAction("ViewMemos");
+                            }
+                            else
+                            {
+
+                                return RedirectToAction("ViewMemos");
+                            }
+                        }
+                  
+
+                     
+                    }
+                    catch
+                    {
+
+                    }
+                    return RedirectToAction("SystemSetup");
+                }
+
+                // Success: Redirect to SystemSetup
+                else
+                {
+                    // Failure: Return an error view or handle as needed
+                    return RedirectToPage  ("/ErrorPage", new { message = "Failed to add the memo. Please try again." });
+                }
+            }
+            catch (Exception ex)
+            {
+                notyf.Error("An error occurred: " + ex.Message, 5);
                 return RedirectToAction("ViewMemos");
             }
-            else
-            {
-                notyf.Error("Error, Record could not be saved!!!", 5);
-                return RedirectToAction("ViewMemos");
-            }
-
-
         }
-        
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddMemos(AddMemoVM addMemoVM)
+        //{
+        //    try
+        //    {
+        //        // Create a new memo object from the ViewModel
+        //        Memo addThisMemo = new()
+        //        {
+        //            Content = addMemoVM.Content,
+        //            Title = addMemoVM.Title,
+        //        };
+
+        //        // Add the memo to the database using an asynchronous method
+        //        bool result = await entityServ.AddEntityAsync(addThisMemo, User);
+
+        //        if (result)
+        //        {
+        //            // Success: Loop through the selected users and perform any necessary actions
+        //            try
+        //            {
+        //                foreach (var user in addMemoVM.SelectedUsers)
+        //                {
+        //                    // Perform actions for each user (e.g., send notifications)
+        //                    // ... your logic here
+        //                }
+        //            }
+        //            catch (Exception innerEx)
+        //            {
+        //                // Log the error (optional)
+        //                notyf.Error("Error processing users: " + innerEx.Message, 5);
+        //                // Redirect to an error page or handle it accordingly
+        //                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing users." });
+        //            }
+
+        //            // On successful addition and user processing, redirect to SystemSetup
+        //            return RedirectToAction("ErrorPage", new { message = "Failed to add the memo. Please try again." });
+        //        }
+        //        else
+        //        {
+        //            // Failure: Handle error and redirect to a setup or error page
+        //            notyf.Error("Memo creation failed.", 5);
+        //            return RedirectToAction("ErrorPage", new { message = "Failed to add the memo. Please try again." });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the error (optional)
+        //        notyf.Error("An error occurred: " + ex.Message, 5);
+        //        // Redirect to an error page with a custom error message
+        //        return RedirectToAction("ErrorPage", new { message = ex.Message });
+
+        //    }
+        //}
+
 
         [HttpGet]
 

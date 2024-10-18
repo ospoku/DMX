@@ -17,7 +17,7 @@ namespace DMX.ViewComponents
             AddPettyCashVM addPettyCashVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-
+                Maximum=ctx.CashLimits.Select(p=>p.Amount).FirstOrDefault()
               
             };
 

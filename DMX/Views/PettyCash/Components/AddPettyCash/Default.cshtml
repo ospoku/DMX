@@ -1,6 +1,6 @@
 ﻿
 @model DMX.ViewModels.AddPettyCashVM;
-@inject DMX.Models.CashLimit limit;
+
 
 <div class="modal fade" id="AddPettyCash" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
@@ -22,7 +22,7 @@
 
                 
                     <div class="did-floating-label-content">
-                        <input type="number" asp-for="@Model.Amount" class="did-floating-input"/> @* max="@Model.Maximum" *@
+                        <input type="number" asp-for="@Model.Amount" class="did-floating-input"  max="@Model.Maximum"/>
                         <label class="did-floating-label">Amount</label>
                     </div>
                         <div class="did-floating-label-content">

@@ -9,7 +9,7 @@ namespace DMX.Models
     {[Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string PettyCashId { get; set; }
-        public string ReferenceNumber {  get; set; }    
+        public string ReferenceNumber { get; set; } = "P" + Guid.NewGuid().ToString("N").Substring(0, 5);  
      
         public string Purpose { get; set; }
         [Precision(10, 4)]

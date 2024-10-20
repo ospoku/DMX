@@ -9,9 +9,9 @@ namespace DMX.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public required string Message { get; set; }
-        public required string LeaveId { get; set; }
-        public required string UserId { get; set; }
+        public  string Message { get; set; }
+        public  string LeaveId { get; set; }
+        public  string UserId { get; set; }
         public Leave Leave { get; set; }
         public AppUser AppUser { get; set; }
     }

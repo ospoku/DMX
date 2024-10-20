@@ -1,19 +1,21 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
 using DMX.Models;
-
+using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.Controllers
 {
-    public class PatientController (XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService
-           ) : Controller
+    public class PatientController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService,
+          EntityService entityService) : Controller
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
+        public readonly EntityService entityServ = entityService;
 
 
 
@@ -32,76 +34,101 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPatient(AddPatientVM addPatientVM)
         {
-          
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "D" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+           if (addPatientVM.SelectedUsers == null || !addPatientVM.SelectedUsers.Any())
+            {
+                notyf.Error("You must select at least one user for assignment.",5);
+                // Optionally, repopulate the view model and return the form to the user
+                //addPatientVM.UsersList = userService.GetAllUsers().Select(u => new SelectListItem { Value = u.Id, Text = u.Name }).ToList();
+               
+                return  RedirectToAction ("ViewPatients"); // Return the form with the error
+            }
 
-            //if (ModelState.IsValid)
-            //{
+
+            try
+            {
+                // Create the patient object
                 Patient addThisPatient = new()
                 {
                     Date = addPatientVM.Date,
-                    FinalDiagnoses = addPatientVM.FinalDiagnoses,
-                    ReferenceNumber = RefN,
+                    Diagnoses = addPatientVM.Diagnoses,
+                    Name = addPatientVM.Deceased,
                     WardInCharge = addPatientVM.WardInCharge,
-                    Depositor=addPatientVM.Depositor,
-                    DepositorAddress=addPatientVM.DepositorAddress,
-                    TagNo=addPatientVM.TagNo,
-                    FolderNo=addPatientVM.FolderNo,
-                    Description=addPatientVM.Description,
-                    DeceasedTypeId=addPatientVM.DeceasedTypeId,
-                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
-                    CreatedDate = DateTime.Now,
+                    Depositor = addPatientVM.Depositor,
+                    DepositorAddress = addPatientVM.DepositorAddress,
+                    TagNo = addPatientVM.TagNo,
+                    FolderNo = addPatientVM.FolderNo,
+                    Description = addPatientVM.Description,
+                    DeceasedTypeId = addPatientVM.DeceasedTypeId,
                 };
-                dcx.Patients.Add(addThisPatient);
 
-                foreach (var user in addPatientVM.SelectedUsers)
+                // Attempt to add the patient
+                bool result = await entityServ.AddEntityAsync(addThisPatient, User);
+
+                if (result)
                 {
-
-                    dcx.PatientAssignments.Add(new PatientAssignment
+                    // If users are selected for assignment
+                    if (addPatientVM.SelectedUsers != null && addPatientVM.SelectedUsers.Any())
                     {
-                        PatientId = addThisPatient.PatientId,
-                        AppUserId = user,
-                        CreatedBy = usm.GetUserAsync(User).Result.UserName,
-                        CreatedDate = DateTime.UtcNow,
-                    });
+                        // Process user assignments
+                        foreach (var user in addPatientVM.SelectedUsers)
+                        {
+                            PatientAssignment addpatientAssignment = new()
+                            {
+                                PatientId = addThisPatient.PatientId,
+                                AppUserId = user,
+                            };
+
+                            bool patientAssign = await entityServ.AddEntityAsync(addpatientAssignment, User);
+
+                            if (!patientAssign)
+                            {
+                                notyf.Error("Failed to assign user.", 5);
+                                return RedirectToAction ("Error","Home", new { message = "An error occurred while assigning users." });
+                            }
+                        }
+
+                        // If all assignments are successful
+                        notyf.Success("Record and assignments successfully processed.", 5);
+                        return RedirectToAction("ViewPatients");
+                    }
+                    else
+                    {
+                        // No users selected for assignment, but patient creation was successful
+                        notyf.Success("Patient successfully created, no users to assign.", 5);
+                        return RedirectToAction("ViewPatients");
+                    }
                 }
-                if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+                else
                 {
-                    notyf.Success("Record successfully saved", 5);
-
-                    return RedirectToAction("ViewPatients");
+                    // Failed to add patient
+                    notyf.Error("Failed to add patient.", 5);
+                    return RedirectToAction("Error","Home", new { message = "An error occurred while processing the patient." });
                 }
-        
-
-
-
-
-
-
-                return ViewComponent("ViewPatients");
             }
-        
-
+            catch
+            {
+                // General catch for any unexpected exceptions
+                notyf.Error("An error occurred while processing the request.", 5);
+                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
         {
 
-            Patient patientToComment = new();
-            patientToComment = (from a in dcx.Patients where a.PatientId == Id select a).FirstOrDefault();
+            Patient patientToComment = patientToComment = (from a in dcx.Patients where a.PatientId == Id select a).FirstOrDefault();
 
             PatientComment addThisComment = new()
             {
-                PatientId =patientToComment.PatientId,
+                PatientId = patientToComment.PatientId,
                 CreatedDate = DateTime.Now,
 
                 Message = addCommentVM.NewComment,
 
 
                 CreatedBy = usm.GetUserAsync(User).Result.UserName,
-                  UserId = usm.GetUserAsync(User).Result.Id,
+                UserId = usm.GetUserAsync(User).Result.Id,
             };
 
             dcx.PatientComments.Add(addThisComment);
@@ -116,6 +143,6 @@ namespace DMX.Controllers
             return ViewComponent("PrintPatient", Id);
         }
 
-       
+
     }
 }

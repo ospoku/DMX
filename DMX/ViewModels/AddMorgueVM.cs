@@ -9,7 +9,7 @@ namespace DMX.ViewModels
         public string Deceased { get; set; }
         public string Depositor { get; set; }
         public string DepositorAddress { get; set; }
-        public string FinalDiagnoses { get; set; }
+        public string Diagnoses { get; set; }
         public string WardInCharge { get; set; }
         public DateTime Date { get; set; }
         public string TagNo { get; set; }
@@ -18,6 +18,7 @@ namespace DMX.ViewModels
         public SelectList DeceasedTypes { get; set; }
         public string Description { get; set; }
         public List<string> SelectedUsers { get; set; }
+  
         public SelectList UsersList { get; set; }
     }
 }

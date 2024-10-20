@@ -24,8 +24,7 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            Patient patientToEdit = new();
-            patientToEdit = (from m in dcx.Patients.Include(m => m.PatientComments.OrderBy(m => m.CreatedDate)) where m.PatientId == Id select m).FirstOrDefault();
+            Patient patientToEdit = (from m in dcx.Patients.Include(m => m.PatientComments.OrderBy(m => m.CreatedDate)) where m.PatientId == Id select m).FirstOrDefault();
 
             PatientCommentVM addCommentVM = new PatientCommentVM
             {

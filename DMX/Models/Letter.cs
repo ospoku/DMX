@@ -12,7 +12,7 @@ namespace DMX.Models
         public string Source { get; set; } = "";
         public DateTime DateReceived { get; set; }
         public DateTime DocumentDate { get; set; }
-        public string ReferenceNumber { get; set; } = "";
+        public string ReferenceNumber { get; set; } = "L"+Guid.NewGuid().ToString("N").Substring(0,5)   ;
 
         public string AdditionalNotes { get; set; } = "";
         [Required]

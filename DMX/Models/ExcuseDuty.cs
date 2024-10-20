@@ -13,8 +13,9 @@ namespace DMX.Models
         public DateTime DateofDischarge { get; set; }
         public string OperationDiagnosis { get; set; }
         public string ExcuseDays { get; set; }
-      
-        public string ReferenceNumber { get; set; }
+
+        public string ReferenceNumber { get; set; } = "E" + Guid.NewGuid().ToString("N").Substring(0, 5);
+            
 
     }
 }

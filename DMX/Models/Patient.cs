@@ -9,20 +9,23 @@ namespace DMX
     { [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        public string PatientId { get; set; }
-        public string PatientName { get; set; } = string.Empty;
-        public string FolderNo { get; set; }= string.Empty;
-        public string FinalDiagnoses { get; set; } = string.Empty;
-        public string Depositor { get; set; } = string.Empty;
-        public string DepositorAddress { get; set; } = string.Empty;
+        public string? PatientId { get; set; }
+        public string Name { get; set; } 
+        public  string FolderNo { get; set; }
+        public  string Diagnoses { get; set; } 
+        public  string Depositor { get; set; } 
+        public string DepositorAddress { get; set; } 
         [ForeignKey(nameof(DeceasedType.DeceasedTypeId))]
         public DeceasedType DeceasedType { get; set; }
-     public string DeceasedTypeId { get; set; } = string.Empty;
-        public string Description { get; set; }= string.Empty;
-        public string TagNo { get; set; }=string.Empty;
-        public string WardInCharge { get; set; } = string.Empty;
-        public DateTime Date { get; set; }
+     public string DeceasedTypeId { get; set; } 
+        public  string? Description { get; set; }
+        public string TagNo { get; set; }
+        public string WardInCharge { get; set; }
+        public  DateTime Date { get; set; }
         public string ReferenceNumber { get; set; } = Guid.NewGuid().ToString("N").Substring(0,5);
     public virtual ICollection<PatientComment>PatientComments { get; set; } 
+       
+
+  
     }
 }

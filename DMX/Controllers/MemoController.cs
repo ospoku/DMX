@@ -110,120 +110,60 @@ namespace DMX.Controllers
         {
             try
             {
+                // Create the memo object
                 Memo addThisMemo = new()
                 {
-                Content = addMemoVM.Content,
-                Title = addMemoVM.Title,
+                    Content = addMemoVM.Content,
+                    Title = addMemoVM.Title,
                 };
+
+                // Attempt to add the memo
                 bool result = await entityServ.AddEntityAsync(addThisMemo, User);
+
                 if (result)
                 {
-                    try
+                    // If users are selected for assignment
+                    if (addMemoVM.SelectedUsers != null && addMemoVM.SelectedUsers.Any())
                     {
                         foreach (var user in addMemoVM.SelectedUsers)
                         {
-
-                            MemoAssignment assignThisMemo = new MemoAssignment()
+                            MemoAssignment assignThisMemo = new()
                             {
                                 MemoId = addThisMemo.MemoId,
                                 AppUserId = user,
-
                             };
+
                             bool assignResult = await assignmentServ.AssignUsers(assignThisMemo, User);
 
-                            if (assignResult)
+                            if (!assignResult)
                             {
-                                return RedirectToAction("ViewMemos");
-                            }
-                            else
-                            {
-
-                                return RedirectToAction("ViewMemos");
+                                notyf.Error($"Failed to assign memo to user {user}.", 5);
+                                // Continue processing other users, but log the failure
                             }
                         }
-                  
-
-                     
                     }
-                    catch
-                    {
 
-                    }
-                    return RedirectToAction("SystemSetup");
+                    // If everything is processed successfully
+                    notyf.Success("Memo and assignments successfully processed.", 5);
+                    return RedirectToAction("ViewMemos");
                 }
-
-                // Success: Redirect to SystemSetup
                 else
                 {
-                    // Failure: Return an error view or handle as needed
-                    return RedirectToPage  ("/ErrorPage", new { message = "Failed to add the memo. Please try again." });
+                    // Failed to add the memo
+                    notyf.Error("Failed to add the memo. Please try again.", 5);
+                    return RedirectToAction("ErrorPage", new { message = "Failed to add the memo." });
                 }
             }
             catch (Exception ex)
             {
+                // Handle any unexpected errors
                 notyf.Error("An error occurred: " + ex.Message, 5);
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the memo." });
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddMemos(AddMemoVM addMemoVM)
-        //{
-        //    try
-        //    {
-        //        // Create a new memo object from the ViewModel
-        //        Memo addThisMemo = new()
-        //        {
-        //            Content = addMemoVM.Content,
-        //            Title = addMemoVM.Title,
-        //        };
-
-        //        // Add the memo to the database using an asynchronous method
-        //        bool result = await entityServ.AddEntityAsync(addThisMemo, User);
-
-        //        if (result)
-        //        {
-        //            // Success: Loop through the selected users and perform any necessary actions
-        //            try
-        //            {
-        //                foreach (var user in addMemoVM.SelectedUsers)
-        //                {
-        //                    // Perform actions for each user (e.g., send notifications)
-        //                    // ... your logic here
-        //                }
-        //            }
-        //            catch (Exception innerEx)
-        //            {
-        //                // Log the error (optional)
-        //                notyf.Error("Error processing users: " + innerEx.Message, 5);
-        //                // Redirect to an error page or handle it accordingly
-        //                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing users." });
-        //            }
-
-        //            // On successful addition and user processing, redirect to SystemSetup
-        //            return RedirectToAction("ErrorPage", new { message = "Failed to add the memo. Please try again." });
-        //        }
-        //        else
-        //        {
-        //            // Failure: Handle error and redirect to a setup or error page
-        //            notyf.Error("Memo creation failed.", 5);
-        //            return RedirectToAction("ErrorPage", new { message = "Failed to add the memo. Please try again." });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the error (optional)
-        //        notyf.Error("An error occurred: " + ex.Message, 5);
-        //        // Redirect to an error page with a custom error message
-        //        return RedirectToAction("ErrorPage", new { message = ex.Message });
-
-        //    }
-        //}
-
 
         [HttpGet]
-
-        
         public async Task<IActionResult> EditMemoAsync(string Id)
         {
             Memo? memoId = (from x in dcx.Memos where x.MemoId == Encryption.Decrypt(Id) select x).FirstOrDefault();

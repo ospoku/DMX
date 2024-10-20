@@ -25,11 +25,10 @@
        
             <thead>
                 <tr>
-                   <th>Date</th>
-                    <th>Patient</th>
-                    
+                   
+                    <th>Deceased</th>
                     <th>Folder</th>
-                    <th>Diagnoses</th>
+                    <th>Tag No</th>
                     <th>Other Fees</th>
                     <th>InCharge</th>
                     <th>Action</th>
@@ -39,9 +38,10 @@
                 @foreach (var patient in Model)
                 {
                     <tr>
-                        <td>@patient.Date</td>
-                        <td>@patient.PatientName</td><td>@patient.FolderNo</td>
-                        <td>@patient.FinalDiagnoses</td>
+                        
+                        <td>@patient.PatientName</td>
+                        <td>@patient.FolderNo</td>
+                        <td>@patient.TagNo</td>
                         <td>@patient.OtherFees</td>
                         <td>@patient.WardInCharge</td>
                         <td>

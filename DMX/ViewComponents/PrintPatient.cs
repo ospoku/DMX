@@ -23,7 +23,7 @@ namespace DMX.ViewComponents
 
             PrintMorgueVM printMorgueVM = new()
             {
-                FinalDiagnoses = deceased.FinalDiagnoses,
+                FinalDiagnoses = deceased.Diagnoses,
                 FolderNo = deceased.FolderNo,
                 Date = deceased.Date,
                 DeceasedTypeId = deceased.DeceasedTypeId,

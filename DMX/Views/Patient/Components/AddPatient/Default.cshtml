@@ -12,14 +12,10 @@
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
 
-             @using (Html.BeginForm("AddPatient", "Patient", FormMethod.Post, new { enctype = "multipart/form-data" }))
+             @using (Html.BeginForm("AddPatient", "Patient", FormMethod.Post, new { enctype = "multipart/form-data"}))
             {
                 <div class="modal-body">
-                    <div class="did-floating-label-content">
-                        <input type="date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
-
-                        <label class="did-floating-label">Date</label>
-                    </div>
+                    
                     <div class="did-floating-label-content">
                         <input type="text" asp-for="@Model.Deceased" class="did-floating-input" placeholder="" required/>
                         <label class="did-floating-label">Deceased</label>
@@ -57,7 +53,7 @@
                     </div>
                   
                         <div class="did-floating-label-content">
-                        <input class="did-floating-input vh-15" asp-for="@Model.FinalDiagnoses" placeholder="" required/>
+                        <input class="did-floating-input vh-15" asp-for="@Model.Diagnoses" placeholder="" required/>
                             <label class="did-floating-label">Final Diagnoses</label>
                  
                     </div>
@@ -82,17 +78,24 @@
                     </div>
                         
                         <div class="did-floating-label-content">
-                        <select id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" required="required"></select>
                         <label class="did-floating-label">Select Users</label>
                     </div>
                 </div>
 
 
-                <div class="modal-footer"><button class="btn btn-block btn-primary">Save</button></div>
+                <div class="modal-footer"><button type="submit" class="btn btn-block btn-primary">Save</button></div>
             }
         </div>
 </div>
 </div>
 <script>
-    $(document).ready(function () { $('#selectPatientUser').select2({ dropdownParent: $('#AddPatient') }) });
+    $(document).ready(function ()
+    {
+        $('#selectPatientUser').select2({ dropdownParent: $('#AddPatient') });
+    
+    });
+   
+
+    
 </script>

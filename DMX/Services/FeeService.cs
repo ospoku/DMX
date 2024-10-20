@@ -4,11 +4,7 @@ namespace DMX.Services
 {
     public class FeeService( XContext context)
     {
-
-     
        public readonly XContext dcx=context;
-
-
         public decimal FeecalCalculator(int numberOfDays)
         {
             decimal totalFee = 0;
@@ -26,7 +22,6 @@ namespace DMX.Services
                     break;
 
                 }
-
             }
             return totalFee;
         }

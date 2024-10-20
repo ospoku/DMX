@@ -2,66 +2,95 @@
 using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
+using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DMX.Controllers
 {
-    public class LeaveController(XContext dContext, UserManager<AppUser>userManager, INotyfService notyfService) : Controller
+    public class LeaveController(XContext dContext, UserManager<AppUser>userManager,EntityService entityService, INotyfService notyfService) : Controller
     {
 
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm=userManager;
         public readonly INotyfService notyf= notyfService;
+        public readonly EntityService entityServ = entityService;
 
         [HttpPost]
         public async Task<IActionResult> LeaveComment(string Id, MemoCommentVM addCommentVM)
         {
-
-            Leave leaveToComment =  dcx.Leaves.Where(l=>l.LeaveId==@Encryption.Decrypt(Id)).Select(l=>l).FirstOrDefault();
-
-            LeaveComment addThisComment = new()
+            try
             {
-                LeaveId = leaveToComment.LeaveId,
-                CreatedDate = DateTime.Now,
+                Leave leaveToComment = dcx.Leaves.Where(l => l.LeaveId == @Encryption.Decrypt(Id)).Select(l => l).FirstOrDefault();
 
-                Message = addCommentVM.NewComment,
+                LeaveComment addThisComment = new()
+                {
+                    LeaveId = leaveToComment.LeaveId,
+                    CreatedDate = DateTime.Now,
 
+                    Message = addCommentVM.NewComment,
+                };
 
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-               UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
+                bool result = await entityServ.AddEntityAsync(addThisComment, User);
 
-            dcx.LeaveComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
+                if (result)
+                {
 
-            return RedirectToAction("ViewMemos");
+                    notyf.Success("Record successfully assigned", 5);
+                    return RedirectToAction("ViewLeaves");
+                }
+                else
+                {
+                    notyf.Error("Error, record could not be updated.", 5);
+                    return RedirectToAction("ViewLeaves");
+                }
+               
+            }
+            catch
+            {
+                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> MaternityLeaveComment(string Id, MemoCommentVM addCommentVM)
         {
-
-            Leave leaveToComment = new();
-            leaveToComment = (from a in dcx.Leaves where a.LeaveId ==Encryption.Decrypt( Id) select a).FirstOrDefault();
-
-            LeaveComment addThisComment = new()
+            try
             {
-                LeaveId = leaveToComment.LeaveId,
-                CreatedDate = DateTime.Now,
 
-                Message = addCommentVM.NewComment,
+                Leave leaveToComment = new();
+                leaveToComment = (from a in dcx.Leaves where a.LeaveId == Encryption.Decrypt(Id) select a).FirstOrDefault();
+
+                LeaveComment addThisComment = new()
+                {
+                    LeaveId = leaveToComment.LeaveId,
+                    CreatedDate = DateTime.Now,
+                    Message = addCommentVM.NewComment
+
+                };
+                bool result = await entityServ.AddEntityAsync(addThisComment, User); 
+                if (result)
+                {
+                    notyf.Success("Record successfully saved!", 5);
+                    return RedirectToAction("ViewLeaves");
+                }
+                else
+                {
+                    notyf.Error("Error, record could not be saved.", 5);
+                    return RedirectToAction("ViewLeaves");
+                }
+            }
+            catch
+            {
 
 
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                 UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
 
-            dcx.LeaveComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
 
-            return RedirectToAction("ViewMemos");
+
+               
+                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
+            }
         }
         public IActionResult ViewLeaves()
         {

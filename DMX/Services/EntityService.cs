@@ -42,18 +42,17 @@ namespace DMX.Services
                 dcx.Set<T>().Add(entity);
                 if (await dcx.SaveChangesAsync(user.UserName) > 0)
                 {
-                    notyf.Success("Record successfully saved!", 5);
+                   
                     return true;
                 }
                 else
                 {
-                    notyf.Error("Error, record could not be saved.", 5);
+                   
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                notyf.Error("An error occurred: " + ex.Message, 5);
                 return false;
             }
         }
@@ -101,38 +100,7 @@ namespace DMX.Services
         //        return false;
         //    }
         //}
-        public async Task<bool> ViewEntityAsync<T>(T model, ClaimsPrincipal userClaim) where T : class
-        {
-            var user = await usm.GetUserAsync(userClaim);
-            if (user == null)
-            {
-                notyf.Error("User is not authenticated.", 5);
-                return false;
-            }
-            model.GetType().GetProperty("ModifiedBy")?.SetValue(model, user.UserName);
-            model.GetType().GetProperty("ModifiedDate")?.SetValue(model, DateTime.UtcNow);
-            try
-            {
-                dcx.Set<T>().Update(model);
-
-                if (await dcx.SaveChangesAsync(user.UserName) > 0)
-                {
-                    notyf.Success("Record successfully updated!", 5);
-                    return true;
-                }
-                else
-                {
-                    notyf.Error("Error, record could not be updated.", 5);
-                    return false;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                notyf.Error("An error occurred: " + ex.Message, 5);
-                return false;
-            }
-        }
+       
         public async Task<bool> DeleteEntityAsync<T>(T model, ClaimsPrincipal userClaim) where T : class
         {
             var user = await usm.GetUserAsync(userClaim);
@@ -143,6 +111,7 @@ namespace DMX.Services
             }
             model.GetType().GetProperty("ModifiedBy")?.SetValue(model, user.UserName);
             model.GetType().GetProperty("ModifiedDate")?.SetValue(model, DateTime.UtcNow);
+            model.GetType().GetProperty("IsDeleted")?.SetValue(model,true);
             try
             {
                 dcx.Set<T>().Update(model);

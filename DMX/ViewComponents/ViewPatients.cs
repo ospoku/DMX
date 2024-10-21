@@ -30,7 +30,7 @@ namespace DMX.ViewComponents
                     FinalDiagnoses = a.Diagnoses,
                     FolderNo = a.FolderNo,
                     WardInCharge = a.WardInCharge,
-                    OtherFees = fs.FeecalCalculator(numberofDays),
+                    OtherFees = fs.FeeCalculator(numberofDays),
                     TagNo = a.TagNo,
                     CreatedDate = a.CreatedDate
                 };

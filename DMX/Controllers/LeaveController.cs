@@ -37,19 +37,19 @@ namespace DMX.Controllers
                 if (result)
                 {
 
-                    notyf.Success("Record successfully assigned", 5);
+                    notyf.Success("Record successfully saved.", 5);
                     return RedirectToAction("ViewLeaves");
                 }
                 else
                 {
-                    notyf.Error("Error, record could not be updated.", 5);
+                    notyf.Error("Record could not be saved.", 5);
                     return RedirectToAction("ViewLeaves");
                 }
                
             }
             catch
             {
-                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
+                return RedirectToAction("Error","Home", new { message = "An error occurred while processing the request." });
             }
         }
 
@@ -77,18 +77,12 @@ namespace DMX.Controllers
                 }
                 else
                 {
-                    notyf.Error("Error, record could not be saved.", 5);
+                    notyf.Error("Record could not be saved.", 5);
                     return RedirectToAction("ViewLeaves");
                 }
             }
             catch
             {
-
-
-
-
-
-               
                 return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
             }
         }

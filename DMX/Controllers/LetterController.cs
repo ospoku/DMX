@@ -2,6 +2,7 @@
 using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
+using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,65 +12,72 @@ using Microsoft.EntityFrameworkCore;
 namespace DMX.Controllers
 {
 
-    public class LetterController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService
+    public class LetterController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService
            ) : Controller
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
+        private readonly EntityService entityServ = entityService;
 
         [HttpGet]
         public IActionResult AddLetter() => ViewComponent("AddLetter");
-       
+
         [HttpPost]
-        [RequestFormLimits(MultipartBodyLengthLimit =104857600)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 104857600)] // 100MB limit
         public async Task<IActionResult> AddLetter(AddLetterVM addDocumentVM, IFormFile formFile)
         {
-
-
-           
-            Letter addThisDocument = new()
+            try
             {
-                Source = addDocumentVM.DocumentSource,
-                DateReceived = addDocumentVM.ReceiptDate,
-                DocumentDate = addDocumentVM.DocumentDate,
-                ReferenceNumber = addDocumentVM.ReferenceNumber,
-           
-                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
-                CreatedDate = DateTime.UtcNow,
-                AdditionalNotes=addDocumentVM.AdditionalNotes,
-            };
+                // Validate the file
+                if (formFile == null || formFile.Length == 0)
+                {
+                    notyf.Error("Please upload a valid document.");
+                    return RedirectToAction("ViewLetters");
+                }
 
-          
-            using (var memoryStream = new MemoryStream())
-            {
+                if (Path.GetExtension(formFile.FileName).ToLower() != ".pdf")
+                {
+                    notyf.Error("Only PDF documents are allowed.");
+                    return RedirectToAction("ViewLetters");
+                }
 
+                Letter addThisDocument = new()
+                {
+                    Source = addDocumentVM.DocumentSource,
+                    DateReceived = addDocumentVM.ReceiptDate,
+                    DocumentDate = addDocumentVM.DocumentDate,
+                    AdditionalNotes = addDocumentVM.AdditionalNotes,
+                };
 
-                await formFile.CopyToAsync(memoryStream);
+                using (var memoryStream = new MemoryStream())
+                {
+                    await formFile.CopyToAsync(memoryStream);
+                    addThisDocument.PDF = memoryStream.ToArray(); // Store the file as byte array
+                }
 
+                bool result = await entityServ.AddEntityAsync(addThisDocument, User);
 
-                addThisDocument.PDF = memoryStream.ToArray();
-
+                if (result)
+                {
+                    notyf.Success("Record successfully saved!!!", 5);
+                    return RedirectToAction("ViewLetters");
+                }
+                else
+                {
+                    notyf.Error("Document saving failed");
+                    return RedirectToAction("ViewLetters");
+                }
             }
-            dcx.Letters.Add(addThisDocument);
-
- 
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+            catch (Exception ex)
             {
-                notyf.Success("Record successfully saved!!!", 5);
-
-                return RedirectToAction("ViewLetters");
-            }
-            else
-            {
-              
-                notyf.Error("Document saving failed");
-                return ViewComponent("AddDocument");
-
+                //_logger.LogError(ex, "Error occurred while adding the document");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request."+ ex.Message });
             }
         }
 
-       
+
+
         public IActionResult EditLetter(string Id)
         => ViewComponent("EditLetter", Id);
         [HttpPost]
@@ -77,8 +85,8 @@ namespace DMX.Controllers
         {
             EditDocumentVM editDocumentVM = new();
             EditDocumentVM edvm = editDocumentVM;
-            Letter updateThisDocument  = new();
-            updateThisDocument  = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
+            Letter updateThisDocument = new();
+            updateThisDocument = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
             updateThisDocument.ReferenceNumber = document.ReferenceNumber;
             updateThisDocument.DocumentDate = document.DocumentDate;
             updateThisDocument.DateReceived = document.DateReceived;
@@ -117,7 +125,7 @@ namespace DMX.Controllers
             return ViewComponent("ViewLetters");
         }
 
-        public IActionResult DeleteLetter() => ViewComponent("ViewLetters"); 
+        public IActionResult DeleteLetter() => ViewComponent("ViewLetters");
         [HttpPost]
         public async Task<IActionResult> CommentLetter(string Id, DocumentCommentVM addDocumentCommentVM)
         {
@@ -168,7 +176,7 @@ namespace DMX.Controllers
         }
 
 
-               [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> LetterComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
 
@@ -184,7 +192,7 @@ namespace DMX.Controllers
 
 
                 CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
             };
 
             dcx.LetterComments.Add(addThisComment);
@@ -192,12 +200,12 @@ namespace DMX.Controllers
 
             return RedirectToAction("ViewMemos");
         }
-                
-        
-    
 
 
-      
+
+
+
+
 
 
         [HttpGet]

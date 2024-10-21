@@ -17,7 +17,6 @@ namespace DMX.ViewComponents
         {
             var deceased = dcx.Patients.Include(d => d.PatientComments.OrderBy(d => d.CreatedDate)).Where(d => d.IsDeleted == false & d.PatientId == @Encryption.Decrypt(Id)).Select(d => d)
             .FirstOrDefault();
-        
             TimeSpan difference = DateTime.Now - deceased.CreatedDate.Value;
             int numberOfDays = (int)difference.TotalDays;
 
@@ -32,12 +31,8 @@ namespace DMX.ViewComponents
                 Description = deceased.Description,
                 TagNo = deceased.TagNo,
                 WardInCharge = deceased.WardInCharge,
-                AccruedFees= fs.FeecalCalculator(numberOfDays),
+                AccruedFees= fs.FeeCalculator(numberOfDays),
             };
-
-
-           
-
                 return View(printMorgueVM);
             }
         }

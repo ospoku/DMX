@@ -189,31 +189,34 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentMemo(string Id, MemoCommentVM addCommentVM)
         {
-
-            Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == @Encryption.Decrypt(Id) select a).FirstOrDefault();
-
-            MemoComment addThisComment = new()
+            try
             {
-                MemoId = memoToUpdate.MemoId,
+                Memo memoToComment = new();
+                memoToComment = (from a in dcx.Memos where a.MemoId == @Encryption.Decrypt(Id) select a).FirstOrDefault();
 
-                CreatedDate = DateTime.Now,
-                Message = addCommentVM.NewComment,
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
-                UserId = usm.GetUserAsync(User).Result.Id,
+                MemoComment addThisComment = new()
+                {
+                    MemoId = memoToComment.MemoId,
 
-            };
+                    CreatedDate = DateTime.Now,
+                    Message = addCommentVM.NewComment,
 
-            dcx.MemoComments.Add(addThisComment);
-            if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
-            {
-
-                return RedirectToAction("ViewMemos");
+                };
+                bool result = await entityServ.AddEntityAsync(memoToComment, User);
+                if (result)
+                {
+                    notyf.Success("Comment successfully saved", 5);
+                    return RedirectToAction("ViewMemos");
+                }
+                else
+                {
+                    notyf.Error("Comment could not be saved!!!", 5);
+                    return RedirectToAction("ViewMemos");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                notyf.Error("Error, Record could not be saved!!!", 5);
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request.", ex.Message });
             }
         }
 

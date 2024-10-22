@@ -3,6 +3,7 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
+using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,14 @@ namespace DMX.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 104857600)] // 100MB limit
         public async Task<IActionResult> AddLetter(AddLetterVM addDocumentVM, IFormFile formFile)
         {
+            if (addDocumentVM.SelectedUsers == null || !addDocumentVM.SelectedUsers.Any())
+            {
+                notyf.Error("You must select at least one user for assignment.", 5);
+                // Optionally, repopulate the view model and return the form to the user
+                //addPatientVM.UsersList = userService.GetAllUsers().Select(u => new SelectListItem { Value = u.Id, Text = u.Name }).ToList();
+
+                return RedirectToAction("ViewDocuments"); // Return the form with the error
+            }
             try
             {
                 // Validate the file

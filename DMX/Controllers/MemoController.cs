@@ -108,6 +108,13 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVM)
         {
+            if (addMemoVM.SelectedUsers == null || !addMemoVM.SelectedUsers.Any())
+            {
+                notyf.Error("You must select at least one user for assignment.", 5);
+           
+
+                return RedirectToAction("ViewMemos"); // Return the form with the error
+            }
             try
             {
                 // Create the memo object
@@ -151,14 +158,14 @@ namespace DMX.Controllers
                 {
                     // Failed to add the memo
                     notyf.Error("Failed to add the memo. Please try again.", 5);
-                    return RedirectToAction("ErrorPage", new { message = "Failed to add the memo." });
+                    return RedirectToAction("ViewMemos");
                 }
             }
             catch (Exception ex)
             {
                 // Handle any unexpected errors
                 notyf.Error("An error occurred: " + ex.Message, 5);
-                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the memo." });
+                return RedirectToAction("Error","Home", new { message = "An error occurred while processing the memo." });
             }
         }
 

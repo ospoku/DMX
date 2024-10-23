@@ -205,11 +205,11 @@ namespace DMX.Controllers
                 {
                     MemoId = memoToComment.MemoId,
 
-                    CreatedDate = DateTime.Now,
+               UserId=(await usm.GetUserAsync(User)).Id,
                     Message = addCommentVM.NewComment,
 
                 };
-                bool result = await entityServ.AddEntityAsync(memoToComment, User);
+                bool result = await entityServ.AddEntityAsync(addThisComment, User);
                 if (result)
                 {
                     notyf.Success("Comment successfully saved", 5);

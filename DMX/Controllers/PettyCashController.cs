@@ -2,7 +2,7 @@
 using DMX.Data;
 using DMX.Models;
 using DMX.Services;
-using DMX.ViewComponents;
+
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

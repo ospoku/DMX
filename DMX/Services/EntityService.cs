@@ -27,20 +27,20 @@ namespace DMX.Services
 
         public async Task<bool> AddEntityAsync<T>(T entity, ClaimsPrincipal userClaim) where T : class
         {
-            var user = await usm.GetUserAsync(userClaim);
+            var user = (await usm.GetUserAsync(userClaim)).Id;
             if (user == null)
             {
                 notyf.Error("User is not authenticated.", 5);
                 return false;
             }
 
-            entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user.UserName);
+            entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user);
             entity.GetType().GetProperty("CreatedDate")?.SetValue(entity, DateTime.UtcNow);
 
             try
             {
                 dcx.Set<T>().Add(entity);
-                if (await dcx.SaveChangesAsync(user.UserName) > 0)
+                if (await dcx.SaveChangesAsync(user) > 0)
                 {
                    
                     return true;

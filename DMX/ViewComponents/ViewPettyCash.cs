@@ -11,8 +11,8 @@ namespace DMX.ViewComponents
         public readonly UserManager<AppUser> usm = userManager;
         public IViewComponentResult Invoke()
         {
-            var user = usm.GetUserAsync(HttpContext.User).Result?.UserName;
-            var pettyList = dcx.PettyCashAssignments.Where(a => a.AppUser.UserName == user || a.CreatedBy == user).Select(a => 
+            var user = usm.GetUserAsync(HttpContext.User).Result?.Id;
+            var pettyList = dcx.PettyCashAssignments.Where(a => a.AppUser.Id == user || a.CreatedBy == user).Select(a => 
              new ViewPettyCashVM
             {
                 PettyCashId = a.PettyCashId,

@@ -4,6 +4,7 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
+
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -19,7 +20,7 @@ namespace DMX.Controllers
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
-        private readonly EntityService entitiyServ = entityService;
+        private readonly EntityService entityServ = entityService;
         [HttpGet]
         public IActionResult ViewExcuseDuties()
         {
@@ -33,26 +34,38 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentExcuseDuty(string Id, MemoCommentVM addCommentVM)
         {
-
+            try { 
             ExcuseDuty dutyToComment = new();
             dutyToComment = (from a in dcx.ExcuseDuties where a.Id == Id select a).FirstOrDefault();
 
-            ExcuseDutyComment addThisComment = new()
+                ExcuseDutyComment addThisComment = new()
+                {
+                    ExcuseDutyId = dutyToComment.Id,
+
+
+                    Message = addCommentVM.NewComment,
+
+
+
+                    UserId = (await usm.GetUserAsync(User)).Id
+                };
+                bool result = await entityServ.AddEntityAsync(addThisComment, User);
+                if (result)
             {
-                ExcuseDutyId = dutyToComment.Id,
-              
-
-                Message = addCommentVM.NewComment,
-
-
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                 UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
-
-            dcx.ExcuseDutyComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
-
-            return RedirectToAction("ViewExcuseDuties");
+                notyf.Success("Comment successfully saved", 5);
+                return RedirectToAction("ViewExcuseDuties");
+            }
+            else
+            {
+                notyf.Error("Comment could not be saved!!!", 5);
+                return RedirectToAction("ViewExcuseDuties");
+            }
+        }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request.", ex.Message
+    });
+            }
         }
         [Authorize(Policy ="OwnerPolicy")]
 
@@ -64,6 +77,13 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddExcuseDuty(AddExcuseDutyVM addExcuseDutyVM)
         {
+            if (addExcuseDutyVM.SelectedUsers == null || !addExcuseDutyVM.SelectedUsers.Any())
+            {
+                notyf.Error("You must select at least one user for assignment.", 5);
+
+
+                return RedirectToAction("ViewMemos"); // Return the form with the error
+            }
             try
             {
 
@@ -77,7 +97,7 @@ namespace DMX.Controllers
                     OperationDiagnosis = addExcuseDutyVM.OperationDiagnosis,
 
                 };
-                bool result = await entitiyServ.AddEntityAsync(addThisExcuseDuty, User);
+                bool result = await entityServ.AddEntityAsync(addThisExcuseDuty, User);
                 if (result)
                 {
                     try
@@ -92,15 +112,16 @@ namespace DMX.Controllers
                                 AppUserId = user,
 
                             };
-                            bool assignResult = await entitiyServ.AddEntityAsync(assignThisExcuseDuty, User);
+                            bool assignResult = await entityServ.AddEntityAsync(assignThisExcuseDuty, User);
                             if (assignResult)
                             {
+                                notyf.Success("Record successfully saved", 5);
                                 return RedirectToAction("ViewExcuseDuties");
                             }
                             else
                             {
-
-                                return RedirectToAction("ViewMemos");
+                                notyf.Error("Error, record could not be saved.", 5);
+                                return RedirectToAction("ViewExcuseDuties");
                             }
                         }
                     }

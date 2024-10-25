@@ -16,14 +16,12 @@ public readonly XContext dcx = dContext;
         [HttpPost]
         public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVM)
         {
-            var rand = new Random();
-            int digit = 5;
-            string RefN = "T" + rand.Next((int)Math.Pow(10, digit - 1), (int)Math.Pow(10, digit));
+           
 
             TravelRequest addThisTravelRequest = new()
                 {
 
-                    ReferenceNumber = RefN,
+                   
                  
                     
                     EndDate = addTravelRequestVM.EndDate,
@@ -36,8 +34,7 @@ public readonly XContext dcx = dContext;
                     Purpose = addTravelRequestVM.PurposeofJourney,
 
 
-                  
-                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                
                 CreatedDate = DateTime.Now,
                 };
                 dcx.TravelRequests.Add(addThisTravelRequest);

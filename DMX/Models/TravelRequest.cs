@@ -9,8 +9,9 @@ namespace DMX.Models
     {[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string TravelRequestId { get; set; }
-        public string ReferenceNumber { get; set; }
-      
+        public string ReferenceNumber { get; set; }= "TR"+Guid.NewGuid().ToString("N").Substring(0,5);
+
+
         [Precision(10, 4)]
         public decimal? ConferenceFee { get; set; }
         public DateTime EndDate { get; set; }   

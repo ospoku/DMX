@@ -10,14 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace DMX.Controllers
 {
     public class PettyCashController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService
-          ) :Controller
+          ) : Controller
     {
 
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
 
-        private readonly EntityService entityServ= entityService;
+        private readonly EntityService entityServ = entityService;
 
         [HttpGet]
         public IActionResult EditPettyCash(string Id)
@@ -66,27 +66,37 @@ namespace DMX.Controllers
                             AppUserId = user,
 
                         };
-                        bool assignPettyCash = await entityServ.AddEntityAsync(addThisPettyCash, User);
+                        bool assignPettyCash = await entityServ.AddEntityAsync(cashAssignment, User);
+                        if (assignPettyCash)
+                        {
+                            notyf.Success("PettyCash and assignments successfully processed", 5); return RedirectToAction("ViewPettyCash");
+                        }
+                        else
+                        {
+                            notyf.Error("Error, record could not be saved.", 5);
+                            return RedirectToAction("ViewPettyCash");
+                        }
+                        // If everything is processed successfully
                     }
-                    // If everything is processed successfully
                     notyf.Success("PettyCash and assignments successfully processed.", 5);
-                    return RedirectToAction("ViewPettyCash");
+                    return RedirectToAction("ViewMemos");
                 }
                 else
                 {
-                    // Failed to add the memo
-                    notyf.Error("Failed to add the Pettycash. Please try again.", 5);
-                    return RedirectToAction("ViewPettyCash");
+                    notyf.Error("An error occurred while processing the request.", 5);
+                    return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request." });
                 }
             }
+
+
             catch (Exception ex)
             {
                 notyf.Error("An error occurred while processing the request.", 5);
-                return RedirectToAction("Error","Home", new { message = "An error occurred while processing the request." });
+                return RedirectToAction("ViewPettyCash");
             }
-           
-          
-            
+
+
+
         }
 
 
@@ -112,9 +122,7 @@ namespace DMX.Controllers
 
                 Message = addCommentVM.NewComment,
 
-
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
+                  UserId = (await usm.GetUserAsync(User)).Id,
             };
 
             dcx.PettyCashComments.Add(addThisComment);

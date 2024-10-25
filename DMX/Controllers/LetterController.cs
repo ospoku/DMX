@@ -81,7 +81,7 @@ namespace DMX.Controllers
             catch (Exception ex)
             {
                 //_logger.LogError(ex, "Error occurred while adding the document");
-                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request."+ ex.Message });
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request." + ex.Message });
             }
         }
 
@@ -188,34 +188,43 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> LetterComment(string Id, DocumentCommentVM addDocumentCommentVM)
         {
+            try {
 
-            Letter letterToComment = new();
-            letterToComment = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
+                Letter letterToComment = new();
+                letterToComment = (from a in dcx.Letters where a.LetterId == Id select a).FirstOrDefault();
 
-            LetterComment addThisComment = new()
+                LetterComment addThisComment = new()
+                {
+                    LetterId = letterToComment.LetterId,
+                    CreatedDate = DateTime.Now,
+
+                    Message = addDocumentCommentVM.NewComment,
+
+
+                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
+                    UserId = (await usm.GetUserAsync(User)).Id,
+                };
+
+                bool result = await entityServ.AddEntityAsync(addThisComment, User);
+                if (result)
+                {
+                    notyf.Success("comment successfully saved!!!", 5);
+                    return RedirectToAction("ViewLetters");
+                }
+                else
+                {
+                    notyf.Error("comment saving failed");
+                    return RedirectToAction("ViewLetters");
+                }
+            }
+            catch (Exception ex)
             {
-                LetterId = letterToComment.LetterId,
-                CreatedDate = DateTime.Now,
-
-                Message = addDocumentCommentVM.NewComment,
-
-
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
-
-            dcx.LetterComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
-
-            return RedirectToAction("ViewMemos");
+                //_logger.LogError(ex, "Error occurred while adding the document");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request." + ex.Message
+                });
+            }
         }
-
-
-
-
-
-
-
+    
 
         [HttpGet]
         public async Task<IActionResult> Download(string Id)

@@ -27,7 +27,7 @@ namespace DMX.Controllers
                 LeaveComment addThisComment = new()
                 {
                     LeaveId = leaveToComment.LeaveId,
-                    CreatedDate = DateTime.Now,
+                    UserId=(await usm.GetUserAsync(User)).Id,
 
                     Message = addCommentVM.NewComment,
                 };

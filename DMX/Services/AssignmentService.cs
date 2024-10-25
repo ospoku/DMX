@@ -35,12 +35,12 @@ namespace DMX.Services
                 if (await dcx.SaveChangesAsync(userId) > 0)
 
                 {
-                    notyf.Success("Record successfully saved!", 5);
+                    
                     return true;
                 }
                 else
                 {
-                    notyf.Error("Error, record could not be saved.", 5);
+                    
                     return false;
                 }
 

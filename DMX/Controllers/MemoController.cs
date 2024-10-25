@@ -27,52 +27,52 @@ namespace DMX.Controllers
         public async Task<IActionResult> EditMemo(string Id, EditMemoVM editMemoVM)
         {
             //// Decrypt the memo ID and fetch the memo to update
-            //var decryptedId = Encryption.Decrypt(Id);
-            //var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == decryptedId);
+            var decryptedId = Encryption.Decrypt(Id);
+            var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == decryptedId);
 
-            //if (updateThisMemo == null)
-            //{
-            //    // Handle the case where the memo is not found
-            //    return NotFound();
-            //}
+            if (updateThisMemo == null)
+            {
+                // Handle the case where the memo is not found
+                return NotFound();
+            }
 
-            //// Update memo properties
-            //updateThisMemo.Content = editMemoVM.Content;
-            //updateThisMemo.Title = editMemoVM.Title;
-            //updateThisMemo.ModifiedDate = DateTime.UtcNow;
+            // Update memo properties
+            updateThisMemo.Content = editMemoVM.Content;
+            updateThisMemo.Title = editMemoVM.Title;
+            updateThisMemo.ModifiedDate = DateTime.UtcNow;
 
-            //var currentUser = await usm.GetUserAsync(User);
-            //updateThisMemo.ModifiedBy = currentUser?.UserName;
+            var currentUser = (await usm.GetUserAsync(User));
+            updateThisMemo.ModifiedBy = currentUser?.UserName;
 
-            // Mark the entity as modified
-            //dcx.Entry(updateThisMemo).State = EntityState.Modified;
+           // Mark the entity as modified
+            dcx.Entry(updateThisMemo).State = EntityState.Modified;
 
-            //// Remove existing memo assignments
-            //var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
-            //dcx.MemoAssignments.RemoveRange(existingAssignments);
+            // Remove existing memo assignments
+            var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
+            dcx.MemoAssignments.RemoveRange(existingAssignments);
 
-            //// Add new memo assignments
-            //foreach (var userId in editMemoVM.SelectedUsers)
-            //{
-            //    dcx.MemoAssignments.Add(new MemoAssignment
-            //    {
-            //        MemoId = updateThisMemo.MemoId,
-            //        AppUserId = userId,
-            //        CreatedBy = currentUser?.UserName,
-            //        CreatedDate = DateTime.UtcNow,
-            //    });
-            //}
+            // Add new memo assignments
+            foreach (var userId in editMemoVM.SelectedUsers)
+            {
+                dcx.MemoAssignments.Add(new MemoAssignment
+                {
+                    MemoId = updateThisMemo.MemoId,
+                    AppUserId = userId,
+                    CreatedBy = currentUser?.UserName,
+                    CreatedDate = DateTime.UtcNow,
+                });
+            }
 
-            // Save changes to the database
-            //var changes = await dcx.SaveChangesAsync(currentUser?.UserName);
+           // Save changes to the database
+           var changes = await dcx.SaveChangesAsync(currentUser?.UserName);
 
-            //if (changes > 0)
-            //{
-            //    notyf.Success("Record successfully saved", 5);
-            //    return RedirectToAction("ViewMemos");
-            //}
+            if (changes > 0)
+            {
+                notyf.Success("Record successfully saved", 5);
+                return RedirectToAction("ViewMemos");
+            }
 
-            // If saving fails, show the edit memo view with error
+           // If saving fails, show the edit memo view with error
             return ViewComponent("EditMemo");
         }
 

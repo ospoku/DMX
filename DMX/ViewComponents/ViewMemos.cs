@@ -13,17 +13,17 @@ namespace DMX.ViewComponents
 
         private readonly UserManager<AppUser> usm = userManager;
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult>InvokeAsync()
         {
-            var user = usm.GetUserAsync(HttpContext.User).Result?.UserName;
-            var memoList = dcx.MemoAssignments.Where(a=>a.AppUser.UserName==user||a.Memo.CreatedBy==user).Select(a => new ViewMemosVM
+            var user = (await usm.GetUserAsync(HttpContext.User)).Id;
+            var memoList = dcx.MemoAssignments.Where(a=>a.AppUser.UserName==user||a.Memo.CreatedBy==user & a.Memo.IsDeleted==false).Select(a => new ViewMemosVM
             {
                 MemoId = a.Memo.MemoId,
 
                 Content = a.Memo.Content,
                 ReferenceNumber=a.Memo.ReferenceId,
              
-                Assignees = (from u in usm.Users where u.Id == a.AppUserId select u.UserName).ToList(),
+                Assignees = (from u in usm.Users where u.Id == a.UserId select u.UserName).ToList(),
                 Title = a.Memo.Title,
                 Sender = a.Memo.CreatedBy,
                 CreatedDate = a.CreatedDate,

@@ -17,12 +17,8 @@ namespace DMX.ViewComponents
        
         public IViewComponentResult Invoke(string Id)
         {
-
-           
-
             Memo memoToComment = new();
-            memoToComment = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
-
+            memoToComment = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)).ThenInclude(c => c.AppUser) where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
 
             MemoCommentVM addCommentVM = new()
             {
@@ -30,8 +26,8 @@ namespace DMX.ViewComponents
 
                 Comments = memoToComment.MemoComments.OrderBy(m => m.CreatedDate).ToList(),
                 Title = memoToComment.Title,
-
-              
+               
+             
             };
             
 

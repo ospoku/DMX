@@ -5,6 +5,7 @@ using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.Controllers
@@ -116,33 +117,52 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
         {
+            try {
 
-            Patient patientToComment = patientToComment = (from a in dcx.Patients where a.PatientId == Id select a).FirstOrDefault();
+                Patient patientToComment = patientToComment = (from a in dcx.Patients where a.PatientId == Id select a).FirstOrDefault();
 
-            PatientComment addThisComment = new()
+                PatientComment addThisComment = new()
+                {
+                    PatientId = patientToComment.PatientId,
+                    Message = addCommentVM.NewComment,
+                    UserId = (await usm.GetUserAsync(User)).Id,
+                };
+
+                bool result = await entityServ.AddEntityAsync(addThisComment, User);
+                if (result)
+                {
+                    // If all assignments are successful
+                    notyf.Success("Comment successfully saved.", 5);
+                    return RedirectToAction("ViewPatients");
+                }
+                else
+                {
+                    // No users selected for assignment, but patient creation was successful
+                    notyf.Error("Could not be saved", 5);
+                    return RedirectToAction("ViewPatients");
+                }
+            
+
+       
+
+            }
+            catch
             {
-                PatientId = patientToComment.PatientId,
-                CreatedDate = DateTime.Now,
-
-                Message = addCommentVM.NewComment,
-
-
-                CreatedBy = usm.GetUserAsync(User).Result.UserName,
-                UserId = usm.GetUserAsync(User).Result.Id,
-            };
-
-            dcx.PatientComments.Add(addThisComment);
-            await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName);
-
-            return RedirectToAction("ViewMemos");
+    // General catch for any unexpected exceptions
+    notyf.Error("An error occurred while processing the request.", 5);
+    return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
+}
         }
-
         [HttpGet]
         public IActionResult PrintPatient(string Id)
         {
             return ViewComponent("PrintPatient", Id);
         }
-
+        [HttpGet]
+        public IActionResult CommentPatient(string Id)
+        {
+            return ViewComponent("CommentPatient", Id);
+        }
 
     }
 }

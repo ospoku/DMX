@@ -23,7 +23,7 @@
                             </div>
                   
                      <div class="form-group">     
-                    <textarea id="MemoContent" class="did-floating-input" type="text" placeholder="Current Diagnoses" asp-for="@Model.Content" required="required" style="min-height:300px"></textarea>
+                    <textarea id="MemoContent" class="did-floating-input" type="text"  asp-for="@Model.Content" required="required" style="min-height:300px"></textarea>
 
                     </div>
 
@@ -43,15 +43,27 @@
      </div>
      </div>
      <script>
-         $(document).ready(function () {
-             tinymce.init({
-                 selector: '#MemoContent'
-             });
-         });
+        
          $(document).ready(function () {
                     $('#selectUser').select2({
                         dropdownParent: $('#EditMemo')
                     });
 
-         })
-    </script>
+        // Initialize TinyMCE when the modal is shown to ensure textarea visibility
+        $('#EditMemo').on('shown.bs.modal', function () {
+            tinymce.init({
+                selector: '#MemoContent',
+                menubar: true,
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
+                // height:
+            });
+        });
+
+        // Remove TinyMCE instance on modal close to prevent re-initialization issues
+        $('#EditMemo').on('hidden.bs.modal', function () {
+            tinymce.remove('#MemoContent');
+        });
+    });
+</script>
+
+

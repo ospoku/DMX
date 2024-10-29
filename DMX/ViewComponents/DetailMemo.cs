@@ -27,7 +27,7 @@ namespace DMX.ViewComponents
            
 
                 
-               SelectedUsers = (from x in dcx.MemoAssignments where x.MemoId == @Encryption.Decrypt(Id) select x.AppUserId).ToList(),
+               SelectedUsers = (from x in dcx.MemoAssignments where x.MemoId == @Encryption.Decrypt(Id) select x.UserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             return View(detailMemoVM);

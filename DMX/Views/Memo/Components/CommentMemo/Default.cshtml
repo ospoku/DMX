@@ -11,95 +11,105 @@
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
-                @using (Html.BeginForm("CommentMemo", "Memo", FormMethod.Post))
-               {
+           
+    
+            
+            <div class="container mt-0">
+                <!-- Nav pill tabs -->
+                <ul class="nav nav-pills" id="memoPillTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill active" id="memo-content-pill-tab" data-bs-toggle="pill" data-bs-target="#memo-content-pill" type="button" role="tab" aria-controls="memo-content-pill" aria-selected="true">Memo Content</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill " id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
+                    </li>
+                </ul>
 
-
-         
-                <div class="accordion" id="accordionMemoComment">
-                    <div class="card">
-                        <div class="card-header bg-primary-subtle" data-bs-toggle="collapse" data-bs-target="#collapseMemoDetail" aria-expanded="true">
-                            <span class="title">Memo Content</span>
-                           @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
-                        </div>
-                        <div id="collapseMemoDetail" class="collapse show" data-parent="#accordionMemoComment">
-                            <div class="card-body">
-                                @Html.Raw(Model.MemoContent)  
-                            </div>
-                        </div>
+                <!-- Pill tab panes -->
+                <div class="tab-content mt-1" id="memoPillTabsContent">
+                    <!-- Memo Content -->
+                    <div class="tab-pane fade active show  p-1" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
+                        @Html.Raw(Model.MemoContent)
                     </div>
-                    <div class="card">
-                        <div class="card-header collapsed  bg-primary-subtle" data-bs-toggle="collapse" data-bs-target="#collapseMinutes" aria-expanded="false" aria-controls="collapseTwo">
-                            <span class="title">Minutes/Comments</span>
-                           @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
-                        </div>
-                        <div id="collapseMinutes" class="collapse" data-parent="#accordionMemoComment">
-                            <div class="card-body">
-                                @foreach (var comment in Model.Comments)
-                                {
 
-                                    <div class="card p-3 mt-1">
-                                        <div class="justify-content-between align-items-center">
-                                            <div class="align-items-center">
-                                               
-                                               
-                                                    <small class="font-weight-bold">@comment.CreatedBy</small>
-                                              
+                    <!-- Comments -->
+                    <div class="tab-pane fade p-1" id="comments-pill" role="tabpanel" aria-labelledby="comments-pill-tab">
+
+
+                            @foreach (var comment in Model.Comments)
+                            {
+                                <div class="card p-3 mt-1">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Check if User Picture is available -->
+                                        @{
+                                            var userPicture = comment.AppUser?.Picture;
+                                            var pictureBase64 = userPicture != null ? Convert.ToBase64String(userPicture) : null;
+                                        }
+
+                                        <!-- User Picture -->
+                                        @if (pictureBase64 != null)
+                                        {
+                                            <img src="data:image/png;base64,@pictureBase64" alt="User picture" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <img src="/path/to/default-image.png" alt="Default user picture" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                       
+
+                                        }
+
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="font-weight-bold">@comment.AppUser.Fullname</small>
                                                 <small class="fa-pull-right">
-
                                                     <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>
-
                                                 </small>
-
-                                                <div>@Html.Raw(@comment.Message)</div>
-
                                             </div>
+                                            <div>@Html.Raw(comment.Message)</div>
                                         </div>
-
                                     </div>
-
-                                }
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                            <div class="card-header collapsed  bg-primary-subtle" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
-                            <span class="title">New Comment</span>
-                           @*  <span class="accicon"><i class="fas fa-angle-down rotate-icon"></i></span> *@
-                        </div>
-                        <div id="collapseThree" class="collapse" data-parent="#accordionMemoComment">
-                            
-                                    <div class="card-body">
-
-                                    <div class="form-group">
-                                <textarea class="form-control" id="newComment" asp-for="@Model.NewComment"></textarea>
                                 </div>
-
-                                    <button class="btn btn-block btn-primary">Save Comment</button>
-                                
-                                
+                            }
+                    </div>
+                    <!-- New Comment -->
+                    <div class="tab-pane fade p-1" id="new-comment-pill" role="tabpanel" aria-labelledby="new-comment-pill-tab">
+                        <form method="post" asp-action="CommentMemo" asp-controller="Memo">
+                    
+                            <div class="mb-3">
+                                <textarea  id="newComment" asp-for="NewComment" placeholder="write your comment here........"></textarea>
                             </div>
-                        </div>
+                            <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            </form>
                     </div>
                 </div>
-                     }
-                     </div>
-           
         </div>
     </div>
     </div>
+    </div>
+    </div>
 
 
-    <script>
-
-  $(document).ready( function () {
-
-        $('time.timeago').timeago();
-    });
-
+<script>
     $(document).ready(function () {
-        tinymce.init({ selector: '#newComment' });
+        // Initialize timeago for comment timestamps
+        $('time.timeago').timeago();
+
+        // Initialize TinyMCE when the modal is shown to ensure textarea visibility
+        $('#CommentMemo').on('shown.bs.modal', function () {
+            tinymce.init({
+                selector: '#newComment',
+                menubar: true,
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
+                // height: 
+            });
+        });
+
+        // Remove TinyMCE instance on modal close to prevent re-initialization issues
+        $('#CommentMemo').on('hidden.bs.modal', function () {
+            tinymce.remove('#newComment');
+        });
     });
-</script>
-   
+</script> 

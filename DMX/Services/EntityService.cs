@@ -18,10 +18,10 @@ namespace DMX.Services
 
         private readonly XContext dcx;
 
-        public EntityService(UserManager<AppUser> userManager, XContext context, INotyfService notyfService)
+        public EntityService(UserManager<AppUser> userManager, XContext context)
         {
             usm = userManager;
-            notyf = notyfService;
+         
             dcx = context;
         }
 
@@ -30,7 +30,6 @@ namespace DMX.Services
             var user = (await usm.GetUserAsync(userClaim)).Id;
             if (user == null)
             {
-                notyf.Error("User is not authenticated.", 5);
                 return false;
             }
 
@@ -106,7 +105,6 @@ namespace DMX.Services
             var user = await usm.GetUserAsync(userClaim);
             if (user == null)
             {
-                notyf.Error("User is not authenticated.", 5);
                 return false;
             }
             model.GetType().GetProperty("ModifiedBy")?.SetValue(model, user.UserName);
@@ -118,19 +116,16 @@ namespace DMX.Services
 
                 if (await dcx.SaveChangesAsync(user.UserName) > 0)
                 {
-                    notyf.Success("Record successfully updated!", 5);
                     return true;
                 }
                 else
                 {
-                    notyf.Error("Error, record could not be updated.", 5);
                     return false;
                 }
             }
 
             catch (Exception ex)
             {
-                notyf.Error("An error occurred: " + ex.Message, 5);
                 return false;
             }
         }
@@ -140,7 +135,6 @@ namespace DMX.Services
             var user = await usm.GetUserAsync(userClaim);
             if (user == null)
             {
-                notyf.Error("User is not authenticated.", 5);
                 return false;
             }
 
@@ -164,18 +158,18 @@ namespace DMX.Services
 
                 if (await dcx.SaveChangesAsync(user.UserName) > 0)
                 {
-                    notyf.Success("Record successfully updated!", 5);
+                  
                     return true;
                 }
                 else
                 {
-                    notyf.Error("Error, record could not be updated.", 5);
+                   
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                notyf.Error("An error occurred: " + ex.Message, 5);
+                
                 return false;
             }
         }
@@ -187,7 +181,6 @@ namespace DMX.Services
 
             if (updateThisMemo == null)
             {
-                notyf.Error("Memo not found", 5);
                 return false;
             }
 
@@ -210,7 +203,7 @@ namespace DMX.Services
                 dcx.MemoAssignments.Add(new MemoAssignment
                 {
                     MemoId = updateThisMemo.MemoId,
-                    AppUserId = userId,
+                    UserId = userId,
                     CreatedBy = user?.UserName,
                     CreatedDate = DateTime.UtcNow,
                 });

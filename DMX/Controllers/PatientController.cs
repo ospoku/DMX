@@ -43,8 +43,6 @@ namespace DMX.Controllers
                
                 return  RedirectToAction ("ViewPatients"); // Return the form with the error
             }
-
-
             try
             {
                 // Create the patient object
@@ -61,10 +59,8 @@ namespace DMX.Controllers
                     Description = addPatientVM.Description,
                     DeceasedTypeId = addPatientVM.DeceasedTypeId,
                 };
-
                 // Attempt to add the patient
                 bool result = await entityServ.AddEntityAsync(addThisPatient, User);
-
                 if (result)
                 {
                     // If users are selected for assignment
@@ -86,8 +82,14 @@ namespace DMX.Controllers
                                 notyf.Error("Failed to assign user.", 5);
                                 return RedirectToAction ("Error","Home", new { message = "An error occurred while assigning users." });
                             }
-                        }
+                            else
+                            {
+                                Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>notificationService.SendEmail(addpatientAssignment.AppUser.Email, "New Patient Assignment", $"You have been assigned a new patient: {addpatientAssignment}"));
 
+                                Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>
+                                    notificationService.SendSMS(addpatientAssignment.AppUser.PhoneNumber, $"You have a new memo assignment: {addpatientAssignment}"));
+                            }
+                        }
                         // If all assignments are successful
                         notyf.Success("Record and assignments successfully processed.", 5);
                         return RedirectToAction("ViewPatients");
@@ -113,21 +115,18 @@ namespace DMX.Controllers
                 return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
         {
             try {
 
                 Patient patientToComment = patientToComment = (from a in dcx.Patients where a.PatientId == Id select a).FirstOrDefault();
-
                 PatientComment addThisComment = new()
                 {
                     PatientId = patientToComment.PatientId,
                     Message = addCommentVM.NewComment,
                     UserId = (await usm.GetUserAsync(User)).Id,
                 };
-
                 bool result = await entityServ.AddEntityAsync(addThisComment, User);
                 if (result)
                 {
@@ -141,10 +140,6 @@ namespace DMX.Controllers
                     notyf.Error("Could not be saved", 5);
                     return RedirectToAction("ViewPatients");
                 }
-            
-
-       
-
             }
             catch
             {

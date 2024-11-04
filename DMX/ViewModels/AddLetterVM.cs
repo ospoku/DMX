@@ -6,7 +6,8 @@ namespace DMX.ViewModels
     public class AddLetterVM
     {
         public string ReferenceNumber { get; set; }
-        public string DocumentSource { get; set; }
+        public string Source { get; set; }
+        public string Subject { get; set; }
         public DateTime ReceiptDate { get; set; }
         public DateTime DocumentDate { get; set; }
         [FileExtensions(Extensions = "jpg,jpeg,png,pdf")]

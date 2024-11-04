@@ -25,7 +25,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Date</th>
+                    <th>Sender</th>
                     <th>Excuse Days</th>
                
                     <th>Diagnosis</th>
@@ -40,8 +40,8 @@
                 @foreach (var Excuse in Model)
                 {
                     <tr>
-                        <td>@Excuse.Name</td>
-                            <td>@Excuse.Date.ToString("yyyy-MMM-dd")</td>
+                        <td>@Excuse.ExcuseDays</td>
+                       <td>@Excuse.Sender</td>
             <td>@Excuse.ExcuseDays</td>
             <td>@Excuse.OperationDiagnosis.Substring(1)</td>
                             <td>@Excuse.DateofDischarge.ToString("yyyy-MMM-dd")</td>

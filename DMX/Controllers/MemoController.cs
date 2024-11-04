@@ -164,6 +164,9 @@ namespace DMX.Controllers
                             {
                                 notyf.Error($"Failed to assign memo to user {user}.", 5);
                                 // Continue processing other users, but log the failure
+                                Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>
+       notificationService.SendEmail("admin@example.com", "Assignment Failure", $"Failed to assign memo to user {user}."));
+
                             }
                         }
                     }

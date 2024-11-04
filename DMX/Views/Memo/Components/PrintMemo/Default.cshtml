@@ -1,5 +1,7 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+
 @model DMX.ViewModels.MemoCommentVM;
+@inject UserManager<AppUser> usm;
 
 <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
 <link href="~/ospapps/timeline.css" rel="stylesheet" />
@@ -36,12 +38,29 @@
                              @foreach (var comment in Model.Comments.OrderByDescending(c=>c.CreatedDate))
                                 { 
                             <ul class="timeline">
-                               
+                                @{
+                                    var userPicture=(await usm.FindByIdAsync(comment.CreatedBy)).Picture;
+                                    var pictureBase64 = userPicture != null ? Convert.ToBase64String(userPicture) : null;
+                                }
+
+                                <!-- User Picture -->
+                                @if (pictureBase64 != null)
+                                {
+                                    <img src="data:image/png;base64,@pictureBase64" alt="User picture" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <img src="/path/to/default-image.png" alt="Default" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+
+
+                                }
 
 
 
-                                    <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:tt" )">
-                                        <h3>@comment.CreatedBy</h3>
+
+
+                                <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:tt" )">
+                                        <h3>@comment.AppUser?.Fullname</h3>
                                     <p>@Html.Raw(@comment.Message)</p>
                                 </li>
                                 
@@ -52,7 +71,7 @@
             </div>
         </div>
     </div>
-    </div>
+  
 
            
        

@@ -52,7 +52,7 @@ namespace DMX.Controllers
                         await usm.AddToRoleAsync(addThisUser, applicationRole.Name);
                     };
 
-                    ViewBag.Message = "New User created";
+                notyf.Success("User successfully created");
 
 
                     return RedirectToAction("ViewUsers");

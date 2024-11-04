@@ -1,7 +1,9 @@
 ﻿@using DMX.Constants
 @using DMX.DataProtection
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 @inject IAuthorizationService auth
+@inject UserManager<AppUser> usm;
 @inject DMX.Data.XContext dcx;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";

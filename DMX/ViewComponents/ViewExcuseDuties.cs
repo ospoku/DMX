@@ -1,27 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DMX.Data;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using DMX.Models;
 
 namespace DMX.ViewComponents
 {
-    public class ViewExcuseDuties(XContext dContext) : ViewComponent
+    public class ViewExcuseDuties(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-
-        public IViewComponentResult Invoke()
+        public readonly UserManager<AppUser> usm = userManager;
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var lList = dcx.ExcuseDuties.Where(t => t.IsDeleted == false).Select(t => new ViewExcuseDutiesVM
+            var user = (await usm.GetUserAsync(HttpContext.User)).Id;
+            var iList = dcx.ExcuseDutyAssignments.Where(a => a.AppUser.UserName == user || a.ExcuseDuty.CreatedBy == user & a.ExcuseDuty.IsDeleted == false).Select( a => new ViewExcuseDutiesVM
             {
 
                
-                ExcuseDutyId = t.Id,
-                Date = t.Date,
-                DateofDischarge = t.DateofDischarge,
-                ExcuseDays = t.ExcuseDays,
-                OperationDiagnosis = t.OperationDiagnosis,
-                CreatedDate=t.CreatedDate,
+                ExcuseDutyId = a.Id,
+                Sender=a.ExcuseDuty.CreatedBy,
+                DateofDischarge = a.ExcuseDuty.DateofDischarge,
+                ExcuseDays = a.ExcuseDuty.ExcuseDays,
+                OperationDiagnosis = a.ExcuseDuty.OperationDiagnosis,
+                CreatedDate=a.CreatedDate,
     }).OrderByDescending(t=>t.CreatedDate).ToList();
-            return View(lList);
+            return View(iList);
         }
     }
 }

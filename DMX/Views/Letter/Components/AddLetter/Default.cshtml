@@ -19,7 +19,7 @@
                             <label class="did-floating-label">Reference Number</label>
                         </div>
                         <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.DocumentSource"  class="did-floating-input" placeholder="" required/>
+                            <input type="text" asp-for="Source"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Document Source</label>
                         </div>
                             <div class="did-floating-label-content">
@@ -40,8 +40,13 @@
                             <input class=" form-control custom-custom-file-input" id="formFile" name="formFile" type="file" asp-for="UploadFile" multiple />
 
                     </div>
-                            
-                     <div class="form-group">
+                    <div class="did-floating-label-content">
+                        <select id="modalSelectUser"  class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <label class="did-floating-label"> Select Users</label>
+                    </div>
+
+
+                    <div class="form-group">
                                 <textarea class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information" required></textarea>
                             </div>
 
@@ -50,6 +55,16 @@
 
 
         </div>
-    </div>
+        </div> <script>
+                   $(document).ready(function () {
+
+
+                       $('#modalSelectUser').select2({
+                           dropdownParent: $('#AddLetter') });
+
+                   });
+
+
+        </script>
 </div>
 </div>

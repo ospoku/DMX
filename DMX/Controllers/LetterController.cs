@@ -8,6 +8,7 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace DMX.Controllers
@@ -34,7 +35,7 @@ namespace DMX.Controllers
                 // Optionally, repopulate the view model and return the form to the user
                 //addPatientVM.UsersList = userService.GetAllUsers().Select(u => new SelectListItem { Value = u.Id, Text = u.Name }).ToList();
 
-                return RedirectToAction("ViewDocuments"); // Return the form with the error
+                return RedirectToAction("ViewLetters"); // Return the form with the error
             }
             try
             {
@@ -52,11 +53,12 @@ namespace DMX.Controllers
                 }
 
                 Letter addThisDocument = new()
-                {
-                    Source = addDocumentVM.DocumentSource,
+                {Source=addDocumentVM.Source,
+                    Subject=addDocumentVM.Subject,
                     DateReceived = addDocumentVM.ReceiptDate,
                     DocumentDate = addDocumentVM.DocumentDate,
                     AdditionalNotes = addDocumentVM.AdditionalNotes,
+                    
                 };
 
                 using (var memoryStream = new MemoryStream())
@@ -101,10 +103,6 @@ namespace DMX.Controllers
             updateThisDocument.DateReceived = document.DateReceived;
             updateThisDocument.Source = document.Source;
             updateThisDocument.DateReceived = document.DateReceived;
-            updateThisDocument.IsDeleted = false;
-            updateThisDocument.ModifiedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
-            updateThisDocument.ModifiedDate = DateTime.Now;
-
             updateThisDocument.AdditionalNotes = document.AdditionalNotes;
             using (var memoryStream = new MemoryStream())
             {
@@ -116,11 +114,11 @@ namespace DMX.Controllers
             if (await dcx.SaveChangesAsync(User?.FindFirst(c => c.Type == "Name").Value) > 0)
             {
                 notyf.Success("Record successfully updated");
-                return RedirectToAction("ViewDocuments");
+                return RedirectToAction("ViewLetters");
             }
             else
             {
-                ViewBag.Message = "Failed to save document";
+               
                 notyf.Error("Document saving failed");
                 return ViewComponent("AddDocument");
 
@@ -145,19 +143,22 @@ namespace DMX.Controllers
             LetterComment addThisComment = new()
             {
                 LetterId = letterToComment.LetterId,
-                CreatedDate = DateTime.Now,
-
                 Message = addDocumentCommentVM.NewComment,
-
-
-                CreatedBy = usm.GetUserAsync(HttpContext.User).Result.UserName,
                 UserId = usm.GetUserAsync(HttpContext.User).Result.Id,
             };
 
-            dcx.LetterComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
+            bool addDocument =await entityServ.AddEntityAsync(addThisComment, User);
 
-            return RedirectToAction("ViewLetters");
+            if (addDocument)
+            {
+                notyf.Success("Comment successfully saved!!!");
+                return RedirectToAction("ViewLetters");
+            }else
+                {
+                notyf.Error("Comment could not be saved.!!!");
+                return RedirectToAction("ViewLetters");
+
+            }
         }
         private static byte[] ConvertToBytes(IFormFile file)
         {

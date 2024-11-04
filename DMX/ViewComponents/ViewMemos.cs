@@ -16,7 +16,7 @@ namespace DMX.ViewComponents
         public async Task<IViewComponentResult>InvokeAsync()
         {
             var user = (await usm.GetUserAsync(HttpContext.User)).Id;
-            var memoList = dcx.MemoAssignments.Where(a=>a.AppUser.UserName==user||a.Memo.CreatedBy==user & a.Memo.IsDeleted==false).Select(a => new ViewMemosVM
+            var memoList = dcx.MemoAssignments.Where(a=>a.AppUser.Id==user||a.Memo.CreatedBy==user & a.Memo.IsDeleted==false).Select(a => new ViewMemosVM
             {
                 MemoId = a.Memo.MemoId,
 
@@ -25,11 +25,16 @@ namespace DMX.ViewComponents
              
                 Assignees = (from u in usm.Users where u.Id == a.UserId select u.UserName).ToList(),
                 Title = a.Memo.Title,
-                Sender = a.Memo.CreatedBy,
+                
                 CreatedDate = a.CreatedDate,
                 CreatedBy=a.CreatedBy
 
             }).OrderByDescending(a=>a.CreatedDate).ToList();
+            foreach (var memo in memoList)
+            {
+                var senderUser = await usm.FindByIdAsync(memo.CreatedBy);
+                memo.Sender = senderUser?.Fullname;
+            }
             return View(memoList);
         }
     }

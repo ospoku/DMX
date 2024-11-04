@@ -19,12 +19,7 @@
             @using (Html.BeginForm("AddExcuseDuty", "ExcuseDuty", FormMethod.Post))
             {
                    
-                    <div class="did-floating-label-content">
-
-                        <input type="date" asp-for="@Model.Date" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
-
-                        <label class="did-floating-label">Date</label>
-                        </div>
+                   
                     <div class="did-floating-label-content">
                         <input type="text" class="did-floating-input" asp-for="@Model.OperationDiagnosis"  placeholder=""/>
 
@@ -38,7 +33,7 @@
 
                     </div> 
                     <div class="did-floating-label-content">
-                        <input type="text" class="did-floating-input" asp-for="@Model.ExcuseDays" placeholder="" />
+                        <input type="number" class="did-floating-input" asp-for="@Model.ExcuseDays" placeholder="" />
                         <label class="did-floating-label">Excuse Days</label>
                     </div>
                   

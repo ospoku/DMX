@@ -5,9 +5,11 @@ using DMX.Data;
 using DMX.Helpers;
 using DMX.Models;
 using DMX.Services;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using PdfSharp.Charting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,10 @@ builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
 builder.Services.AddScoped<EntityService>();
 builder.Services.AddScoped<AssignmentService>();
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DMX")));
+builder.Services.AddHangfireServer();
+builder.Services.AddTransient<NotificationService>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

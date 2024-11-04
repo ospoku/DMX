@@ -28,30 +28,23 @@ namespace DMX.Services
 
             model.GetType().GetProperty("CreatedBy")?.SetValue(model, userId, null);
             model.GetType().GetProperty("CreatedDate")?.SetValue(model, DateTime.UtcNow);
-
             try
             {
                 dcx.Set<T>().Add(model);
                 if (await dcx.SaveChangesAsync(userId) > 0)
-
-                {
-                    
+                { 
                     return true;
                 }
                 else
                 {
-                    
                     return false;
                 }
-
             }
             catch (Exception ex)
             {
                 notyf.Error("An error occurred: " + ex.Message, 5);
                 return false;
             }
-
-
         }
 
     }

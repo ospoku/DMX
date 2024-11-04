@@ -12,6 +12,7 @@ namespace DMX.Models
         public string Message { get; set; }
         public string MemoId {  get; set; } 
         public string UserId { get; set; }
+        [ForeignKey("MemoId")]
         public Memo Memo { get; set; }
         [ForeignKey("UserId")]
 

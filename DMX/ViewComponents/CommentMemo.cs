@@ -1,4 +1,5 @@
-﻿using DMX.Data;
+﻿using CsvHelper.Configuration.Attributes;
+using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
@@ -26,8 +27,8 @@ namespace DMX.ViewComponents
 
                 Comments = memoToComment.MemoComments.OrderBy(m => m.CreatedDate).ToList(),
                 Title = memoToComment.Title,
-               
-             
+                CommentCount = memoToComment.MemoComments.Count(),
+
             };
             
 

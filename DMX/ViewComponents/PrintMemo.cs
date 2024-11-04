@@ -14,7 +14,7 @@ namespace DMX.ViewComponents
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
 
-        public IViewComponentResult Invoke(string Id)
+        public async  Task<IViewComponentResult> InvokeAsync(string Id)
         {
 
 
@@ -26,7 +26,8 @@ namespace DMX.ViewComponents
                 MemoContent = memoToEdit.Content,
               Comments=memoToEdit.MemoComments,
                 Title = memoToEdit.Title,
-                Sender = memoToEdit.CreatedBy,
+                Sender = (await usm.FindByIdAsync(memoToEdit.CreatedBy)).Fullname,
+            
                 
             };
             

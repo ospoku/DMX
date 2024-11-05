@@ -53,7 +53,7 @@ namespace DMX.Controllers
                 }
 
                 Letter addThisDocument = new()
-                {Source=addDocumentVM.Source,
+                {   Source=addDocumentVM.Source,
                     Subject=addDocumentVM.Subject,
                     DateReceived = addDocumentVM.ReceiptDate,
                     DocumentDate = addDocumentVM.DocumentDate,

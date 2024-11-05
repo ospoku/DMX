@@ -15,8 +15,8 @@
             @using (Html.BeginForm("AddLetter", "Letter", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                         <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.ReferenceNumber" class="did-floating-input" placeholder="" required/>
-                            <label class="did-floating-label">Reference Number</label>
+                            <input type="text" asp-for="@Model.Subject" class="did-floating-input" placeholder="" required/>
+                            <label class="did-floating-label">Subject</label>
                         </div>
                         <div class="did-floating-label-content">
                             <input type="text" asp-for="Source"  class="did-floating-input" placeholder="" required/>
@@ -37,19 +37,23 @@
                          
                                    
                     <div class="form-group">
-                            <input class=" form-control custom-custom-file-input" id="formFile" name="formFile" type="file" asp-for="UploadFile" multiple />
+                        <label for="formFile">xxxxxxxxxx</label>
+                            <input   id="formFile" name="formFile" type="file" asp-for="UploadFile" multiple />
 
+                    </div>
+                   
+
+
+                    <div class="did-floating-label-content">
+             
+                                <input class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="" required/>
+
+                        <label class="did-floating-label">Additional Notes</label>
                     </div>
                     <div class="did-floating-label-content">
-                        <select id="modalSelectUser"  class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="modalSelectUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label"> Select Users</label>
                     </div>
-
-
-                    <div class="form-group">
-                                <textarea class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information" required></textarea>
-                            </div>
-
                             <button class="btn btn-block btn-primary">Save</button>
             }
 

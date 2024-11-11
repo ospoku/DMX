@@ -1,0 +1,35 @@
+﻿@media print {
+   
+
+    header {
+        position: fixed;
+        top: 0;
+        margin-bottom:60px;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        padding: 10px 0;
+        border-top: 1px solid #ddd;
+        margin-top:50px;
+    }
+
+    footer::after {
+            content: "Page " counter(page);
+        }
+
+
+    .content {
+        margin-top:60px;
+        margin-bottom:50px;
+    }
+}

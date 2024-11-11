@@ -1,16 +1,29 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
 @model DMX.ViewModels.MemoCommentVM;
 @inject UserManager<AppUser> usm;
-
-<link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-<link href="~/ospapps/timeline.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html lang="en">
+   
+    
+<head>
+    <title></title>
 
 
     
+<link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    
+   
+<link href="~/ospapps/print.css" rel="stylesheet"/>
+</head>
+    <body>
+        <header>
+    Document Header
         <div class="row">
             <div class="col-md-3"><image class="logo" style="height:70px;width:70px"></image></div><div class="col-md-6"><h4 class="text-center align-items-center">BOLGATANGA REGIONAL HOSPITAL</h4></div><div class="col-md-3"></div>
-      </div>
+        </div>
+    </header>
+    <div class="content">
+        
     <div class="row">
         <div class="col-md-3"></div><div class="col-md-6"><h4 class="text-center">Memorandum</h4></div><div class="col-md-3"></div>
     </div>
@@ -18,63 +31,69 @@
     <div class="row">
     <div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4"><div class="card border-dark-subtle"><strong>Sender</strong><span>@Model.Sender</span></div></div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><div class="card border-dark-subtle"><strong>Date</strong><span>@Model.CreatedDate.ToString("dd-MMM-yyyy:hh:MM:tt")</span></div></div>
     </div>
-  <hr />
-        <div class="container mb-1">
-            <div class="row">
+ <hr />
+       
+            <div class="card">
                 
                     <div class="card">
                         <div class="card-body">@Html.Raw(@Model.MemoContent)</div>
                         </div>
                         </div>
-                        </div>
-                    
-                        <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Comments</h6>
-                        <div id="content">
-                             @foreach (var comment in Model.Comments.OrderByDescending(c=>c.CreatedDate))
+                     
+    <div class="card border-0">
+    <!-- Comment section -->
+   
+       
+            <h5>Comments</h5>
+            
+            <!-- Add comment -->
+           
+
+            <!-- First comment -->
+             @foreach (var comment in Model.Comments.OrderByDescending(c=>c.CreatedDate))
                                 { 
-                            <ul class="timeline">
-                                @{
-                                    var userPicture=(await usm.FindByIdAsync(comment.CreatedBy)).Picture;
-                                    var pictureBase64 = userPicture != null ? Convert.ToBase64String(userPicture) : null;
-                                }
+            <div class="card mb-1">
+                <div class="card-body">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                        @{
+                            var userPicture = (await usm.FindByIdAsync(comment.CreatedBy)).Picture;
+                            var pictureBase64 = userPicture != null ? Convert.ToBase64String(userPicture) : null;
+                        }
+                        @if (pictureBase64 != null)
+                        {
+                            <img src="data:image/png;base64,@pictureBase64" alt="User picture" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <img src="/path/to/default-image.png" alt="Default" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                        }
+                        </li>
+                    <li class="list-inline-item"><h6 class="card-title">@comment.AppUser?.Fullname</h6></li>
+                            <li class="list-inline-item">@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:tt")</li>
+                        </ul>
 
-                                <!-- User Picture -->
-                                @if (pictureBase64 != null)
-                                {
-                                    <img src="data:image/png;base64,@pictureBase64" alt="User picture" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
-                                }
-                                else
-                                {
-                                    <img src="/path/to/default-image.png" alt="Default" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                <hr />
 
 
-                                }
-
-
-
-
-
-                                <li class="event" data-date="@comment.CreatedDate.Value.ToString("dd-MMM-yyyy:hh:MM:tt" )">
-                                        <h3>@comment.AppUser?.Fullname</h3>
-                                    <p>@Html.Raw(@comment.Message)</p>
-                                </li>
-                                
-                            </ul>}
-                        </div>
-                    </div>
+                    <p class="card-text">@Html.Raw(@comment.Message)</p>
+                    
                 </div>
             </div>
-        </div>
-    </div>
-  
+                                }
+            <!-- Second comment -->
 
-           
-       
+
+      
+    
+</div>
+   
+</div>
+<footer>Document Footer</footer>      
+       </body>
+       </html>
+   
+   
    
   <script type="text/javascript">
    

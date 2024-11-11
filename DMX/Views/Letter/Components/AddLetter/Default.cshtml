@@ -35,15 +35,29 @@
                                <label class="did-floating-label">Document Date</label>
                             </div>
                          
-                                   
+                          @*          
                     <div class="form-group">
-                        <label for="formFile">xxxxxxxxxx</label>
+                    
                             <input   id="formFile" name="formFile" type="file" asp-for="UploadFile" multiple />
-
+                        <label for="formFile"><i class="fa fa-cloud-arrow-up"></i></label>
                     </div>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file-upload" class="file-input">
+                        <label for="file-upload" class="file-label">Choose File</label>
+                    </div> *@
                    
+                    <div class="form-group">
+                    <!-- actual upload which is hidden -->
+                    <input type="file" id="formFile"  name="formFile" asp-for="UploadFile" hidden />
 
+                    <!-- our custom upload button -->
+                        <label for="formFile" class="uploadLabel">
+                            <i class="fa fa-cloud-upload" style="color: #1e4c82;font-size:medium"></i><label id="sFile">Select file</label>
 
+                    <!-- name of file chosen -->
+                    <span id="file-chosen">No file chosen</span>
+                    </label>
+                    </div>
                     <div class="did-floating-label-content">
              
                                 <input class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="" required/>
@@ -57,7 +71,7 @@
                             <button class="btn btn-block btn-primary">Save</button>
             }
 
-
+          
         </div>
         </div> <script>
                    $(document).ready(function () {
@@ -68,7 +82,14 @@
 
                    });
 
+                   const actualBtn = document.getElementById('formFile');
+            const selectFile = document.getElementById('sFile');
+                   const fileChosen = document.getElementById('file-chosen');
 
+                   actualBtn.addEventListener('change', function () {
+                       fileChosen.textContent = this.files[0].name;
+                       selectFile.textContent = "Selected file";
+                   })
         </script>
 </div>
 </div>

@@ -42,8 +42,8 @@
 
                             @foreach (var comment in Model.Comments)
                             {
-                                <div class="card p-3 mt-1">
-                                    <div class="d-flex align-items-center">
+                                <div class="card p-1 mt-1">
+                                    <div class="card-body">
                                         <!-- Check if User Picture is available -->
                                         @{
                                             var userPicture = comment.AppUser?.Picture;
@@ -69,7 +69,7 @@
                                                     <time class="timeago" datetime="@comment.CreatedDate.Value.ToString("F")"></time>
                                                 </small>
                                             </div>
-                                            <div>@Html.Raw(comment.Message)</div>
+                                           <p> @Html.Raw(comment.Message)</p>
                                         </div>
                                     </div>
                                 </div>

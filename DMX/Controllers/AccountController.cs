@@ -141,7 +141,7 @@ namespace DMX.Controllers
                     await sim.PasswordSignInAsync(user, loginVM.Password,true,false);
 
                     var userClaims = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                    userClaims.AddClaim(new Claim("Name", user.UserName));
+                    userClaims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
 
 
@@ -229,6 +229,10 @@ namespace DMX.Controllers
         }
         
         public IActionResult Splash()
+        {
+            return View();
+        }
+        public IActionResult AccessDenied()
         {
             return View();
         }

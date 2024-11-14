@@ -108,13 +108,13 @@ namespace DMX.Controllers
         public IActionResult ViewMemos()
         {
 
-            var breadcrumbs = new List<BreadcrumbItem>
-            {
-                new BreadcrumbItem{Title="Home", Url="/"},
-                new BreadcrumbItem{Title="Memos", Url=@Url.Action("ViewMemos")}
-            };
+            //var breadcrumbs = new List<BreadcrumbItem>
+            //{
+            //    new BreadcrumbItem{Title="Home", Url="/"},
+            //    new BreadcrumbItem{Title="Memos", Url=@Url.Action("ViewMemos")}
+            //};
 
-            ViewBag.BreadcrumbItems = breadcrumbs;
+            //ViewBag.BreadcrumbItems = breadcrumbs;
 
             return ViewComponent("ViewMemos");
         }
@@ -199,8 +199,7 @@ namespace DMX.Controllers
             {
                 return new NotFoundResult();
             }
-            var authorizationResult = await auth
-           .AuthorizeAsync(User, memoId, "UserOwnsDocumentPolicy");
+            var authorizationResult = await auth.AuthorizeAsync(User, memoId,"UserOwnsDocumentPolicy");
             if (authorizationResult.Succeeded)
             { 
                 return ViewComponent("EditMemo", Id);
@@ -208,7 +207,7 @@ namespace DMX.Controllers
             else
             {
                 notyf.Error("You do not have access to this resource!!!", 5);
-                return ViewComponent("ViewMemos");
+                return  Json(new { success = false, message = "You do not have access to this resource!" });
 
             }
         }

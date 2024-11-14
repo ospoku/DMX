@@ -204,7 +204,7 @@ namespace DMX.Services
                 {
                     MemoId = updateThisMemo.MemoId,
                     UserId = userId,
-                    CreatedBy = user?.UserName,
+                    CreatedBy = user?.Id,
                     CreatedDate = DateTime.UtcNow,
                 });
             }

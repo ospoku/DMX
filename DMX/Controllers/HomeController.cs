@@ -13,13 +13,13 @@ namespace DMX.Controllers
         public IActionResult Index()
         {
             
-          var breadcrumbs   = new List<BreadcrumbItem>
-            {
-                new BreadcrumbItem{Title="Home", Url="/"},
-                new BreadcrumbItem{Title="Memos", Url="/ViewMemos"}
-            };
+          //var breadcrumbs   = new List<BreadcrumbItem>
+          //  {
+          //      new BreadcrumbItem{Title="Home", Url="/"},
+          //      new BreadcrumbItem{Title="Memos", Url="/ViewMemos"}
+          //  };
 
-            ViewBag.BreadcrumbItems = breadcrumbs;
+          //  ViewBag.BreadcrumbItems = breadcrumbs;
 
             return View();
         }

@@ -84,7 +84,7 @@ namespace DMX.Controllers
                             }
                             else
                             {
-                                Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>notificationService.SendEmail(addpatientAssignment.AppUser.Email, "New Patient Assignment", $"You have been assigned a new patient: {addpatientAssignment}"));
+                                Hangfire.BackgroundJob.Enqueue<NotificationService>(async notificationService =>notificationService.SendEmail(usm.FindByIdAsync(addpatientAssignment.AppUserId)), "New Patient Assignment", $"You have been assigned a new patient: {addpatientAssignment}");
 
                                 Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>
                                     notificationService.SendSMS(addpatientAssignment.AppUser.PhoneNumber, $"You have a new memo assignment: {addpatientAssignment}"));

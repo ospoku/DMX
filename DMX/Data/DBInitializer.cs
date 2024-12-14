@@ -41,7 +41,7 @@ namespace DMX.Data
             [
 
                 new(ClaimTypes.Name,"SuperAdmin"),
-                new Claim(ClaimTypes.Email,"oseipoku@gmail.com"),
+                new Claim(ClaimTypes.Email,"ospoku@gmail.com"),
                 new Claim(ClaimTypes.Role,"SuperAdmin"),
 
 
@@ -51,7 +51,7 @@ namespace DMX.Data
                  [
 
                      new Claim(ClaimTypes.Name,"Admin"),
-                new Claim(ClaimTypes.Email,"oseipoku2@gmail.com"),
+                new Claim(ClaimTypes.Email,"kofipoku84@gmail.com"),
                 new Claim(ClaimTypes.Role,"Admin"),
 
 
@@ -66,7 +66,7 @@ namespace DMX.Data
                     UserName = "SuperAdmin",
                     Surname = "SuperAdmin",
                     Firstname = "SuperAdmin",
-                    Email = "superadmin@gmail.com",
+                    Email = "ospoku@gmail.com",
                     PhoneNumber = "0244139692",
                     EmailConfirmed = true,
                     DepartmentId = "xxxxxxxxxxxxxxxxx",
@@ -88,7 +88,7 @@ namespace DMX.Data
                     UserName = "Admin",
                     Surname = "Admin",
                     Firstname = "Admin",
-                    Email = "admin@gmail.com",
+                    Email = "kofipoku84@gmail.com",
                     PhoneNumber = "0244139692",
                     EmailConfirmed = true,
                     DepartmentId = "xxxxxxxxxxxxxxxxx",

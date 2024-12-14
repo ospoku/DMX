@@ -10,8 +10,10 @@ namespace DMX.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string ExcuseDutyId { get; set; }
+        [ForeignKey("ExcuseDutyId")]
         public ExcuseDuty ExcuseDuty { get; set; }
         public string AppUserId { get; set; }
+        [ForeignKey("AppUserId")]
         public AppUser AppUser { get; set; }
         public bool IsRead { get; set; } = false;
 

@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.Controllers
 {
-    public class PatientController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService,
+    public class PatientController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EmailService emailService,
           EntityService entityService) : Controller
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
         public readonly EntityService entityServ = entityService;
+        public readonly EmailService email = emailService;
 
 
 
@@ -28,6 +29,11 @@ namespace DMX.Controllers
         public IActionResult ViewPatients()
         {
             return ViewComponent("ViewPatients");
+        }
+        public async Task<string> GetUserEmailAsync(string userId)
+        {
+            var user = await usm.FindByIdAsync(userId);
+            return user?.Email;
         }
 
         [HttpGet]
@@ -74,7 +80,7 @@ namespace DMX.Controllers
                                 PatientId = addThisPatient.PatientId,
                                 AppUserId = user,
                             };
-
+                            var email= await GetUserEmailAsync(user);
                             bool patientAssign = await entityServ.AddEntityAsync(addpatientAssignment, User);
 
                             if (!patientAssign)
@@ -84,10 +90,10 @@ namespace DMX.Controllers
                             }
                             else
                             {
-                                Hangfire.BackgroundJob.Enqueue<NotificationService>(async notificationService =>notificationService.SendEmail(usm.FindByIdAsync(addpatientAssignment.AppUserId)), "New Patient Assignment", $"You have been assigned a new patient: {addpatientAssignment}");
+                                Hangfire.BackgroundJob.Enqueue( () => new MyJobs(emailService).SendEmailJob(email, "New Patient Assignment", $"You have been assigned a new patient: {addpatientAssignment.Patient.Name}"));
 
-                                Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>
-                                    notificationService.SendSMS(addpatientAssignment.AppUser.PhoneNumber, $"You have a new memo assignment: {addpatientAssignment}"));
+                                //Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>
+                                //    notificationService.SendSMS(user.PhoneNumber, $"You have a new memo assignment: {addpatientAssignment}"));
                             }
                         }
                         // If all assignments are successful

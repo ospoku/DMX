@@ -1,9 +1,6 @@
 ﻿
 @model DMX.ViewModels.AddTravelRequestVM;
 
-
-
-
 <div class="modal fade" id="AddTravelRequest" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg">
 
@@ -19,14 +16,14 @@
             <div class="modal-body">
             
                     <div class="did-floating-label-content">
-                        <select id="selectTravelType" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder="" required></select>
+                        <select id="selectTravelType1" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder="" required></select>
                         <label class="did-floating-label">Select Travel Type</label>
                     </div>
                     <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.PurposeofJourney"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Purpose</label>
                     </div>
-                    <fieldset class="fieldset border-5">
+                    <fieldset class="fieldset border-0">
                         <legend class="legend">Select Transport Mode</legend>
                         @foreach (var mode in Model.TransportModes)
                         {
@@ -38,7 +35,8 @@
                             </label>
 
                         }
-                        </fieldset>
+                    </fieldset>
+
                     <div class="row">
                         <div class="col">
                     <div class="did-floating-label-content">
@@ -79,10 +77,13 @@
                         </div>
                    
                       <div class="did-floating-label-content">
-                            <select id="selectUserTravelRequest" class="did-floating-select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            <select id="selectUserTravelRequest" class="did-floating-select" type="select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" placeholder="" required></select>
                         <label class="did-floating-label">Select Approver(s)</label>
                       </div>
-                  
+                    <div class="did-floating-label-content">
+                        <select id="selectTravelType2" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder="" required></select>
+                        <label class="did-floating-label">Select Travel Type</label>
+                    </div>
 
                         <button class="btn btn-block btn-primary">Save</button>
             
@@ -98,8 +99,10 @@
     $(document).ready(function () {
 
         $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest') });
-        $('#selectTravelType').select2({ dropdownParent: $('#AddTravelRequest') });
+        $('#selectTravelType1').select2({ dropdownParent: $('#AddTravelRequest') });
+          $('#selectTravelType2').select2({ dropdownParent: $('#AddTravelRequest') });
         $('#selectDept').select2({ dropdownParent: $('#AddTravelRequest') });
+        
 
     });
 </script>

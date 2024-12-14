@@ -31,9 +31,7 @@
                             <th>Date</th>
                   
                     <th>Purpose</th>
-              
                     <th>Amount</th>
-                   
                     <th>Action</th>
                     </tr>
                 </thead>
@@ -43,7 +41,7 @@
                         <tr>
                             <td></td>
                         <td>@petty.ReferenceNumber</td>
-                        <td>@petty.Date.ToString("dd-MMM-yyyy")</td>
+                        <td>@petty.CreatedDate?.ToString("dd-MMM-yyyy")</td>
                          
                         <td>@petty.Purpose </td>
 

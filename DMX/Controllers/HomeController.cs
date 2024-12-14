@@ -2,6 +2,7 @@
 using DMX.Models;
 using DMX.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DMX.Controllers
 {
@@ -38,6 +39,10 @@ namespace DMX.Controllers
         public IActionResult About()
         {
          
+            return View();
+        }
+        public IActionResult AccessDenied()
+        {
             return View();
         }
       

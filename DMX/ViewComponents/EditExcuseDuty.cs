@@ -23,7 +23,7 @@ namespace DMX.ViewComponents
 
             EditExcuseDutyVM editMemoVM = new()
             {
-               Date=dutyToUpdate.Date,
+               
                DateofDischarge=dutyToUpdate.DateofDischarge,
                ExcuseDays=dutyToUpdate.ExcuseDays,  
                OperationDiagnosis=dutyToUpdate.OperationDiagnosis,

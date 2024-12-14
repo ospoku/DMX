@@ -23,9 +23,11 @@ builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
 builder.Services.AddScoped<EntityService>();
 builder.Services.AddScoped<AssignmentService>();
-builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DMX")));
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("ONLINE2")));
+
 builder.Services.AddHangfireServer();
-builder.Services.AddTransient<NotificationService>();
+
+builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -35,13 +37,16 @@ builder.Services.AddAuthentication(options =>
 }).AddCookie(options =>
 {
     options.LoginPath = "/Account/Login"; // Specify the login page URL
-    options.AccessDeniedPath = "/Account/AccessDenied"; // Specify the access denied page URL
+    options.AccessDeniedPath = "/Views/Shared/AccessDenied"; // Specify the access denied page URL
 });
 
 
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddAuthorization(options => options.AddPolicy("UserOwnsDocumentPolicy", policy => policy.Requirements.Add(new UserOwnsDocumentRequirement())));
-builder.Services.AddSingleton<IAuthorizationHandler, UserOwnsDocumentHandler>();
+builder.Services.AddAuthorization(options => options.AddPolicy("MemoOwnerPolicy", policy => policy.Requirements.Add(new MemoOwnerRequirement())));
+builder.Services.AddSingleton<IAuthorizationHandler, MemoOwnerHandler>();
+
+builder.Services.AddAuthorization(options => options.AddPolicy("ExcuseDutyOwnerPolicy", policy => policy.Requirements.Add(new ExcuseDutyOwnerRequirement())));
+builder.Services.AddSingleton<IAuthorizationHandler, ExcuseDutyOwnerHandler>();
 
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -49,7 +54,7 @@ builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ONLINE2")));
 
 builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();
@@ -70,7 +75,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 
 }
+
 app.UseSession();
+app.UseHangfireDashboard();
 app.UseNotyf();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -87,9 +94,8 @@ app.MapControllerRoute(
 
 var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<XContext>();
-db.Database.EnsureCreatedAsync().Wait();
+//db.Database.EnsureCreatedAsync().Wait();
 
-var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
-await init.Initialize();
-
+//var init = scope.ServiceProvider.GetRequiredService<DBInitializer>();
+//await init.Initialize();
 app.Run();

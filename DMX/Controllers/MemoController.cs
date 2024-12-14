@@ -164,12 +164,19 @@ namespace DMX.Controllers
                             {
                                 notyf.Error($"Failed to assign memo to user {user}.", 5);
                                 // Continue processing other users, but log the failure
-                                Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>
+                                Hangfire.BackgroundJob.Enqueue<EmailService>(notificationService =>
        notificationService.SendEmail("admin@example.com", "Assignment Failure", $"Failed to assign memo to user {user}."));
 
                             }
                         }
                     }
+
+
+
+
+
+
+
 
                     // If everything is processed successfully
                     notyf.Success("Memo and assignments successfully processed.", 5);
@@ -199,15 +206,16 @@ namespace DMX.Controllers
             {
                 return new NotFoundResult();
             }
-            var authorizationResult = await auth.AuthorizeAsync(User, memoId,"UserOwnsDocumentPolicy");
+            var authorizationResult = await auth.AuthorizeAsync(User, memoId,"MemoOwnerPolicy");
             if (authorizationResult.Succeeded)
             { 
                 return ViewComponent("EditMemo", Id);
             }
             else
             {
-                notyf.Error("You do not have access to this resource!!!", 5);
-                return  Json(new { success = false, message = "You do not have access to this resource!" });
+              notyf.Error("You do not have access to this resource!", 5);
+               
+                return Json(new { success =false,message= "You do not have access to this resource!" });
 
             }
         }

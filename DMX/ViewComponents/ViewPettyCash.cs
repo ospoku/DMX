@@ -18,12 +18,19 @@ namespace DMX.ViewComponents
                 PettyCashId = a.PettyCashId,
                 Amount = a.PettyCash.Amount,
 
-                Date = a.PettyCash.Date,
-
+               
+                
                 Purpose = a.PettyCash.Purpose,
                 ReferenceNumber=a.PettyCash.ReferenceNumber,
                 CreatedDate = a.CreatedDate,
+                Sender=a.CreatedBy
             }).OrderByDescending(a => a.CreatedDate).ToList();
+            foreach (var cash in pettyList)
+            {
+                var sender = usm.FindByIdAsync(cash.Sender);
+                   
+               
+            };
             return View(pettyList);
         }
     }

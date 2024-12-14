@@ -126,8 +126,9 @@ namespace DMX.Controllers
         {
             return View(loginVM);
         }
-        [AllowAnonymous]
+        
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginAsync(LoginVM loginVM)
         {
 
@@ -227,7 +228,7 @@ namespace DMX.Controllers
             notyf.Success("Photo successfully deleted", 5);
             return RedirectToActionPermanent("UserProfile");
         }
-        
+        [AllowAnonymous]
         public IActionResult Splash()
         {
             return View();

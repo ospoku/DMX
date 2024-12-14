@@ -9,5 +9,6 @@
         public string OperationDiagnosis { get; set; }
         public string ExcuseDays { get; set; }
         public  DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
     }
 }

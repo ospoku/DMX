@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DMX.Authorization
 {
-    public class UserOwnsDocumentRequirement : IAuthorizationRequirement
+    public class DocumentOwnerRequirement : IAuthorizationRequirement
     {
-        public UserOwnsDocumentRequirement()
+        public DocumentOwnerRequirement()
         {
             // Add any properties needed for the requirement if necessary
         }

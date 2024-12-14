@@ -20,7 +20,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table dataTables_wrapper">
+            <table class="table dataTables_wrapper" id="dataTable">
     
        
             <thead>
@@ -43,7 +43,7 @@
                         <td>@patient.FolderNo</td>
                         <td>@patient.TagNo</td>
                         <td>@patient.OtherFees</td>
-                        <td>@patient.WardInCharge</td>
+                        <td class="ellipsed-text">@patient.WardInCharge</td>
                         <td>
                                 <div class="btn-group" role="group">
                                     <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,3 +83,13 @@
     <div class="card-footer">
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cells = document.querySelectorAll('#dataTable td.ellipsed-text');
+        cells.forEach(cell => {
+            if (cell.scrollWidth > cell.clientWidth) {
+                cell.title = cell.textContent; // Show full text on hover
+            }
+        });
+    });
+</script>

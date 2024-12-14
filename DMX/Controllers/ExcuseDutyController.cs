@@ -14,9 +14,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Controllers
 {
-    public class ExcuseDutyController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService) : Controller
+    public class ExcuseDutyController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService, IAuthorizationService authorizationService) : Controller
     {
 
+        public readonly IAuthorizationService auth = authorizationService;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
@@ -67,12 +68,30 @@ namespace DMX.Controllers
     });
             }
         }
-        [Authorize(Policy ="OwnerPolicy")]
+        
 
         [HttpGet]
-        public IActionResult EditExcuseDuty(string Id)
+        public async Task<IActionResult> EditExcuseDutyAsync(string Id)
         {
-            return ViewComponent("EditExcuseDuty", Id);
+
+            ExcuseDuty? excuseDutyId = (from x in dcx.ExcuseDuties where x.Id == Encryption.Decrypt(Id) select x).FirstOrDefault();
+            if (excuseDutyId == null)
+            {
+                return new NotFoundResult();
+            }
+            var authorizationResult = await auth.AuthorizeAsync(User, excuseDutyId, "ExcuseDutyOwnerPolicy");
+            if (authorizationResult.Succeeded)
+            {
+                return ViewComponent("EditExcuseDuty", Id);
+            }
+            else
+            {
+                notyf.Error("You do not have access to this resource!", 5);
+
+                return Json(new { success = false, message = "You do not have access to this resource!" });
+
+            }
+      
         }
         [HttpPost]
         public async Task<IActionResult> AddExcuseDuty(AddExcuseDutyVM addExcuseDutyVM)

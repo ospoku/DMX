@@ -23,7 +23,7 @@
                     </div>
                     <div class="did-floating-label-content">
 
-                        <select id="selectMemoUser" class="did-floating-select" style="width:100%" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectMemoUser" class="did-floating-select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Approver(s)</label>
                     </div>
                     </div>
@@ -33,14 +33,44 @@
     </div>
 </div>
 
-    <script>
-        $(document).ready(function () {
+<script>
+    $(document).ready(function () {
+        // Initialize Select2 for dropdowns within the modal
+        const modalSelector = '#AddMemo';
+        const memoContentSelector = '#MemoContent';
 
-            $('#selectMemoUser').select2({ dropdownParent: $('#AddMemo') });
+        $('#selectMemoUser').select2({
+            dropdownParent: $(modalSelector)
         });
 
-        $(document).ready(function () 
-        {
-        tinymce.init({selector: '#MemoContent'});
-        });
-    </script>
+        // Initialize TinyMCE when the modal is shown
+        $(modalSelector)
+            .off('shown.bs.modal')
+            .on('shown.bs.modal', function () {
+                if (!tinymce.get(memoContentSelector.substring(1))) { // Check if not already initialized
+                    try {
+                        tinymce.init({
+                            selector: memoContentSelector,
+                            menubar: true,
+                            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
+                            height: 300 // Default height
+                        });
+                    } catch (e) {
+                        console.error('TinyMCE initialization failed:', e);
+                    }
+                }
+            });
+
+        // Remove TinyMCE instance on modal close
+        $(modalSelector)
+            .off('hidden.bs.modal')
+            .on('hidden.bs.modal', function () {
+                try {
+                    tinymce.remove(memoContentSelector);
+                } catch (e) {
+                    console.error('TinyMCE removal failed:', e);
+                }
+            });
+    });
+</script>
+

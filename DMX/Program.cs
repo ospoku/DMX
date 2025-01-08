@@ -5,11 +5,10 @@ using DMX.Data;
 using DMX.Helpers;
 using DMX.Models;
 using DMX.Services;
-using Hangfire;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using PdfSharp.Charting;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +22,7 @@ builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
 builder.Services.AddScoped<EntityService>();
 builder.Services.AddScoped<AssignmentService>();
-builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("ONLINE2")));
 
-builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<EmailService>();
 
@@ -54,7 +51,7 @@ builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ONLINE2")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ONLINE")));
 
 builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();
@@ -77,7 +74,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseSession();
-app.UseHangfireDashboard();
 app.UseNotyf();
 app.UseHttpsRedirection();
 app.UseStaticFiles();

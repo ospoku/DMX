@@ -52,6 +52,19 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewLetters");
                 }
 
+                var existingLetter = await dcx.Letters.FirstOrDefaultAsync(l=>
+    l.Subject.ToLower() == addDocumentVM.Subject.ToLower() &&
+    l.Source.ToLower() == addDocumentVM.Source.ToLower() &&
+    l.DateReceived == addDocumentVM.ReceiptDate &&
+    l.DocumentDate==addDocumentVM.DocumentDate);
+
+                if (existingLetter != null)
+                {
+                    notyf.Error("This record already exists.");
+                    return RedirectToAction("ViewLetters");
+                }
+
+
                 Letter addThisDocument = new()
                 {   Source=addDocumentVM.Source,
                     Subject=addDocumentVM.Subject,

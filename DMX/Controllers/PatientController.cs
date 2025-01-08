@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Controllers
 {
@@ -41,18 +42,26 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPatient(AddPatientVM addPatientVM)
         {
-           if (addPatientVM.SelectedUsers == null || !addPatientVM.SelectedUsers.Any())
+            if (addPatientVM.SelectedUsers?.Any() != true)
             {
-                notyf.Error("You must select at least one user for assignment.",5);
-                // Optionally, repopulate the view model and return the form to the user
-                //addPatientVM.UsersList = userService.GetAllUsers().Select(u => new SelectListItem { Value = u.Id, Text = u.Name }).ToList();
-               
-                return  RedirectToAction ("ViewPatients"); // Return the form with the error
+                notyf.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewPatients");
             }
+
             try
             {
-                // Create the patient object
-                Patient addThisPatient = new()
+                var existingPatient = await  dcx.Patients.FirstOrDefaultAsync(p =>
+    p.Name.ToLower() == addPatientVM.Deceased.ToLower() &&
+   p.Depositor.ToLower()==addPatientVM.Depositor.ToLower());
+
+                if (existingPatient != null)
+                {
+                    ModelState.AddModelError("", "A member with the same name, date of birth, and telephone already exists.");
+                    return View(addPatientVM);
+                }
+
+                // Create and populate the patient object
+                var patient = new Patient
                 {
                     Date = addPatientVM.Date,
                     Diagnoses = addPatientVM.Diagnoses,
@@ -65,62 +74,51 @@ namespace DMX.Controllers
                     Description = addPatientVM.Description,
                     DeceasedTypeId = addPatientVM.DeceasedTypeId,
                 };
-                // Attempt to add the patient
-                bool result = await entityServ.AddEntityAsync(addThisPatient, User);
-                if (result)
+
+                // Add patient to the database
+                var patientAdded = await entityServ.AddEntityAsync(patient, User);
+                if (!patientAdded)
                 {
-                    // If users are selected for assignment
-                    if (addPatientVM.SelectedUsers != null && addPatientVM.SelectedUsers.Any())
+                    notyf.Error("Failed to add patient.", 5);
+                    return RedirectToAction("Error", "Home", new { message = "Patient creation failed." });
+                }
+
+                // Assign users if any are selected
+                if (addPatientVM.SelectedUsers?.Any() == true)
+                {
+                    foreach (var userId in addPatientVM.SelectedUsers)
                     {
-                        // Process user assignments
-                        foreach (var user in addPatientVM.SelectedUsers)
+                        var assignment = new PatientAssignment
                         {
-                            PatientAssignment addpatientAssignment = new()
-                            {
-                                PatientId = addThisPatient.PatientId,
-                                AppUserId = user,
-                            };
-                            var email= await GetUserEmailAsync(user);
-                            bool patientAssign = await entityServ.AddEntityAsync(addpatientAssignment, User);
+                            PatientId = patient.PatientId,
+                            AppUserId = userId,
+                        };
 
-                            if (!patientAssign)
-                            {
-                                notyf.Error("Failed to assign user.", 5);
-                                return RedirectToAction ("Error","Home", new { message = "An error occurred while assigning users." });
-                            }
-                            else
-                            {
-                                Hangfire.BackgroundJob.Enqueue( () => new MyJobs(emailService).SendEmailJob(email, "New Patient Assignment", $"You have been assigned a new patient: {addpatientAssignment.Patient.Name}"));
-
-                                //Hangfire.BackgroundJob.Enqueue<NotificationService>(notificationService =>
-                                //    notificationService.SendSMS(user.PhoneNumber, $"You have a new memo assignment: {addpatientAssignment}"));
-                            }
+                        var assignmentAdded = await entityServ.AddEntityAsync(assignment, User);
+                        if (!assignmentAdded)
+                        {
+                            notyf.Error("Failed to assign user.", 5);
+                            return RedirectToAction("Error", "Home", new { message = "User assignment failed." });
                         }
-                        // If all assignments are successful
-                        notyf.Success("Record and assignments successfully processed.", 5);
-                        return RedirectToAction("ViewPatients");
                     }
-                    else
-                    {
-                        // No users selected for assignment, but patient creation was successful
-                        notyf.Success("Patient successfully created, no users to assign.", 5);
-                        return RedirectToAction("ViewPatients");
-                    }
+                    notyf.Success("Patient and assignments successfully processed.", 5);
                 }
                 else
                 {
-                    // Failed to add patient
-                    notyf.Error("Failed to add patient.", 5);
-                    return RedirectToAction("Error","Home", new { message = "An error occurred while processing the patient." });
+                    notyf.Success("Patient created successfully, no users assigned.", 5);
                 }
+
+                return RedirectToAction("ViewPatients");
             }
-            catch
+            catch (Exception ex)
             {
-                // General catch for any unexpected exceptions
-                notyf.Error("An error occurred while processing the request.", 5);
-                return RedirectToAction("ErrorPage", new { message = "An error occurred while processing the request." });
+                // Log the exception for debugging
+                Console.Error.WriteLine(ex);
+                notyf.Error("An unexpected error occurred.", 5);
+                return RedirectToAction("Error", "Home", new { message = "An unexpected error occurred." });
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
         {

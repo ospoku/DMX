@@ -14,10 +14,19 @@ namespace DMX.Services
         public readonly UserManager<AppUser> usm = userManager;
         public void SendEmail(string receipient, string subject, string body)
         {
-            var smtpClient = new SmtpClient(config["EmailSettings:Server"]) { Port = Convert.ToInt32(config["EmailSettings:Port"]), Credentials = new NetworkCredential(config["EmailSettings:UserName"], config["EmailSettings:Password"]),EnableSsl=true
+            var smtpClient = new SmtpClient(config["EmailSettings:Server"]) 
+            { Port = Convert.ToInt32(config["EmailSettings:Port"]),
+                Credentials = new NetworkCredential(config["EmailSettings:UserName"], config["EmailSettings:Password"]),
+                EnableSsl=true
             }; 
             var mailMessage = new MailMessage
-            {From = new MailAddress(config["EmailSettings:FromAddress"]), Subject = subject, Body = body, IsBodyHtml = true }; mailMessage.To.Add(receipient); smtpClient.Send(mailMessage); }
+            {
+                From = new MailAddress(config["EmailSettings:FromAddress"]),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true }; 
+            mailMessage.To.Add(receipient); smtpClient.Send(mailMessage);
+        }
 
             // Call your async method and wait for its completion
           

@@ -8,9 +8,6 @@ namespace DMX.Models
     {[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string SickReportId { get; set; }
-
-
-
         public string AdditionalNotes { get; set; }
     }
 }

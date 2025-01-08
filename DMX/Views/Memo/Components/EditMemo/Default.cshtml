@@ -42,27 +42,44 @@
      </div>
      </div>
      </div>
-     <script>
-        
-         $(document).ready(function () {
-                    $('#selectUser').select2({
-                        dropdownParent: $('#EditMemo')
-                    });
+<script>
+    $(document).ready(function () {
+        // Initialize Select2 for dropdowns within the modal
+        const modalSelector = '#EditMemo';
+        const memoContentSelector = '#MemoContent';
 
-        // Initialize TinyMCE when the modal is shown to ensure textarea visibility
-        $('#EditMemo').on('shown.bs.modal', function () {
-            tinymce.init({
-                selector: '#MemoContent',
-                menubar: true,
-                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
-                // height:
+        $('#selectUser').select2({
+            dropdownParent: $(modalSelector)
+        });
+
+        // Initialize TinyMCE when the modal is shown
+        $(modalSelector)
+            .off('shown.bs.modal') // Prevent duplicate event handlers
+            .on('shown.bs.modal', function () {
+                if (!tinymce.get(memoContentSelector.substring(1))) { // Initialize only if not already initialized
+                    try {
+                        tinymce.init({
+                            selector: memoContentSelector,
+                            menubar: true,
+                            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
+                            height: 300 // Default height for consistency
+                        });
+                    } catch (e) {
+                        console.error('Error initializing TinyMCE:', e);
+                    }
+                }
             });
-        });
 
-        // Remove TinyMCE instance on modal close to prevent re-initialization issues
-        $('#EditMemo').on('hidden.bs.modal', function () {
-            tinymce.remove('#MemoContent');
-        });
+        // Remove TinyMCE instance on modal close
+        $(modalSelector)
+            .off('hidden.bs.modal') // Prevent duplicate event handlers
+            .on('hidden.bs.modal', function () {
+                try {
+                    tinymce.remove(memoContentSelector);
+                } catch (e) {
+                    console.error('Error removing TinyMCE:', e);
+                }
+            });
     });
 </script>
 

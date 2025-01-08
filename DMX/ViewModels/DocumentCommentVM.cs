@@ -9,6 +9,7 @@ namespace DMX.ViewModels
         public string MemoContent { get; set; }
         public string Title { get; set; }
         public byte[] Document { get; set; }
+        public int CommentCount { get; set; }
         public string NewComment { get; set; }
         public DateTime CreatedDate { get; set; }
         public ICollection<LetterComment> Comments { get; set; }  

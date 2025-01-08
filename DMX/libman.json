@@ -21,6 +21,10 @@
     {
       "library": "lottie-web@5.12.2",
       "destination": "wwwroot/lib/lottie-web/"
+    },
+    {
+      "library": "sweetalert2@11.15.10",
+      "destination": "wwwroot/lib/sweetalert2/"
     }
   ]
 }

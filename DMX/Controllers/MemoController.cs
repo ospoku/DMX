@@ -135,6 +135,18 @@ namespace DMX.Controllers
             }
             try
             {
+
+    //            var existingMember = await dcx.Memos.FirstOrDefaultAsync(m =>
+    //m. == addMemberVM.Name &&
+    //m.DoB == addMemberVM.DoB &&
+    //m.Telephone == addMemberVM.Telephone);
+
+    //            if (existingMember != null)
+    //            {
+    //                ModelState.AddModelError("", "A member with the same name, date of birth, and telephone already exists.");
+    //                return View(addMemberVM);
+    //            }
+
                 // Create the memo object
                 Memo addThisMemo = new()
                 {
@@ -164,8 +176,7 @@ namespace DMX.Controllers
                             {
                                 notyf.Error($"Failed to assign memo to user {user}.", 5);
                                 // Continue processing other users, but log the failure
-                                Hangfire.BackgroundJob.Enqueue<EmailService>(notificationService =>
-       notificationService.SendEmail("admin@example.com", "Assignment Failure", $"Failed to assign memo to user {user}."));
+                                
 
                             }
                         }

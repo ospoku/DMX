@@ -21,10 +21,15 @@ namespace DMX.ViewComponents
 
                 DateofDischarge = a.ExcuseDuty.DateofDischarge,
                 ExcuseDays = a.ExcuseDuty.ExcuseDays,
-                OperationDiagnosis = a.ExcuseDuty.OperationDiagnosis,
+                OperationDiagnosis = a.ExcuseDuty. Diagnosis,
                 CreatedDate = a.CreatedDate,
+                CreatedBy = a.CreatedBy
             }).OrderByDescending(t => t.CreatedDate).ToList();
-         
+         foreach ( var i in iList ) 
+            {
+                var owner= await usm.FindByIdAsync(i.CreatedBy);
+                i.Sender = owner?.Fullname;
+            }
 
                 return View(iList);
             }

@@ -5,14 +5,14 @@ using DMX.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 namespace DMX.ViewComponents
 {
-    public class ViewPatients(XContext dContext, FeeService feeService) : ViewComponent
+    public class ViewDeceaseds(XContext dContext, FeeService feeService) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly FeeService fs = feeService;
 
         public IViewComponentResult Invoke()
         {
-            var patients = dcx.Patients
+            var patients = dcx.Deceased
                 .Where(a => !a.IsDeleted)
                 .OrderByDescending(t => t.CreatedDate)
                 .ToList();

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMX
 {
-    public class Patient : TableAudit
+    public class Deceased : TableAudit
     { [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
@@ -23,7 +23,7 @@ namespace DMX
         public string WardInCharge { get; set; }
         public  DateTime Date { get; set; }
         public string ReferenceNumber { get; set; } = Guid.NewGuid().ToString("N").Substring(0,5);
-    public virtual ICollection<PatientComment>PatientComments { get; set; } 
+    public virtual ICollection<DeceasedComment>PatientComments { get; set; } 
        
 
   

@@ -23,8 +23,7 @@
                             <input type="text" asp-for="@Model.PurposeofJourney"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Purpose</label>
                     </div>
-                    <fieldset class="fieldset border-0">
-                        <legend class="legend">Select Transport Mode</legend>
+                  
                         @foreach (var mode in Model.TransportModes)
                         {
 
@@ -35,7 +34,7 @@
                             </label>
 
                         }
-                    </fieldset>
+                    
 
                     <div class="row">
                         <div class="col">
@@ -80,10 +79,7 @@
                             <select id="selectUserTravelRequest" class="did-floating-select" type="select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" placeholder="" required></select>
                         <label class="did-floating-label">Select Approver(s)</label>
                       </div>
-                    <div class="did-floating-label-content">
-                        <select id="selectTravelType2" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder="" required></select>
-                        <label class="did-floating-label">Select Travel Type</label>
-                    </div>
+                    
 
                         <button class="btn btn-block btn-primary">Save</button>
             
@@ -102,7 +98,41 @@
         $('#selectTravelType1').select2({ dropdownParent: $('#AddTravelRequest') });
           $('#selectTravelType2').select2({ dropdownParent: $('#AddTravelRequest') });
         $('#selectDept').select2({ dropdownParent: $('#AddTravelRequest') });
-        
+         document.getElementById("btnAddMemo").addEventListener("click", function (event) {
+            event.preventDefault();
 
+            const form = document.querySelector(addMemoFormSelector);
+                 if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            // Validate fields
+
+            // Show error if invalid
+
+
+            // Confirm save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
     });
+
+
+
+
 </script>
+
+
+  

@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@* @* @using Microsoft.AspNetCore.Identity
 @model DMX.ViewModels.MemoCommentVM;
 @inject UserManager<AppUser> usm;
 <!DOCTYPE html>
@@ -102,3 +102,315 @@
      
 </script>
 
+*@
+ @* 
+                        @using Microsoft.AspNetCore.Identity
+@model DMX.ViewModels.MemoCommentVM
+@inject UserManager<AppUser> usm
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <style>
+   /*      {
+            size: A4;
+            margin: 20mm;
+        } */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        header, footer {
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .org-details {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid #ddd;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 12px;
+            background: white;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        /* Print styles */
+/*          print {
+            header, footer {
+                position: fixed;
+                width: 100%;
+                background: white;
+            }
+ */
+            header {
+                top: 0;
+            }
+
+            footer {
+                bottom: 0;
+            }
+
+            .content {
+                margin-top: 100px;
+                margin-bottom: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="container">
+        <div class="row align-items-center">
+            <div class="col-md-2">
+                <img src="/path/to/logo.png" alt="Logo" class="logo">
+            </div>
+            <div class="col-md-10 org-details">
+                <h4>BOLGATANGA REGIONAL HOSPITAL</h4>
+                <p>123 Main Street, Bolgatanga | Tel: +233 123 456 789</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="content container">
+        <!-- Report Title -->
+        <div class="text-center my-4">
+            <h3 class="fw-bold">Memorandum</h3>
+        </div>
+
+        <!-- Sender and Date -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="p-3 border rounded bg-light">
+                    @Model.Sender
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 border rounded bg-light">
+                    @Model.CreatedDate.ToString("dd-MMM-yyyy")
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card mb-4">
+            <div class="card-body">
+                @Html.Raw(@Model.MemoContent)
+            </div>
+        </div>
+
+  *@       <!-- Comments Section -->
+       @*  <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="fw-bold">Comments</h5>
+                @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedDate))
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p><strong>@comment.AppUser?.Fullname</strong> (@comment.CreatedDate.Value.ToString("dd-MMM-yyyy hh:mm tt"))</p>
+                            <p>@Html.Raw(@comment.Message)</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div> *@
+
+@*     <footer>
+        <p>Confidential - For internal use only | Page <span class="page-number"></span></p>
+    </footer>
+</body>
+</html>
+ *@
+
+
+
+
+@using Microsoft.AspNetCore.Identity
+@model DMX.ViewModels.MemoCommentVM
+@inject UserManager<AppUser> usm
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memo Report</title>
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <style>
+       
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #333;
+        }
+
+        .logo {
+            height: 70px;
+            width: 70px;
+        }
+
+        .org-details {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid #ddd;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 12px;
+            background: white;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .memo-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .memo-details, .memo-date {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .memo-details div, .memo-date div {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+
+        .main-content {
+            margin-bottom: 30px;
+        }
+
+        .comments-section h5 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .comment-card {
+            margin-bottom: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <img src="/path/to/logo.png" alt="Logo" class="logo">
+            </div>
+            <div class="col-md-6 org-details">
+                <h4>BOLGATANGA REGIONAL HOSPITAL</h4>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </header>
+
+    <div class="content container">
+        <div class="memo-header">
+            <h4>MEMORANDUM</h4>
+        </div>
+
+        <div class="memo-details">
+            <div>
+                <strong>TO:</strong>
+                <p>@Model.Sender</p>
+            </div>
+            <div>
+                <strong>FROM:</strong>
+                <p>@Model.CreatedDate.ToString("dd-MMM-yyyy")</p>
+            </div>
+        </div>
+
+        <div class="memo-date">
+            <div>
+                <strong>DATE:</strong>
+                <p>@Model.CreatedDate.ToString("dd-MMM-yyyy")</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            @Html.Raw(@Model.MemoContent)
+        </div>
+
+        <div class="comments-section">
+            <h5>Comments</h5>
+            @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedDate))
+            {
+                <div class="card comment-card">
+                    <div class="card-body">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                @{
+                                    var userPicture = (await usm.FindByIdAsync(comment.CreatedBy)).Picture;
+                                    var pictureBase64 = userPicture != null ? Convert.ToBase64String(userPicture) : null;
+                                }
+                                @if (pictureBase64 != null)
+                                {
+                                    <img src="data:image/png;base64,@pictureBase64" alt="User picture" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <img src="/path/to/default-image.png" alt="Default" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                }
+                            </li>
+                            <li class="list-inline-item">
+                                <h6 class="card-title">@comment.AppUser?.Fullname</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                @comment.CreatedDate.Value.ToString("dd-MMM-yyyy hh:mm tt")
+                            </li>
+                        </ul>
+                        <hr />
+                        <p class="card-text">@Html.Raw(@comment.Message)</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <footer>
+        <p>Confidential - For internal use only | Page <span class="page-number"></span></p>
+    </footer>
+</body>
+</html>

@@ -38,7 +38,7 @@
                         <label class="did-floating-label">Additional Notes</label>
                     </div>
                     <div class="did-floating-label-content">
-                        <select id="usersAddLetter" type="select" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" placeholder="" required></select>
+                        <select id="usersAddLetter" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Users</label>
                     </div>
                     <button id="saveButton" type="button" class="btn btn-block btn-primary">Save</button>

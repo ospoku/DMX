@@ -1,18 +1,18 @@
 ﻿
-@model DMX.ViewModels.AddPatientVM;
+@model DMX.ViewModels.AddDeceasedVM;
 
 
-<div class="modal fade" id="AddPatient" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="AddDeceased" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg">
 
         <div class="modal-content">
             <div class="modal-header">
 
-                <h6>Add Patient</h6>
+                <h6>Add Deceased</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
 
-             @using (Html.BeginForm("AddPatient", "Patient", FormMethod.Post, new { enctype = "multipart/form-data"}))
+             @using (Html.BeginForm("AddDeceased", "Deceased", FormMethod.Post, new { enctype = "multipart/form-data"}))
             {
                 <div class="modal-body">
                     
@@ -40,7 +40,7 @@
                                
                                 <label class=" btn btn-sm btn-outline-primary">
 
-                                    <input type="radio" asp-for="@Model.DeceasedTypeId"  class="option-input radio" value="@dead.Value" id="Dead@(dead)" />
+                                    <input type="radio" asp-for="@Model.DeceasedTypeId"  class="option-input radio" value="@dead.Value" id="Dead@(dead)"  required="required"/>
                                     @dead.Text
                                 </label>
 
@@ -78,13 +78,14 @@
                     </div>
                         
                         <div class="did-floating-label-content">
-                        <select id="selectPatientUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" required="required"></select>
+                        <select id="selectPatientUser"  class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Users</label>
                     </div>
                 </div>
 
 
-                <div class="modal-footer"><button type="submit" class="btn btn-block btn-primary">Save</button></div>
+                <div class="modal-footer">
+                    <button id="btnAddDeceased" class="btn btn-block btn-primary">Save</button></div>
             }
         </div>
 </div>
@@ -92,10 +93,40 @@
 <script>
     $(document).ready(function ()
     {
-        $('#selectPatientUser').select2({ dropdownParent: $('#AddPatient') });
+        $('#selectPatientUser').select2({ dropdownParent: $('#AddDeceased') });
     
-    });
    
+   
+      document.getElementById("btnAddDeceased").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const form = document.querySelector(addMemoFormSelector);
+                 if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            // Validate fields
+
+            // Show error if invalid
+
+
+            // Confirm save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 
     
-</script>

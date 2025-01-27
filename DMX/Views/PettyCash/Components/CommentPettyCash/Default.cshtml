@@ -1,130 +1,132 @@
 ﻿
-@model DMX.ViewModels.DocumentCommentVM;
 
+@model DMX.ViewModels.PettyCashCommentVM;
 
+<div class="modal fade" id="CommentPettyCash" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="CommentMemoLabel">
+    <div class="modal-dialog modal-lg">
 
-        <div class="col-lg-12">
+        <div class="modal-content">
+            <div class="modal-header">
 
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-header-text">Document Content</h5>
-                </div>
-                <div class="card-block accordion-block">
-                    <div id="accordion" role="tablist" aria-multiselectable="true">
-                        <div class="accordion-panel">
-                            <div class="accordion-heading" role="tab" id="headingOne">
-                                <h3 class="card-title accordion-title">
-                                    <a class="accordion-msg waves-effect waves-dark" data-toggle="collapse"
-                                       data-parent="#accordion" href="#collapseOne"
-                                       aria-expanded="true" aria-controls="collapseOne">
-                                        @Model.Title
-                                    </a>
-                                </h3>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                <div class="accordion-content accordion-desc">
-                                    <p>
-                                        @Model.MemoContent
+                <h6 id="CommentPettyCashLabel">Add Comment</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+           
+    
+            
+            <div class="container mt-0">
+                <!-- Nav pill tabs -->
+                <ul class="nav nav-pills custom-pills" id="pettycashPillTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                            <button class="nav-link  rounded-pill active" id="memo-content-pill-tab" data-bs-toggle="pill" data-bs-target="#memo-content-pill" type="button" role="tab" aria-controls="memo-content-pill" aria-selected="true">Petty Cash</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                            <button class="nav-link nav-link rounded-pill" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments <span class="badge bg-danger">@Model.CommentCount</span></button>
+                   
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill " id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
+                    </li>
+                </ul>
 
-                                        dsffsdfasdfafasdfjasjd;ifjicjmfahisvi;fdfvajicnasdj;fjvdfkjasdcdfsjnajdhbfjavhsdfa;jcojmexjwaimsvdfdljvsdjvaibo;ije;csdsdf
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
+                <!-- Pill tab panes -->
+                <div class="tab-content mt-1 border-5 border-primary" id="pettycashPillTabsContent">
+                    <!-- Memo Content -->
+                    <div class="tab-pane fade active show  p-1" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
+                        @Model.Purpose
+                        
                     </div>
 
-                </div>
+                    <!-- Comments -->
+                    <div class="tab-pane fade p-1" id="comments-pill" role="tabpanel" aria-labelledby="comments-pill-tab">
 
-            </div>
 
-        </div>
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-header-text">Minutes/Comments</h5>
-                </div>
-               
-                    <div class="card-block accordion-block">
-                        <div id="accordion" role="tablist" aria-multiselectable="true">
-                           
-                            <div class="accordion-panel">
-                                @{ int i = 1;}
-                                @foreach (var comment in Model.Comments.OrderBy(x=>x.CreatedDate))
-                                {
-                                    <div class="accordion-heading" role="tab" id="headingOne">
+                            @foreach (var comment in Model.Comments)
+                            {
+                                <div class="card mb-3">
+                                    <div class="card-body d-flex align-items-start">
+                                        
+                                        <!-- Check if User Picture is available -->
+                                        @{
+                                            var userPicture = comment.AppUser?.Picture;
+                                            var pictureBase64 = userPicture != null ? Convert.ToBase64String(userPicture) : null;
+                                            
+                                            var defaultImagePath = Url.Content("~/images/default-user.png");
 
-                                        <h3 class="card-title accordion-title">
-                                            <a class="accordion-msg waves-effect waves-dark" data-toggle="collapse"
-                                               data-parent="#accordion" href="#collapseTwo_@i"
-                                               aria-expanded="true" aria-controls="collapseTwo">
-                                                @comment.CreatedBy <small class="fa-pull-right">
+                                        }
 
-                                                    <time class="timeago" datetime="@comment.CreatedDate"></time>
+                                        <!-- User Picture -->
+                                        
+                                        <img src="@(!string.IsNullOrEmpty(pictureBase64) ? $"data:image/png;base64,{pictureBase64}" : defaultImagePath)"
+                                             alt="@comment.AppUser?.Fullname?? "User Avatar""
+                                             class="rounded-circle me-3"
+                                             style="width: 40px; height: 40px; object-fit: cover;">
 
+
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <small class="fw-bold">@comment.AppUser?.Fullname</small>
+                                                <small class="fa-pull-right">
+                                                    <time class="timeago" datetime="@comment.CreatedDate?.ToString("o")"></time>
                                                 </small>
-                                            </a>
-                                        </h3>
-                                    </div>
-
-                                    <div id="collapseTwo_@i" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="accordion-content accordion-desc">
-                                            <p>
-                                                @comment.Message
-                                            </p>
+                                            </div>
+                                           <p> @Html.Raw(comment.Message)</p>
                                         </div>
                                     </div>
-                                    i++;
-                                }
                                 </div>
-                            
-                            </div>
-
+                            }
                     </div>
-                
+                    <!-- New Comment -->
+                    <div class="tab-pane fade p-1" id="new-comment-pill" role="tabpanel" aria-labelledby="new-comment-pill-tab">
+                        <form method="post" asp-action="CommentPettyCash" asp-controller="PettyCash">
+                    
+                            <div class="mb-3">
+                                <textarea  id="newComment" asp-for="NewComment" placeholder="write your comment here........"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            </form>
+                    </div>
                 </div>
-
         </div>
-        <div class="col-lg-12">
+    </div>
+    </div>
+    </div>
+    </div>
+<script>
+      $(document).ready(function () {
+        // Initialize timeago for comment timestamps
+        $('time.timeago').timeago();
 
-            @using (Html.BeginForm("DocumentComment", "Document", FormMethod.Post))
-            {
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-header-text">Add Your Comments</h5>
-                    </div>
-                    <div class="card-block accordion-block">
-                        <div id="accordion" role="tablist" aria-multiselectable="true">
-                            <div class="accordion-panel">
-                                <div class="accordion-heading" role="tab" id="headingOne">
-                                    <h3 class="card-title accordion-title">
-                                        <a class="accordion-msg waves-effect waves-dark" data-toggle="collapse"
-                                           data-parent="#accordion" href="#collapseThree"
-                                           aria-expanded="true" aria-controls="collapseThree">
+        // Modal selector for reusability
+        const modalSelector = '#CommentPettyCash';
+        const commentSelector = '#newComment';
 
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="accordion-content accordion-desc">
-                                        <textarea class="form-control" asp-for="@Model.NewComment">
-                                                                
-                                                            </textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-                    <button class="btn btn-block btn-primary btn-sm">Save</button>
-                </div>
+        // Initialize TinyMCE when the modal is shown
+        $(modalSelector).off('shown.bs.modal').on('shown.bs.modal', function () {
+            if (!tinymce.get(commentSelector.substring(1))) { // Check if TinyMCE is not already initialized
+                try {
+                    tinymce.init({
+                        selector: commentSelector,
+                        menubar: true,
+                        toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
+                        height: 300, // Set a default height
+                    });
+                } catch (e) {
+                    console.error('TinyMCE initialization failed:', e);
+                }
             }
+        });
 
-            </div>
-    
+        // Remove TinyMCE instance on modal close
+        $(modalSelector).off('hidden.bs.modal').on('hidden.bs.modal', function () {
+            try {
+                tinymce.remove(commentSelector);
+            } catch (e) {
+                console.error('TinyMCE removal failed:', e);
+            }
+        });
+    });
+
+</script> 
+

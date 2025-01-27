@@ -1,7 +1,7 @@
 ﻿
-@model DMX.ViewModels.EditDocumentVM;
+@model DMX.ViewModels.EditDeceasedVM;
 
-<div class="modal fade" id="AddMemo" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="EditDeceased" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -13,7 +13,7 @@
             <div class="modal-body">
 
 
-                        @using (Html.BeginForm("AddDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" } ))
+                        @using (Html.BeginForm("EditDeceased", "Deceased", FormMethod.Post, new { enctype = "multipart/form-data" } ))
                         {
                             <div class="form-group">
                                 <div class="input-group">
@@ -24,21 +24,21 @@
                                     <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend"><span class="input-group-text "><i class="icon fa fa-user-circle"></i></span></div>
-                                    <input class="form-control" asp-for="@Model.DocumentSource" type="text" placeholder="Document Source">
+                                    <input class="form-control" asp-for="@Model.Deceased" type="text" placeholder="Document Source">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend"><span class="input-group-text">Receipt Date</span></div>
-                                    <input class="form-control    js-datepicker" asp-for="@Model.DateReceived" placeholder="Receipt Date"  type="date"  asp-format="{0:dd/MMM/yyyy}" />
+                                    <input class="form-control    js-datepicker" asp-for="@Model.Date" placeholder="Receipt Date"  type="date"  asp-format="{0:dd/MMM/yyyy}" />
 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend"><span class="input-group-text">Document Date</span></div>
-                                    <input class="form-control  js-datepicker" asp-for="@Model.DocumentDate" placeholder="Document Date"  type="date"  asp-format="{0:dd/MMM/yyyy}"/>
+                                    <input class="form-control  js-datepicker" asp-for="@Model.Date" placeholder="Document Date"  type="date"  asp-format="{0:dd/MMM/yyyy}"/>
                                 </div>
                             </div>
 
@@ -51,23 +51,9 @@
 
                             </div>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    
-                                    <input class=" form-control custom-custom-file-input" id="formFile" name="formFile"  type="file" asp-for="UploadFile"/>
-                                   
-                                </div>
+                            
 
-
-                            </div>
-
-                            <div class="form-group">
-                                
-                                    
-                                    <textarea class="tinymce form-control" asp-for="@Model.AdditionalNotes"  type="text" placeholder="Additional Information"></textarea>
-                                    <script src="~/lib/tinymce/plugins/advlist/plugin.js"></script>
-                             
-                            </div>
+                          
 
                             <button class="btn btn-block btn-primary">Save</button>
 
@@ -75,3 +61,42 @@
                     </div>
                             </div>
                         </div>
+                        </div>
+   <script>
+         document.getElementById("btnEditDeceased").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const form = document.querySelector(addMemoFormSelector);
+                 if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            // Validate fields
+
+            // Show error if invalid
+
+
+            // Confirm save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+
+
+
+</script>
+
+                     

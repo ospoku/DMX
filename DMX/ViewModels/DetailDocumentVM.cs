@@ -14,7 +14,7 @@ namespace DMX.ViewModels
         public DateTime Date { get; set; }
         public decimal AmountDue {  get; set; } 
         public string ReferenceNumber { get; set; }
-        public virtual ICollection<PatientComment> PatientComments { get; set; }
+        public virtual ICollection<DeceasedComment> PatientComments { get; set; }
 
     }
 }

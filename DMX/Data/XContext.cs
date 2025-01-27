@@ -20,10 +20,10 @@ namespace DMX.Data
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<DeceasedType> DeceasedTypes { get; set; }
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }
-        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Deceased> Deceased { get; set; }
         public DbSet<Memo> Memos { get; set; }
         public DbSet<MemoAssignment> MemoAssignments { get; set; }
-        public DbSet<PettyCash> PettyCashes { get; set; }
+        public DbSet<PettyCash> PettyCash { get; set; }
         public DbSet<ServiceRequest> ServiceRequests { get; set; }
         public DbSet<PettyCashAssignment> PettyCashAssignments { get; set; }
         public DbSet<TravelRequestAssignment> TravelRequestAssignments { get; set; }
@@ -37,14 +37,14 @@ namespace DMX.Data
         public DbSet<MemoComment> MemoComments { get; set; }
         public DbSet<ExcuseDutyComment> ExcuseDutyComments { get; set; }
         public DbSet<LeaveComment> LeaveComments { get; set; }
-        public DbSet<PatientComment> PatientComments { get; set; }
+        public DbSet<DeceasedComment> PatientComments { get; set; }
         public  DbSet<PettyCashComment> PettyCashComments { get; set; }
         public DbSet<LetterAssignment> LetterAssignments { get; set; }
         public DbSet<TravelRequestComment> TravelRequestComments { get; set;}
         public DbSet <MaternityLeaveComment> MaternityLeaveComments { get; set; }
         public DbSet<ExcuseDutyAssignment> ExcuseDutyAssignments { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
-        public DbSet<PatientAssignment> PatientAssignments { get; set; }
+        public DbSet<DeceasedAssignment> PatientAssignments { get; set; }
         public DbSet<ServiceAssignment> ServiceAssignments { get; set; }
         public DbSet <SickAssignment> SickAssignments { get; set; }
         public DbSet<PerDiem> PerDiems { get; set; }

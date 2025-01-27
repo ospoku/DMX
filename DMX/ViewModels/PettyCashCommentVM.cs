@@ -5,10 +5,10 @@ namespace DMX.ViewModels
 {
     public class PettyCashCommentVM
     {
-        public string MemoId { get; set; }
-        public string MemoContent { get; set; }
-        public string Title { get; set; }
-
+        public string PettyCashId { get; set; }
+        public string Purpose { get; set; }
+        public decimal Amount { get; set; }
+        public int CommentCount { get; set; }
         public string NewComment { get; set; }
        public ICollection<PettyCashComment>Comments { get; set; }
         public List<string> SelectedUsers { get; set; }

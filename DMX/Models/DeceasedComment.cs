@@ -1,19 +1,19 @@
-﻿using DMX.Data;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using DMX.Data;
 
 namespace DMX.Models
 {
-    public class PatientAssignment : TableAudit
+    public class DeceasedComment:TableAudit
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public string PatientId { get; set; }
-        public Patient Patient { get; set; }
-        public string AppUserId { get; set; }
-        public AppUser AppUser { get; set; }
-        public bool IsRead { get; set; } = false;
 
+        public string Message { get; set; }
+        public string PatientId { get; set; }
+        public string UserId { get; set; }
+        public Deceased Patient { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

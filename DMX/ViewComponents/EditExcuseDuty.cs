@@ -26,7 +26,7 @@ namespace DMX.ViewComponents
                
                DateofDischarge=dutyToUpdate.DateofDischarge,
                ExcuseDays=dutyToUpdate.ExcuseDays,  
-               OperationDiagnosis=dutyToUpdate.OperationDiagnosis,
+               Diagnosis =dutyToUpdate.Diagnosis,
             
                 SelectedUsers = dcx.ExcuseDutyAssignments.Where(x => x.ExcuseDutyId == @Encryption.Decrypt(Id)).Select(x => x.AppUserId).ToList(),
                 UsersList =  new SelectList(usm.Users.ToList(), "Id", "UserName"),

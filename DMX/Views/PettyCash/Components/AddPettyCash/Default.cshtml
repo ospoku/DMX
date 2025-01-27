@@ -13,27 +13,27 @@
             </div>
             <div class="modal-body">
 
-            @using (Html.BeginForm("AddPettyCash", "PettyCash", FormMethod.Post))
+            @using (Html.BeginForm("AddPettyCash", "PettyCash", FormMethod.Post, new{id="addPettyCashForm"}))
             { 
                      
 
                 
                     <div class="did-floating-label-content">
-                        <input type="number" asp-for="@Model.Amount" class="did-floating-input"  max="@Model.Maximum"/>
+                        <input type="number" asp-for="@Model.Amount" class="did-floating-input"  max="@Model.Maximum" required/>
                         <label class="did-floating-label">Amount</label>
                     </div>
                         <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.Purpose"  class="did-floating-input" placeholder=""/>
+                            <input type="text" asp-for="@Model.Purpose"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Purpose</label>
                         </div>
             
                     <div class="form-group">
                         <div class="did-floating-label-content">
-                        <select id="selectPettyCashUser" class="did-floating-select" style="width:100%"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectPettyCashUser" class="did-floating-select"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                             <label class="did-floating-label">Select Approver(s)</label>
                         </div>
                         </div>
-                        <button class="btn btn-block btn-primary">Save</button>       
+                        <button id="btnAddPettyCash" class="btn btn-block btn-primary">Save</button>       
             }
 
 
@@ -49,5 +49,33 @@
                 dropdownParent: $('#AddPettyCash')
             });
 
+         const addExcuseDutyFormSelector = '#addPettyCashForm';
+
+            const form = document.querySelector(addExcuseDutyFormSelector);
+         document.getElementById("btnAddPettyCash").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent immediate submission
+                if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("addPettyCashForm").submit(); // Correct form ID
+                }
+            });
         });
-        </script>
+    });
+
+</script>
+
+
+

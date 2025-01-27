@@ -15,7 +15,7 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-            var deceased = dcx.Patients.Include(d => d.PatientComments.OrderBy(d => d.CreatedDate)).Where(d => d.IsDeleted == false & d.PatientId == @Encryption.Decrypt(Id)).Select(d => d)
+            var deceased = dcx.Deceased.Include(d => d.PatientComments.OrderBy(d => d.CreatedDate)).Where(d => d.IsDeleted == false & d.PatientId == @Encryption.Decrypt(Id)).Select(d => d)
             .FirstOrDefault();
             TimeSpan difference = DateTime.Now - deceased.CreatedDate.Value;
             int numberOfDays = (int)difference.TotalDays;

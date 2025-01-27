@@ -101,19 +101,32 @@ namespace DMX.Controllers
                 notyf.Error("You must select at least one user for assignment.", 5);
 
 
-                return RedirectToAction("ViewMemos"); // Return the form with the error
+                return RedirectToAction("ViewExcuseDuties"); // Return the form with the error
             }
             try
             {
 
+                var existingRecord = await dcx.ExcuseDuties.FirstOrDefaultAsync(e =>
+    e.ExcuseDays == addExcuseDutyVM.ExcuseDays &&
+    e.DateofDischarge == addExcuseDutyVM.DateofDischarge &&
+    e.Diagnosis == addExcuseDutyVM.Diagnosis && e.PatientName==addExcuseDutyVM.PatientName && e.PatientId==addExcuseDutyVM.PatientId);
+
+                if (existingRecord != null)
+                {
+                    notyf.Error("This record already exists.");
+                    return RedirectToAction("ViewExcuseDuties");
+                }
+
+
 
                 ExcuseDuty addThisExcuseDuty = new()
                 {
-                    Date = addExcuseDutyVM.Date,
+                   
                     DateofDischarge = addExcuseDutyVM.DateofDischarge,
                     ExcuseDays = addExcuseDutyVM.ExcuseDays,
-
-                    OperationDiagnosis = addExcuseDutyVM.OperationDiagnosis,
+                    PatientName=addExcuseDutyVM.PatientName,
+                    PatientId=addExcuseDutyVM.PatientId,
+                    Diagnosis = addExcuseDutyVM.Diagnosis,
 
                 };
                 bool result = await entityServ.AddEntityAsync(addThisExcuseDuty, User);
@@ -152,13 +165,13 @@ namespace DMX.Controllers
 
 
 
-                            return RedirectToAction("ErrorPage", new { message = "Failed to add the memo. Please try again." });
+                            return RedirectToAction("ErrorPage", new { message = "Failed to add the Excuse Duty. Please try again." });
         }
                         else
                         {
                             // Failure: Handle error and redirect to a setup or error page
-                            notyf.Error("Memo creation failed.", 5);
-                            return RedirectToAction("ErrorPage", new { message = "Failed to add the memo. Please try again." });
+                            notyf.Error("Excuse Duty creation failed.", 5);
+                            return RedirectToAction("ErrorPage", new { message = "Failed to add the Excuse Duty. Please try again." });
                         }
                     }
                     catch (Exception ex)
@@ -184,7 +197,7 @@ return RedirectToAction("ErrorPage", new { message = ex.Message });
             updateThisExcuseDuty.DateofDischarge = editExcuseDutyVM.DateofDischarge;
             updateThisExcuseDuty.ExcuseDays = editExcuseDutyVM.ExcuseDays;
 
-            updateThisExcuseDuty.OperationDiagnosis = editExcuseDutyVM.OperationDiagnosis;
+            updateThisExcuseDuty.Diagnosis = editExcuseDutyVM.Diagnosis;
 
             updateThisExcuseDuty.ModifiedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
 

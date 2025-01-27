@@ -7,7 +7,7 @@
         public DateTime Date { get; set; }
         public DateTime DateofDischarge { get; set; }
         public string OperationDiagnosis { get; set; }
-        public string ExcuseDays { get; set; }
+        public int ExcuseDays { get; set; }
         public  DateTime? CreatedDate { get; set; }
         public string CreatedBy { get; set; }
     }

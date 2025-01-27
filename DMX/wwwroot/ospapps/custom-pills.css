@@ -1,0 +1,15 @@
+﻿/* Styles for specific pills tabs with the 'custom-pills' class */
+.custom-pills .nav-link {
+    background-color: rgba(13, 110, 253, 0.1); /* Primary subtle background */
+    color: #0d6efd; /* Primary text color */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .custom-pills .nav-link:hover {
+        background-color: rgba(13, 110, 253, 0.2); /* Slightly darker on hover */
+    }
+
+    .custom-pills .nav-link.active {
+        background-color: #0d6efd; /* Primary active background */
+        color: white; /* White text for active tab */
+    }

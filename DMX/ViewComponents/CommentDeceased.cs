@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class PettyCashComment(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class CommentDeceased(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
@@ -24,14 +24,13 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            PettyCash pettyCashToComment = new();
-            pettyCashToComment = (from m in dcx.PettyCashes.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.PettyCashId == Id select m).FirstOrDefault();
+            Deceased patientToEdit = (from m in dcx.Deceased.Include(m => m.PatientComments.OrderBy(m => m.CreatedDate)) where m.PatientId == Id select m).FirstOrDefault();
 
-            PettyCashCommentVM addCommentVM = new()
+            DeceasedCommentVM addCommentVM = new DeceasedCommentVM
             {
-               
-                Comments = pettyCashToComment.Comments,
-                
+             
+                Comments = patientToEdit.PatientComments,
+         
                 SelectedUsers = AssignedUsers,
 
         

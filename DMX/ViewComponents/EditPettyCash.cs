@@ -20,7 +20,7 @@ namespace DMX.ViewComponents
            
 
      
-      var      pettyCashToUpdate = (from p in dcx.PettyCashes where p.PettyCashId==@Encryption.Decrypt(Id) select p ).FirstOrDefault();
+      var      pettyCashToUpdate = (from p in dcx.PettyCash where p.PettyCashId==@Encryption.Decrypt(Id) select p ).FirstOrDefault();
 
             EditPettyCashVM editMemoVM = new()
             {

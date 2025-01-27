@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
 
@@ -108,28 +109,54 @@ namespace DMX.Controllers
             
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddPettyCashComment(string Id, MemoCommentVM addCommentVM)
+
+        [HttpGet]
+        public IActionResult CommentPettyCash(string Id)
         {
-
-            Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
-
-            Models.PettyCashComment addThisComment = new()
-            {
-               PettyCashId = memoToUpdate.MemoId,
-                CreatedDate = DateTime.Now,
-
-                Message = addCommentVM.NewComment,
-
-                  UserId = (await usm.GetUserAsync(User)).Id,
-            };
-
-            dcx.PettyCashComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
-
-            return RedirectToAction("ViewMemos");
+            return ViewComponent("CommentPettyCash", Id);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CommentPettyCash(string Id, PettyCashCommentVM addCommentVM)
+        {
+            try
+            {
+                PettyCash pettycashToComment = new();
+                pettycashToComment = (from a in dcx.PettyCash where a.PettyCashId == Encryption.Decrypt(Id) select a).FirstOrDefault();
+
+                PettyCashComment addThisComment = new()
+                {
+                    PettyCashId = pettycashToComment.PettyCashId,
+                    CreatedDate = DateTime.Now,
+
+                    Message = addCommentVM.NewComment,
+
+                    UserId = (await usm.GetUserAsync(User)).Id,
+                };
+
+                bool result = await entityServ.AddEntityAsync(addThisComment, User);
+                if (result)
+                {
+                    notyf.Success("Comment successfully saved", 5);
+                    return RedirectToAction("ViewPettyCash");
+                }
+                else
+                {
+                    notyf.Error("Comment could not be saved!!!", 5);
+                    return RedirectToAction("ViewPettyCash");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new
+                {
+                    message = "An error occurred while processing the request.",
+                    ex.Message
+                });
+            }
+        }
+        
+        
 
         [HttpPost]
         public async Task<IActionResult> EditPettyCash()

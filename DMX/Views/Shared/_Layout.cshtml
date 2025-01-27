@@ -35,10 +35,11 @@
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"  type="text/css"/>
    <link href="~/ospapps/departmentPanel.css" rel="stylesheet" type="text/css"/>
    <link href="~/ospapps/travelPanel.css" rel="stylesheet" type="text/css"/>
+   <link href="~/ospapps/error.css" rel="stylesheet" type="text/css"/>
     <link href="~/ospapps/deceasedPanel.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/sweetalert2/sweetalert2.css" rel="stylesheet" />
     <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-    
+    <link href="~/ospapps/custom-pills.css" rel="stylesheet" type="text/css"/>
    <link href="~/ospapps/cashPanel.css" rel="stylesheet" type="text/css"/>
    <link href="~/ospapps/feePanel.css" rel="stylesheet" type="text/css"/>
    <link href="~/ospapps/transportPanel.css" rel="stylesheet" type="text/css"/>
@@ -96,8 +97,8 @@
                         <a class="collapse-item" asp-action="ViewExcuseDuties" asp-controller="ExcuseDuty">Excuse Duty</a>
                         <a class="collapse-item" asp-action="ViewPettyCash" asp-controller="PettyCash">Petty Cash</a>
  
-                        <a class="collapse-item" asp-action="ViewSickReports" asp-controller="SickReport">Sick Report</a>
-                        <a class="collapse-item" asp-action="ViewPatients" asp-controller="Patient">Patients</a>
+                        @* <a class="collapse-item" asp-action="ViewSickReports" asp-controller="SickReport">Sick Report</a> *@
+                        <a class="collapse-item" asp-action="ViewDeceaseds" asp-controller="Deceased">Deceased</a>
                         <a class="collapse-item" asp-action="ViewLetters" asp-controller="Letter">Letters</a>
                     </div>
                 </div>
@@ -390,13 +391,14 @@
     <script src="~/lib/jquery-timeago/jquery.timeago.min.js"></script>
     <script src="~/ospapps/ospapps.js" asp-append-version="true"></script>
     <script src="~/ospapps/departmentSlide.js" asp-append-version="true"></script>
+    <script src="~/ospapps/ellipses.js" asp-append-version="true"></script>
     <script src="~/ospapps/travelSlide.js" asp-append-version="true"></script>
     <script src="~/ospapps/deceasedSlide.js" asp-append-version="true"></script>
     <script src="~/ospapps/cashSlide.js" asp-append-version="true"></script>
     <script src="~/ospapps/feeSlide.js" asp-append-version="true"></script>
     <script src="~/ospapps/transportSlide.js" asp-append-version="true"></script>
     <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
-    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></scr
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="~/lib/lottie-web/lottie.min.js" asp-append-version="true"></script>
     @await Component.InvokeAsync("Notyf")
 

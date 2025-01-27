@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Controllers
 {
-    public class PatientController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EmailService emailService,
+    public class DeceasedController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EmailService emailService,
           EntityService entityService) : Controller
     {
         public readonly UserManager<AppUser> usm = userManager;
@@ -27,9 +27,9 @@ namespace DMX.Controllers
         {
             return ViewComponent("EditPatient", Id);
         }
-        public IActionResult ViewPatients()
+        public IActionResult ViewDeceaseds()
         {
-            return ViewComponent("ViewPatients");
+            return ViewComponent("ViewDeceaseds");
         }
         public async Task<string> GetUserEmailAsync(string userId)
         {
@@ -38,45 +38,45 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddPatient() => ViewComponent("AddPatient");
+        public IActionResult AddDeceased() => ViewComponent("AddDeceased");
         [HttpPost]
-        public async Task<IActionResult> AddPatient(AddPatientVM addPatientVM)
+        public async Task<IActionResult> AddDeceased(AddDeceasedVM addDeceasedVM)
         {
-            if (addPatientVM.SelectedUsers?.Any() != true)
+            if (addDeceasedVM.SelectedUsers?.Any() != true)
             {
                 notyf.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction("ViewPatients");
+                return RedirectToAction("ViewDeceaseds");
             }
 
             try
             {
-                var existingPatient = await  dcx.Patients.FirstOrDefaultAsync(p =>
-    p.Name.ToLower() == addPatientVM.Deceased.ToLower() &&
-   p.Depositor.ToLower()==addPatientVM.Depositor.ToLower());
+                var existingPatient = await  dcx.Deceased.FirstOrDefaultAsync(p =>
+    p.Name.ToLower() == addDeceasedVM.Deceased.ToLower() &&
+   p.Depositor.ToLower()==addDeceasedVM.Depositor.ToLower());
 
                 if (existingPatient != null)
                 {
-                    ModelState.AddModelError("", "A member with the same name, date of birth, and telephone already exists.");
-                    return View(addPatientVM);
+                    notyf.Error("This record already exists.");
+                    return RedirectToAction("ViewDeceaseds");
                 }
 
                 // Create and populate the patient object
-                var patient = new Patient
+                var deceased = new Deceased
                 {
-                    Date = addPatientVM.Date,
-                    Diagnoses = addPatientVM.Diagnoses,
-                    Name = addPatientVM.Deceased,
-                    WardInCharge = addPatientVM.WardInCharge,
-                    Depositor = addPatientVM.Depositor,
-                    DepositorAddress = addPatientVM.DepositorAddress,
-                    TagNo = addPatientVM.TagNo,
-                    FolderNo = addPatientVM.FolderNo,
-                    Description = addPatientVM.Description,
-                    DeceasedTypeId = addPatientVM.DeceasedTypeId,
+                    Date = addDeceasedVM.Date,
+                    Diagnoses = addDeceasedVM.Diagnoses,
+                    Name = addDeceasedVM.Deceased,
+                    WardInCharge = addDeceasedVM.WardInCharge,
+                    Depositor = addDeceasedVM.Depositor,
+                    DepositorAddress = addDeceasedVM.DepositorAddress,
+                    TagNo = addDeceasedVM.TagNo,
+                    FolderNo = addDeceasedVM.FolderNo,
+                    Description = addDeceasedVM.Description,
+                    DeceasedTypeId = addDeceasedVM.DeceasedTypeId,
                 };
 
                 // Add patient to the database
-                var patientAdded = await entityServ.AddEntityAsync(patient, User);
+                var patientAdded = await entityServ.AddEntityAsync(deceased, User);
                 if (!patientAdded)
                 {
                     notyf.Error("Failed to add patient.", 5);
@@ -84,13 +84,13 @@ namespace DMX.Controllers
                 }
 
                 // Assign users if any are selected
-                if (addPatientVM.SelectedUsers?.Any() == true)
+                if (addDeceasedVM.SelectedUsers?.Any() == true)
                 {
-                    foreach (var userId in addPatientVM.SelectedUsers)
+                    foreach (var userId in addDeceasedVM.SelectedUsers)
                     {
-                        var assignment = new PatientAssignment
+                        var assignment = new DeceasedAssignment
                         {
-                            PatientId = patient.PatientId,
+                            PatientId = deceased.PatientId,
                             AppUserId = userId,
                         };
 
@@ -108,7 +108,7 @@ namespace DMX.Controllers
                     notyf.Success("Patient created successfully, no users assigned.", 5);
                 }
 
-                return RedirectToAction("ViewPatients");
+                return RedirectToAction("ViewDeceaseds");
             }
             catch (Exception ex)
             {
@@ -120,12 +120,12 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PatientComment(string Id, MemoCommentVM addCommentVM)
+        public async Task<IActionResult> DeceasedComment(string Id, MemoCommentVM addCommentVM)
         {
             try {
 
-                Patient patientToComment = patientToComment = (from a in dcx.Patients where a.PatientId == Id select a).FirstOrDefault();
-                PatientComment addThisComment = new()
+                Deceased patientToComment = patientToComment = (from a in dcx.Deceased where a.PatientId == Id select a).FirstOrDefault();
+                DeceasedComment addThisComment = new()
                 {
                     PatientId = patientToComment.PatientId,
                     Message = addCommentVM.NewComment,
@@ -136,13 +136,13 @@ namespace DMX.Controllers
                 {
                     // If all assignments are successful
                     notyf.Success("Comment successfully saved.", 5);
-                    return RedirectToAction("ViewPatients");
+                    return RedirectToAction("ViewDeceaseds");
                 }
                 else
                 {
                     // No users selected for assignment, but patient creation was successful
                     notyf.Error("Could not be saved", 5);
-                    return RedirectToAction("ViewPatients");
+                    return RedirectToAction("ViewDeceaseds");
                 }
             }
             catch
@@ -158,9 +158,9 @@ namespace DMX.Controllers
             return ViewComponent("PrintPatient", Id);
         }
         [HttpGet]
-        public IActionResult CommentPatient(string Id)
+        public IActionResult CommentDeceased(string Id)
         {
-            return ViewComponent("CommentPatient", Id);
+            return ViewComponent("CommentDeceased", Id);
         }
 
     }

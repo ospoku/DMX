@@ -21,11 +21,11 @@ namespace DMX.ViewComponents
             excuseDutyDetail = (from a in dcx.ExcuseDuties where a.Id == @Encryption.Decrypt(Id) & a.IsDeleted == false select a).FirstOrDefault();
             DetailExcuseDutyVM excuseDutyVM = new ()
             {
-                Date = new ExcuseDuty().Date,
+               
                 DateofDischarge=new ExcuseDuty().DateofDischarge,
                 ExcuseDays=new ExcuseDuty().ExcuseDays,
              
-                OperationDiagnosis = new ExcuseDuty().OperationDiagnosis,
+                Diagnosis = new ExcuseDuty().  Diagnosis,
                SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == @Encryption.Decrypt(Id) select x.AppUserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };

@@ -10,7 +10,7 @@
                 <h6>Add Memo</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
-             @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post))
+             @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post, new{id="addMemoForm"}))
             {
             <div class="modal-body">
                     <div class="did-floating-label-content">
@@ -19,58 +19,93 @@
                     </div>
                 
                     <div class="form-group">
-                        <textarea class="form-control" id="MemoContent" asp-for="@Model.Content" type="text" placeholder="Memo Content"></textarea>
+                        <textarea class="form-control" id="MemoContent" asp-for="@Model.Content"  placeholder="Memo Content"></textarea>
                     </div>
                     <div class="did-floating-label-content">
 
                         <select id="selectMemoUser" class="did-floating-select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Approver(s)</label>
                     </div>
+
                     </div>
-                    <div class="modal-footer"><button class="btn btn-block btn-primary">Save</button></div>
+                    <div class="modal-footer"><button id="btnAddMemo" class="btn btn-block btn-primary">Save</button></div>
                 }
             </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function () {
-        // Initialize Select2 for dropdowns within the modal
+            $(document).ready(function () {
         const modalSelector = '#AddMemo';
         const memoContentSelector = '#MemoContent';
+        const addMemoFormSelector = '#addMemoForm';
 
+        // Initialize Select2 for dropdowns
         $('#selectMemoUser').select2({
             dropdownParent: $(modalSelector)
         });
 
-        // Initialize TinyMCE when the modal is shown
-        $(modalSelector)
-            .off('shown.bs.modal')
-            .on('shown.bs.modal', function () {
-                if (!tinymce.get(memoContentSelector.substring(1))) { // Check if not already initialized
-                    try {
-                        tinymce.init({
-                            selector: memoContentSelector,
-                            menubar: true,
-                            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
-                            height: 300 // Default height
-                        });
-                    } catch (e) {
-                        console.error('TinyMCE initialization failed:', e);
-                    }
-                }
-            });
+        // Initialize TinyMCE when modal is shown
+        $(modalSelector).on('shown.bs.modal', function () {
+            if (!tinymce.get(memoContentSelector.substring(1))) {
+                tinymce.init({
+                    selector: memoContentSelector,
+                    menubar: true,
+                    toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
+                    height: 300
+                });
+            }
+        });
 
-        // Remove TinyMCE instance on modal close
-        $(modalSelector)
-            .off('hidden.bs.modal')
-            .on('hidden.bs.modal', function () {
-                try {
-                    tinymce.remove(memoContentSelector);
-                } catch (e) {
-                    console.error('TinyMCE removal failed:', e);
+        // Remove TinyMCE and reset form on modal close
+        $(modalSelector).on('hidden.bs.modal', function () {
+            try {
+                tinymce.remove(memoContentSelector);
+            } catch (e) {
+                console.error('TinyMCE removal failed:', e);
+            }
+            $(addMemoFormSelector).trigger("reset");
+            $(addMemoFormSelector).find(".is-invalid").removeClass("is-invalid");
+        });
+
+        // Add memo button click handler
+        document.getElementById("btnAddMemo").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const form = document.querySelector(addMemoFormSelector);
+                 if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            // Validate fields
+            
+            // Show error if invalid
+          
+
+            // Confirm save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
                 }
             });
+        });
     });
+
+
+   
+    
 </script>
+
+
+
+
 

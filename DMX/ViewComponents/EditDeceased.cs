@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class EditPatient:ViewComponent
+    public class EditDeceased:ViewComponent
     {
         public readonly XContext dcx;
-        public EditPatient(XContext dContext)
+        public EditDeceased(XContext dContext)
         {
             dcx = dContext;
         }

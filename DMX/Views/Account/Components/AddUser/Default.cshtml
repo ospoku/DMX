@@ -29,7 +29,7 @@
                         <label class="did-floating-label">Username</label>
                     </div>
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" asp-for="@Model.Email" placeholder="" required />
+                        <input class="did-floating-input" type="email" asp-for="@Model.Email" placeholder="" required />
                         <label class="did-floating-label">Email</label>
                     </div>
                     <div class="did-floating-label-content">
@@ -41,7 +41,7 @@
                          
                                 <div class="did-floating-label-content">
 
-                        <select id="selectRole" class="did-floating-select" style="width:100%" asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" multiple="multiple"></select>
+                        <select id="selectRole" class="did-floating-select"  asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" multiple="multiple"></select>
                               <label class="did-floating-label">Select Role(s)</label>
                             </div>
                         
@@ -63,6 +63,41 @@
             });
 
         });
+          document.getElementById("btnAddMemo").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const form = document.querySelector(addMemoFormSelector);
+                 if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            // Validate fields
+
+            // Show error if invalid
+
+
+            // Confirm save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+
+
+
+</script>
 
 
 </script>

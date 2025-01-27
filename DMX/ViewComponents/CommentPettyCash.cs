@@ -1,4 +1,5 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class PatientComment(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class CommentPettyCash(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
@@ -24,17 +25,18 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            Patient patientToEdit = (from m in dcx.Patients.Include(m => m.PatientComments.OrderBy(m => m.CreatedDate)) where m.PatientId == Id select m).FirstOrDefault();
+            PettyCash pettycashToComment = new();
+            pettycashToComment = (from p in dcx.PettyCash.Include(p => p.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(c => c.AppUser) where p.PettyCashId == @Encryption.Decrypt(Id) select p).FirstOrDefault();
 
-            PatientCommentVM addCommentVM = new PatientCommentVM
+            PettyCashCommentVM  addCommentVM = new()
             {
-             
-                Comments = patientToEdit.PatientComments,
-         
+               Amount = pettycashToComment.Amount,
+              
+                Purpose = pettycashToComment.Purpose,
                 SelectedUsers = AssignedUsers,
-
-        
-                UsersList= new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                Comments = pettycashToComment.Comments.OrderBy(m => m.CreatedDate).ToList(),
+                CommentCount = pettycashToComment.Comments.Count(),
+                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             
 

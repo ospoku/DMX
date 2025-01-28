@@ -1,14 +1,14 @@
-﻿using DMX.Data;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using DMX.Data;
 
 namespace DMX.Models
 {
-    public class ModeOfTransport:TableAudit
+    public class TransportType:TableAudit
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string ModeId { get; set; }
+        public string TransportTypeId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Code { get; set; }

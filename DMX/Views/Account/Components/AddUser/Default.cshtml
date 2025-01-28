@@ -12,21 +12,21 @@
                 <h6>Add User</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div> 
-            @using (Html.BeginForm("AddUser", "Account", FormMethod.Post))
+            @using (Html.BeginForm("AddUser", "Account", FormMethod.Post,new{id="addUserForm"}))
             {
             <div class="modal-body">
                        
-                                    <div class="did-floating-label-content">
+                       <div class="did-floating-label-content">
                         <input class="did-floating-input" asp-for="@Model.Username" placeholder="" required />
-                                <label class="did-floating-label">Username</label>
-                            </div>
+                        <label class="did-floating-label">Username</label>
+                       </div>
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" asp-for="@Model.Firstname" placeholder="" required />
                         <label class="did-floating-label">Firstname</label>
                     </div>
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" asp-for="@Model.Surname" placeholder="" required />
-                        <label class="did-floating-label">Username</label>
+                        <label class="did-floating-label">Surname</label>
                     </div>
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="email" asp-for="@Model.Email" placeholder="" required />
@@ -39,16 +39,16 @@
                                 </div>
                        
                          
-                                <div class="did-floating-label-content">
+                            <div class="did-floating-label-content">
 
-                        <select id="selectRole" class="did-floating-select"  asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" multiple="multiple"></select>
+                        <select id="selectRole" class="did-floating-select"  asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles"></select>
                               <label class="did-floating-label">Select Role(s)</label>
                             </div>
                         
                        
                        
                     </div>
-                <div class="modal-footer">  <button class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
+                <div class="modal-footer">  <button id="btnAddUser" class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
                 }
                 </div>
             </div>
@@ -57,16 +57,17 @@
     <script>
         $(document).ready(function () {
 
+            const addUserFormSelector="#addUserForm";
 
             $('#selectRole').select2({
                 dropdownParent: $('#AddUser')
             });
 
-        });
-          document.getElementById("btnAddMemo").addEventListener("click", function (event) {
+        
+          document.getElementById("btnAddUser").addEventListener("click", function (event) {
             event.preventDefault();
 
-            const form = document.querySelector(addMemoFormSelector);
+            const form = document.querySelector(addUserFormSelector);
                  if (!form.checkValidity()) {
                 form.reportValidity(); // Display browser validation messages
                 return; // Stop further execution if validation fails
@@ -94,13 +95,8 @@
         });
     });
 
-
-
-
 </script>
 
-
-</script>
 
 
 

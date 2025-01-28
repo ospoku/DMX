@@ -10,7 +10,7 @@
                 <h6>Add Travel Request</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
-             @using (Html.BeginForm("AddTravelRequest", "TravelRequest", FormMethod.Post))
+             @using (Html.BeginForm("AddTravelRequest", "TravelRequest", FormMethod.Post, new {id="addTravelRequestForm"}))
             {
                
             <div class="modal-body">
@@ -20,7 +20,7 @@
                         <label class="did-floating-label">Select Travel Type</label>
                     </div>
                     <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.PurposeofJourney"  class="did-floating-input" placeholder="" required/>
+                            <input type="text" asp-for="@Model.Purpose"  class="did-floating-input" placeholder="" required/>
                             <label class="did-floating-label">Purpose</label>
                     </div>
                   
@@ -65,10 +65,41 @@
                     </div>
                        
                             </div>
-                     
-                        
-                    
-                  
+
+
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="did-floating-label-content">
+
+
+                                <input type="number" asp-for="@Model.ConferenceFee" class="did-floating-input" required />
+                                <label class="did-floating-label">Seminar/Conference Fees</label>
+
+                            </div>
+                        </div>
+                        <div class="col">
+
+                            <div class="did-floating-label-content">
+
+
+                                <input type="number" asp-for="@Model.FuelClaim" class="did-floating-input" required />
+                                <label class="did-floating-label">Fuel Claim</label>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="did-floating-label-content">
+                                <input type="number" asp-for="@Model.OtherExpenses" class="did-floating-input" required />
+                                <label class="did-floating-label">Other Expenses</label>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
                     <div class="did-floating-label-content">
 
                         <input class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="" required/>
@@ -93,15 +124,15 @@
 
 <script>
     $(document).ready(function () {
-     const addExcuseDutyFormSelector = '#addTravelRequestForm';
+     const addTravelRequestFormSelector = '#addTravelRequestForm';
         $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest') });
         $('#selectTravelType1').select2({ dropdownParent: $('#AddTravelRequest') });
           $('#selectTravelType2').select2({ dropdownParent: $('#AddTravelRequest') });
         $('#selectDept').select2({ dropdownParent: $('#AddTravelRequest') });
-         document.getElementById("btnAddMemo").addEventListener("click", function (event) {
+         document.getElementById("btnAddTravelRequest").addEventListener("click", function (event) {
             event.preventDefault();
 
-            const form = document.querySelector(addMemoFormSelector);
+            const form = document.querySelector(addTravelRequestFormSelector);
                  if (!form.checkValidity()) {
                 form.reportValidity(); // Display browser validation messages
                 return; // Stop further execution if validation fails

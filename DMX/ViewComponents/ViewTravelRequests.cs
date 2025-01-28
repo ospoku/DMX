@@ -10,10 +10,10 @@ namespace DMX.ViewComponents
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser>usm= userManager;
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var user = usm.GetUserAsync(HttpContext.User).Result?.UserName;
-            var travelList = dcx.TravelRequestAssignments.Where(a => a.AppUser.UserName == user || a.TravelRequest.CreatedBy == user).Select(a => 
+            var user = (await usm.GetUserAsync(HttpContext.User)).Id;
+            var travelList = dcx.TravelRequestAssignments.Where(a => a.AppUser.Id == user || a.TravelRequest.CreatedBy == user & a.TravelRequest.IsDeleted == false).Select(a => 
              new ViewTravelRequestsVM
             {
 

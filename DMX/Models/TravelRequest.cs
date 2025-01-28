@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace DMX.Models
 {
     public class TravelRequest:TableAudit
-    {[Key]
+    {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string TravelRequestId { get; set; }
         public string ReferenceNumber { get; set; }= "TR"+Guid.NewGuid().ToString("N").Substring(0,5);
@@ -26,8 +27,8 @@ namespace DMX.Models
         
         public string Purpose { get; set; }
     
-      public ModeOfTransport ModeOfTransport { get; set; }
-        public string ModeId { get; set; }
+      public TravelType TravelType { get; set; }
+        public string TravelTypeId  { get; set; }
         public virtual ICollection<TravelRequestComment>Comments { get; set; }  
        
     }

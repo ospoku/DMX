@@ -216,7 +216,7 @@ namespace DMX.Controllers
 
             string RefN = "T" + Guid.NewGuid().ToString("N").Substring(0, 5);
 
-            ModeOfTransport addThisTransport = new()
+            TransportType addThisTransport = new()
             {
                 Name = addTransportVM.Name,
 

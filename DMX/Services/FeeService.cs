@@ -1,28 +1,45 @@
-﻿using DMX.Data;
+using DMX.Data;
 
 namespace DMX.Services
 {
-    public class FeeService( XContext context)
+    public class FeeService
     {
-       public readonly XContext dcx=context;
+        private readonly XContext dcx;
+
+        public FeeService(XContext context)
+        {
+            dcx = context;
+        }
+
         public decimal FeeCalculator(int numberOfDays)
         {
             decimal totalFee = 0;
 
-            foreach (var day in dcx.FeeStructures.Select(f => f).ToList())
+            // Get the fee structures in ascending order of MinDays
+            var feeStructures = dcx.FeeStructures.OrderBy(f => f.MinDays).ToList();
+
+            foreach (var tier in feeStructures)
             {
-
-                if (numberOfDays > day.MaxDays)
+                if (numberOfDays > tier.MaxDays)
                 {
-                    totalFee += (day.MaxDays - day.MinDays + 1) * day.Fee;
+                    // Calculate fee for the entire tier
+                    totalFee += (tier.MaxDays - tier.MinDays + 1) * tier.Fee;
                 }
-                else if (numberOfDays >= day.MinDays)
+                else if (numberOfDays >= tier.MinDays)
                 {
-                    totalFee += (numberOfDays - day.MinDays + 1) * day.Fee;
-                    break;
-
+                    // Calculate fee for the remaining days within the tier
+                    totalFee += (numberOfDays - tier.MinDays + 1) * tier.Fee;
+                    return totalFee;
                 }
             }
+
+            // Handle days beyond the last tier
+            var lastTier = feeStructures.LastOrDefault();
+            if (lastTier != null && numberOfDays > lastTier.MaxDays)
+            {
+                totalFee += (numberOfDays - lastTier.MaxDays) * lastTier.Fee;
+            }
+
             return totalFee;
         }
     }

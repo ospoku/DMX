@@ -16,7 +16,6 @@ namespace DMX.ViewComponents
                 Username=p.UserId,  
                 Amount=p.Amount,
                 Department=p.Department.Name,
-                
                 Rank=p.Rank,
             }).ToList();
 

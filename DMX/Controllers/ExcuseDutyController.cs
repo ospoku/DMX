@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Controllers
 {
-    public class ExcuseDutyController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService, IAuthorizationService authorizationService) : Controller
+    public class ExcuseDutyController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService, IAuthorizationService authorizationService, AssignmentService assignmentService) : Controller
     {
 
         public readonly IAuthorizationService auth = authorizationService;
@@ -22,6 +22,7 @@ namespace DMX.Controllers
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
         private readonly EntityService entityServ = entityService;
+        public readonly AssignmentService assignmentServ = assignmentService;
         [HttpGet]
         public IActionResult ViewExcuseDuties()
         {
@@ -141,7 +142,7 @@ namespace DMX.Controllers
                             ExcuseDutyAssignment assignThisExcuseDuty = new ExcuseDutyAssignment()
                             {
                                 ExcuseDutyId = addThisExcuseDuty.Id,
-                                AppUserId = user,
+                                UserId = user,
 
                             };
                             bool assignResult = await entityServ.AddEntityAsync(assignThisExcuseDuty, User);
@@ -186,52 +187,81 @@ return RedirectToAction("ErrorPage", new { message = ex.Message });
 
 
 
-                [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> EditExcuseDutyAsync(string Id, EditExcuseDutyVM editExcuseDutyVM)
         {
 
-            ExcuseDuty updateThisExcuseDuty = dcx.ExcuseDuties.Where(e => e.Id == @Encryption.Decrypt(Id)).Select(e => e).FirstOrDefault();
-
-
-           
-            updateThisExcuseDuty.DateofDischarge = editExcuseDutyVM.DateofDischarge;
-            updateThisExcuseDuty.ExcuseDays = editExcuseDutyVM.ExcuseDays;
-
-            updateThisExcuseDuty.Diagnosis = editExcuseDutyVM.Diagnosis;
-
-            updateThisExcuseDuty.ModifiedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
-
-
-            foreach (var assignment in dcx.MemoAssignments.Where(a => a.MemoId == @Encryption.Decrypt(Id)))
+            if (editExcuseDutyVM.SelectedUsers == null || !editExcuseDutyVM.SelectedUsers.Any())
             {
-                dcx.MemoAssignments.Remove(assignment);
-            };
-            dcx.SaveChanges();
-            dcx.ExcuseDuties.Attach(updateThisExcuseDuty);
+                notyf.Error("You must select at least one user for assignment.", 5);
 
-            dcx.Entry(updateThisExcuseDuty).State = EntityState.Modified;
 
-            foreach (var user in editExcuseDutyVM.SelectedUsers)
-            {
-               dcx.ExcuseDutyAssignments.Add(new ExcuseDutyAssignment
-               {
-                    ExcuseDutyId = @Encryption.Decrypt(Id),
-                    AppUserId = user,
-                   ModifiedDate = DateTime.Now,
-               });
+                return RedirectToAction("ViewExcuseDuties"); // Return the form with the error
             }
-            if (await dcx.SaveChangesAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value) > 0)
+            //// Decrypt the memo ID and fetch the memo to update
+            try
             {
-                notyf.Success("Record successfully updated");
+                var decryptedId = Encryption.Decrypt(Id);
+                var updateThisExcuseDuty = await dcx.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == decryptedId);
 
-                return RedirectToAction("ViewExcuseDuties");
+                if (updateThisExcuseDuty == null)
+                {
+                    // Handle the case where the memo is not found
+                    return NotFound();
+                }
+
+                // Update memo properties
+                updateThisExcuseDuty.DateofDischarge = editExcuseDutyVM.DateofDischarge;
+                updateThisExcuseDuty.ExcuseDays = editExcuseDutyVM.ExcuseDays;
+                updateThisExcuseDuty.Diagnosis = editExcuseDutyVM.Diagnosis;
+                updateThisExcuseDuty.PatientName = editExcuseDutyVM.Name;
+                updateThisExcuseDuty.PatientId = editExcuseDutyVM.PatientId;
+
+                bool IsEdited = await entityServ.EditEntityAsync(updateThisExcuseDuty, User);
+
+                // Mark the entity as modified
+                if (IsEdited)
+                {
+
+
+                    // Remove existing memo assignments
+                    var existingAssignments = dcx.ExcuseDutyAssignments.Where(x => x.Id == decryptedId);
+                    dcx.ExcuseDutyAssignments.RemoveRange(existingAssignments);
+
+                    // Add new memo assignments
+                    foreach (var userId in editExcuseDutyVM.SelectedUsers)
+                    {
+                        bool reassign = await assignmentServ.AssignUsers(new ExcuseDutyAssignment { Id = updateThisExcuseDuty.Id, UserId = userId }, User);
+                        if (reassign)
+                        {
+
+                            notyf.Success("Record successfully updated", 5);
+                            return RedirectToAction("ViewMemos");
+                        }
+                    }
+
+
+                    notyf.Success("Record successfully updated", 5);
+                    return RedirectToAction("ViewMemos");
+                }
+                else
+                {
+                    notyf.Error("Failed to update memo. Please try again.", 5);
+                    return RedirectToAction("ViewMemos");
+                }
             }
-            else
+
+
+            // If saving fails, show the edit memo view with error
+            catch (Exception ex)
             {
-                return ViewComponent("EditExcuseDuty");
+                // Handle any unexpected errors
+                notyf.Error("An error occurred: " + ex.Message, 5);
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
             }
 
         }
+
 
         [HttpGet]
         public IActionResult AddExcuseDuty()

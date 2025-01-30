@@ -22,11 +22,11 @@ namespace DMX.ViewComponents
             DetailExcuseDutyVM excuseDutyVM = new ()
             {
                
-                DateofDischarge=new ExcuseDuty().DateofDischarge,
+                DateofDischarge= excuseDutyDetail.DateofDischarge,
                 ExcuseDays=new ExcuseDuty().ExcuseDays,
              
                 Diagnosis = new ExcuseDuty().  Diagnosis,
-               SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == @Encryption.Decrypt(Id) select x.AppUserId).ToList(),
+               SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == @Encryption.Decrypt(Id) select x.UserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             return View(excuseDutyVM);

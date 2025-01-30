@@ -22,27 +22,101 @@ namespace DMX.Controllers
         public readonly IAuthorizationService auth=authorizationService;
         public readonly EntityService entityServ = entityService;
         public readonly AssignmentService assignmentServ = assignmentService;
+        //[HttpPost]
+        //public async Task<IActionResult> EditMemo(string Id, EditMemoVM editMemoVM)
+        //{
+        //    if (editMemoVM.SelectedUsers == null || !editMemoVM.SelectedUsers.Any())
+        //    {
+        //        notyf.Error("You must select at least one user for assignment.", 5);
+        //        return RedirectToAction("ViewMemos");
+        //    }
+
+        //    try
+        //    {
+        //        var decryptedId = Encryption.Decrypt(Id);
+        //        var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == decryptedId);
+
+        //        if (updateThisMemo == null)
+        //        {
+        //            notyf.Error("Memo not found.", 5);
+        //            return RedirectToAction("ViewMemos");
+        //        }
+
+        //        // Update memo properties
+        //        updateThisMemo.Content = editMemoVM.Content;
+        //        updateThisMemo.Title = editMemoVM.Title;
+
+        //        bool IsEdited = await entityServ.EditEntityAsync(updateThisMemo, User);
+
+        //        if (!IsEdited)
+        //        {
+        //            notyf.Error("Failed to update memo. Please try again.", 5);
+        //            return RedirectToAction("ViewMemos");
+        //        }
+
+        //        // Remove existing memo assignments
+        //        var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
+        //        dcx.MemoAssignments.RemoveRange(existingAssignments);
+
+        //        bool allAssignmentsSuccessful = true;
+        //        List<string> failedUsers = new List<string>();
+
+        //        foreach (var userId in editMemoVM.SelectedUsers)
+        //        {
+        //            bool reassign = await assignmentServ.AssignUsers(new MemoAssignment { MemoId = updateThisMemo.MemoId, UserId = userId }, User);
+        //            if (!reassign)
+        //            {
+        //                allAssignmentsSuccessful = false;
+        //                failedUsers.Add(userId);
+        //            }
+        //        }
+
+        //        if (allAssignmentsSuccessful)
+        //        {
+        //            notyf.Success("Record successfully updated", 5);
+        //        }
+        //        else
+        //        {
+        //            notyf.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
+        //        }
+
+        //        return RedirectToAction("ViewMemos");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        notyf.Error("An unexpected error occurred. Please try again.", 5);
+        //        // Log the error (if logging is enabled in your project)
+        //        Console.WriteLine($"Error updating memo: {ex.Message}");
+        //        return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
+        //    }
+        //}
+
+
+
+
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> EditMemo(string Id, EditMemoVM editMemoVM)
         {
-         
-                if (editMemoVM.SelectedUsers == null || !editMemoVM.SelectedUsers.Any())
-                {
-                    notyf.Error("You must select at least one user for assignment.", 5);
+            if (editMemoVM.SelectedUsers == null || !editMemoVM.SelectedUsers.Any())
+            {
+                notyf.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewMemos");
+            }
 
-
-                    return RedirectToAction("ViewMemos"); // Return the form with the error
-                }
-            //// Decrypt the memo ID and fetch the memo to update
-            try { 
+            try
+            {
                 var decryptedId = Encryption.Decrypt(Id);
                 var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == decryptedId);
 
                 if (updateThisMemo == null)
                 {
-                    // Handle the case where the memo is not found
-                    return NotFound();
+                    notyf.Error("Memo not found.", 5);
+                    return RedirectToAction("ViewMemos");
                 }
 
                 // Update memo properties
@@ -51,48 +125,55 @@ namespace DMX.Controllers
 
                 bool IsEdited = await entityServ.EditEntityAsync(updateThisMemo, User);
 
-                // Mark the entity as modified
-                if (IsEdited)
-                {
-
-
-                    // Remove existing memo assignments
-                    var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
-                    dcx.MemoAssignments.RemoveRange(existingAssignments);
-
-                    // Add new memo assignments
-                    foreach (var userId in editMemoVM.SelectedUsers)
-                    {
-                        bool reassign = await assignmentServ.AssignUsers(new MemoAssignment { MemoId = updateThisMemo.MemoId, UserId = userId }, User);
-                        if (reassign)
-                        {
-
-                            notyf.Success("Record successfully updated", 5);
-                            return RedirectToAction("ViewMemos");
-                        }
-                    }
-
-
-                    notyf.Success("Record successfully updated", 5);
-                    return RedirectToAction("ViewMemos");
-                }
-                else
+                if (!IsEdited)
                 {
                     notyf.Error("Failed to update memo. Please try again.", 5);
                     return RedirectToAction("ViewMemos");
                 }
+
+                // Remove existing memo assignments
+                var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
+                dcx.MemoAssignments.RemoveRange(existingAssignments);
+
+                bool atLeastOneFailed = false;
+                List<string> failedUsers = new List<string>();
+
+                foreach (var userId in editMemoVM.SelectedUsers)
+                {
+                    bool reassign = await assignmentServ.AssignUsers(
+                        new MemoAssignment { MemoId = updateThisMemo.MemoId, UserId = userId },
+                        User
+                    );
+
+                    if (!reassign)
+                    {
+                        atLeastOneFailed = true;
+                        failedUsers.Add(userId);
+                    }
+                }
+
+                // Display only ONE message
+                if (atLeastOneFailed)
+                {
+                    notyf.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
+                }
+                else
+                {
+                    notyf.Success("Record successfully updated", 5);
+                }
+
+                return RedirectToAction("ViewMemos");
             }
-
-
-            // If saving fails, show the edit memo view with error
             catch (Exception ex)
             {
-                // Handle any unexpected errors
-                notyf.Error("An error occurred: " + ex.Message, 5);
+                notyf.Error("An unexpected error occurred. Please try again.", 5);
+                Console.WriteLine($"Error updating Memo: {ex.Message}");
                 return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
             }
-
         }
+
+
+
 
         [HttpGet]
         public IActionResult CommentMemo(string Id)

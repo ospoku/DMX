@@ -49,6 +49,7 @@ namespace DMX.Data
         public DbSet <SickAssignment> SickAssignments { get; set; }
         public DbSet<PerDiem> PerDiems { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<DeceasedAssignment> DeceasedAssignments { get; set; }
        
       
    

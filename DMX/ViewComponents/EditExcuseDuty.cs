@@ -22,13 +22,14 @@ namespace DMX.ViewComponents
             dutyToUpdate = (from d in dcx.ExcuseDuties where d.Id == @Encryption.Decrypt(Id) select d).FirstOrDefault();
 
             EditExcuseDutyVM editMemoVM = new()
-            {
+            {PatientId=dutyToUpdate.PatientId,
+            Name=dutyToUpdate.PatientName,
                
                DateofDischarge=dutyToUpdate.DateofDischarge,
                ExcuseDays=dutyToUpdate.ExcuseDays,  
                Diagnosis =dutyToUpdate.Diagnosis,
             
-                SelectedUsers = dcx.ExcuseDutyAssignments.Where(x => x.ExcuseDutyId == @Encryption.Decrypt(Id)).Select(x => x.AppUserId).ToList(),
+                SelectedUsers = dcx.ExcuseDutyAssignments.Where(x => x.ExcuseDutyId == @Encryption.Decrypt(Id)).Select(x => x.UserId).ToList(),
                 UsersList =  new SelectList(usm.Users.ToList(), "Id", "UserName"),
                 
             };

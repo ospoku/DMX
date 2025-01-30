@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewModels;
@@ -12,20 +13,20 @@ using Microsoft.EntityFrameworkCore;
 namespace DMX.Controllers
 {
     public class DeceasedController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EmailService emailService,
-          EntityService entityService) : Controller
+          EntityService entityService, AssignmentService assignmentService) : Controller
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
         public readonly EntityService entityServ = entityService;
         public readonly EmailService email = emailService;
-
+        public readonly AssignmentService assignmentServ = assignmentService;
 
 
         [HttpGet]
-        public IActionResult EditPatient(string Id)
+        public IActionResult EditDeceased(string Id)
         {
-            return ViewComponent("EditPatient", Id);
+            return ViewComponent("EditDeceased", Id);
         }
         public IActionResult ViewDeceaseds()
         {
@@ -63,7 +64,7 @@ namespace DMX.Controllers
                 // Create and populate the patient object
                 var deceased = new Deceased
                 {
-                    Date = addDeceasedVM.Date,
+                    
                     Diagnoses = addDeceasedVM.Diagnoses,
                     Name = addDeceasedVM.Deceased,
                     WardInCharge = addDeceasedVM.WardInCharge,
@@ -90,8 +91,8 @@ namespace DMX.Controllers
                     {
                         var assignment = new DeceasedAssignment
                         {
-                            PatientId = deceased.PatientId,
-                            AppUserId = userId,
+                            DeceasedId = deceased.DeceasedId,
+                            UserId = userId,
                         };
 
                         var assignmentAdded = await entityServ.AddEntityAsync(assignment, User);
@@ -124,10 +125,10 @@ namespace DMX.Controllers
         {
             try {
 
-                Deceased patientToComment = patientToComment = (from a in dcx.Deceased where a.PatientId == Id select a).FirstOrDefault();
+                Deceased deceasedToComment = deceasedToComment = (from a in dcx.Deceased where a.DeceasedId == Id select a).FirstOrDefault();
                 DeceasedComment addThisComment = new()
                 {
-                    PatientId = patientToComment.PatientId,
+                    PatientId = deceasedToComment.DeceasedId,
                     Message = addCommentVM.NewComment,
                     UserId = (await usm.GetUserAsync(User)).Id,
                 };
@@ -136,13 +137,13 @@ namespace DMX.Controllers
                 {
                     // If all assignments are successful
                     notyf.Success("Comment successfully saved.", 5);
-                    return RedirectToAction("ViewDeceaseds");
+                    return RedirectToAction("ViewDeceased");
                 }
                 else
                 {
                     // No users selected for assignment, but patient creation was successful
                     notyf.Error("Could not be saved", 5);
-                    return RedirectToAction("ViewDeceaseds");
+                    return RedirectToAction("ViewDeceased");
                 }
             }
             catch
@@ -161,6 +162,70 @@ namespace DMX.Controllers
         public IActionResult CommentDeceased(string Id)
         {
             return ViewComponent("CommentDeceased", Id);
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditDeceased(string Id, EditDeceasedVM editDeceasedVM)
+        {
+            if (editDeceasedVM.SelectedUsers == null || !editDeceasedVM.SelectedUsers.Any())
+            {
+                notyf.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewDeceaseds");
+            }
+
+            try
+            {
+                var decryptedId = Encryption.Decrypt(Id);
+                var updateThisDeceased = await dcx.Deceased.FirstOrDefaultAsync(a => a.DeceasedId == decryptedId);
+
+                if (updateThisDeceased == null)
+                {
+                    notyf.Error("Deceased record not found.", 5);
+                    return RedirectToAction("ViewDeceaseds");
+                }
+
+                // Update properties
+                updateThisDeceased.Diagnoses = editDeceasedVM.Diagnoses;
+                updateThisDeceased.DeceasedTypeId = editDeceasedVM.DeceasedTypeId;
+                updateThisDeceased.Depositor = editDeceasedVM.Depositor;
+                updateThisDeceased.DepositorAddress = editDeceasedVM.DepositorAddress;
+                updateThisDeceased.FolderNo = editDeceasedVM.FolderNo;
+                updateThisDeceased.TagNo = editDeceasedVM.TagNo;
+                updateThisDeceased.WardInCharge = editDeceasedVM.WardInCharge;
+                updateThisDeceased.Description = editDeceasedVM.Description;
+
+                bool IsEdited = await entityServ.EditEntityAsync(updateThisDeceased, User);
+
+                if (!IsEdited)
+                {
+                    notyf.Error("Failed to update record. Please try again.", 5);
+                    return RedirectToAction("ViewDeceaseds");
+                }
+
+                // 🔥 Ensure existing assignments are removed correctly
+                var existingAssignments = dcx.DeceasedAssignments.Where(x => x.DeceasedId == decryptedId);
+                dcx.DeceasedAssignments.RemoveRange(existingAssignments);
+                await dcx.SaveChangesAsync(); // Ensure removal before adding new records
+
+                // 🔥 Add new assignments
+                var newAssignments = editDeceasedVM.SelectedUsers
+                    .Select(userId => new DeceasedAssignment { DeceasedId = decryptedId, UserId = userId })
+                    .ToList();
+
+                await dcx.DeceasedAssignments.AddRangeAsync(newAssignments);
+                await dcx.SaveChangesAsync();
+
+                notyf.Success("Record successfully updated", 5);
+                return RedirectToAction("ViewDeceaseds");
+            }
+            catch (Exception ex)
+            {
+                notyf.Error("An unexpected error occurred. Please try again.", 5);
+                Console.WriteLine($"Error updating Deceased: {ex.Message}");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the record." });
+            }
         }
 
     }

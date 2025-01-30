@@ -12,8 +12,8 @@ namespace DMX.Models
         public string ExcuseDutyId { get; set; }
         [ForeignKey("ExcuseDutyId")]
         public ExcuseDuty ExcuseDuty { get; set; }
-        public string AppUserId { get; set; }
-        [ForeignKey("AppUserId")]
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }
         public bool IsRead { get; set; } = false;
 

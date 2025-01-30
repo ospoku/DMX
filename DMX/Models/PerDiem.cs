@@ -14,7 +14,9 @@ namespace DMX.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string PerDiemId { get; set; }
+        [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }
+        [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
         public string DepartmentId { get; set; }  
         public string Rank { get; set; }

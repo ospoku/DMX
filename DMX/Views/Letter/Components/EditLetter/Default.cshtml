@@ -14,7 +14,7 @@
             <div class="modal-body">
                         
 
-                                @using (Html.BeginForm("EditLetter", "Letter", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                @using (Html.BeginForm("EditLetter", "Letter", FormMethod.Post, new { enctype = "multipart/form-data", id="editLetterForm" }))
                                 {
                                     <div class="did-floating-label-content">
                                      
@@ -81,10 +81,16 @@
 
 
 <script>
-      document.getElementById("btnAddMemo").addEventListener("click", function (event) {
+      $(document).ready(function () {
+
+      const formSelector='#editLetterForm';
+      $('#usersEditExcuseDuty').select2({
+          dropdownParent: $('#EditLetter')
+      });
+      document.getElementById("btnEditLetter").addEventListener("click", function (event) {
             event.preventDefault();
 
-            const form = document.querySelector(addMemoFormSelector);
+            const form = document.querySelector(formSelector);
                  if (!form.checkValidity()) {
                 form.reportValidity(); // Display browser validation messages
                 return; // Stop further execution if validation fails
@@ -98,7 +104,7 @@
             // Confirm save
             Swal.fire({
                 title: 'Are you sure?',
-                text: "Do you really want to save this record?",
+                text: "Do you really want to update this record?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

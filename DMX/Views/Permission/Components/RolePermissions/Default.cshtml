@@ -21,7 +21,8 @@
                             Permission
                         </th>
                         <th>
-                            Status
+                           
+                                    <input type="checkbox" id="checkAll" /> Select All
                         </th>
                     </tr>
                 </thead>
@@ -56,3 +57,12 @@
       
     </div>
 </div>
+
+                                    <script>
+    $(document).ready(function () {
+        $("#checkAll").on("change", function () {
+            $(".toggle-switch").prop("checked", this.checked);
+           
+        });
+    });
+</script>

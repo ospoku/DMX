@@ -1,35 +1,52 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class EditDeceased:ViewComponent
+    public class EditDeceased(UserManager<AppUser> userManager, XContext dContext) :ViewComponent
     {
-        public readonly XContext dcx;
-        public EditDeceased(XContext dContext)
-        {
-            dcx = dContext;
-        }
+        public readonly XContext dcx=dContext;
 
-        public IViewComponentResult Invoke(string MemoId)
+        public readonly UserManager<AppUser> usm = userManager;
+        
+        
+           
+        
+
+        public IViewComponentResult Invoke(string Id)
 
 
         {
            
 
-            Memo memoToEdit = new Memo();
-            memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m=>m.CreatedDate)) where m.MemoId==MemoId select m ).FirstOrDefault();
+            Deceased deceasedToEdit = new Deceased();
+            deceasedToEdit = (from m in dcx.Deceased where m.DeceasedId == @Encryption.Decrypt(Id) select m ).FirstOrDefault();
 
-            EditMemoVM editMemoVM = new EditMemoVM
+            EditDeceasedVM editDeceasedVM = new EditDeceasedVM
             {
-             
+                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                DeceasedTypes = new SelectList(dcx.DeceasedTypes.ToList(), "DeceasedTypeId", "Code"),
+                DeceasedId=deceasedToEdit.DeceasedId,
+                Depositor=deceasedToEdit.Depositor,
+                DepositorAddress=deceasedToEdit.DepositorAddress,
+                Deceased=deceasedToEdit.Name,
+                FolderNo=deceasedToEdit.FolderNo,
+                TagNo=deceasedToEdit.TagNo,
+                Diagnoses=deceasedToEdit.Diagnoses,
+                WardInCharge=deceasedToEdit.WardInCharge,
+                DeceasedTypeId=deceasedToEdit.DeceasedTypeId,
+                 SelectedUsers = (from x in dcx.DeceasedAssignments where x.DeceasedId == @Encryption.Decrypt(Id) select x.UserId).ToList(),
+
             };
             
 
-            return View(editMemoVM);
+            return View(editDeceasedVM);
         }
     }
 }

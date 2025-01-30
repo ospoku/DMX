@@ -1,20 +1,23 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AspNetCoreHero.ToastNotification.Notyf;
 using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
+using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Controllers
 {
-    public class ServiceRequestController( XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService
+    public class ServiceController( XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService
            ) : Controller
     {
         public readonly UserManager<AppUser> usm = userManager;
     public readonly XContext dcx = dContext;
     private readonly INotyfService notyf = notyfService;
-    
+        public readonly EntityService entityServ = entityService;
         public IActionResult ViewServiceRequests()
         {
             return ViewComponent("ViewServiceRequests");
@@ -89,28 +92,59 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> EditServiceRequest(string Id, EditServiceRequestVM editServiceRequestVM)
         {
-
-            ServiceRequest serviceRequestToComment = new();
-            serviceRequestToComment = (from s in dcx.ServiceRequests where s.ServiceRequestId == Id select s).FirstOrDefault();
-
-            ServiceRequestComment addThisComment = new()
+            if (editServiceRequestVM.SelectedUsers == null || !editServiceRequestVM.SelectedUsers.Any())
             {
-                //MemoId = memoToUpdate.MemoId,
-                CreatedDate = DateTime.UtcNow,
+                notyf.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewServiceRequests");
+            }
 
+            try
+            {
+                var decryptedId = Encryption.Decrypt(Id);
+                var updateThisServiceRequest = await dcx.ServiceRequests.FirstOrDefaultAsync(s => s.ServiceRequestId == decryptedId);
 
+                if (updateThisServiceRequest == null)
+                {
+                    notyf.Error("Service request not found.", 5);
+                    return RedirectToAction("ViewServiceRequests");
+                }
 
+                // Update Service Request properties
+                updateThisServiceRequest.ActionToBeTaken = editServiceRequestVM.ActionToBeTaken;
+                updateThisServiceRequest.FaultInspectedBy = editServiceRequestVM.FaultInspectedBy;
+                updateThisServiceRequest.Faults = editServiceRequestVM.Faults;
 
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
+                bool IsEdited = await entityServ.EditEntityAsync(updateThisServiceRequest, User);
 
-            dcx.ServiceRequestComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
+                if (!IsEdited)
+                {
+                    notyf.Error("Failed to update service request. Please try again.", 5);
+                    return RedirectToAction("ViewServiceRequests");
+                }
 
-            return RedirectToAction("ViewMemos");
+                // Remove existing assignments
+                var existingAssignments = dcx.ServiceAssignments.Where(x => x.ServiceRequestId == decryptedId);
+                dcx.ServiceAssignments.RemoveRange(existingAssignments);
+                await dcx.SaveChangesAsync();
+
+                // Add new assignments
+                var newAssignments = editServiceRequestVM.SelectedUsers
+                    .Select(userId => new ServiceAssignment { ServiceRequestId = decryptedId, UserId = userId })
+                    .ToList();
+
+                await dcx.ServiceAssignments.AddRangeAsync(newAssignments);
+                await dcx.SaveChangesAsync();
+
+                notyf.Success("Service request successfully updated.", 5);
+                return RedirectToAction("ViewServiceRequests");
+            }
+            catch (Exception ex)
+            {
+                notyf.Error("An unexpected error occurred. Please try again.", 5);
+                Console.WriteLine($"Error updating service request: {ex.Message}");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the service request." });
+            }
         }
-
 
     }
 }

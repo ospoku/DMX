@@ -17,25 +17,20 @@ namespace DMX.ViewComponents
 
 
         {
-           
+          
+      PettyCash    pettyCashToUpdate = (from p in dcx.PettyCash where p.PettyCashId==@Encryption.Decrypt(Id) select p ).FirstOrDefault();
 
-     
-      var      pettyCashToUpdate = (from p in dcx.PettyCash where p.PettyCashId==@Encryption.Decrypt(Id) select p ).FirstOrDefault();
-
-            EditPettyCashVM editMemoVM = new()
+            EditPettyCashVM editPettyCashVM = new()
             {
                 Amount=pettyCashToUpdate.Amount,
        Date=pettyCashToUpdate.Date,
-         
        Purpose=pettyCashToUpdate.Purpose,
-       
-                SelectedUsers = dcx.PettyCashAssignments.Where(x => x.PettyCashId == @Encryption.Decrypt(Id)).Select(u => u.AppUserId).ToList(),
+                SelectedUsers = dcx.PettyCashAssignments.Where(x => x.PettyCashId == @Encryption.Decrypt(Id)).Select(u => u.UserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-
+                Maximum = dcx.CashLimits.Select(p => p.Amount).FirstOrDefault()
             };
-            
-
-            return View(editMemoVM);
+           
+            return View(editPettyCashVM);
         }
     }
 }

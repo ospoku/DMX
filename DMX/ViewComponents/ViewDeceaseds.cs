@@ -24,9 +24,9 @@ namespace DMX.ViewComponents
                 int numberofDays = (int)timeSpan.TotalDays;
                 return new ViewPatientsVM
                 {
-                    PatientId = a.PatientId,
+                    PatientId = a.DeceasedId,
                     PatientName = a.Name,
-                    Date = a.Date,
+                    
                     FinalDiagnoses = a.Diagnoses,
                     FolderNo = a.FolderNo,
                     WardInCharge = a.WardInCharge,

@@ -26,7 +26,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddUser()
         {
-            return ViewComponent("AddUser");
+            return ViewComponent(nameof(AddUser));
         }
 
        
@@ -55,7 +55,7 @@ namespace DMX.Controllers
                 notyf.Success("User successfully created");
 
 
-                    return RedirectToAction("ViewUsers");
+                    return RedirectToAction(nameof(ViewUsers));
                 }
 
             

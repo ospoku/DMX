@@ -22,9 +22,6 @@ namespace DMX.ViewComponents
             
                 ParticipantId = m.ParticipantId,
 
-
-
-
                 CreatedDate = m.CreatedDate,
             }).OrderByDescending(m => m.CreatedDate).ToList();
 

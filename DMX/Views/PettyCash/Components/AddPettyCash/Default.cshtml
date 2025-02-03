@@ -15,11 +15,8 @@
 
             @using (Html.BeginForm("AddPettyCash", "PettyCash", FormMethod.Post, new{id="addPettyCashForm"}))
             { 
-                     
-
-                
                     <div class="did-floating-label-content">
-                        <input type="number" asp-for="@Model.Amount" class="did-floating-input"  max="@Model.Maximum" required/>
+                        <input type="number" step="0.0001" asp-for="@Model.Amount" class="did-floating-input" max="@Model.Maximum" required />
                         <label class="did-floating-label">Amount</label>
                     </div>
                         <div class="did-floating-label-content">

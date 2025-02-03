@@ -3,337 +3,206 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
-
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DMX.Controllers
 {
-    public class PettyCashController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService, AssignmentService assignmentService
-          ) : Controller
+    public class PettyCashController : Controller
     {
+        private readonly UserManager<AppUser> _userManager;
+        private readonly XContext _context;
+        private readonly INotyfService _notyfService;
+        private readonly EntityService _entityService;
+        private readonly AssignmentService _assignmentService;
 
-        public readonly UserManager<AppUser> usm = userManager;
-        public readonly XContext dcx = dContext;
-        private readonly INotyfService notyf = notyfService;
-        public readonly AssignmentService assignmentServ = assignmentService;
-        private readonly EntityService entityServ = entityService;
-
-        [HttpGet]
-        public IActionResult EditPettyCash(string Id)
+        public PettyCashController(
+            XContext context,
+            UserManager<AppUser> userManager,
+            INotyfService notyfService,
+            EntityService entityService,
+            AssignmentService assignmentService)
         {
-            return ViewComponent("EditPettyCash", Id);
+            _userManager = userManager;
+            _context = context;
+            _notyfService = notyfService;
+            _entityService = entityService;
+            _assignmentService = assignmentService;
         }
 
         [HttpGet]
-        public IActionResult ViewPettyCash()
-        {
-            return ViewComponent("ViewPettyCash");
-        }
+        public IActionResult ViewPettyCash() => ViewComponent("ViewPettyCash");
+
+        [HttpGet]
+        public IActionResult AddPettyCash() => ViewComponent("AddPettyCash");
+
         [HttpPost]
-        public async Task<IActionResult> AddPettyCash(AddPettyCashVM addPettyCashVM)
+        public async Task<IActionResult> AddPettyCash(AddPettyCashVM addPettyCashVm)
         {
-            if (addPettyCashVM.SelectedUsers == null || !addPettyCashVM.SelectedUsers.Any())
+            if (addPettyCashVm.SelectedUsers == null || !addPettyCashVm.SelectedUsers.Any())
             {
-                notyf.Error("You must select at least one user for assignment.", 5);
-                // Optionally, repopulate the view model and return the form to the user
-                //addPatientVM.UsersList = userService.GetAllUsers().Select(u => new SelectListItem { Value = u.Id, Text = u.Name }).ToList();
-
-                return RedirectToAction("ViewPettyCash"); // Return the form with the error
+                _notyfService.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewPettyCash");
             }
+
             try
             {
-
-
-                PettyCash addThisPettyCash = new()
+                var newPettyCash = new PettyCash
                 {
-                    Amount = addPettyCashVM.Amount,
-                    Purpose = addPettyCashVM.Purpose,
-
+                    Amount = addPettyCashVm.Amount,
+                    Purpose = addPettyCashVm.Purpose
                 };
-                bool result = await entityServ.AddEntityAsync(addThisPettyCash, User);
-                if (result)
+
+                bool result = await _entityService.AddEntityAsync(newPettyCash, User);
+                if (!result)
                 {
-                    foreach (var user in addPettyCashVM.SelectedUsers)
-                    {
-                        PettyCashAssignment cashAssignment = new PettyCashAssignment()
-                        {
-                            PettyCashId = addThisPettyCash.PettyCashId,
-                            UserId = user,
-                        };
-                        bool assignPettyCash = await entityServ.AddEntityAsync(cashAssignment, User);
-                        if (assignPettyCash)
-                        {
-                            notyf.Success("PettyCash and assignments successfully processed", 5); return RedirectToAction("ViewPettyCash");
-                        }
-                        else
-                        {
-                            notyf.Error("Error, record could not be saved.", 5);
-                            return RedirectToAction("ViewPettyCash");
-                        }
-                        // If everything is processed successfully
-                    }
-                    notyf.Success("PettyCash and assignments successfully processed.", 5);
-                    return RedirectToAction("ViewPettyCash");
-                }
-                else
-                {
-                    notyf.Error("An error occurred while processing the request.", 5);
+                    _notyfService.Error("An error occurred while processing the request.", 5);
                     return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request." });
                 }
+
+                foreach (var userId in addPettyCashVm.SelectedUsers)
+                {
+                    var assignment = new PettyCashAssignment
+                    {
+                        PettyCashId = newPettyCash.PettyCashId,
+                        UserId = userId
+                    };
+
+                    bool assignResult = await _entityService.AddEntityAsync(assignment, User);
+                    if (!assignResult)
+                    {
+                        _notyfService.Error($"Failed to assign petty cash to user {userId}.", 5);
+                    }
+                }
+
+                _notyfService.Success("Petty cash and assignments successfully processed.", 5);
+                return RedirectToAction("ViewPettyCash");
             }
             catch (Exception ex)
             {
-                notyf.Error("An error occurred while processing the request.", 5);
+                _notyfService.Error("An error occurred while processing the request.", 5);
                 return RedirectToAction("ViewPettyCash");
             }
         }
 
-
         [HttpGet]
-        public IActionResult AddPettyCash()
-        {
-           
-                return ViewComponent("AddPettyCash");
-            
-        }
-
-
-        [HttpGet]
-        public IActionResult CommentPettyCash(string Id)
-        {
-            return ViewComponent("CommentPettyCash", Id);
-        }
+        public IActionResult EditPettyCash(string id) => ViewComponent("EditPettyCash", id);
 
         [HttpPost]
-        public async Task<IActionResult> CommentPettyCash(string Id, PettyCashCommentVM addCommentVM)
+        public async Task<IActionResult> EditPettyCash(EditPettyCashVM editPettyCashVm, string id)
         {
-            try
+            if (editPettyCashVm.SelectedUsers == null || !editPettyCashVm.SelectedUsers.Any())
             {
-                PettyCash pettycashToComment = new();
-                pettycashToComment = (from a in dcx.PettyCash where a.PettyCashId == Encryption.Decrypt(Id) select a).FirstOrDefault();
-
-                PettyCashComment addThisComment = new()
-                {
-                    PettyCashId = pettycashToComment.PettyCashId,
-                    CreatedDate = DateTime.Now,
-
-                    Message = addCommentVM.NewComment,
-
-                    UserId = (await usm.GetUserAsync(User)).Id,
-                };
-
-                bool result = await entityServ.AddEntityAsync(addThisComment, User);
-                if (result)
-                {
-                    notyf.Success("Comment successfully saved", 5);
-                    return RedirectToAction("ViewPettyCash");
-                }
-                else
-                {
-                    notyf.Error("Comment could not be saved!!!", 5);
-                    return RedirectToAction("ViewPettyCash");
-                }
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error", "Home", new
-                {
-                    message = "An error occurred while processing the request.",
-                    ex.Message
-                });
-            }
-        }
-
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> EditPettyCash(EditPettyCashVM editPettyCashVM, string Id)
-        //{
-        //    if (editPettyCashVM.SelectedUsers == null || !editPettyCashVM.SelectedUsers.Any())
-        //    {
-        //        notyf.Error("You must select at least one user for assignment.", 5);
-        //        return RedirectToAction("ViewPettyCash");
-        //    }
-
-        //    try
-        //    {
-        //        var decryptedId = Encryption.Decrypt(Id);
-        //        var updateThisPettyCash = await dcx.PettyCash.FirstOrDefaultAsync(a => a.PettyCashId == decryptedId);
-
-        //        if (updateThisPettyCash == null)
-        //        {
-        //            notyf.Error("Petty Cash record not found.", 5);
-        //            return RedirectToAction("ViewPettyCash");
-        //        }
-
-        //        // Update properties
-        //        updateThisPettyCash.Purpose = editPettyCashVM.Purpose;
-        //        updateThisPettyCash.Amount = editPettyCashVM.Amount;
-
-        //        bool IsEdited = await entityServ.EditEntityAsync(updateThisPettyCash, User);
-
-        //        if (!IsEdited)
-        //        {
-        //            notyf.Error("Failed to update Petty Cash record. Please try again.", 5);
-        //            return RedirectToAction("ViewPettyCash");
-        //        }
-
-        //        // Remove existing assignments
-        //        var existingAssignments = dcx.PettyCashAssignments.Where(x => x.Id == decryptedId);
-        //        dcx.PettyCashAssignments.RemoveRange(existingAssignments);
-
-        //        bool allAssignmentsSuccessful = true;
-        //        List<string> failedUsers = new List<string>();
-
-        //        foreach (var userId in editPettyCashVM.SelectedUsers)
-        //        {
-        //            bool reassign = await assignmentServ.AssignUsers(
-        //                new PettyCashAssignment { Id = updateThisPettyCash.PettyCashId, UserId = userId },
-        //                User
-        //            );
-
-        //            if (!reassign)
-        //            {
-        //                allAssignmentsSuccessful = false;
-        //                failedUsers.Add(userId);
-        //            }
-        //        }
-
-        //        if (allAssignmentsSuccessful)
-        //        {
-        //            notyf.Success("Record successfully updated", 5);
-        //        }
-        //        else
-        //        {
-        //            notyf.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
-        //        }
-
-        //        return RedirectToAction("ViewPettyCash");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        notyf.Error("An unexpected error occurred. Please try again.", 5);
-        //        // Log error (you can replace with a proper logging system)
-        //        Console.WriteLine($"Error updating Petty Cash: {ex.Message}");
-        //        return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the Petty Cash record." });
-        //    }
-        //}
-
-
-
-
-
-
-
-
-
-        [HttpPost]
-        public async Task<IActionResult> EditPettyCash(EditPettyCashVM editPettyCashVM, string Id)
-        {
-            if (editPettyCashVM.SelectedUsers == null || !editPettyCashVM.SelectedUsers.Any())
-            {
-                notyf.Error("You must select at least one user for assignment.", 5);
+                _notyfService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction("ViewPettyCash");
             }
 
             try
             {
-                var decryptedId = Encryption.Decrypt(Id);
-                var updateThisPettyCash = await dcx.PettyCash.FirstOrDefaultAsync(a => a.PettyCashId == decryptedId);
-
-                if (updateThisPettyCash == null)
+                var decryptedId = Encryption.Decrypt(id);
+                var pettyCashToUpdate = await _context.PettyCash.FirstOrDefaultAsync(a => a.PettyCashId == decryptedId);
+                if (pettyCashToUpdate == null)
                 {
-                    notyf.Error("Petty Cash record not found.", 5);
+                    _notyfService.Error("Petty cash record not found.", 5);
                     return RedirectToAction("ViewPettyCash");
                 }
 
-                // Update properties
-                updateThisPettyCash.Purpose = editPettyCashVM.Purpose;
-                updateThisPettyCash.Amount = editPettyCashVM.Amount;
+                pettyCashToUpdate.Purpose = editPettyCashVm.Purpose;
+                pettyCashToUpdate.Amount = editPettyCashVm.Amount;
 
-                bool IsEdited = await entityServ.EditEntityAsync(updateThisPettyCash, User);
-
-                if (!IsEdited)
+                bool isEdited = await _entityService.EditEntityAsync(pettyCashToUpdate, User);
+                if (!isEdited)
                 {
-                    notyf.Error("Failed to update Petty Cash record. Please try again.", 5);
+                    _notyfService.Error("Failed to update petty cash record. Please try again.", 5);
                     return RedirectToAction("ViewPettyCash");
                 }
 
-                // Remove existing assignments
-                var existingAssignments = dcx.PettyCashAssignments.Where(x => x.PettyCashId == decryptedId);
-                dcx.PettyCashAssignments.RemoveRange(existingAssignments);
+                var existingAssignments = _context.PettyCashAssignments.Where(x => x.PettyCashId == decryptedId);
+                _context.PettyCashAssignments.RemoveRange(existingAssignments);
 
-                bool allAssignmentsSuccessful = true;
                 bool atLeastOneFailed = false;
-                List<string> failedUsers = new List<string>();
+                var failedUsers = new List<string>();
 
-                foreach (var userId in editPettyCashVM.SelectedUsers)
+                foreach (var userId in editPettyCashVm.SelectedUsers)
                 {
-                    bool reassign = await assignmentServ.AssignUsers(
-                        new PettyCashAssignment { PettyCashId = updateThisPettyCash.PettyCashId, UserId = userId },
-                        User
-                    );
+                    var assignment = new PettyCashAssignment
+                    {
+                        PettyCashId = pettyCashToUpdate.PettyCashId,
+                        UserId = userId
+                    };
 
-                    if (!reassign)
+                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    if (!assignResult)
                     {
                         atLeastOneFailed = true;
                         failedUsers.Add(userId);
                     }
                 }
 
-                // Display only ONE message
                 if (atLeastOneFailed)
                 {
-                    notyf.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
+                    _notyfService.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
                 }
                 else
                 {
-                    notyf.Success("Record successfully updated", 5);
+                    _notyfService.Success("Record successfully updated", 5);
                 }
 
                 return RedirectToAction("ViewPettyCash");
             }
             catch (Exception ex)
             {
-                notyf.Error("An unexpected error occurred. Please try again.", 5);
-                // Log error (you can replace with a proper logging system)
-                Console.WriteLine($"Error updating Petty Cash: {ex.Message}");
-                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the Petty Cash record." });
+                _notyfService.Error("An unexpected error occurred. Please try again.", 5);
+                Console.WriteLine($"Error updating petty cash: {ex.Message}");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the petty cash record." });
             }
         }
 
-
-
-
-
         [HttpGet]
-        public IActionResult CommentMemo(string Id)
+        public IActionResult CommentPettyCash(string id) => ViewComponent("CommentPettyCash", id);
+
+        [HttpPost]
+        public async Task<IActionResult> CommentPettyCash(string id, PettyCashCommentVM commentVm)
         {
-            return ViewComponent("CommentMemo", Id);
-        }
+            try
+            {
+                var decryptedId = Encryption.Decrypt(id);
+                var pettyCashToComment = await _context.PettyCash.FirstOrDefaultAsync(a => a.PettyCashId == decryptedId);
+                if (pettyCashToComment == null)
+                {
+                    return NotFound();
+                }
 
-        [HttpGet]
-        public IActionResult PrintMemo(string Id)
-        {
-            return ViewComponent("PrintMemo", Id);
-        }
-        public IActionResult ViewMemos()
-        {
+                var newComment = new PettyCashComment
+                {
+                    PettyCashId = pettyCashToComment.PettyCashId,
+                    Message = commentVm.NewComment,
+                    UserId = (await _userManager.GetUserAsync(User)).Id,
+                    CreatedDate = DateTime.Now
+                };
 
-            //var breadcrumbs = new List<BreadcrumbItem>
-            //{
-            //    new BreadcrumbItem{Title="Home", Url="/"},
-            //    new BreadcrumbItem{Title="Memos", Url=@Url.Action("ViewMemos")}
-            //};
+                bool result = await _entityService.AddEntityAsync(newComment, User);
+                if (result)
+                {
+                    _notyfService.Success("Comment successfully saved", 5);
+                }
+                else
+                {
+                    _notyfService.Error("Comment could not be saved!!!", 5);
+                }
 
-            //ViewBag.BreadcrumbItems = breadcrumbs;
-
-            return ViewComponent("ViewMemos");
+                return RedirectToAction("ViewPettyCash");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request.", ex.Message });
+            }
         }
     }
-
-    }
-
+}

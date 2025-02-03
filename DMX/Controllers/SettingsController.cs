@@ -12,6 +12,8 @@ using System.Collections.Generic;
 
 using DMX.Helpers;
 using DMX.Services;
+using Microsoft.AspNetCore.Components.Web;
+using DMX.DataProtection;
 
 namespace DMX.Controllers
 {
@@ -26,32 +28,30 @@ namespace DMX.Controllers
         public IActionResult Preferences()
         {
 
-            return ViewComponent("ViewPreferences");
+            return ViewComponent(nameof(ViewPreferences));
         }
         public IActionResult SystemSetup()
         {
-            return ViewComponent("SystemSetup", "ViewDepartments");
+            return ViewComponent(nameof(SystemSetup));
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
-        //{
-           
+        [HttpPost]
+        public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
+        {
+            TravelType travelType = new()
+            {
+                Name = addTravelTypeVM.Name,
+                Code = addTravelTypeVM.Code,
+                Description = addTravelTypeVM.Description,
+            };
 
-        //    TravelType travelType = new()
-        //    {
-        //        Name = addTravelTypeVM.Name,
-        //        Code = addTravelTypeVM.Code,
-        //        Description = addTravelTypeVM.Description,
-        //    };
+            if (await entityServ.AddEntityAsync(travelType, User))
+            {
+                return RedirectToAction("SystemSetup");
+            }
+            return RedirectToAction("SystemSetup");
 
-        //    if (await entityServ.AddEntityAsync(travelType, User))
-        //    {
-        //        return RedirectToAction("SystemSetup");
-        //    }
-        //    return RedirectToAction("SystemSetup");
-
-        //}
+        }
         [HttpPost]
         public async Task<IActionResult> AddFeeStructureAsync(AddFeeStructureVM addFeeStructureVM)
         {
@@ -62,10 +62,11 @@ namespace DMX.Controllers
             FeeStructure addThisStructure = new()
             {
                 Name = addFeeStructureVM.Name,
-
+                DeceasedTypeId = addFeeStructureVM.DeceasedTypeId,
                 MinDays = addFeeStructureVM.Min,
                 MaxDays = addFeeStructureVM.Max,
                 Fee = addFeeStructureVM.Fee,
+                
 
             };
             // Call the service method, which returns a bool
@@ -74,13 +75,15 @@ namespace DMX.Controllers
             // Based on the result, redirect or return the appropriate response
             if (result)
             {
+                notyf.Success("Record successfully saved", 5);
                 // Success: Redirect to SystemSetup
-                return RedirectToAction("SystemSetup");
+                return RedirectToAction(nameof(SystemSetup));
             }
             else
             {
+                notyf.Error("Error, Record could not be saved!!!", 5);
                 // Failure: Return an error view or handle as needed
-                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+                return RedirectToAction(nameof(SystemSetup)); // You can return an error page if preferred
             }
         }
 
@@ -95,7 +98,6 @@ namespace DMX.Controllers
             DeceasedType addThisDeceasedType = new()
             {
                 Name = addDeceasedTypeVM.Name,
-
                 Code = addDeceasedTypeVM.Code,
                 Description = addDeceasedTypeVM.Description
             };
@@ -106,12 +108,12 @@ namespace DMX.Controllers
             if (result)
             {
                 // Success: Redirect to SystemSetup
-                return RedirectToAction("SystemSetup");
+                return RedirectToAction(nameof(SystemSetup));
             }
             else
             {
                 // Failure: Return an error view or handle as needed
-                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+                return RedirectToAction(nameof(SystemSetup)); // You can return an error page if preferred
             }
         }
 
@@ -136,20 +138,19 @@ namespace DMX.Controllers
             if (result)
             {
                 // Success: Redirect to SystemSetup
-                return RedirectToAction("SystemSetup");
+                return RedirectToAction(nameof(SystemSetup));
             }
             else
             {
                 // Failure: Return an error view or handle as needed
-                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+                return RedirectToAction(nameof(SystemSetup)); // You can return an error page if preferred
             }
         }
-
 
         [HttpGet]
         public IActionResult AddPerDiem()
         {
-            return ViewComponent("AddPerDiem");
+            return ViewComponent(nameof(AddPerDiem));
         }
         [HttpPost]
         public async Task<IActionResult> AddCashLimit(EditLimitVM limitVM, CashLimit cashLimit)
@@ -159,9 +160,6 @@ namespace DMX.Controllers
 
             CashLimit addThisLimit = new()
             {
-
-
-
                 Amount = cashLimit.Amount,
             };
 
@@ -171,44 +169,55 @@ namespace DMX.Controllers
             if (result)
             {
                 // Success: Redirect to SystemSetup
-                return RedirectToAction("SystemSetup");
+                return RedirectToAction(nameof(SystemSetup));
             }
             else
             {
                 // Failure: Return an error view or handle as needed
-                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+                return RedirectToAction(nameof(SystemSetup)); // You can return an error page if preferred
             }
 
         }
-        //[HttpPost]
-        //public async Task<IActionResult> EditCashLimit(EditLimitVM limitVM, CashLimit cashLimit)
-        //{
-        //    var user = await usm.GetUserAsync(User);
-        //    // Assuming you save the limit in a database or some other store
 
-        //    CashLimit limitToUpdate = (from a in dcx.CashLimits where a.CashLimitId == cashLimit.CashLimitId select a).FirstOrDefault();
+        [HttpPost]
+        public async Task<IActionResult> EditCashLimit(string id, EditLimitVM editLimitVM)
+        {
+            
 
+            try
+            {
+                var decryptedId = Encryption.Decrypt(id);
+                var limitToUpdate = await dcx.CashLimits.FirstOrDefaultAsync(m => m.CashLimitId == decryptedId);
+                if (limitToUpdate == null)
+                {
+                    notyf.Error("Limit not found.", 5);
+                    return RedirectToAction(nameof(SystemSetup));
+                }
 
-        //    limitToUpdate.Amount = cashLimit.Amount;
-        //    limitToUpdate.CreatedBy = user?.UserName;
-        //    limitToUpdate.CreatedDate = DateTime.UtcNow;
-        //    dcx.CashLimits.Attach(limitToUpdate);
-        //    dcx.Entry(limitToUpdate).State = EntityState.Modified;
+                limitToUpdate.Amount = editLimitVM.Amount;
+               
 
-        //    if (await saveHelper.SaveEntity(limitToUpdate, user?.UserName))
-        //    {
-        //        notyf.Success("Record successfully saved", 5);
+                bool isEdited = await entityServ.EditEntityAsync(limitToUpdate, User);
+                if (!isEdited)
+                {
+                    notyf.Error("Failed to update memo. Please try again.", 5);
+                    return RedirectToAction("ViewMemos");
+                }
+else
+                {
+                    notyf.Success("Record successfully updated", 5);
+                }
 
-        //        return RedirectToAction("SystemSetup");
-        //    }
-        //    else
-        //    {
-        //        notyf.Error("Error, Record could not be saved!!!", 5);
-        //        return RedirectToAction("SystemSetup");
-        //    }
+                return RedirectToAction("ViewMemos");
+            }
+            catch (Exception ex)
+            {
+               notyf.Error("An unexpected error occurred. Please try again.", 5);
+                Console.WriteLine($"Error updating Memo: {ex.Message}");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
+            }
+        }
 
-
-        //}
         [HttpPost]
         public async Task<IActionResult> AddTransportModeAsync(AddTransportModeVM addTransportVM)
         {
@@ -230,41 +239,76 @@ namespace DMX.Controllers
             if (result)
             {
                 // Success: Redirect to SystemSetup
-                return RedirectToAction("SystemSetup");
+                return RedirectToAction(nameof(SystemSetup));
             }
             else
             {
                 // Failure: Return an error view or handle as needed
-                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+                return RedirectToAction(nameof(SystemSetup)); // You can return an error page if preferred
             }
 
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> AddTravelTypeAsync(AddTravelTypeVM addTravelTypeVM)
+        public async Task<IActionResult> EditPerDiemAsync(EditPerdiemVM editPerdiemVM, string Id)
         {
-            TravelType travelType = new()
+            try
             {
-                Name = addTravelTypeVM.Name,
-                Code = addTravelTypeVM.Code,
-                Description = addTravelTypeVM.Description,
-            };
+                var decryptedId = Encryption.Decrypt(Id);
+                var perdiemToUpdate = await dcx.PerDiems.FirstOrDefaultAsync(m => m.UserId == decryptedId);
 
-            // Call the service method, which returns a bool
-            bool result = await entityServ.AddEntityAsync(travelType, User);
+                if (perdiemToUpdate == null)
+                {
+                    // User not found, create a new PerDiem record
+                    var newPerDiem = new PerDiem
+                    {
+                        UserId = decryptedId,
+                        Amount = editPerdiemVM.Amount
+                    };
 
-            // Based on the result, redirect or return the appropriate response
-            if (result)
-            {
-                // Success: Redirect to SystemSetup
-                return RedirectToAction("SystemSetup");
+                    bool isAdded = await entityServ.AddEntityAsync(newPerDiem, User);
+                    if (!isAdded)
+                    {
+                        notyf.Error("Failed to add perdiem. Please try again.", 5);
+                        return RedirectToAction(nameof(SystemSetup));
+                    }
+                    else
+                    {
+                        notyf.Success("Record successfully added", 5);
+                    }
+                }
+                else
+                {
+                    // User found, update the existing PerDiem record
+                    perdiemToUpdate.Amount = editPerdiemVM.Amount;
+
+                    bool isEdited = await entityServ.EditEntityAsync(perdiemToUpdate, User);
+                    if (!isEdited)
+                    {
+                        notyf.Error("Failed to update perdiem. Please try again.", 5);
+                        return RedirectToAction(nameof(SystemSetup));
+                    }
+                    else
+                    {
+                        notyf.Success("Record successfully updated", 5);
+                    }
+                }
+
+                return RedirectToAction(nameof(SystemSetup));
             }
-            else
+            catch (Exception ex)
             {
-                // Failure: Return an error view or handle as needed
-                return RedirectToAction("SystemSetup"); // You can return an error page if preferred
+                notyf.Error("An unexpected error occurred. Please try again.", 5);
+                Console.WriteLine($"Error updating Perdiem: {ex.Message}");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the perdiem." });
             }
+        }
+            [HttpGet]
+        public IActionResult EditPerDiem(string Id)
+        {
+
+            return ViewComponent(nameof(EditPerDiem),Id);
         }
     }
 

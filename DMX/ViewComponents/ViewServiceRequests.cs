@@ -16,11 +16,11 @@ namespace DMX.ViewComponents
             var servList = dcx.ServiceAssignments.Where(a => a.AppUser.UserName == user || a.ServiceRequest.CreatedBy == user).Select(a => new 
              ViewServiceRequestsVM
             {
-                FaultInspectedBy = a.ServiceRequest.FaultInspectedBy,
+                
             Faults = a.ServiceRequest.Faults,  
-            RequestDate = a.ServiceRequest.RequestDate,
+           
             RequestNumber = a.ServiceRequest.RequestNumber,
-            Unit = a.ServiceRequest.Unit,
+          
                 CreatedDate = a.ServiceRequest.CreatedDate,
             }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(servList);

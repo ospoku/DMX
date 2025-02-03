@@ -73,7 +73,7 @@
                             <div class="did-floating-label-content">
 
 
-                                <input type="number" asp-for="@Model.ConferenceFee" class="did-floating-input" required />
+                                <input type="number" step="0.0001" asp-for="@Model.ConferenceFee" class="did-floating-input" required />
                                 <label class="did-floating-label">Seminar/Conference Fees</label>
 
                             </div>
@@ -83,14 +83,14 @@
                             <div class="did-floating-label-content">
 
 
-                                <input type="number" asp-for="@Model.FuelClaim" class="did-floating-input" required />
+                                <input type="number" step="0.0001" asp-for="@Model.FuelClaim" class="did-floating-input" required />
                                 <label class="did-floating-label">Fuel Claim</label>
 
                             </div>
                         </div>
                         <div class="col">
                             <div class="did-floating-label-content">
-                                <input type="number" asp-for="@Model.OtherExpenses" class="did-floating-input" required />
+                                <input type="number" step="0.0001" asp-for="@Model.OtherExpenses" class="did-floating-input" required />
                                 <label class="did-floating-label">Other Expenses</label>
 
                             </div>

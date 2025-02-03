@@ -4,11 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMX.Models
 {
-    public class CashLimit:TableAudit
+    public class Category : TableAudit
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string CashLimitId { get; set; }
-        public decimal Amount { get; set; }
+        public string Id { get; set; }
+        public required string Name { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
+
     }
 }

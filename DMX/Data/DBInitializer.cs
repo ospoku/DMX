@@ -36,6 +36,22 @@ namespace DMX.Data
                     Description = "Name for a Patient who Died in Ward"
                 });
             }
+            if (!dcx.Statuses.Any())
+            {
+                dcx.Statuses.Add(new Status()
+                {
+                    Name = "Brought In Dead",
+                    Code = "BID",
+                    Description = "Name for a Patient who was broguth in Dead"
+                });
+                dcx.Statuses.Add(new Status()
+                {
+                    Name = "Dead In Ward",
+                    Code = "DIW",
+                    Description = "Name for a Patient who Died in Ward"
+                });
+            }
+
 
             List<Claim> claimlist =
             [

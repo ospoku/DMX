@@ -4,272 +4,235 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
-
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DMX.Controllers
 {
-    public class ExcuseDutyController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EntityService entityService, IAuthorizationService authorizationService, AssignmentService assignmentService) : Controller
+    [Authorize]
+    public class ExcuseDutyController : Controller
     {
+        private readonly IAuthorizationService _authorizationService;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly XContext _context;
+        private readonly INotyfService _notyfService;
+        private readonly EntityService _entityService;
+        private readonly AssignmentService _assignmentService;
 
-        public readonly IAuthorizationService auth = authorizationService;
-        public readonly UserManager<AppUser> usm = userManager;
-        public readonly XContext dcx = dContext;
-        private readonly INotyfService notyf = notyfService;
-        private readonly EntityService entityServ = entityService;
-        public readonly AssignmentService assignmentServ = assignmentService;
+        public ExcuseDutyController(
+            XContext context,
+            UserManager<AppUser> userManager,
+            INotyfService notyfService,
+            EntityService entityService,
+            IAuthorizationService authorizationService,
+            AssignmentService assignmentService)
+        {
+            _authorizationService = authorizationService;
+            _userManager = userManager;
+            _context = context;
+            _notyfService = notyfService;
+            _entityService = entityService;
+            _assignmentService = assignmentService;
+        }
+
         [HttpGet]
         public IActionResult ViewExcuseDuties()
         {
             return ViewComponent("ViewExcuseDuties");
         }
-        [HttpGet]
-        public IActionResult DetailExcuseDuty(string Id)
-        {
-            return ViewComponent("DetailExcuseDuty", Id);
-        }
-        [HttpPost]
-        public async Task<IActionResult> CommentExcuseDuty(string Id, MemoCommentVM addCommentVM)
-        {
-            try { 
-            ExcuseDuty dutyToComment = new();
-            dutyToComment = (from a in dcx.ExcuseDuties where a.Id == Id select a).FirstOrDefault();
-
-                ExcuseDutyComment addThisComment = new()
-                {
-                    ExcuseDutyId = dutyToComment.Id,
-
-
-                    Message = addCommentVM.NewComment,
-
-
-
-                    UserId = (await usm.GetUserAsync(User)).Id
-                };
-                bool result = await entityServ.AddEntityAsync(addThisComment, User);
-                if (result)
-            {
-                notyf.Success("Comment successfully saved", 5);
-                return RedirectToAction("ViewExcuseDuties");
-            }
-            else
-            {
-                notyf.Error("Comment could not be saved!!!", 5);
-                return RedirectToAction("ViewExcuseDuties");
-            }
-        }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request.", ex.Message
-    });
-            }
-        }
-        
 
         [HttpGet]
-        public async Task<IActionResult> EditExcuseDutyAsync(string Id)
+        public IActionResult DetailExcuseDuty(string id)
         {
-
-            ExcuseDuty? excuseDutyId = (from x in dcx.ExcuseDuties where x.Id == Encryption.Decrypt(Id) select x).FirstOrDefault();
-            if (excuseDutyId == null)
-            {
-                return new NotFoundResult();
-            }
-            var authorizationResult = await auth.AuthorizeAsync(User, excuseDutyId, "ExcuseDutyOwnerPolicy");
-            if (authorizationResult.Succeeded)
-            {
-                return ViewComponent("EditExcuseDuty", Id);
-            }
-            else
-            {
-                notyf.Error("You do not have access to this resource!", 5);
-
-                return Json(new { success = false, message = "You do not have access to this resource!" });
-
-            }
-      
+            return ViewComponent("DetailExcuseDuty", id);
         }
-        [HttpPost]
-        public async Task<IActionResult> AddExcuseDuty(AddExcuseDutyVM addExcuseDutyVM)
-        {
-            if (addExcuseDutyVM.SelectedUsers == null || !addExcuseDutyVM.SelectedUsers.Any())
-            {
-                notyf.Error("You must select at least one user for assignment.", 5);
-
-
-                return RedirectToAction("ViewExcuseDuties"); // Return the form with the error
-            }
-            try
-            {
-
-                var existingRecord = await dcx.ExcuseDuties.FirstOrDefaultAsync(e =>
-    e.ExcuseDays == addExcuseDutyVM.ExcuseDays &&
-    e.DateofDischarge == addExcuseDutyVM.DateofDischarge &&
-    e.Diagnosis == addExcuseDutyVM.Diagnosis && e.PatientName==addExcuseDutyVM.PatientName && e.PatientId==addExcuseDutyVM.PatientId);
-
-                if (existingRecord != null)
-                {
-                    notyf.Error("This record already exists.");
-                    return RedirectToAction("ViewExcuseDuties");
-                }
-
-
-
-                ExcuseDuty addThisExcuseDuty = new()
-                {
-                   
-                    DateofDischarge = addExcuseDutyVM.DateofDischarge,
-                    ExcuseDays = addExcuseDutyVM.ExcuseDays,
-                    PatientName=addExcuseDutyVM.PatientName,
-                    PatientId=addExcuseDutyVM.PatientId,
-                    Diagnosis = addExcuseDutyVM.Diagnosis,
-
-                };
-                bool result = await entityServ.AddEntityAsync(addThisExcuseDuty, User);
-                if (result)
-                {
-                    try
-                    {
-
-                        foreach (var user in addExcuseDutyVM.SelectedUsers)
-                        {
-
-                            ExcuseDutyAssignment assignThisExcuseDuty = new ExcuseDutyAssignment()
-                            {
-                                ExcuseDutyId = addThisExcuseDuty.Id,
-                                UserId = user,
-
-                            };
-                            bool assignResult = await entityServ.AddEntityAsync(assignThisExcuseDuty, User);
-                            if (assignResult)
-                            {
-                                notyf.Success("Record successfully saved", 5);
-                                return RedirectToAction("ViewExcuseDuties");
-                            }
-                            else
-                            {
-                                notyf.Error("Error, record could not be saved.", 5);
-                                return RedirectToAction("ViewExcuseDuties");
-                            }
-                        }
-                    }
-                    catch (Exception innerEx) 
-                    {
-                        notyf.Error("Error processing users: " + innerEx.Message, 5);
-                        return RedirectToAction("ErrorPage", new { message = "An error occurred while processing users." });
-                            }
-
-
-
-                            return RedirectToAction("ErrorPage", new { message = "Failed to add the Excuse Duty. Please try again." });
-        }
-                        else
-                        {
-                            // Failure: Handle error and redirect to a setup or error page
-                            notyf.Error("Excuse Duty creation failed.", 5);
-                            return RedirectToAction("ErrorPage", new { message = "Failed to add the Excuse Duty. Please try again." });
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Log the error (optional)
-                        notyf.Error("An error occurred: " + ex.Message, 5);
-// Redirect to an error page with a custom error message
-return RedirectToAction("ErrorPage", new { message = ex.Message });
-
-                    }
-                }
-
-
 
         [HttpPost]
-        public async Task<IActionResult> EditExcuseDutyAsync(string Id, EditExcuseDutyVM editExcuseDutyVM)
+        public async Task<IActionResult> CommentExcuseDuty(string id, MemoCommentVM commentVm)
         {
-
-            if (editExcuseDutyVM.SelectedUsers == null || !editExcuseDutyVM.SelectedUsers.Any())
-            {
-                notyf.Error("You must select at least one user for assignment.", 5);
-
-
-                return RedirectToAction("ViewExcuseDuties"); // Return the form with the error
-            }
-            //// Decrypt the memo ID and fetch the memo to update
             try
             {
-                var decryptedId = Encryption.Decrypt(Id);
-                var updateThisExcuseDuty = await dcx.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == decryptedId);
-
-                if (updateThisExcuseDuty == null)
+                var dutyToComment = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == id);
+                if (dutyToComment == null)
                 {
-                    // Handle the case where the memo is not found
                     return NotFound();
                 }
 
-                // Update memo properties
-                updateThisExcuseDuty.DateofDischarge = editExcuseDutyVM.DateofDischarge;
-                updateThisExcuseDuty.ExcuseDays = editExcuseDutyVM.ExcuseDays;
-                updateThisExcuseDuty.Diagnosis = editExcuseDutyVM.Diagnosis;
-                updateThisExcuseDuty.PatientName = editExcuseDutyVM.Name;
-                updateThisExcuseDuty.PatientId = editExcuseDutyVM.PatientId;
-
-                bool IsEdited = await entityServ.EditEntityAsync(updateThisExcuseDuty, User);
-
-                // Mark the entity as modified
-                if (IsEdited)
+                var newComment = new ExcuseDutyComment
                 {
+                    ExcuseDutyId = dutyToComment.Id,
+                    Message = commentVm.NewComment,
+                    UserId = (await _userManager.GetUserAsync(User)).Id
+                };
 
-
-                    // Remove existing memo assignments
-                    var existingAssignments = dcx.ExcuseDutyAssignments.Where(x => x.Id == decryptedId);
-                    dcx.ExcuseDutyAssignments.RemoveRange(existingAssignments);
-
-                    // Add new memo assignments
-                    foreach (var userId in editExcuseDutyVM.SelectedUsers)
-                    {
-                        bool reassign = await assignmentServ.AssignUsers(new ExcuseDutyAssignment { Id = updateThisExcuseDuty.Id, UserId = userId }, User);
-                        if (reassign)
-                        {
-
-                            notyf.Success("Record successfully updated", 5);
-                            return RedirectToAction("ViewMemos");
-                        }
-                    }
-
-
-                    notyf.Success("Record successfully updated", 5);
-                    return RedirectToAction("ViewMemos");
+                bool result = await _entityService.AddEntityAsync(newComment, User);
+                if (result)
+                {
+                    _notyfService.Success("Comment successfully saved", 5);
                 }
                 else
                 {
-                    notyf.Error("Failed to update memo. Please try again.", 5);
-                    return RedirectToAction("ViewMemos");
+                    _notyfService.Error("Comment could not be saved!!!", 5);
                 }
+
+                return RedirectToAction("ViewExcuseDuties");
             }
-
-
-            // If saving fails, show the edit memo view with error
             catch (Exception ex)
             {
-                // Handle any unexpected errors
-                notyf.Error("An error occurred: " + ex.Message, 5);
-                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request.", ex.Message });
             }
-
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditExcuseDutyAsync(string id)
+        {
+            var decryptedId = Encryption.Decrypt(id);
+            var excuseDuty = await _context.ExcuseDuties.FirstOrDefaultAsync(x => x.Id == decryptedId);
+            if (excuseDuty == null)
+            {
+                return NotFound();
+            }
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, excuseDuty, "ExcuseDutyOwnerPolicy");
+            if (!authorizationResult.Succeeded)
+            {
+                _notyfService.Error("You do not have access to this resource!", 5);
+                return Json(new { success = false, message = "You do not have access to this resource!" });
+            }
+
+            return ViewComponent("EditExcuseDuty", id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExcuseDuty(AddExcuseDutyVM addExcuseDutyVm)
+        {
+            if (addExcuseDutyVm.SelectedUsers == null || !addExcuseDutyVm.SelectedUsers.Any())
+            {
+                _notyfService.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewExcuseDuties");
+            }
+
+            try
+            {
+                var existingRecord = await _context.ExcuseDuties.FirstOrDefaultAsync(e =>
+                    e.ExcuseDays == addExcuseDutyVm.ExcuseDays &&
+                    e.DateofDischarge == addExcuseDutyVm.DateofDischarge &&
+                    e.Diagnosis == addExcuseDutyVm.Diagnosis &&
+                    e.PatientName == addExcuseDutyVm.PatientName &&
+                    e.PatientId == addExcuseDutyVm.PatientId);
+
+                if (existingRecord != null)
+                {
+                    _notyfService.Error("This record already exists.");
+                    return RedirectToAction("ViewExcuseDuties");
+                }
+
+                var newExcuseDuty = new ExcuseDuty
+                {
+                    DateofDischarge = addExcuseDutyVm.DateofDischarge,
+                    ExcuseDays = addExcuseDutyVm.ExcuseDays,
+                    PatientName = addExcuseDutyVm.PatientName,
+                    PatientId = addExcuseDutyVm.PatientId,
+                    Diagnosis = addExcuseDutyVm.Diagnosis
+                };
+
+                bool result = await _entityService.AddEntityAsync(newExcuseDuty, User);
+                if (!result)
+                {
+                    _notyfService.Error("Excuse Duty creation failed.", 5);
+                    return RedirectToAction("ErrorPage", new { message = "Failed to add the Excuse Duty. Please try again." });
+                }
+
+                foreach (var user in addExcuseDutyVm.SelectedUsers)
+                {
+                    var assignment = new ExcuseDutyAssignment
+                    {
+                        ExcuseDutyId = newExcuseDuty.Id,
+                        UserId = user
+                    };
+
+                    bool assignResult = await _entityService.AddEntityAsync(assignment, User);
+                    if (!assignResult)
+                    {
+                        _notyfService.Error("Error, record could not be saved.", 5);
+                        return RedirectToAction("ViewExcuseDuties");
+                    }
+                }
+
+                _notyfService.Success("Record successfully saved", 5);
+                return RedirectToAction("ViewExcuseDuties");
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error("An error occurred: " + ex.Message, 5);
+                return RedirectToAction("ErrorPage", new { message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditExcuseDutyAsync(string id, EditExcuseDutyVM editExcuseDutyVm)
+        {
+            if (editExcuseDutyVm.SelectedUsers == null || !editExcuseDutyVm.SelectedUsers.Any())
+            {
+                _notyfService.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewExcuseDuties");
+            }
+
+            try
+            {
+                var decryptedId = Encryption.Decrypt(id);
+                var excuseDutyToUpdate = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == decryptedId);
+                if (excuseDutyToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                excuseDutyToUpdate.DateofDischarge = editExcuseDutyVm.DateofDischarge;
+                excuseDutyToUpdate.ExcuseDays = editExcuseDutyVm.ExcuseDays;
+                excuseDutyToUpdate.Diagnosis = editExcuseDutyVm.Diagnosis;
+                excuseDutyToUpdate.PatientName = editExcuseDutyVm.Name;
+                excuseDutyToUpdate.PatientId = editExcuseDutyVm.PatientId;
+
+                bool isEdited = await _entityService.EditEntityAsync(excuseDutyToUpdate, User);
+                if (!isEdited)
+                {
+                    _notyfService.Error("Failed to update memo. Please try again.", 5);
+                    return RedirectToAction("ViewMemos");
+                }
+
+                var existingAssignments = _context.ExcuseDutyAssignments.Where(x => x.Id == decryptedId);
+                _context.ExcuseDutyAssignments.RemoveRange(existingAssignments);
+
+                foreach (var userId in editExcuseDutyVm.SelectedUsers)
+                {
+                    bool reassign = await _assignmentService.AssignUsers(new ExcuseDutyAssignment { Id = excuseDutyToUpdate.Id, UserId = userId }, User);
+                    if (!reassign)
+                    {
+                        _notyfService.Error("Failed to reassign users.", 5);
+                        return RedirectToAction("ViewMemos");
+                    }
+                }
+
+                _notyfService.Success("Record successfully updated", 5);
+                return RedirectToAction("ViewMemos");
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error("An error occurred: " + ex.Message, 5);
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
+            }
+        }
 
         [HttpGet]
         public IActionResult AddExcuseDuty()
         {
             return ViewComponent("AddExcuseDuty");
         }
-
-
-
     }
 }

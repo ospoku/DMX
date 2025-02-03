@@ -17,28 +17,25 @@
 
             @using (Html.BeginForm("AddServiceRequest", "ServiceRequest", FormMethod.Post))
             {
-
-              
-
-                        <div class="did-floating-label-content">
+                       <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.RequestNumber" class="did-floating-input" placeholder="">
-                            <label class="did-floating-label">Request Number</label>
+                            <label class="did-floating-label">Title</label>
                         </div>
 
-                    <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.RequestDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" />
-                        <label class="did-floating-label">Request Date</label>
+                   <div class="did-floating-label-content">
+                        <textarea type="text" asp-for="@Model.Description" class="did-floating-input"></textarea>
+                        <label class="did-floating-label">Description</label>
 
                     </div>
-                    <div class="did-floating-label-content">
+                   <div class="did-floating-label-content">
                         <input type="text" asp-for="@Model.ServiceRequestedBy" class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label">Requested By</label>
+                        <label class="did-floating-label">Category</label>
 
                     </div>
 
                     <div class="did-floating-label-content">
                         <select  id="modalDept" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                        <label class="did-floating-label">Select Department</label>
+                        <label class="did-floating-label">Urgency</label>
                     </div>
 
                     <div class="did-floating-label-content">
@@ -57,13 +54,13 @@
 
 
 
-                        <div class="form-group">
+                        
 
 
                             <textarea class="did-floating-input" asp-for="@Model.RequestNumber" type="text" placeholder="Additional Information"></textarea>
 
 
-                        </div>
+                    
 
                         <button class="btn btn-block btn-primary">Save</button>
 

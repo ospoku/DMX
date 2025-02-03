@@ -17,17 +17,21 @@
                         <input type="text" asp-for="@Model.Name" id="txtAddFeeName"  class="did-floating-input" placeholder="" />
                         <label class="did-floating-label" for="txtAddFeeName">Name</label>
                     </div>
+                <div class="did-floating-label-content">
+                    <select  asp-for="@Model.DeceasedTypeId" id="selDeceasedType" class="did-floating-select"  asp-items="Model.DeceasedTypes"></select>
+                    <label class="did-floating-label">Deceased Type</label>
+                </div>
 
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Min"id="txtAddMin"  class="did-floating-input" placeholder="" />
+                <div class="did-floating-label-content">
+                        <input type="number" asp-for="@Model.Min"id="txtAddMin"  class="did-floating-input" placeholder="" />
                         <label class="did-floating-label" for="txtAddMin">Minimum Day(s)</label>
                     </div>
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Max" id="txtAddMax"  class="did-floating-input" placeholder=""/>
+                        <input type="number" asp-for="@Model.Max" id="txtAddMax"  class="did-floating-input" placeholder=""/>
                         <label class="did-floating-label" for="txtAddMax">Maximum Days</label>
                     </div>
                      <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Fee" id="txtAddFee"  class="did-floating-input" placeholder=""/>
+                    <input type="number" step="0.0001" asp-for="@Model.Fee" id="txtAddFee" class="did-floating-input" placeholder="" />
                         <label class="did-floating-label" for="txtAddFee">Amount</label>
                     </div>
                     </div>

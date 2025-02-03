@@ -6,128 +6,143 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DMX.Controllers
 {
-    public class TravelRequestController(XContext dContext,UserManager<AppUser>userManager,INotyfService notyfService,EntityService entityService) : Controller
+    public class TravelRequestController : Controller
     {
-     public readonly UserManager<AppUser>usm= userManager;
-public readonly XContext dcx = dContext;
-        public readonly INotyfService notyf = notyfService;
-        public readonly EntityService entityServ = entityService;
-            
-        [HttpPost]
-        public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVM)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly XContext _context;
+        private readonly INotyfService _notyfService;
+        private readonly EntityService _entityService;
+
+        public TravelRequestController(
+            XContext context,
+            UserManager<AppUser> userManager,
+            INotyfService notyfService,
+            EntityService entityService)
         {
-            if (addTravelRequestVM.SelectedUsers?.Any() != true)
+            _userManager = userManager;
+            _context = context;
+            _notyfService = notyfService;
+            _entityService = entityService;
+        }
+
+        [HttpGet]
+        public IActionResult ViewTravelRequests() => ViewComponent("ViewTravelRequests");
+
+        [HttpGet]
+        public IActionResult AddTravelRequest() => ViewComponent("AddTravelRequest");
+
+        [HttpPost]
+        public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVm)
+        {
+            if (addTravelRequestVm.SelectedUsers?.Any() != true)
             {
-                notyf.Error("You must select at least one user for assignment.", 5);
+                _notyfService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction("ViewTravelRequests");
             }
 
             try
             {
-                var existingRequest = await dcx.TravelRequests.FirstOrDefaultAsync(p =>
-    p.TravelTypeId.ToLower() == addTravelRequestVM.TravelTypeId.ToLower() &&
-   p.Purpose.ToLower() == addTravelRequestVM.Purpose.ToLower());
+                // Check for duplicate travel requests
+                var existingRequest = await _context.TravelRequests
+                    .FirstOrDefaultAsync(p =>
+                        p.TravelTypeId.ToLower() == addTravelRequestVm.TravelTypeId.ToLower() &&
+                        p.Purpose.ToLower() == addTravelRequestVm.Purpose.ToLower());
 
                 if (existingRequest != null)
                 {
-                    notyf.Error("This record already exists.");
+                    _notyfService.Error("This record already exists.");
                     return RedirectToAction("ViewTravelRequests");
                 }
 
-                // Create and populate the patient object
-                TravelRequest addThisTravelRequest = new()
+                // Create new travel request
+                var newTravelRequest = new TravelRequest
                 {
-                    EndDate = addTravelRequestVM.EndDate,
-                    StartDate = addTravelRequestVM.StartDate,
-
-                    DateofReturn = addTravelRequestVM.DateofReturn,
-                    ConferenceFee = addTravelRequestVM.ConferenceFee,
-                    FuelClaim= addTravelRequestVM.FuelClaim,
-                    OtherExpenses = addTravelRequestVM.OtherExpenses,
-                    TravelTypeId = addTravelRequestVM.TravelTypeId,
-                    Purpose = addTravelRequestVM.Purpose,
-
+                    EndDate = addTravelRequestVm.EndDate,
+                    StartDate = addTravelRequestVm.StartDate,
+                    DateofReturn = addTravelRequestVm.DateofReturn,
+                    ConferenceFee = addTravelRequestVm.ConferenceFee,
+                    FuelClaim = addTravelRequestVm.FuelClaim,
+                    OtherExpenses = addTravelRequestVm.OtherExpenses,
+                    TravelTypeId = addTravelRequestVm.TravelTypeId,
+                    Purpose = addTravelRequestVm.Purpose
                 };
-                 
 
-                // Add patient to the database
-                var requestAdded = await entityServ.AddEntityAsync(addThisTravelRequest, User);
+                // Add travel request to the database
+                bool requestAdded = await _entityService.AddEntityAsync(newTravelRequest, User);
                 if (!requestAdded)
                 {
-                    notyf.Error("Failed to create request.", 5);
-                    return RedirectToAction("Error", "Home", new { message = "Patient creation failed." });
+                    _notyfService.Error("Failed to create travel request.", 5);
+                    return RedirectToAction("Error", "Home", new { message = "Travel request creation failed." });
                 }
 
-                // Assign users if any are selected
-                if (addTravelRequestVM.SelectedUsers?.Any() == true)
+                // Assign selected users to the travel request
+                foreach (var userId in addTravelRequestVm.SelectedUsers)
                 {
-                    foreach (var userId in addTravelRequestVM.SelectedUsers)
+                    var assignment = new TravelRequestAssignment
                     {
-                        var assignment = new TravelRequestAssignment
-                        {
-                            TravelRequestId = addThisTravelRequest.TravelRequestId,
-                            AppUserId = userId,
-                        };
+                        TravelRequestId = newTravelRequest.TravelRequestId,
+                        AppUserId = userId
+                    };
 
-                        var assignmentAdded = await entityServ.AddEntityAsync(assignment, User);
-                        if (!assignmentAdded)
-                        {
-                            notyf.Error("Failed to assign user.", 5);
-                            return RedirectToAction("Error", "Home", new { message = "User assignment failed." });
-                        }
+                    bool assignmentAdded = await _entityService.AddEntityAsync(assignment, User);
+                    if (!assignmentAdded)
+                    {
+                        _notyfService.Error($"Failed to assign user {userId}.", 5);
                     }
-                    notyf.Success("Request and assignments successfully processed.", 5);
-                }
-                else
-                {
-                    notyf.Success("Request created successfully, no users assigned.", 5);
                 }
 
+                _notyfService.Success("Travel request and assignments successfully processed.", 5);
                 return RedirectToAction("ViewTravelRequests");
             }
             catch (Exception ex)
             {
-                // Log the exception for debugging
+                _notyfService.Error("An unexpected error occurred.", 5);
                 Console.Error.WriteLine(ex);
-                notyf.Error("An unexpected error occurred.", 5);
                 return RedirectToAction("Error", "Home", new { message = "An unexpected error occurred." });
             }
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> TravelRequestComment(string Id, MemoCommentVM addCommentVM)
+        public async Task<IActionResult> TravelRequestComment(string id, MemoCommentVM commentVm)
         {
-
-            Memo memoToUpdate = new();
-            memoToUpdate = (from a in dcx.Memos where a.MemoId == Id select a).FirstOrDefault();
-
-            TravelRequestComment addThisComment = new()
+            try
             {
-                TravelRequestId = memoToUpdate.MemoId,
-                CreatedDate = DateTime.Now,
+                // Find the travel request by ID
+                var travelRequest = await _context.TravelRequests
+                    .FirstOrDefaultAsync(t => t.TravelRequestId == id);
 
-                Message = addCommentVM.NewComment,
+                if (travelRequest == null)
+                {
+                    return NotFound();
+                }
 
+                // Create a new comment
+                var newComment = new TravelRequestComment
+                {
+                    TravelRequestId = travelRequest.TravelRequestId,
+                    Message = commentVm.NewComment,
+                    CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name")?.Value,
+                    CreatedDate = DateTime.Now
+                };
 
-                CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name").Value,
-                //  UserId = usm.FindByNameAsync(User.Claims.FirstOrDefault(c => c.Type == "Name").Value).Result.Id,
-            };
+                // Add the comment to the database
+                _context.TravelRequestComments.Add(newComment);
+                await _context.SaveChangesAsync();
 
-            dcx.TravelRequestComments.Add(addThisComment);
-            await dcx.SaveChangesAsync();
-
-            return RedirectToAction("ViewMemos");
-        }
-        [HttpGet]
-        public IActionResult AddTravelRequest() => ViewComponent("AddTravelRequest");
-        [HttpGet]
-        public IActionResult ViewTravelRequests()
-        {
-            return ViewComponent("ViewTravelRequests");
+                _notyfService.Success("Comment successfully added.", 5);
+                return RedirectToAction("ViewTravelRequests");
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error("An error occurred while adding the comment.", 5);
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the comment." });
+            }
         }
     }
 }

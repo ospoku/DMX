@@ -11,7 +11,9 @@ namespace DMX.ViewComponents
         {
             var lList = ctx.FeeStructures.Where(f => f.IsDeleted == false).Select(t => new ViewFeeStructuresVM 
             {
+                DeceasedType=t.DeceasedType.Name,
                Fee=t.Fee,
+               Name=t.Name,
                Max=t.MaxDays,
                Min=t.MinDays,
                Id=t.Id  ,

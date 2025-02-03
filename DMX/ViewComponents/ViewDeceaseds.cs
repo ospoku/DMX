@@ -2,40 +2,49 @@
 using DMX.Data;
 using DMX.ViewModels;
 using DMX.Services;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Linq;
+
 namespace DMX.ViewComponents
 {
-    public class ViewDeceaseds(XContext dContext, FeeService feeService) : ViewComponent
+    public class ViewDeceaseds : ViewComponent
     {
-        public readonly XContext dcx = dContext;
-        public readonly FeeService fs = feeService;
+        private readonly XContext _context;
+        private readonly FeeService _feeService;
+
+        public ViewDeceaseds(XContext context, FeeService feeService)
+        {
+            _context = context;
+            _feeService = feeService;
+        }
 
         public IViewComponentResult Invoke()
         {
-            var patients = dcx.Deceased
+            var deceasedRecords = _context.Deceased
                 .Where(a => !a.IsDeleted)
                 .OrderByDescending(t => t.CreatedDate)
                 .ToList();
 
-            var pList = patients.Select(a =>
+            var deceasedList = deceasedRecords.Select(a =>
             {
-
                 TimeSpan timeSpan = DateTime.Now - a.CreatedDate.Value;
-                int numberofDays = (int)timeSpan.TotalDays;
+                int numberOfDays = (int)timeSpan.TotalDays;
+
+                // Determine if the deceased died in the ward or was brought in dead
+                
                 return new ViewPatientsVM
                 {
                     PatientId = a.DeceasedId,
                     PatientName = a.Name,
-                    
                     FinalDiagnoses = a.Diagnoses,
                     FolderNo = a.FolderNo,
                     WardInCharge = a.WardInCharge,
-                    OtherFees = fs.FeeCalculator(numberofDays),
+                    OtherFees = _feeService.FeeCalculator(numberOfDays,a.DeceasedTypeId),
                     TagNo = a.TagNo,
                     CreatedDate = a.CreatedDate
                 };
             }).ToList();
-            return View(pList);
+
+            return View(deceasedList);
         }
     }
 }

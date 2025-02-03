@@ -31,7 +31,7 @@ namespace DMX.ViewComponents
                 Description = deceased.Description,
                 TagNo = deceased.TagNo,
                 WardInCharge = deceased.WardInCharge,
-                AccruedFees= fs.FeeCalculator(numberOfDays),
+                AccruedFees= fs.FeeCalculator(numberOfDays,deceased.DeceasedTypeId),
             };
                 return View(printMorgueVM);
             }

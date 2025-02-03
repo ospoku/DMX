@@ -14,6 +14,6 @@ namespace DMX.ViewModels
         [Precision(10, 4)]
         public decimal Amount { get; set; }
         
-        public int Maximum { get; set; }
+        public decimal Maximum { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DMX.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Build.ObjectModelRemoting;
 
 
 
@@ -50,6 +51,7 @@ namespace DMX.Data
         public DbSet<PerDiem> PerDiems { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<DeceasedAssignment> DeceasedAssignments { get; set; }
+        public DbSet<Status> Statuses { get; set; }
        
       
    

@@ -45,6 +45,7 @@ namespace DMX.Controllers
             {
                 var newServiceRequest = new ServiceRequest
                 {
+                   
                     ActionToBeTaken = addServiceRequestVm.ActionToBeTaken,
                   
                     Faults = addServiceRequestVm.Faults
@@ -54,12 +55,12 @@ namespace DMX.Controllers
                 if (result)
                 {
                     _notyfService.Success("Service request successfully added.", 5);
-                    return RedirectToAction("ViewServiceRequests");
+                    return RedirectToAction(nameof(ViewServiceRequests));
                 }
                 else
                 {
                     _notyfService.Error("Failed to add service request. Please try again.", 5);
-                    return ViewComponent("AddServiceRequest");
+                    return ViewComponent(nameof(ViewServiceRequests));
                 }
             }
             catch (Exception ex)

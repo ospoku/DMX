@@ -225,12 +225,15 @@
                         <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="" required>
                         <label class="did-floating-label">Memo Title</label>
                     </div>
-
+                    <div class="form-group">
                     <!-- Memo Content (TinyMCE Editor) -->
-                    <textarea class="form-control" id="MemoContent" asp-for="@Model.Content" placeholder="Memo Content"></textarea>
-                    <div id="suggestionBox" style="color: gray; font-style: italic;"></div>
-
+                    <textarea  class="form-control" id="MemoContent" asp-for="@Model.Content" placeholder="Memo Content"></textarea>
+                   </div>
+                   <div class="form-group">
+                    <div id="suggestionBox"  style="color: gray; font-style: italic;"></div>
+                    </div>
                     <!-- Select Approver(s) -->
+                    
                     <div class="did-floating-label-content">
                         <select id="selectMemoUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Approver(s)</label>
@@ -253,12 +256,12 @@
         const memoContentSelector = '#MemoContent';
         const addMemoFormSelector = '#addMemoForm';
 
-        // Initialize Select2 for the memo approver dropdown
+      
         $('#selectMemoUser').select2({
             dropdownParent: $(modalSelector)
         });
 
-        // Initialize TinyMCE when the modal is shown
+       
         $(modalSelector).on('shown.bs.modal', function () {
             if (!tinymce.get(memoContentSelector.substring(1))) {
                 tinymce.init({
@@ -270,7 +273,7 @@
             }
         });
 
-        // Remove TinyMCE and reset the form on modal close
+      
         $(modalSelector).on('hidden.bs.modal', function () {
             let editor = tinymce.get(memoContentSelector.substring(1));
             if (editor) {
@@ -280,17 +283,17 @@
             $(addMemoFormSelector).find(".is-invalid").removeClass("is-invalid");
         });
 
-        // Add Memo Button Click Handler
+      
         $('#btnAddMemo').click(function (event) {
             event.preventDefault();
 
             const form = $(addMemoFormSelector)[0];
             if (!form.checkValidity()) {
-                form.reportValidity(); // Display browser validation messages
-                return; // Stop further execution if validation fails
+                form.reportValidity();
+                return;
             }
 
-            // Validate the form data
+      
             const selectedUsers = $('#selectMemoUser').val();
             const memoContent = tinymce.get('MemoContent')?.getContent().trim();
 
@@ -303,7 +306,7 @@
                 return;
             }
 
-            // Confirm save
+           
             Swal.fire({
                 title: 'Are you sure?',
                 text: "Do you really want to save this record?",
@@ -319,7 +322,7 @@
             });
         });
 
-        // Memo autocomplete feature
+     
         $('#MemoContent').on('input', async function () {
             let text = $(this).val();
 
@@ -328,7 +331,7 @@
             let response = await fetch('/api/memo/autocomplete', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text }) // Send text inside an object
+                body: JSON.stringify({ text }) 
             });
 
             let data = await response.text();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using DMX.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewModels
 {
@@ -13,6 +14,10 @@ namespace DMX.ViewModels
 
         public string Unit { get; set; }
         public string Faults { get; set; }
+        public SelectList RequestTypes {  get; set; }
+        public SelectList Status { get; set; }
+        public SelectList Urgency { get; set; }
+        public List<CheckBoxItem> Categories { get; set; }
 
         public string FaultInspectedBy { get; set; }
 

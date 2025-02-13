@@ -3,8 +3,8 @@
 
 
 
-<div class="modal fade" id="AddServiceRequest" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
+@* <div class="modal fade" id="AddServiceRequest" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -16,17 +16,21 @@
 
 
             @using (Html.BeginForm("AddServiceRequest", "ServiceRequest", FormMethod.Post))
-            {
+            {<div class="row">
+                <div class="col-md-8">
                        <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.RequestNumber" class="did-floating-input" placeholder="">
                             <label class="did-floating-label">Title</label>
                         </div>
 
                    <div class="did-floating-label-content">
-                        <textarea type="text" asp-for="@Model.Description" class="did-floating-input"></textarea>
+                        <textarea type="text" id="txtDescription" asp-for="@Model.Description" class="did-floating-input"></textarea>
                         <label class="did-floating-label">Description</label>
 
                     </div>
+                    </div>
+                   <div class="vr border-1"></div>
+                   <div class="col-md-4">
                    <div class="did-floating-label-content">
                         <input type="text" asp-for="@Model.ServiceRequestedBy" class="did-floating-input" placeholder="" />
                         <label class="did-floating-label">Category</label>
@@ -46,39 +50,183 @@
                             <input type="text" asp-for="@Model.FaultInspectedBy"  class="did-floating-input" placeholder="">
                         <label class="did-floating-label">Fault Inspected By</label>
                         </div>
-                                            
+
                         <div class="did-floating-label-content">
                             <select  id="selectUsers" class="did-floating-select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                             <label class="did-floating-label">Select User</label>
                         </div>
 
 
-
-                        
-
-
-                            <textarea class="did-floating-input" asp-for="@Model.RequestNumber" type="text" placeholder="Additional Information"></textarea>
-
-
-                    
-
+</div>
+</div>
                         <button class="btn btn-block btn-primary">Save</button>
-
-
-
-            
             }
 
 
         </div>
     </div>
 </div>
-</div>
-<script>
-    $(document).ready(function ()
-{
-        $("#selectUsers").select2({dropdownParent: $("#AddServiceRequest")});
+</div> *@
 
-    $("#modalDept").select2({dropdownParent: $("#AddServiceRequest")});
+<div class="modal fade" id="AddServiceRequest" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Add Service Request</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            @using (Html.BeginForm("AddServiceRequest", "ServiceRequest", FormMethod.Post, new{id="addServiceRequestForm"}))
+            {
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="did-floating-label-content">
+                                <input type="text" asp-for="@Model.RequestNumber" class="did-floating-input" placeholder="">
+                                <label class="did-floating-label">Title</label>
+                            </div>
+                            <div class="did-floating-label-content">
+                                <select id="modalDept" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                                <label class="did-floating-label">Request Type</label>
+                            </div>
+                            <textarea type="text" id="txtDescription" asp-for="@Model.Description"></textarea>
+
+
+                        </div>
+                        <div class=" col-md-1 vr-container">
+                            <div class="vr"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="did-floating-label-content">
+                                <input type="text" asp-for="@Model.ServiceRequestedBy" class="did-floating-input" placeholder="" />
+                                <label class="did-floating-label">Category</label>
+                            </div>
+                            <div class="form-group">
+                            <fieldset class="fieldset">
+                                <legend class="legend">Select Category</legend>
+                                @for (int i = 0; i < Model.Categories.Count(); i++)
+                                {
+                                    <label>@Model.Categories[i].Name </label>
+                                    <input type="checkbox" />
+                                }
+                            </fieldset>
+                            </div>
+                            <div class="form-group">
+                            <fieldset class="fieldset">
+                                <legend class="legend">Select Category</legend>
+                            @for (int i = 0; i < Model.Categories.Count(); i++)
+                            
+                            {
+                                <label>@Model.Categories[i].Name </label>
+                                        <input type="checkbox" />
+                                    
+                            }
+                            </fieldset>
+                            </div>
+                            <div class="did-floating-label-content">
+                                <input type="text" asp-for="@Model.ActionToBeTaken" class="did-floating-input" placeholder="" />
+                                <label class="did-floating-label">Action to be taken</label>
+                            </div>
+                            <div class="did-floating-label-content">
+                                <input type="text" asp-for="@Model.FaultInspectedBy" class="did-floating-input" placeholder="">
+                                <label class="did-floating-label">Fault Inspected By</label>
+                            </div>
+                            <div class="did-floating-label-content">
+                                <select id="selectUsers" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                                <label class="did-floating-label">Select User</label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button id="btnAddServiceRequest" class="btn btn-block btn-primary">Save</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function () 
+    {
+    const modalSelector = '#AddServiceRequest';
+    const descriptionContentSelector = '#txtDescription';
+    const addServiceRequestForm = '#addServiceRequestForm';
+    $('#selectMemoUser').select2({
+    dropdownParent: $(modalSelector)
     });
+
+
+    $(modalSelector).on('shown.bs.modal', function () {
+    if (!tinymce.get(descriptionContentSelector.substring(1))) {
+    tinymce.init({
+    selector: descriptionContentSelector,
+    menubar: true,
+    toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
+    height: 300
+    });
+    }
+    });
+
+
+    $(modalSelector).on('hidden.bs.modal', function () {
+    let editor = tinymce.get(descriptionContentSelector.substring(1));
+    if (editor) {
+    editor.remove();
+    }
+    $(form).trigger("reset");
+    $(form).find(".is-invalid").removeClass("is-invalid");
+    });
+
+
+    $('#btnAddServiceRequest').click(function (event) {
+    event.preventDefault();
+
+    const form = $(addServiceRequestForm)[0];
+    if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+    }
+
+
+    const selectedUsers = $('#selectMemoUser').val();
+    const descriptionContent = tinymce.get('txtDescription')?.getContent().trim();
+
+    if (!selectedUsers || selectedUsers.length === 0) {
+    Swal.fire('Error', 'Please select at least one user.', 'error');
+    return;
+    }
+    if (!descriptionContent) {
+    Swal.fire('Error', 'Memo content cannot be empty.', 'error');
+    return;
+    }
+
+
+    Swal.fire({
+    title: 'Are you sure?',
+    text: "Do you really want to save this record?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, save it!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    form.submit();
+    }
+    });
+    });});
 </script>
+
+<style>
+    .vr-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 15px;
+    }
+
+    .vr {
+        border-left: 1px solid #000;
+        height: 100%;
+    }
+</style>

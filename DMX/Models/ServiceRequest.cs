@@ -12,12 +12,7 @@ namespace DMX.Models
         public string ServiceRequestId { get; set; }
         public string RequestNumber { get; set; } = "SR" + Guid.NewGuid().ToString("N").Substring(0, 5);
 
-
-
-       
         public string Faults { get; set; }
-
-       
 
         public string ActionToBeTaken { get; set; }
        
@@ -30,12 +25,14 @@ namespace DMX.Models
             public string Priority { get; set; } // Priority level (Low, Medium, High, Emergency)
             public string Description { get; set; } // Detailed description of the request
             public string Location { get; set; } // Location where service is needed
-            public string Attachments { get; set; } // File paths or links to attachments
-
+            public byte[]? Attachments { get; set; } // File paths or links to attachments
+       public string ServiceTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
+        public string CategoryId { get; set; }
            
-
-           
-            public string Status { get; set; } // Current status (Pending, In Progress, Completed, Cancelled)
+        public Category Category { get; set; }
+           public Status Status { get; set; }
+            public string StatusId { get; set; } // Current status (Pending, In Progress, Completed, Cancelled)
             public DateTime CompletionDate { get; set; } // Date and time completed
             
             public bool IsApproved { get; set; } // Approval status

@@ -52,7 +52,8 @@ namespace DMX.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<DeceasedAssignment> DeceasedAssignments { get; set; }
         public DbSet<Status> Statuses { get; set; }
-       
+       public DbSet<Category> Categories { get; set; }
+        public DbSet <Urgency> Urgency { get; set; }
       
    
     }

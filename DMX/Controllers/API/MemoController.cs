@@ -7,7 +7,7 @@ namespace DMX.Controllers.API
 
 [ApiController]
     [Route("api/memo")]
-    public class MemoApiController : ControllerBase
+    public class MemoController : ControllerBase
     {
         [HttpPost("autocomplete")]
         public IActionResult AutoComplete([FromBody] string text)

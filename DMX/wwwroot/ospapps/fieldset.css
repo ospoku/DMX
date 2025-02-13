@@ -1,14 +1,16 @@
-﻿
-/*fieldset*/
-.fieldset {
+﻿.fieldset {
     margin: 0 0 0px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #3d85d8;
+    border-radius: 4px;
+    color: #323840;
+    font-size:12px;
 }
 
 .legend {
-    background: #eee;
-    padding: 4px 10px;
-    color: #000;
+    margin-top: -14px;
+    color: #1e4c82;
     margin: 0 auto;
     display: block;
+    font-size: 13px;
+    z-index:4;
 }

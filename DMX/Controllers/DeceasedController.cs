@@ -50,6 +50,11 @@ namespace DMX.Controllers
                 notyf.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction(nameof(ViewDeceaseds));
             }
+            if (dcx.FeeStructures?.Any() != true)
+            {
+                notyf.Error("You must set Fee structures", 5);
+                return RedirectToAction(nameof(ViewDeceaseds));
+            }
 
             try
             {

@@ -38,20 +38,64 @@ namespace DMX.Data
             }
             if (!dcx.Statuses.Any())
             {
-                dcx.Statuses.Add(new Status()
+                dcx.Statuses.AddRange(new Status
                 {
-                    Name = "Brought In Dead",
+                    Name = "Open",
+                    Code = "OPN",
+                    Description = "Name for a Patient who was broguth in Dead"
+                },
+                new Status
+                {
+
+                    Name = "Close",
+                    Code = "CLS",
+                    Description = "Name for a Patient who Died in Ward"
+                }, new Status
+                {
+                    Name = "Pending",
+                    Code = "PND",
+                    Description = "Name for a Patient who Died in Ward"
+                }
+                , new Status {
+                    Name = "Archvied", Code = "ARC",
+                    Description = "Name for a Patient who Died in Ward"
+                }, new Status { Name = "In Progress",
+                    Code = "INP",
+                    Description = "Name for a Patient who Died in Ward"
+                }
+                );
+            }
+            if (!dcx.Categories.Any())
+            {
+                dcx.Categories.AddRange(new Category
+                {
+                    Name = "Repairs",
                     Code = "BID",
                     Description = "Name for a Patient who was broguth in Dead"
-                });
-                dcx.Statuses.Add(new Status()
+                },
+                new Category
                 {
-                    Name = "Dead In Ward",
+                    Name = "Maintenance",
                     Code = "DIW",
                     Description = "Name for a Patient who Died in Ward"
                 });
             }
-
+                
+            if (!dcx.Urgency.Any())
+            {
+                dcx.Statuses.Add(new Status()
+                {
+                    Name = "High",
+                    Code = "H",
+                    Description = "Name for a Patient who was broguth in Dead"
+                });
+                dcx.Statuses.Add(new Status()
+                {
+                    Name = "Low",
+                    Code = "L",
+                    Description = "Name for a Patient who Died in Ward"
+                });
+            }
 
             List<Claim> claimlist =
             [

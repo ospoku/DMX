@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using DMX.Data;
-using DMX.ViewModels;
+﻿using DMX.Data;
+using DMX.Models;
 using DMX.Services;
+using DMX.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DMX.ViewComponents
 {
@@ -17,34 +22,66 @@ namespace DMX.ViewComponents
             _feeService = feeService;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var deceasedRecords = _context.Deceased
-                .Where(a => !a.IsDeleted)
-                .OrderByDescending(t => t.CreatedDate)
-                .ToList();
-
-            var deceasedList = deceasedRecords.Select(a =>
+            try
             {
-                TimeSpan timeSpan = DateTime.Now - a.CreatedDate.Value;
-                int numberOfDays = (int)timeSpan.TotalDays;
+                // Fetch deceased records
+                var deceasedRecords = await _context.Deceased
+                    .Where(a => !a.IsDeleted)
+                    .OrderByDescending(t => t.CreatedDate)
+                    .ToListAsync();
 
-                // Determine if the deceased died in the ward or was brought in dead
-                
-                return new ViewPatientsVM
+                // Fetch all services for the deceased records in a single query
+                var deceasedIds = deceasedRecords.Select(a => a.DeceasedId).ToList();
+                var allServices = await _context.DeceasedServices
+                    .Include(d => d.MorgueService)
+                    .Where(d => deceasedIds.Contains(d.DeceasedId))
+                    .ToListAsync();
+
+                // Group services by DeceasedId for easy lookup
+                var servicesByDeceasedId = allServices
+                    .GroupBy(d => d.DeceasedId)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                // Process deceased records
+                var deceasedList = deceasedRecords.Select(deceased =>
                 {
-                    PatientId = a.DeceasedId,
-                    PatientName = a.Name,
-                    FinalDiagnoses = a.Diagnoses,
-                    FolderNo = a.FolderNo,
-                    WardInCharge = a.WardInCharge,
-                    OtherFees = _feeService.FeeCalculator(numberOfDays,a.DeceasedTypeId),
-                    TagNo = a.TagNo,
-                    CreatedDate = a.CreatedDate
-                };
-            }).ToList();
+                    TimeSpan timeSpan = DateTime.Now - deceased.CreatedDate.Value;
+                    int numberOfDays = (int)timeSpan.TotalDays;
 
-            return View(deceasedList);
+                    // Get the services for the current deceased record
+                    var selectedServices = servicesByDeceasedId.ContainsKey(deceased.DeceasedId)
+                        ? servicesByDeceasedId[deceased.DeceasedId]
+                        : new List<DeceasedService>();
+
+                    // Calculate the total amount of selected services
+                    decimal totalServiceAmount = selectedServices.Sum(service => service.MorgueService.Amount);
+
+                    // Calculate fees
+                    decimal fees = _feeService.FeeCalculator(numberOfDays, deceased.DeceasedTypeId, selectedServices) + totalServiceAmount;
+
+                    return new ViewPatientsVM
+                    {
+                        PatientId = deceased.DeceasedId,
+                        PatientName = deceased.Name,
+                        FinalDiagnoses = deceased.Diagnoses,
+                        FolderNo = deceased.FolderNo,
+                        WardInCharge = deceased.WardInCharge,
+                        OtherFees = fees,
+                        TagNo = deceased.TagNo,
+                        CreatedDate = deceased.CreatedDate
+                    };
+                }).ToList();
+
+                return View(deceasedList);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (e.g., using a logging framework)
+                // Return an empty list or an error view
+                return View(new List<ViewPatientsVM>());
+            }
         }
     }
 }

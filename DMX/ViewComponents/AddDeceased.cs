@@ -17,8 +17,13 @@ namespace DMX.ViewComponents
             AddDeceasedVM addDeceasedVM = new()
             {
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-                DeceasedTypes= new SelectList(dcx.DeceasedTypes.ToList(), "DeceasedTypeId","Code")
-                
+                DeceasedTypes = new SelectList(dcx.DeceasedTypes.ToList(), "DeceasedTypeId", "Code"),
+                MorgueServices = dcx.MorgueServices.Select(d => new CheckBoxItem
+                {
+                    Id = d.MorgueServiceId, // Map the Id property
+                    Name = d.ServiceName, // Map the Name property
+                    IsChecked = false, // Default value for IsSelected}).ToList()
+               Amount=d.Amount }).ToList(),
             };
             return View(addDeceasedVM);
         }

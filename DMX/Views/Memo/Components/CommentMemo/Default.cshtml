@@ -11,9 +11,6 @@
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
-           
-    
-            
             <div class="container mt-0">
                 <!-- Nav pill tabs -->
                 <ul class="nav nav-pills" id="memoPillTabs" role="tablist">
@@ -32,7 +29,7 @@
                 <!-- Pill tab panes -->
                 <div class="tab-content mt-1" id="memoPillTabsContent">
                     <!-- Memo Content -->
-                    <div class="tab-pane fade active show  p-1" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
+                    <div class="tab-pane fade active show  p-1 memo-content" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
                         @Html.Raw(Model.MemoContent)
                     </div>
 
@@ -127,3 +124,8 @@
     });
 
 </script> 
+<style>
+    .memo-content {
+        word-wrap: break-word; /* Ensure long words break and wrap */
+        word-break: break-word; /* Ensure words break to prevent overflow */}
+</style>

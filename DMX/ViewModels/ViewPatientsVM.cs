@@ -13,5 +13,6 @@
         public string FinalDiagnoses { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string TagNo { get; set; }
+        public string DeceasedTypeId { get; set; }
     }
 }

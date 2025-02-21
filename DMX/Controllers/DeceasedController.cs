@@ -133,5 +133,11 @@ namespace DMX.Controllers
         {
             return ViewComponent(nameof(CommentDeceased), Id);
         }
+
+        [HttpGet]
+        public IActionResult ViewInvoice(string Id)
+        {
+            return ViewComponent(nameof(ViewInvoice), Id);
+        }
     }
 }

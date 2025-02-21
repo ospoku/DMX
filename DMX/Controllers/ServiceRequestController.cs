@@ -3,6 +3,7 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
+using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,17 +20,20 @@ namespace DMX.Controllers
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
-
+        private readonly AssignmentService _assignmentService;
         public ServiceRequestController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
-            EntityService entityService)
+            EntityService entityService,
+            AssignmentService assignmentService)
         {
             _userManager = userManager;
             _context = context;
             _notyfService = notyfService;
             _entityService = entityService;
+            _assignmentService = assignmentService;
+            
         }
 
         [HttpGet]
@@ -39,29 +43,54 @@ namespace DMX.Controllers
         public IActionResult AddServiceRequest() => ViewComponent(nameof(AddServiceRequest));
 
         [HttpPost]
-        public async Task<IActionResult> AddServiceRequest(AddServiceRequestVM addServiceRequestVm)
+        public async Task<IActionResult> AddServiceRequest(AddServiceRequestVM addServiceRequestVm, IFormFile formFile)
         {
             try
             {
                 var newServiceRequest = new ServiceRequest
                 {
-                   
-                    ActionToBeTaken = addServiceRequestVm.ActionToBeTaken,
-                  
-                    Faults = addServiceRequestVm.Faults
+                    Description = addServiceRequestVm.Description,
+                    RequestTypeId = addServiceRequestVm.RequestTypeId,
+                    CategoryId = addServiceRequestVm.CategoryId,
+                    StatusId = addServiceRequestVm.StatusId,
+                    PriorityId = addServiceRequestVm.PriorityId,
+                    Title = addServiceRequestVm.Title,
+
                 };
 
-                bool result = await _entityService.AddEntityAsync(newServiceRequest, User);
-                if (result)
+                if (formFile != null)
                 {
-                    _notyfService.Success("Service request successfully added.", 5);
-                    return RedirectToAction(nameof(ViewServiceRequests));
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await formFile.CopyToAsync(memoryStream);
+                        newServiceRequest.Attachments = memoryStream.ToArray();
+                    }
                 }
-                else
+
+                bool result = await _entityService.AddEntityAsync(newServiceRequest, User);
+                if (!result)
                 {
                     _notyfService.Error("Failed to add service request. Please try again.", 5);
                     return ViewComponent(nameof(ViewServiceRequests));
                 }
+            
+                foreach (var userId in addServiceRequestVm.SelectedUsers)
+                {
+                    var assignment = new ServiceAssignment
+                    {
+                        ServiceRequestId = newServiceRequest.RequestId,
+                        UserId = userId
+                    };
+
+                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    if (!assignResult)
+                    {
+                        _notyfService.Error($"Failed to assign request to user {userId}.", 5);
+                    }
+                }
+                _notyfService.Success("Service Request and assignments successfully processed.", 5);
+                return RedirectToAction(nameof(ViewServiceRequests));
             }
             catch (Exception ex)
             {
@@ -69,13 +98,14 @@ namespace DMX.Controllers
                 return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request." });
             }
         }
+        
 
         [HttpPost]
         public async Task<IActionResult> ServiceRequestComment(string id, MemoCommentVM commentVm)
         {
             try
             {
-                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.ServiceRequestId == id);
+                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == id);
                 if (serviceRequest == null)
                 {
                     return NotFound();
@@ -83,7 +113,7 @@ namespace DMX.Controllers
 
                 var newComment = new ServiceRequestComment
                 {
-                    ServiceRequestId = serviceRequest.ServiceRequestId,
+                    ServiceRequestId = serviceRequest.RequestId,
                     Message = commentVm.NewComment,
                     CreatedBy = User.Claims.FirstOrDefault(c => c.Type == "Name")?.Value,
                     CreatedDate = DateTime.Now
@@ -117,7 +147,7 @@ namespace DMX.Controllers
             try
             {
                 var decryptedId = Encryption.Decrypt(id);
-                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.ServiceRequestId == decryptedId);
+                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == decryptedId);
                 if (serviceRequestToUpdate == null)
                 {
                     _notyfService.Error("Service request not found.", 5);
@@ -125,9 +155,7 @@ namespace DMX.Controllers
                 }
 
                 // Update service request properties
-                serviceRequestToUpdate.ActionToBeTaken = editServiceRequestVm.ActionToBeTaken;
-               
-                serviceRequestToUpdate.Faults = editServiceRequestVm.Faults;
+
 
                 bool isEdited = await _entityService.EditEntityAsync(serviceRequestToUpdate, User);
                 if (!isEdited)

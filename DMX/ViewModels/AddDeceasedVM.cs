@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using DMX.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewModels
 {
@@ -17,6 +18,7 @@ namespace DMX.ViewModels
         public string DeceasedTypeId { get; set; }
         public SelectList DeceasedTypes { get; set; }
         public string Description { get; set; }
+        public List<CheckBoxItem>MorgueServices { get; set; }
         public List<string> SelectedUsers { get; set; }
   
         public SelectList UsersList { get; set; }

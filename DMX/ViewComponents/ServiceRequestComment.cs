@@ -30,11 +30,11 @@ namespace DMX.ViewComponents
             //}
 
             ServiceRequest serviceRequestToEdit = new ServiceRequest();
-            serviceRequestToEdit = (from m in dcx.ServiceRequests.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.ServiceRequestId == Id select m).FirstOrDefault();
+            serviceRequestToEdit = (from m in dcx.ServiceRequests.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.RequestId == Id select m).FirstOrDefault();
 
             ServiceRequestCommentVM addCommentVM = new()
             {
-                MemoContent = serviceRequestToEdit.Faults,
+                
                 Comments = serviceRequestToEdit.Comments,
                 Title = serviceRequestToEdit.RequestNumber,
                 SelectedUsers = AssignedUsers,

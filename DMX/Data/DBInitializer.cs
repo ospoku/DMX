@@ -78,23 +78,72 @@ namespace DMX.Data
                     Name = "Maintenance",
                     Code = "DIW",
                     Description = "Name for a Patient who Died in Ward"
+                },
+                new Category
+                {
+                    Name = "Replacement",
+                    Code = "DIW",
+                    Description = "Name for a Patient who Died in Ward"
                 });
             }
                 
-            if (!dcx.Urgency.Any())
+            if (!dcx.Priorities.Any())
             {
-                dcx.Statuses.Add(new Status()
+                dcx.Priorities.Add(new Priority()
                 {
                     Name = "High",
                     Code = "H",
                     Description = "Name for a Patient who was broguth in Dead"
                 });
-                dcx.Statuses.Add(new Status()
+                dcx.Priorities.Add(new Priority()
                 {
                     Name = "Low",
                     Code = "L",
                     Description = "Name for a Patient who Died in Ward"
                 });
+                dcx.Priorities.Add(new Priority()
+                {
+                    Name = "Medium",
+                    Code = "M",
+                    Description = "Name for a Patient who Died in Ward"
+                });
+                dcx.Priorities.Add(new Priority()
+                {
+                    Name = "Emergency",
+                    Code = "E",
+                    Description = "Name for a Patient who Died in Ward"
+                });
+            }
+            if (!dcx.RequestTypes.Any())
+            {
+                dcx.RequestTypes.Add(new RequestType()
+                {
+                    Name = "Estate",
+                    Code = "EST",
+                    Description = "Name for a Patient who was broguth in Dead"
+                });
+                dcx.RequestTypes.Add(new RequestType()
+                {
+                    Name = "ICT",
+                    Code = "IT",
+                    Description = "Name for a Patient who Died in Ward"
+                });
+           
+            }
+            if (!dcx.MorgueServices.Any())
+            {
+                dcx.MorgueServices.Add(new MorgueService ()
+                {
+                    ServiceName = "Formalin",
+                    
+                   
+                });
+                dcx.MorgueServices.Add(new MorgueService()
+                {
+                    ServiceName = "Embalming"
+                   
+                });
+
             }
 
             List<Claim> claimlist =

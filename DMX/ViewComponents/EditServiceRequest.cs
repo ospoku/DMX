@@ -21,7 +21,7 @@ namespace DMX.ViewComponents
            
 
             ServiceRequest serviceRequestToEdit = new ServiceRequest();
-            serviceRequestToEdit = (from sr in dcx.ServiceRequests.Include(sr => sr.Comments.OrderBy(m=>m.CreatedDate)) where sr.ServiceRequestId==sr.ServiceRequestId select sr ).FirstOrDefault();
+            serviceRequestToEdit = (from sr in dcx.ServiceRequests.Include(sr => sr.Comments.OrderBy(m=>m.CreatedDate)) where sr.RequestId ==sr.RequestId select sr ).FirstOrDefault();
 
             EditServiceRequestVM editServiceRequestVM = new EditServiceRequestVM
             {

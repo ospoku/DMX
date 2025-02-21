@@ -21,10 +21,11 @@ namespace DMX.ViewComponents
         {
             AddServiceRequestVM addServiceRequest = new AddServiceRequestVM
             {
-                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
-                Status=new SelectList(xct.Statuses.ToList(), "Id","Name"),
-                Categories = xct.Categories.Select(c=>new CheckBoxItem {Id=c.Id,Name=c.Name
-                }).ToList()
+                UsersList = new SelectList(usm.Users.ToList(), nameof(AppUser.Id),nameof(AppUser.Fullname)),
+                Status=new SelectList(xct.Statuses.ToList(), nameof(Status.Id),nameof(Status.Name)),
+                Categories =  new SelectList( xct.Categories.ToList(),nameof(Category.Id),nameof(Category.Name)),
+                RequestTypes=new SelectList (xct.RequestTypes.ToList(),nameof(RequestType.Id),nameof(RequestType.Name)),
+                Urgency= new SelectList (xct.Priorities.ToList(),nameof(Priority.Id),nameof(Priority.Name))
             };
             return View(addServiceRequest);
         }

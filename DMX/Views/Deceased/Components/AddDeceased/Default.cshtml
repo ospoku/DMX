@@ -70,13 +70,19 @@
                         <label class="did-floating-label">Depositor Address</label>
                     </div>
 
-                    
-                    <div class="did-floating-label-content">
-                        <input type="text" class="did-floating-input" asp-for="@Model.Description"  placeholder="" />
-                  
-                        <label class="did-floating-label">Additional Information</label>
+                    <div class="form-group">
+                        <fieldset class="fieldset">
+                            <legend class="legend">Select Category</legend>
+                            @for (int i = 0; i < Model.MorgueServices.Count(); i++)
+                            {
+                                <div class="custom-checkbox">
+                                    <input id="chk@(i)" type="checkbox" asp-for="@Model.MorgueServices[i].IsChecked" class="custom-checkbox" />
+                                    <label for="chk@(i)">@Model.MorgueServices[i].Name  - GHC @Model.MorgueServices[i].Amount</label>
+                                    <input type="hidden" asp-for="@Model.MorgueServices[i].Id" />
+                                </div>
+                            }
+                        </fieldset>
                     </div>
-                        
                         <div class="did-floating-label-content">
                         <select id="selectPatientUser"  class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Users</label>

@@ -12,25 +12,19 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">Clients</h6>
-
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Service Requests</h6>
         <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddServiceRequest" data-bs-url="@Url.Action("AddServiceRequest")"><i class="fa fa-fw fa-plus-circle"></i>Add Service Request</button>
-
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class=" table dataTables_wrapper">
-        
                 <thead>
                     <tr>
-                       
-                     <th>Number</th>    
-                <th>Date</th>
-                    <th>Requested By</th>
-                  
-                    <th>Fault(s)</th>
-                    <th>Inspected By</th>
-                    <th>Action Taken</th>
+                     <th>SN</th>    
+                <th>SR Number</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                   
                         <th>Assignee</th>
                     <th>Action</th>
                     </tr>
@@ -38,14 +32,14 @@
                 <tbody>
                       @foreach (var service in Model)
                 {
-                    <tr>
-                        
-                       <td>@string.Format("0:dd/MMM/yyyy", @service.RequestDate)</td>
-                        <td>@service.FaultInspectedBy</td>
-                        <td>@service.RequestNumber</td>
-                        <td>@service.ServiceRequestedBy</td>
-                        <td>@service.RequestNumber</td>
+                        <tr>
+                            <td></td>
+                            <td class="ellipsed-text">@service.RequestNumber</td>
+                            
+                            <td class="ellipsed-text">@service.Title</td>
 
+                            <td class="ellipsed-text">@Html.Raw(@service.Description)</td>
+                            
                         <td>@service.ActionToBeTaken</td>
                         <td>
                                 <div class="btn-group" role="group">

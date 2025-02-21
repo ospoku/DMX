@@ -15,9 +15,10 @@ namespace DMX.Data
         public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
+        public DbSet<DeceasedService> DeceasedServices { get; set; }
         public DbSet<LetterComment> LetterComments { get; set; }
         public DbSet<ServiceRequestComment> ServiceRequestComments { get; set; }    
-     
+     public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<DeceasedType> DeceasedTypes { get; set; }
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }
@@ -30,8 +31,7 @@ namespace DMX.Data
         public DbSet<TravelRequestAssignment> TravelRequestAssignments { get; set; }
         public DbSet<TravelType> TravelTypes { get; set; }
         public DbSet<TravelRequest> TravelRequests { get; set; }
-        public DbSet<SickReport> SickReports { get; set; }
-        public DbSet<MorgueCharge> MorgueCharges {  get; set; }
+        public DbSet<MorgueService> MorgueServices { get; set; }
         public DbSet<Training> Trainings { get; set; }
         public DbSet<ExcuseDuty> ExcuseDuties { get; set; }
         public DbSet<SMSTask> SMSTasks { get; set; }
@@ -53,7 +53,7 @@ namespace DMX.Data
         public DbSet<DeceasedAssignment> DeceasedAssignments { get; set; }
         public DbSet<Status> Statuses { get; set; }
        public DbSet<Category> Categories { get; set; }
-        public DbSet <Urgency> Urgency { get; set; }
+        public DbSet <Priority> Priorities { get; set; }
       
    
     }

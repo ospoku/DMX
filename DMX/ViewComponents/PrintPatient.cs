@@ -15,11 +15,11 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-            var deceased = dcx.Deceased.Include(d => d.DeceasedComments.OrderBy(d => d.CreatedDate)).Where(d => d.IsDeleted == false & d.DeceasedId == @Encryption.Decrypt(Id)).Select(d => d)
+            var deceased = dcx.Deceased.Include(d => d.DeceasedComments.OrderBy(d => d.CreatedDate)).Include(d=>d.DeceasedServices).Where(d => d.IsDeleted == false & d.DeceasedId == @Encryption.Decrypt(Id)).Select(d => d)
             .FirstOrDefault();
             TimeSpan difference = DateTime.Now - deceased.CreatedDate.Value;
             int numberOfDays = (int)difference.TotalDays;
-
+           var selectedServices = dcx.DeceasedServices.Where(d=>d.DeceasedId==deceased.DeceasedId);
             PrintMorgueVM printMorgueVM = new()
             {
                 FinalDiagnoses = deceased.Diagnoses,
@@ -31,7 +31,7 @@ namespace DMX.ViewComponents
                 Description = deceased.Description,
                 TagNo = deceased.TagNo,
                 WardInCharge = deceased.WardInCharge,
-                AccruedFees= fs.FeeCalculator(numberOfDays,deceased.DeceasedTypeId),
+                AccruedFees = fs.FeeCalculator(numberOfDays, deceased.DeceasedTypeId, selectedServices.ToList()),
             };
                 return View(printMorgueVM);
             }

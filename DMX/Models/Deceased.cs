@@ -19,11 +19,11 @@ namespace DMX
         public DeceasedType DeceasedType { get; set; }
          public string DeceasedTypeId { get; set; } 
         public  string? Description { get; set; }
+        public virtual ICollection<DeceasedService> DeceasedServices { get; set; } = new List<DeceasedService>();
         public string TagNo { get; set; }
         public string WardInCharge { get; set; }
-       
         public string ReferenceNumber { get; set; } = Guid.NewGuid().ToString("N").Substring(0,5);
-    public virtual ICollection<DeceasedComment>DeceasedComments { get; set; } 
+        public virtual ICollection<DeceasedComment> DeceasedComments { get; set; } = new List<DeceasedComment>();
        
 
   

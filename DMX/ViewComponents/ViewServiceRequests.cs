@@ -12,16 +12,17 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var user = usm.GetUserAsync(HttpContext.User).Result?.UserName;
-            var servList = dcx.ServiceAssignments.Where(a => a.AppUser.UserName == user || a.ServiceRequest.CreatedBy == user).Select(a => new 
+            var user = usm.GetUserAsync(HttpContext.User).Result?.Id;
+            var servList = dcx.ServiceAssignments.Where(a => a.AppUser.Id == user || a.ServiceRequest.CreatedBy == user).Select(a => new 
              ViewServiceRequestsVM
             {
-                
-            Faults = a.ServiceRequest.Faults,  
+                ServiceRequestId=a.ServiceRequestId,
+                Title=a.ServiceRequest.Title,
+          Description=a.ServiceRequest.Description,
            
             RequestNumber = a.ServiceRequest.RequestNumber,
-          
-                CreatedDate = a.ServiceRequest.CreatedDate,
+          CreatedDate=a.ServiceRequest.CreatedDate.Value,
+              
             }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(servList);
         }

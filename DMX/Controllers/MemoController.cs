@@ -30,6 +30,7 @@ namespace DMX.Controllers
             UserManager<AppUser> userManager,
             INotyfService notyfService,
             IAuthorizationService authorizationService,
+
             EntityService entityService,
             AssignmentService assignmentService)
         {
@@ -42,10 +43,10 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewMemos() => ViewComponent("ViewMemos");
+        public IActionResult ViewMemos() => ViewComponent(nameof(ViewMemos));
 
         [HttpGet]
-        public IActionResult AddMemo() => ViewComponent("AddMemo");
+        public IActionResult AddMemo() => ViewComponent(nameof(AddMemo));
 
         [HttpPost]
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
@@ -53,7 +54,7 @@ namespace DMX.Controllers
             if (addMemoVm.SelectedUsers == null || !addMemoVm.SelectedUsers.Any())
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction(nameof(ViewMemos));
             }
 
             try
@@ -68,7 +69,7 @@ namespace DMX.Controllers
                 if (!result)
                 {
                     _notyfService.Error("Failed to add the memo. Please try again.", 5);
-                    return RedirectToAction("ViewMemos");
+                    return RedirectToAction(nameof(ViewMemos));
                 }
 
                 foreach (var userId in addMemoVm.SelectedUsers)
@@ -87,7 +88,7 @@ namespace DMX.Controllers
                 }
 
                 _notyfService.Success("Memo and assignments successfully processed.", 5);
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction(nameof(ViewMemos));
             }
             catch (Exception ex)
             {
@@ -122,7 +123,7 @@ namespace DMX.Controllers
             if (editMemoVm.SelectedUsers == null || !editMemoVm.SelectedUsers.Any())
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction(nameof(ViewMemos));
             }
 
             try
@@ -132,7 +133,7 @@ namespace DMX.Controllers
                 if (memoToUpdate == null)
                 {
                     _notyfService.Error("Memo not found.", 5);
-                    return RedirectToAction("ViewMemos");
+                    return RedirectToAction(nameof(ViewMemos));
                 }
 
                 memoToUpdate.Content = editMemoVm.Content;
@@ -142,7 +143,7 @@ namespace DMX.Controllers
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update memo. Please try again.", 5);
-                    return RedirectToAction("ViewMemos");
+                    return RedirectToAction(nameof(ViewMemos));
                 }
 
                 var existingAssignments = _context.MemoAssignments.Where(a => a.MemoId == decryptedId);
@@ -176,7 +177,7 @@ namespace DMX.Controllers
                     _notyfService.Success("Record successfully updated", 5);
                 }
 
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction(nameof(ViewMemos));
             }
             catch (Exception ex)
             {
@@ -215,7 +216,7 @@ namespace DMX.Controllers
                     _notyfService.Error("Comment could not be saved!!!", 5);
                 }
 
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction(nameof(ViewMemos));
             }
             catch (Exception ex)
             {
@@ -245,7 +246,7 @@ namespace DMX.Controllers
                     _notyfService.Error("Record could not be deleted!!!", 5);
                 }
 
-                return RedirectToAction("ViewMemos");
+                return RedirectToAction(nameof(ViewMemos));
             }
             catch (Exception ex)
             {
@@ -254,13 +255,13 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult CommentMemo(string id) => ViewComponent("CommentMemo", id);
+        public IActionResult CommentMemo(string id) => ViewComponent(nameof(CommentMemo), id);
 
         [HttpGet]
-        public IActionResult PrintMemo(string id) => ViewComponent("PrintMemo", id);
+        public IActionResult PrintMemo(string id) => ViewComponent(nameof(PrintMemo), id);
 
         [HttpGet]
-        public IActionResult DetailMemo(string id) => ViewComponent("DetailMemo", id);
+        public IActionResult DetailMemo(string id) => ViewComponent(nameof(DetailMemo), id);
    
     }
 }

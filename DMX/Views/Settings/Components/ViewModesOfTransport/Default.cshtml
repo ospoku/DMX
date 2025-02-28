@@ -8,7 +8,7 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Transport Modes</h6>
 
-        <button id="openTransportPanel" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add Mode</button>
+        <button  class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-open="transportPanel"><i class="fa fa-fw fa-plus-circle"></i>Add Mode</button>
      
         </div>
         <div class="card-body">
@@ -62,6 +62,5 @@
 
     <div class="card-footer">
     </div>
-</div>
- 
+    </div>
 @await Component.InvokeAsync("AddTransportMode")

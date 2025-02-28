@@ -1,4 +1,5 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -24,7 +25,7 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            Deceased deceasedToEdit = (from m in dcx.Deceased.Include(m => m.DeceasedComments.OrderBy(m => m.CreatedDate)) where m.DeceasedId == Id select m).FirstOrDefault();
+            Deceased deceasedToEdit = (from m in dcx.Deceased.Include(m => m.DeceasedComments.OrderBy(m => m.CreatedDate)) where m.DeceasedId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
 
             DeceasedCommentVM addCommentVM = new DeceasedCommentVM
             {

@@ -1,14 +1,14 @@
 ﻿
 @model DMX.ViewModels.AddFeeStructureVM
 
-<div class="slide-fee-panel" id="feePanel">
+<div class="slide-panel" data-panel="feePanel" id="feePanel">
     <div class="card">
 
         
             <div class="card-header">
 
                 <h6 class="d-inline">Add Fee Structure</h6>
-                <button id="closeFeePanel" type="button" name="nCloseFeePanel"  class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
+                <button id="closeFeePanel" type="button" name="nCloseFeePanel" data-close="feePanel"  class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
             </div>
              @using (Html.BeginForm("AddFeeStructure", "Settings", FormMethod.Post))
             {

@@ -17,23 +17,24 @@
             
             <div class="container mt-0">
                 <!-- Nav pill tabs -->
-                <ul class="nav nav-pills custom-pills" id="pettycashPillTabs" role="tablist">
+                    <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-1 shadow-sm"  role="tablist"
+                         id="pettycashPillTabs" >
                     <li class="nav-item" role="presentation">
-                            <button class="nav-link  rounded-pill active" id="memo-content-pill-tab" data-bs-toggle="pill" data-bs-target="#memo-content-pill" type="button" role="tab" aria-controls="memo-content-pill" aria-selected="true">Petty Cash</button>
+                            <button class="nav-link rounded active custom-tab" id="memo-content-pill-tab" data-bs-toggle="pill" data-bs-target="#memo-content-pill" type="button" role="tab" aria-controls="memo-content-pill" aria-selected="true">Petty Cash</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                            <button class="nav-link nav-link rounded-pill" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments <span class="badge bg-danger">@Model.CommentCount</span></button>
+                            <button class="nav-link nav-link rounded rounded custom-tab" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments <span class="badge bg-danger">@Model.CommentCount</span></button>
                    
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link rounded-pill " id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
+                        <button class="nav-link rounded custom-tab " id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
                     </li>
                 </ul>
 
                 <!-- Pill tab panes -->
                 <div class="tab-content mt-1 border-5 border-primary" id="pettycashPillTabsContent">
                     <!-- Memo Content -->
-                    <div class="tab-pane fade active show  p-1" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
+                    <div class="tab-pane fade active show border-1 border-dark p-1" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
                         @Model.Purpose
                         
                     </div>

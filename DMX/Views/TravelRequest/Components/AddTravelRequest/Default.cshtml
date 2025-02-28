@@ -16,7 +16,7 @@
             <div class="modal-body">
             
                     <div class="did-floating-label-content">
-                        <select id="selectTravelType1" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder="" required></select>
+                        <select id="selectTravelType1" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder=""></select>
                         <label class="did-floating-label">Select Travel Type</label>
                     </div>
                     <div class="did-floating-label-content">
@@ -26,13 +26,10 @@
                   
                         @foreach (var mode in Model.TransportModes)
                         {
-
                             <label class=" btn btn-sm btn-outline-primary">
-
                                 <input type="radio" asp-for="@Model.TransportModeId" class="option-input radio" value="@mode.Value" id="Mode@(mode)" />
                                 @mode.Text
-                            </label>
-
+                            </label> 
                         }
                     
 

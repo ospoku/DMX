@@ -130,18 +130,35 @@ namespace DMX.Data
                 });
            
             }
+            if (!dcx.TravelTypes.Any())
+            {
+                dcx.TravelTypes.Add(new TravelType()
+                {
+                    Name = "Estate",
+                    Code = "EST",
+                    Description = "Name for a Patient who was broguth in Dead"
+                });
+                dcx.TravelTypes.Add(new TravelType()
+                {
+                    Name = "ICT",
+                    Code = "IT",
+                    Description = "Name for a Patient who Died in Ward"
+                });
+
+            }
             if (!dcx.MorgueServices.Any())
             {
                 dcx.MorgueServices.Add(new MorgueService ()
                 {
                     ServiceName = "Formalin",
-                    
-                   
+                    Code="FML",
+                   Description="xxxxxxxxxx",
                 });
                 dcx.MorgueServices.Add(new MorgueService()
                 {
-                    ServiceName = "Embalming"
-                   
+                    ServiceName = "Embalming",
+                   Code="EBM",
+                   Description="xxxxxxxxxxx",
                 });
 
             }

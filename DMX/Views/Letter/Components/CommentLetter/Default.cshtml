@@ -17,25 +17,25 @@
             
             <div class="container mt-0">
                 <!-- Nav pill tabs -->
-                <ul class="nav nav-pills" id="letterPillTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link rounded-pill active" id="letter-content-pill-tab" data-bs-toggle="pill" data-bs-target="#letter-content-pill" type="button" role="tab" aria-controls="letter-content-pill" aria-selected="true">letter Content</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments <span class="badge bg-danger">@Model.CommentCount</span></button>
-                   
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link rounded-pill " id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
-                    </li>
-                </ul>
+                    <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-1 shadow-sm" id="memoPillTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-1 custom-tab active" id="memo-content-pill-tab" data-bs-toggle="pill" data-bs-target="#memo-content-pill" type="button" role="tab" aria-controls="memo-content-pill" aria-selected="true">Memo Content</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-1 custom-tab" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments <span class="badge bg-danger">@Model.CommentCount</span></button>
+
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-1 custom-tab" id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
+                        </li>
+                    </ul>
 
                 <!-- Pill tab panes -->
                 <div class="tab-content mt-1" id="letterPillTabsContent">
                     <!-- letter Content -->
                     <div class="tab-pane fade active show  p-1" id="letter-content-pill" role="tabpanel" aria-labelledby="letter-content-pill-tab">
                             
-                                        <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String(@Model.Document)" class=" w-100 border-1" style="height:500px"></iframe>
+                                        <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String(@Model.Document)"></iframe>
                          
                            
                         
@@ -132,20 +132,3 @@
 
 </script> 
 
-
-
-
-
-
-
-<script>
-
-    $(document).ready(function () {
-
-        $('time.timeago').timeago();
-    });
-
-    $(document).ready(function () {
-        tinymce.init({ selector: '#newComment' });
-    });
-</script>

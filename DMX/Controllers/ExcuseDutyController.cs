@@ -4,6 +4,7 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
+
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -54,14 +55,14 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CommentExcuseDuty(string id, MemoCommentVM commentVm)
+        public async Task<IActionResult> CommentExcuseDuty(string Id, ExcuseDutyCommentVM commentVm)
         {
             try
             {
-                var dutyToComment = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == id);
+                var dutyToComment = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == @Encryption.Decrypt(Id));
                 if (dutyToComment == null)
                 {
-                    return NotFound();
+                    _notyfService.Error("The recoord could not be found");
                 }
 
                 var newComment = new ExcuseDutyComment
@@ -105,7 +106,6 @@ namespace DMX.Controllers
                 _notyfService.Error("You do not have access to this resource!", 5);
                 return Json(new { success = false, message = "You do not have access to this resource!" });
             }
-
             return ViewComponent("EditExcuseDuty", id);
         }
 
@@ -232,7 +232,14 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddExcuseDuty()
         {
-            return ViewComponent("AddExcuseDuty");
+            return ViewComponent(nameof(AddExcuseDuty));
         }
+
+        [HttpGet]
+        public IActionResult CommentExcuseDuty(string Id) => ViewComponent(nameof(CommentExcuseDuty), Id);
+       
+        [HttpGet]
+        public IActionResult PrintExcuseDuty(string Id) => ViewComponent(nameof(PrintExcuseDuty), Id);
+
     }
 }

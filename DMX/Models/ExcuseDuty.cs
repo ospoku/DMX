@@ -14,7 +14,7 @@ namespace DMX.Models
         public DateTime DateofDischarge { get; set; }
         public string Diagnosis { get; set; }
         public int ExcuseDays { get; set; }
-
+        public ICollection<ExcuseDutyComment> ExcuseDutyComments { get; set; }
         public string ReferenceNumber { get; set; } = "E" + Guid.NewGuid().ToString("N").Substring(0, 5);
             
 

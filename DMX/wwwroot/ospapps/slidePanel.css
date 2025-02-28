@@ -1,4 +1,4 @@
-﻿.slide-dept-panel {
+﻿.slide-panel {
     position: fixed;
     top: 0;
     right: -300px; /* Hide panel off-screen initially */
@@ -10,9 +10,7 @@
     z-index: 1000;
     padding: 20px;
 }
-    .slide-dept-panel.open {
+
+    .slide-panel.open {
         right: 0;
     }
-
-
-

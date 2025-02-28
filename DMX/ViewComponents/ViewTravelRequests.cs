@@ -16,8 +16,15 @@ namespace DMX.ViewComponents
             var travelList = dcx.TravelRequestAssignments.Where(a => a.AppUser.Id == user || a.TravelRequest.CreatedBy == user & a.TravelRequest.IsDeleted == false).Select(a => 
              new ViewTravelRequestsVM
             {
-
-
+                 ReferenceNumber=a.TravelRequest.ReferenceNumber,
+                 TravelType=a.TravelRequest.TravelType.Name,
+                 Name=usm.FindByIdAsync(a.TravelRequest.CreatedBy).Result.Fullname,
+                 DepartureDate=a.TravelRequest.StartDate,
+                 TravelRequestId=a.TravelRequestId,
+                 PurposeofJourney=a.TravelRequest.Purpose,
+                 StartDate=a.TravelRequest.EndDate,
+                 
+                 DateofReturn=a.TravelRequest.DateofReturn,
                 CreatedDate = a.CreatedDate,
             }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(travelList);

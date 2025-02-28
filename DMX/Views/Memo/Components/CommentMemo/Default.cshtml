@@ -12,29 +12,33 @@
             </div>
             <div class="modal-body">
             <div class="container mt-0">
+
+                    
+
                 <!-- Nav pill tabs -->
-                <ul class="nav nav-pills" id="memoPillTabs" role="tablist">
+                    <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-1 shadow-sm" id="memoPillTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link rounded-pill active" id="memo-content-pill-tab" data-bs-toggle="pill" data-bs-target="#memo-content-pill" type="button" role="tab" aria-controls="memo-content-pill" aria-selected="true">Memo Content</button>
+                        <button class="nav-link rounded-1 custom-tab active" id="memo-content-pill-tab" data-bs-toggle="pill" data-bs-target="#memo-content-pill" type="button" role="tab" aria-controls="memo-content-pill" aria-selected="true">Memo Content</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments <span class="badge bg-danger">@Model.CommentCount</span></button>
+                            <button class="nav-link rounded-1 custom-tab" id="comments-pill-tab" data-bs-toggle="pill" data-bs-target="#comments-pill" type="button" role="tab" aria-controls="comments-pill" aria-selected="false">Comments <span class="badge bg-danger">@Model.CommentCount</span></button>
                    
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link rounded-pill " id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
+                        <button class="nav-link rounded-1 custom-tab" id="new-comment-pill-tab" data-bs-toggle="pill" data-bs-target="#new-comment-pill" type="button" role="tab" aria-controls="new-comment-pill" aria-selected="false">New Comment</button>
                     </li>
                 </ul>
 
                 <!-- Pill tab panes -->
-                <div class="tab-content mt-1" id="memoPillTabsContent">
+                    <div class="tab-content p-1" id="memoPillTabsContent">
+                    
                     <!-- Memo Content -->
-                    <div class="tab-pane fade active show  p-1 memo-content" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
+                            <div class="tab-pane fade active show border-1 border-dark p-1 memo-content card border-1 border-dark-subtle" id="memo-content-pill" role="tabpanel" aria-labelledby="memo-content-pill-tab">
                         @Html.Raw(Model.MemoContent)
                     </div>
 
                     <!-- Comments -->
-                    <div class="tab-pane fade p-1" id="comments-pill" role="tabpanel" aria-labelledby="comments-pill-tab">
+                    <div class="tab-pane fade p-0" id="comments-pill" role="tabpanel" aria-labelledby="comments-pill-tab">
 
 
                             @foreach (var comment in Model.Comments)
@@ -59,7 +63,7 @@
                                              style="width: 40px; height: 40px; object-fit: cover;">
 
 
-                                        <div class="flex-grow-1">
+                                        <div class="flex-grow-1 memo-content">
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <small class="fw-bold">@comment.AppUser?.Fullname</small>
                                                 <small class="fa-pull-right">
@@ -73,7 +77,7 @@
                             }
                     </div>
                     <!-- New Comment -->
-                    <div class="tab-pane fade p-1" id="new-comment-pill" role="tabpanel" aria-labelledby="new-comment-pill-tab">
+                    <div class="tab-pane fade p-0" id="new-comment-pill" role="tabpanel" aria-labelledby="new-comment-pill-tab">
                         <form method="post" asp-action="CommentMemo" asp-controller="Memo">
                     
                             <div class="mb-3">
@@ -82,8 +86,11 @@
                             <button type="submit" class="btn btn-primary">Submit Comment</button>
                             </form>
                     </div>
-                </div>
-        </div>
+                    </div>
+            
+             
+
+            </div>
     </div>
     </div>
     </div>

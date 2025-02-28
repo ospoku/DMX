@@ -1,12 +1,12 @@
 ﻿
 @model DMX.ViewModels.AddTransportModeVM;
 
-<div class="slide-transport-panel" id="transportPanel">
+<div class="slide-panel" data-panel="transportPanel" id="transportPanel">
     <div class="card">
         <div class="card-header">
                 <h6 class="d-inline">Add Transport Mode</h6>
             
-            <button id="closeTransportPanel" type="button"  class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
+            <button id="closeTransportPanel" type="button" data-close="transportPanel"  class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
 
         </div>
              @using (Html.BeginForm("AddTransportMode", "Settings", FormMethod.Post))

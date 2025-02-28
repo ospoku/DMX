@@ -1,14 +1,14 @@
 ﻿
 @model DMX.ViewModels.AddDeceasedTypeVM
 
-<div class="slide-deceased-panel" id="deceasedPanel">
+<div class="slide-panel"  data-panel="deceasedPanel" id="deceasedPanel">
     <div class="card">
 
         
             <div class="card-header">
 
                 <h6 class="d-inline">Add Deceased Type</h6>
-                <button id="btnCloseDeceased" type="button" name="nCloseDceasedPanel" class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
+                <button id="btnCloseDeceased" type="button" name="nCloseDceasedPanel" data-close="deceasedPanel" class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
             </div>
              @using (Html.BeginForm("AddDeceasedType", "Settings", FormMethod.Post))
             {

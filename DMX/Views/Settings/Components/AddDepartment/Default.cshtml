@@ -1,14 +1,14 @@
 ﻿
 @model DMX.ViewModels.AddDepartmentVM
 
-<div class="slide-dept-panel" id="departmentPanel">
+<div class="slide-panel"  data-panel="departmentPanel" id="departmentPanel">
     <div class="card">
 
         
             <div class="card-header">
 
                 <h6 class="d-inline">Add Department</h6>
-                <button id="closeDeptPanel" type="button" name="nCloseDeptPanel"  class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
+                <button id="closeDeptPanel" type="button" name="nCloseDeptPanel" data-close="departmentPanel" class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
             </div>
              @using (Html.BeginForm("AddDepartment", "Settings", FormMethod.Post))
             {

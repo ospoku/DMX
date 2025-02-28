@@ -23,6 +23,7 @@ namespace DMX.ViewComponents
                     Id = d.MorgueServiceId, // Map the Id property
                     Name = d.ServiceName, // Map the Name property
                     IsChecked = false, // Default value for IsSelected}).ToList()
+                    Description=d.Description,
                Amount=d.Amount }).ToList(),
             };
             return View(addDeceasedVM);

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DMX.ViewComponents
 {
-    public class ViewExtraServices(XContext context):ViewComponent
+    public class ViewFeeStructures(XContext context):ViewComponent
     {
         public readonly XContext ctx=context;
         public IViewComponentResult Invoke()

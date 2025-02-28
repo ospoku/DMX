@@ -1,4 +1,5 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class ExcuseDutyComment(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class CommentExcuseDuty(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
@@ -24,18 +25,21 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            Memo memoToEdit = new();
-            memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == Id select m).FirstOrDefault();
+            ExcuseDuty dutyToComment = new();
+            dutyToComment = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)).ThenInclude(u =>u.AppUser) where m.Id == @Encryption.Decrypt(Id) select m).FirstOrDefault();
 
             ExcuseDutyCommentVM addCommentVM = new()
             {
-                MemoContent = memoToEdit.Content,
-              
-                Title = memoToEdit.Title,
+               Diagnosis  = dutyToComment.Diagnosis,
+                PatientName=dutyToComment.PatientName,
+               PatientId  = dutyToComment.PatientId,
+               Days=dutyToComment.ExcuseDays,
+               DischargeDate=dutyToComment.DateofDischarge,
                 SelectedUsers = AssignedUsers,
+                CommentCount = dutyToComment.ExcuseDutyComments.Count(),
+                Comments = dutyToComment.ExcuseDutyComments.OrderBy(m => m.CreatedDate).ToList(),
 
-        
-                UsersList= new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             
 

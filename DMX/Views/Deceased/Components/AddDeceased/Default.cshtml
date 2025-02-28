@@ -66,7 +66,7 @@
                         <label class="did-floating-label">Depositor</label>
                     </div>
                     <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.DepositorAddress" class="did-floating-input" placeholder="" required>
+                        <input type="text" title="xxxxxxxxxx"  asp-for="@Model.DepositorAddress" class="did-floating-input" placeholder="" required>
                         <label class="did-floating-label">Depositor Address</label>
                     </div>
 
@@ -76,7 +76,7 @@
                             @for (int i = 0; i < Model.MorgueServices.Count(); i++)
                             {
                                 <div class="custom-checkbox">
-                                    <input id="chk@(i)" type="checkbox" asp-for="@Model.MorgueServices[i].IsChecked" class="custom-checkbox" />
+                                    <input id="chk@(i)" type="checkbox" title="@Model.MorgueServices[i].Description"  asp-for="@Model.MorgueServices[i].IsChecked" class="custom-checkbox" />
                                     <label for="chk@(i)">@Model.MorgueServices[i].Name  - GHC @Model.MorgueServices[i].Amount</label>
                                     <input type="hidden" asp-for="@Model.MorgueServices[i].Id" />
                                 </div>

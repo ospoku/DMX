@@ -1,4 +1,5 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,13 @@ namespace DMX.ViewComponents
            
 
             TravelRequest travelRequestToEdit = new TravelRequest();
-            travelRequestToEdit = (from tr in dcx.TravelRequests.Include(m => m.Comments.OrderBy(m=>m.CreatedDate)) where tr.TravelRequestId==TravelRequestId select tr ).FirstOrDefault();
+            travelRequestToEdit = (from tr in dcx.TravelRequests.Include(m => m.Comments.OrderBy(m=>m.CreatedDate)) where tr.TravelRequestId==@Encryption.Decrypt(TravelRequestId )select tr ).FirstOrDefault();
 
             EditTravelRequestVM editTravelRequestVM = new EditTravelRequestVM
             {
-                 
-
+               Purpose=travelRequestToEdit.Purpose, 
+               StartDate=travelRequestToEdit.StartDate,
+               EndDate=travelRequestToEdit.EndDate,
             };
             
 

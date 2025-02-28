@@ -1,8 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
+using DMX.ViewComponents;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,17 +21,18 @@ namespace DMX.Controllers
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
-
+        private readonly IAuthorizationService _authorizationService; private readonly AssignmentService _assignmentService;
         public TravelRequestController(
             XContext context,
             UserManager<AppUser> userManager,
-            INotyfService notyfService,
+            INotyfService notyfService, IAuthorizationService authorizationService,
+             AssignmentService assignmentService,
             EntityService entityService)
         {
             _userManager = userManager;
-            _context = context;
+            _context = context; _assignmentService = assignmentService;
             _notyfService = notyfService;
-            _entityService = entityService;
+            _entityService = entityService; _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -115,7 +119,7 @@ namespace DMX.Controllers
             {
                 // Find the travel request by ID
                 var travelRequest = await _context.TravelRequests
-                    .FirstOrDefaultAsync(t => t.TravelRequestId == id);
+                    .FirstOrDefaultAsync(t => t.TravelRequestId == @Encryption.Decrypt(id));
 
                 if (travelRequest == null)
                 {
@@ -123,7 +127,7 @@ namespace DMX.Controllers
                 }
 
                 // Create a new comment
-                var newComment = new TravelRequestComment
+                var newComment = new Models.TravelRequestComment
                 {
                     TravelRequestId = travelRequest.TravelRequestId,
                     Message = commentVm.NewComment,
@@ -144,5 +148,100 @@ namespace DMX.Controllers
                 return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the comment." });
             }
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditTravelRequestAsync(string Id)
+        {
+            var decryptedId = Encryption.Decrypt(Id);
+            var travel = await _context.TravelRequests.FirstOrDefaultAsync(m => m.TravelRequestId == decryptedId);
+            if (travel == null)
+            {
+                return NotFound();
+            }
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User,travel, "TravelRequestOwnerPolicy");
+            if (!authorizationResult.Succeeded)
+            {
+                _notyfService.Error("You do not have access to this resource!", 5);
+                return Json(new { success = false, message = "You do not have access to this resource!" });
+            }
+
+            return ViewComponent(nameof(EditTravelRequest), Id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTravelRequest(string id, EditMemoVM editMemoVm)
+        {
+            if (editMemoVm.SelectedUsers == null || !editMemoVm.SelectedUsers.Any())
+            {
+                _notyfService.Error("You must select at least one user for assignment.", 5);
+                return RedirectToAction("ViewMemos");
+            }
+
+            try
+            {
+                var decryptedId = Encryption.Decrypt(id);
+                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == decryptedId);
+                if (memoToUpdate == null)
+                {
+                    _notyfService.Error("Memo not found.", 5);
+                    return RedirectToAction("ViewMemos");
+                }
+
+                memoToUpdate.Content = editMemoVm.Content;
+                memoToUpdate.Title = editMemoVm.Title;
+
+                bool isEdited = await _entityService.EditEntityAsync(memoToUpdate, User);
+                if (!isEdited)
+                {
+                    _notyfService.Error("Failed to update memo. Please try again.", 5);
+                    return RedirectToAction("ViewMemos");
+                }
+
+                var existingAssignments = _context.MemoAssignments.Where(a => a.MemoId == decryptedId);
+                _context.MemoAssignments.RemoveRange(existingAssignments);
+
+                bool atLeastOneFailed = false;
+                var failedUsers = new List<string>();
+
+                foreach (var userId in editMemoVm.SelectedUsers)
+                {
+                    var assignment = new MemoAssignment
+                    {
+                        MemoId = memoToUpdate.MemoId,
+                        UserId = userId
+                    };
+
+                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    if (!assignResult)
+                    {
+                        atLeastOneFailed = true;
+                        failedUsers.Add(userId);
+                    }
+                }
+
+                if (atLeastOneFailed)
+                {
+                    _notyfService.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
+                }
+                else
+                {
+                    _notyfService.Success("Record successfully updated", 5);
+                }
+
+                return RedirectToAction("ViewMemos");
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error("An unexpected error occurred. Please try again.", 5);
+                Console.WriteLine($"Error updating Memo: {ex.Message}");
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CommentTravelRequest(string Id) => ViewComponent(nameof(CommentTravelRequest), Id);
     }
 }

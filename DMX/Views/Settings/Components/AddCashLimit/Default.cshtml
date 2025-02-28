@@ -1,14 +1,14 @@
 ﻿
 @model DMX.ViewModels.AddCashLimitVM
 
-<div class="slide-cash-panel" id="cashPanel">
+<div class="slide-panel" data-panel="cashPanel" id="cashPanel">
     <div class="card">
 
         
             <div class="card-header">
 
                 <h6 class="d-inline">Add Cash Limit</h6>
-                <button id="btnCloseCash" type="button" name="nCloseCashPanel"  class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
+                <button id="btnCloseCash" data-close="cashPanel" type="button" name="nCloseCashPanel"  class="d-line btn btn-sm btn-outline-danger fa-pull-right">X</button>
             </div>
              @using (Html.BeginForm("AddCashLimit", "Settings", FormMethod.Post))
             {

@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "tinymce@7.0.0",
+      "destination": "wwwroot/lib/tinymce/"
+    },
+    {
+      "library": "jquery.collapsible@1.2",
+      "destination": "wwwroot/lib/jquery.collapsible/"
+    },
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "font-awesome@6.5.2",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "lottie-web@5.12.2",
+      "destination": "wwwroot/lib/lottie-web/"
+    },
+    {
+      "library": "sweetalert2@11.15.10",
+      "destination": "wwwroot/lib/sweetalert2/"
+    }
+  ]
+}

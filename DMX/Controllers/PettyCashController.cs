@@ -37,10 +37,10 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewPettyCash() => ViewComponent("ViewPettyCash");
+        public IActionResult ViewPettyCash() => ViewComponent(nameof(ViewPettyCash));
 
         [HttpGet]
-        public IActionResult AddPettyCash() => ViewComponent("AddPettyCash");
+        public IActionResult AddPettyCash() => ViewComponent(nameof(AddPettyCash));
 
         [HttpPost]
         public async Task<IActionResult> AddPettyCash(AddPettyCashVM addPettyCashVm)
@@ -92,7 +92,7 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditPettyCash(string id) => ViewComponent("EditPettyCash", id);
+        public IActionResult EditPettyCash(string id) => ViewComponent(nameof(EditPettyCash), id);
 
         [HttpPost]
         public async Task<IActionResult> EditPettyCash(EditPettyCashVM editPettyCashVm, string id)
@@ -154,7 +154,7 @@ namespace DMX.Controllers
                     _notyfService.Success("Record successfully updated", 5);
                 }
 
-                return RedirectToAction("ViewPettyCash");
+                return RedirectToAction(nameof(ViewPettyCash));
             }
             catch (Exception ex)
             {
@@ -197,7 +197,7 @@ namespace DMX.Controllers
                     _notyfService.Error("Comment could not be saved!!!", 5);
                 }
 
-                return RedirectToAction("ViewPettyCash");
+                return RedirectToAction(nameof(ViewPettyCash));
             }
             catch (Exception ex)
             {

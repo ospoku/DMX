@@ -134,14 +134,14 @@ namespace DMX.Data
             {
                 dcx.TravelTypes.Add(new TravelType()
                 {
-                    Name = "Estate",
-                    Code = "EST",
+                    Name = "Conference",
+                    Code = "CNF",
                     Description = "Name for a Patient who was broguth in Dead"
                 });
                 dcx.TravelTypes.Add(new TravelType()
                 {
-                    Name = "ICT",
-                    Code = "IT",
+                    Name = "Seminar",
+                    Code = "SMR",
                     Description = "Name for a Patient who Died in Ward"
                 });
 

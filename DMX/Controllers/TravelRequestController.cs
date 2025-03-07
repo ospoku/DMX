@@ -47,7 +47,7 @@ namespace DMX.Controllers
             if (addTravelRequestVm.SelectedUsers?.Any() != true)
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction("ViewTravelRequests");
+                return RedirectToAction(nameof(ViewTravelRequests));
             }
 
             try

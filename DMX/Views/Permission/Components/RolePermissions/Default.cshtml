@@ -1,0 +1,68 @@
+﻿@using DMX.DataProtection
+@using Microsoft.AspNetCore.Identity
+@inject RoleManager<AppRole> rol;
+@model DMX.ViewModels.RolePermissionVM
+
+<div class="modal fade" id="RolePermissions" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h6>Add/Remove Roles for <br /><b>@rol.FindByIdAsync(@Model.RoleId).Result.Rolename</b></h6> <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                </div>
+                @using (Html.BeginForm("RolePermissions","Permission",FormMethod.Post))
+                { <input asp-for="@Model.RoleId" type="hidden"/>
+                <div class="modal-body">
+                  <table class="table table-sm table-condensed">
+                <thead>
+                    <tr>
+                    
+                        <th>
+                            Permission
+                        </th>
+                        <th>
+                           
+                                    <input type="checkbox" id="checkAll" /> Select All
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.RoleClaims.Count(); i++)
+                    {
+                        <tr>
+                            <td>
+                                <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
+                                
+                                <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
+                                @Model.RoleClaims[i].Value
+                            </td>
+                            <td>
+                                <div class="toggle-switch">
+                                    <input asp-for="@Model.RoleClaims[i].Selected" class="toggle-switch"/>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+       
+     
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-block">Update</button>
+              
+                </div>
+                }
+            </div>
+      
+    </div>
+</div>
+
+                                    <script>
+    $(document).ready(function () {
+        $("#checkAll").on("change", function () {
+            $(".toggle-switch").prop("checked", this.checked);
+           
+        });
+    });
+</script>

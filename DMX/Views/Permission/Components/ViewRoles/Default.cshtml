@@ -1,0 +1,69 @@
+﻿@using DMX.DataProtection
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<DMX.ViewModels.RolesVM>
+<div id="PlaceHolderHere"></div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Roles</h6>
+
+        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddRole" data-bs-url="@Url.Action("AddRole")"><i class="fa fa-fw fa-plus-circle"></i>Add Role</button>
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table dataTables_wrapper">
+
+
+
+               
+                        <thead>
+                            <tr>
+
+                            <tr>
+                                <th>SN</th>
+                                <th>Name</th>
+                                
+                                <th>Description</th>
+                                
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var role in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@role.Name</td>
+                               
+                                <td>@role.Description</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Select Action
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditRole", new{Id=Encryption.Encrypt(role.Id)})" class="dropdown-item-custom" data-bs-target="#EditRole"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                                <button class="dropdown-item-custom" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("RolePermissions", new { Id = @Encryption.Encrypt(role.Id) })" data-bs-target="#RolePermissions"><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Role Permissions</button>
+                             
+
+                                        <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
+                                                    <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+            
+        </div>
+    </div>
+    <div class="card-footer"></div>
+    </div>

@@ -1,0 +1,94 @@
+﻿@using DMX.Constants
+@using DMX.Controllers
+@using DMX.DataProtection
+
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService auth;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<DMX.ViewModels.ViewPatientsVM>;
+
+
+<div id="PlaceHolderHere"></div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Deceaseds</h6>
+
+        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddDeceased" data-bs-url="@Url.Action("AddDeceased")"><i class="fa fa-fw fa-plus-circle"></i>Add Deceased</button>
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table dataTables_wrapper" id="dataTable">
+    
+       
+            <thead>
+                <tr>
+                   
+                    <th>Deceased</th>
+                    <th>Folder</th>
+                    <th>Tag No</th>
+                    <th>Other Fees</th>
+                    <th>InCharge</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var patient in Model)
+                {
+                    <tr>
+                        
+                            <td class="ellipsed-text">@patient.PatientName</td>
+                            <td class="ellipsed-text">@patient.FolderNo</td>
+                            <td class="ellipsed-text">@patient.TagNo</td>
+                            <td class="ellipsed-text">@patient.OtherFees</td>
+                        <td class="ellipsed-text">@patient.WardInCharge</td>
+                        <td>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Select Action
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                       @if (( await auth.AuthorizeAsync(User,Permissions.Modules.EditDeceased)).Succeeded)
+                                        {
+                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditDeceased",new{Id=Encryption.Encrypt(patient.PatientId)})" class="dropdown-item-custom" data-bs-target="#EditDeceased"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                        }
+                                   
+                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.PrintDeceased)).Succeeded)
+                                        {
+                                            <a class="dropdown-item-custom" asp-action="PrintDeceased" asp-controller="Patient" asp-route-Id="@Encryption.Encrypt(patient.PatientId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
+                                        }
+                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentDeceased)).Succeeded)
+                                        {
+                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentDeceased",new { Id = Encryption.Encrypt(patient.PatientId)})" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
+                                        }
+                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.CommentDeceased)).Succeeded)
+                                        {
+                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ViewInvoice", new { Id = Encryption.Encrypt(patient.PatientId) })" class="dropdown-item-custom" data-bs-target="#ViewInvoice"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>View Invoice</button>
+                                        }
+                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteDeceased)).Succeeded)
+                                        {
+                                            <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
+                                                <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+
+                            </td>
+                    </tr>
+                }
+
+
+
+
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div class="card-footer">
+    </div>
+</div>
+

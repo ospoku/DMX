@@ -1,0 +1,109 @@
+﻿
+@model DMX.ViewModels.AddUserVM 
+
+
+       
+<div class="modal fade" id="AddUser" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add User</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div> 
+            @using (Html.BeginForm("AddUser", "Account", FormMethod.Post,new{id="addUserForm"}))
+            {
+            <div class="modal-body">
+                       
+                       <div class="did-floating-label-content">
+                        <input class="did-floating-input" asp-for="@Model.Username" placeholder="" required />
+                        <label class="did-floating-label">Username</label>
+                       </div>
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" asp-for="@Model.Firstname" placeholder="" required />
+                        <label class="did-floating-label">Firstname</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" asp-for="@Model.Surname" placeholder="" required />
+                        <label class="did-floating-label">Surname</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="email" asp-for="@Model.Email" placeholder="" required />
+                        <label class="did-floating-label">Email</label>
+                    </div>
+                    <div class="did-floating-label-content">
+   
+                                    <input class="did-floating-input" type="password" asp-for="@Model.Password" placeholder="" required  />
+                        <label class="did-floating-label">Password</label>
+                                </div>
+                       
+                         
+                            <div class="did-floating-label-content">
+
+                        <select id="selectRole" class="did-floating-select"  asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles"></select>
+                              <label class="did-floating-label">Select Role(s)</label>
+                            </div>
+                        
+                       
+                       
+                    </div>
+                <div class="modal-footer">  <button id="btnAddUser" class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
+                }
+                </div>
+            </div>
+</div>
+
+    <script>
+        $(document).ready(function () {
+
+            const addUserFormSelector="#addUserForm";
+
+            $('#selectRole').select2({
+                dropdownParent: $('#AddUser')
+            });
+
+        
+          document.getElementById("btnAddUser").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const form = document.querySelector(addUserFormSelector);
+                 if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            // Validate fields
+
+            // Show error if invalid
+
+
+            // Confirm save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

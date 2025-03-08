@@ -16,6 +16,7 @@
         public DateTime EndDate { get; set; }
         public DateTime DateofReturn { get; set; }
         public DateTime StartDate { get; set; }
+        public int TotalAllowance { get; set; }
         public int Rate { get; set; }
         public string FuelClaim { get; set; }
         public decimal AmountDue { get; set; }

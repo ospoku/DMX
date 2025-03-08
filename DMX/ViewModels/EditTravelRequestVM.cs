@@ -19,7 +19,9 @@ namespace DMX.ViewModels
         public int FuelClaim { get; set; }
         public int OtherExpenses { get; set; }
         public string AdditionalNotes { get; set; }
-      
-     
+        public SelectList UsersList { get; set; }
+        public List<string> SelectedUsers { get; set; }
+
+
     }
 }

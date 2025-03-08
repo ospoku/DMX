@@ -23,8 +23,8 @@ namespace DMX.ViewComponents
                  TravelRequestId=a.TravelRequestId,
                  PurposeofJourney=a.TravelRequest.Purpose,
                  StartDate=a.TravelRequest.EndDate,
-                 
-                 DateofReturn=a.TravelRequest.DateofReturn,
+                 TotalAllowance= a.TravelRequest.TotalAllowance(a.TravelRequest.StartDate, a.TravelRequest.EndDate),
+                 DateofReturn =a.TravelRequest.DateofReturn,
                 CreatedDate = a.CreatedDate,
             }).OrderByDescending(t => t.CreatedDate).ToList();
             return View(travelList);

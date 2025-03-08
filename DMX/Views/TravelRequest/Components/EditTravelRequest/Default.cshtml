@@ -2,7 +2,7 @@
 @model DMX.ViewModels.EditTravelRequestVM;
 
 <div class="modal fade" id="EditTravelRequest" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -10,6 +10,8 @@
                 <h6>Edit Travel Request</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
+            @using (Html.BeginForm("EditTravelRequest", "TravelRequest", FormMethod.Post, new { id = "editTravelRequestForm" }))
+            {
             <div class="modal-body">
 
 
@@ -102,12 +104,12 @@
                 </div>
 
                 <div class="did-floating-label-content">
-                   @*  <select id="selectUserTravelRequest" class="did-floating-select" type="select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select> *@
+                     <select id="selectUserTravelRequest" class="did-floating-select" type="select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                     <label class="did-floating-label">Select Approver(s)</label>
                 </div>
 
 
-                <button id="btnAddTravelRequest" class="btn btn-block btn-primary">Save</button>
+                <button id="btnEditTravelRequest" class="btn btn-block btn-primary">Update</button>
 
 
             </div>
@@ -120,11 +122,11 @@
 <script>
     $(document).ready(function () {
      const addTravelRequestFormSelector = '#addTravelRequestForm';
-        $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest') });
-        $('#selectTravelType1').select2({ dropdownParent: $('#AddTravelRequest') });
-          $('#selectTravelType2').select2({ dropdownParent: $('#AddTravelRequest') });
-        $('#selectDept').select2({ dropdownParent: $('#AddTravelRequest') });
-         document.getElementById("btnAddTravelRequest").addEventListener("click", function (event) {
+        $('#selectUserTravelRequest').select2({ dropdownParent: $('#EditTravelRequest') });
+        $('#selectTravelType1').select2({ dropdownParent: $('#EditTravelRequest') });
+          $('#selectTravelType2').select2({ dropdownParent: $('#EditTravelRequest') });
+        $('#selectDept').select2({ dropdownParent: $('#EditTravelRequest') });
+         document.getElementById("btnEditTravelRequest").addEventListener("click", function (event) {
             event.preventDefault();
 
             const form = document.querySelector(addTravelRequestFormSelector);

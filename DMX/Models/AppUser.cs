@@ -25,8 +25,8 @@ namespace DMX.Models
     
         public bool IsDeleted { get; set; }
 
-        [Precision(10,4)]
-        public decimal? Rate { get; set; }
+        [Precision(10, 4)]
+        public decimal Rate { get; set; } = 0;
 
      
         public string? DepartmentId { get; set; }

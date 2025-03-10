@@ -29,7 +29,7 @@ namespace DMX.ViewComponents
                 Comments = letterToComment.LetterComments.OrderBy(m => m.CreatedDate).ToList(),
                 Title = letterToComment.ReferenceNumber,
                 //SelectedUsers = AssignedUsers,
-                Document=letterToComment.PDF,
+                Document=letterToComment.PDF.ToArray(),
         
                 UsersList= new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };

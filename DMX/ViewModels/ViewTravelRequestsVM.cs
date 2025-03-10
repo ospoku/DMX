@@ -9,18 +9,19 @@
         public string RankId { get; set; }
         public string DepartmentId { get; set; }
         public decimal ConferenceFee { get; set; }
-        public DateTime DepartureDate { get; set; }
+        public DateTimeOffset DepartureDate { get; set; }
         public string TravelType { get; set; }
         public decimal TransportExpenses { get; set; }
         public int NightAbsent { get; set; }
-        public DateTime EndDate { get; set; }
-        public DateTime DateofReturn { get; set; }
-        public DateTime StartDate { get; set; }
-        public int TotalAllowance { get; set; }
-        public int Rate { get; set; }
-        public string FuelClaim { get; set; }
-        public decimal AmountDue { get; set; }
+        public DateTimeOffset EndDate { get; set; }
+       
+        public DateTimeOffset StartDate { get; set; }
+        public decimal TotalAllowance { get; set; } = 0;
+        public decimal Rate { get; set; } = 0;
+        public decimal FuelClaim { get; set; } = 0;
+        public decimal AmountDue { get; set; } = 0;
         public string PurposeofJourney { get; set; }
-        public DateTime? CreatedDate { get; internal set; }
+        public DateTimeOffset? CreatedDate { get;  set; }
+        public string? CreatedBy { get; set; }
     }
 }

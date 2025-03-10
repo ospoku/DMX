@@ -69,7 +69,7 @@ namespace DMX.Controllers
                 {
                     EndDate = addTravelRequestVm.EndDate,
                     StartDate = addTravelRequestVm.StartDate,
-                    DateofReturn = addTravelRequestVm.DateofReturn,
+                    
                     ConferenceFee = addTravelRequestVm.ConferenceFee,
                     FuelClaim = addTravelRequestVm.FuelClaim,
                     OtherExpenses = addTravelRequestVm.OtherExpenses,

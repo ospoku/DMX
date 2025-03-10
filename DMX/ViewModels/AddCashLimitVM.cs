@@ -2,6 +2,6 @@
 {
     public class AddCashLimitVM
     {
-        public decimal Amount { get; set; }
+        public decimal Amount { get; set; } = 0;
     }
 }

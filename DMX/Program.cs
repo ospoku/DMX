@@ -22,7 +22,7 @@ builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
 builder.Services.AddScoped<EntityService>();
 builder.Services.AddScoped<AssignmentService>();
-
+builder.Services.AddScoped<AllowanceService>();
 
 builder.Services.AddScoped<EmailService>();
 
@@ -53,7 +53,7 @@ builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ONLINE")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
 
 builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();

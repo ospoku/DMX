@@ -14,11 +14,11 @@ namespace DMX.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string PerDiemId { get; set; }
-        [ForeignKey("UserId")]
+        [ForeignKey(nameof(UserId))]
         public AppUser AppUser { get; set; }
        
         public string UserId { get; set; }
-        [Precision(10,4)]
-        public decimal Amount { get; set;   }
+        [Precision(10, 4)]
+        public decimal Amount { get; set; } = 0;
     }
 }

@@ -34,6 +34,7 @@
                     <th>StartDate</th>
                     <th>EndDate</th>
                     <th>Sender</th>
+                    <th>Allowance</th>
                     <th>Action</th>
                     </tr>
                 </thead>
@@ -43,15 +44,16 @@
                     <tr>
                         <td></td>
                         
-                            <td>@travel.ReferenceNumber</td>
+                            <td class="ellipsed-text">@travel.ReferenceNumber</td>
                             <td>@travel.TravelType</td>
-                        <td>@travel.PurposeofJourney</td>
+                        <td class="ellipsed-text">@travel.PurposeofJourney</td>
                             
-                            <td>@travel.StartDate.ToString("yyyy-MM-dd")</td>
+                            <td class="ellipsed-text">@travel.StartDate.ToString("yyyy-MM-dd")</td>
                         
                         
-                        <td>@travel.EndDate.ToString("yyyy-MM-dd")</td>
-                            <td>@travel.Name</td>
+                        <td class="ellipsed-text">@travel.EndDate.ToString("yyyy-MM-dd")</td>
+                            <td class="ellipsed-text">@travel.Name</td>
+                            <td>@travel.TotalAllowance</td>
                            <td>
                                         <div class="btn-group" role="group">
                                             <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

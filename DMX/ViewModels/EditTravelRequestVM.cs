@@ -8,9 +8,9 @@ namespace DMX.ViewModels
         public SelectList TravelTypes { get; set; }
         public string TravelTypeId { get; set; }
 
-        public DateTime EndDate { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime DateofReturn { get; set; }
+        public DateTimeOffset EndDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
+        
 
         public SelectList TransportModes { get; set; }
         public string TransportModeId { get; set; }

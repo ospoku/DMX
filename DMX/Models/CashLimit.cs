@@ -11,6 +11,7 @@ namespace DMX.Models
         public string CashLimitId { get; set; }
         [Required]
         [DataType(DataType.Currency)]
-        public decimal Amount { get; set; }
+       
+        public decimal Amount { get; set; } = 0;
     }
 }

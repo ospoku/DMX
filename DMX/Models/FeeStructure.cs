@@ -15,15 +15,15 @@ namespace DMX.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Minimum days is required.")]
-        [Range(0, int.MaxValue, ErrorMessage = "Minimum days must be a non-negative number.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Minimum days must be a non-negative number.")]
         public int MinDays { get; set; }
 
         [Required(ErrorMessage = "Maximum days is required.")]
-        [Range(0, int.MaxValue, ErrorMessage = "Maximum days must be a non-negative number.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Maximum days must be a non-negative number.")]
         public int MaxDays { get; set; }
 
         [Required(ErrorMessage = "Fee is required.")]
-        [Range(0, double.MaxValue, ErrorMessage = "Fee must be a non-negative number.")]
+        [Range(1, double.MaxValue, ErrorMessage = "Fee must be a non-negative number.")]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Fee { get; set; }
 

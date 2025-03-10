@@ -9,10 +9,10 @@ namespace DMX.ViewModels
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
         public string Purpose { get; set; }
-         
+
 
         [Precision(10, 4)]
-        public decimal Amount { get; set; }
+        public decimal Amount { get; set; } = 0;
         
         public decimal Maximum { get; set; }
     }

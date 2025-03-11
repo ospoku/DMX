@@ -39,7 +39,9 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddAuthorization(options => options.AddPolicy("TravelRequestOwnerPolicy", policy => policy.Requirements.Add(new TravelRequestOwnerRequirement())));
+builder.Services.AddAuthorization(options => options.AddPolicy("TravelRequestOwnerPolicy", policy => policy.Requirements.Add(new TravelRequestOwnerRequirement()))
+
+);
 builder.Services.AddSingleton<IAuthorizationHandler, TravelRequestOwnerHandler>();
 builder.Services.AddAuthorization(options => options.AddPolicy("MemoOwnerPolicy", policy => policy.Requirements.Add(new MemoOwnerRequirement())));
 builder.Services.AddSingleton<IAuthorizationHandler, MemoOwnerHandler>();

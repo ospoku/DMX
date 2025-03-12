@@ -15,12 +15,7 @@ namespace DMX.ViewComponents
         public readonly UserManager<AppUser> usm = userManager;
         
         public IViewComponentResult Invoke(string Id)
-
-
         {
-
-
-
             var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.LetterId == @Encryption.Decrypt(Id) select d).FirstOrDefault();
 
             DocumentCommentVM addCommentVM = new()
@@ -34,7 +29,6 @@ namespace DMX.ViewComponents
                 UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
             };
             
-
             return View(addCommentVM);
         }
     }

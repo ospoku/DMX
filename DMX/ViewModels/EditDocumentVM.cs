@@ -10,7 +10,7 @@ namespace DMX.ViewModels
         public string DocumentSource { get; set; }
         public DateTime DateReceived { get; set; }
         public DateTime DocumentDate { get; set; }
-        [FileExtensions(Extensions = "jpg,jpeg,png,pdf")]
+        [FileExtensions(Extensions = "pdf")]
         public IFormFile UploadFile { get; set; }
         public string AdditionalNotes { get; set; }
         public List<string> SelectedUsers { get; set; }

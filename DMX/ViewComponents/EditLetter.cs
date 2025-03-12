@@ -8,11 +8,11 @@ using DMX.DataProtection;
 
 namespace DMX.ViewComponents
 {
-    public class EditLetter(XContext dContext, UserManager<AppUser> userManager, Letter letter) : ViewComponent
+    public class EditLetter(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-        public readonly Letter let = letter;
+        
 
         public IViewComponentResult Invoke(string Id)
         {
@@ -30,7 +30,7 @@ namespace DMX.ViewComponents
                                 == Id
                                 select x.AppUserId).ToList(),
 
-                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                UsersList = new SelectList(usm.Users.ToList(), nameof(AppUser.Id),nameof(AppUser.Fullname))
             };
             return View(editDocumentVM);
         }

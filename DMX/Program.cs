@@ -48,6 +48,8 @@ builder.Services.AddSingleton<IAuthorizationHandler, MemoOwnerHandler>();
 
 builder.Services.AddAuthorization(options => options.AddPolicy("ExcuseDutyOwnerPolicy", policy => policy.Requirements.Add(new ExcuseDutyOwnerRequirement())));
 builder.Services.AddSingleton<IAuthorizationHandler, ExcuseDutyOwnerHandler>();
+builder.Services.AddAuthorization(options => options.AddPolicy("DocumentOwnerPolicy", policy => policy.Requirements.Add(new DocumentOwnerRequirement())));
+builder.Services.AddSingleton<IAuthorizationHandler, DocumentOwnerHandler>();
 
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();

@@ -109,7 +109,7 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditLetter(string id) => ViewComponent("EditLetter", id);
+        public IActionResult EditLetter(string Id) => ViewComponent(nameof(EditLetter), Id);
 
         [HttpPost]
         public async Task<IActionResult> EditLetterAsync(string id, Letter letter, IFormFile formFile)

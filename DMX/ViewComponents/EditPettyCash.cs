@@ -18,7 +18,7 @@ namespace DMX.ViewComponents
 
         {
           
-      PettyCash    pettyCashToUpdate = (from p in dcx.PettyCash where p.PettyCashId==@Encryption.Decrypt(Id) select p ).FirstOrDefault();
+      Teacher    pettyCashToUpdate = (from p in dcx.PettyCash where p.PettyCashId==@Encryption.Decrypt(Id) select p ).FirstOrDefault();
 
             EditPettyCashVM editPettyCashVM = new()
             {

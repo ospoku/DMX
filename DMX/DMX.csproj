@@ -22,13 +22,6 @@
     <Folder Include="Views\Permission\Components\ManagePermissions\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Views\Training\Components\ViewTrainings\Default.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="Views\Settings\Components\ViewMorgueServices\Default.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Update="Views\Shared\Components\UserMessages\Default.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

@@ -174,7 +174,7 @@ namespace DMX.Services
             }
         }
 
-        public async Task<bool> EditMemoAsync(string Id, EditMemoVM editMemoVM, ClaimsPrincipal userClaim)
+        public async Task<bool> EditMemoAsync(string Id, EditTeacherVM editMemoVM, ClaimsPrincipal userClaim)
         {
             var decryptedId = Encryption.Decrypt(Id);
             var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == decryptedId);
@@ -193,21 +193,11 @@ namespace DMX.Services
             }
 
             // Remove existing memo assignments
-            var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
-            dcx.MemoAssignments.RemoveRange(existingAssignments);
+            
 
             // Add new memo assignments
             var user = await usm.GetUserAsync(userClaim);
-            foreach (var userId in editMemoVM.SelectedUsers)
-            {
-                dcx.MemoAssignments.Add(new MemoAssignment
-                {
-                    MemoId = updateThisMemo.MemoId,
-                    UserId = userId,
-                    CreatedBy = user?.Id,
-                    CreatedDate = DateTime.UtcNow,
-                });
-            }
+           
 
             // Save changes after updating assignments
             return await dcx.SaveChangesAsync(user?.UserName) > 0;

@@ -13,7 +13,7 @@ namespace DMX.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = (await usm.GetUserAsync(HttpContext.User)).Id;
-            var iList = dcx.ExcuseDutyAssignments.Where(a => a.AppUser.Id == user || a.ExcuseDuty.CreatedBy == user & a.ExcuseDuty.IsDeleted == false).Select(a => new ViewExcuseDutiesVM
+            var iList = dcx.ExcuseDutyAssignments.Where(a => a.AppUser.Id == user || a.ExcuseDuty.CreatedBy == user & a.ExcuseDuty.IsDeleted == false).Select(a => new ViewTeachersVM
             {
                 ExcuseDutyId = a.ExcuseDuty.Id,
                 DateofDischarge = a.ExcuseDuty.DateofDischarge,

@@ -1,6 +1,6 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-using DMX.Authorization;
+
 using DMX.Data;
 using DMX.Helpers;
 using DMX.Models;
@@ -17,12 +17,9 @@ string? settingsMail = builder.Configuration["Settings:AppEmail"];
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 
-builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<SMSService>();
-builder.Services.AddScoped<FeeService>();
 builder.Services.AddScoped<EntityService>();
 builder.Services.AddScoped<AssignmentService>();
-builder.Services.AddScoped<AllowanceService>();
+
 
 builder.Services.AddScoped<EmailService>();
 
@@ -39,25 +36,12 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddAuthorization(options => options.AddPolicy("TravelRequestOwnerPolicy", policy => policy.Requirements.Add(new TravelRequestOwnerRequirement()))
 
-);
-builder.Services.AddSingleton<IAuthorizationHandler, TravelRequestOwnerHandler>();
-builder.Services.AddAuthorization(options => options.AddPolicy("MemoOwnerPolicy", policy => policy.Requirements.Add(new MemoOwnerRequirement())));
-builder.Services.AddSingleton<IAuthorizationHandler, MemoOwnerHandler>();
-
-builder.Services.AddAuthorization(options => options.AddPolicy("ExcuseDutyOwnerPolicy", policy => policy.Requirements.Add(new ExcuseDutyOwnerRequirement())));
-builder.Services.AddSingleton<IAuthorizationHandler, ExcuseDutyOwnerHandler>();
-builder.Services.AddAuthorization(options => options.AddPolicy("DocumentOwnerPolicy", policy => policy.Requirements.Add(new DocumentOwnerRequirement())));
-builder.Services.AddSingleton<IAuthorizationHandler, DocumentOwnerHandler>();
-
-builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TTB")));
 
 builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();

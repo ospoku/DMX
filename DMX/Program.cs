@@ -18,7 +18,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 
 builder.Services.AddScoped<EntityService>();
-builder.Services.AddScoped<AssignmentService>();
+
 
 
 builder.Services.AddScoped<EmailService>();

@@ -17,6 +17,7 @@ namespace DMX.Data
         public DbSet<Subject> Subjects { get; set; }
      
         public DbSet<TimeTableEntry> TimeTableEntries { get; set; }
+        public object TimetableEntries { get; internal set; }
         public DbSet<Classroom> Classrooms { get; set; }
   
         public DbSet<Teacher> Teachers { get; set; }

@@ -6,37 +6,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DMX
 {
     public class TimeTableEntry : TableAudit
-    { 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    {
+  
+            [Key]
+            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+            public int TimeTableEntryId { get; set; }
 
-        public string DeceasedId { get; set; }
-        [Required]
-        [RegularExpression(@"^[A-Za-z\s]+")]
-        public  string Name { get; set; }
-        [Required]
-        public      string FolderNo { get; set; }
-        [Required]
-        public string Diagnoses { get; set; }
-        [Required]
-        [RegularExpression(@"^[A-Za-z\s]+")]
-        public   string Depositor { get; set; }
-        [Required]
-        public  string DepositorAddress { get; set; } 
-    
-        [Required]
-        public  string DeceasedTypeId { get; set; }
-        [Required]
-        public  string Description { get; set; }
-     
-        [Required]
-        public  string TagNo { get; set; }
-      
-        [Required]
-        [RegularExpression(@"^[A-Zz-a\s]+")]
-        public  string WardInCharge { get; set; }
-        public string ReferenceNumber { get; set; } = Guid.NewGuid().ToString("N").Substring(0,5);
-    
-    
-    }
-}
+            // Foreign key for Group
+            public int GroupId { get; set; }
+
+            // Navigation property for Group
+            public Group Group { get; set; }
+
+            // Foreign key for Teacher
+            public int TeacherId { get; set; }
+
+            // Navigation property for Teacher
+            public Teacher Teacher { get; set; }
+
+            // Foreign key for Classroom
+            public int ClassroomId { get; set; }
+
+            // Navigation property for Classroom
+            public Classroom Classroom { get; set; }
+
+            // Foreign key for TimeSlot
+            public int TimeSlotId { get; set; }
+
+            // Navigation property for TimeSlot
+            public TimeSlot TimeSlot { get; set; }
+
+            public DayOfWeek Day { get; set; } // e.g., Monday, Tuesday
+        }
+    } 

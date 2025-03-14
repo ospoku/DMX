@@ -13,6 +13,7 @@ namespace DMX.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string DepartmentId { get; set; }
-      
+        public object Groups { get; internal set; }
+        public int StudentPopulation { get; set; } // Number of students enrolled in this course
     }
 }

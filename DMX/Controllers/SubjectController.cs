@@ -20,19 +20,19 @@ namespace DMX.Controllers
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
-        private readonly AssignmentService _assignmentService;
+      
         public SubjectController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
-            EntityService entityService,
-            AssignmentService assignmentService)
+            EntityService entityService
+            )
         {
             _userManager = userManager;
             _context = context;
             _notyfService = notyfService;
             _entityService = entityService;
-            _assignmentService = assignmentService;
+            
             
         }
 

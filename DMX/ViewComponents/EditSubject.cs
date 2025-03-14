@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class EditServiceRequest:ViewComponent
+    public class EditSubject:ViewComponent
     {
         public readonly XContext dcx;
-        public EditServiceRequest(XContext dContext)
+        public EditSubject(XContext dContext)
         {
             dcx = dContext;
         }

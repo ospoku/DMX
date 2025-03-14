@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Constraint = DMX.Models.Constraint;
 
 namespace DMX.Services
 {
@@ -42,11 +43,11 @@ namespace DMX.Services
                         foreach (var timeSlot in timeSlots)
                         {
                             var availableTeachers = teachers
-                                .Where(t => !timetable.Any(entry => entry.TeacherId == t.Id && entry.TimeSlotId == timeSlot.Id && entry.Day == day))
+                                .Where(t => !timetable.Any(entry => entry.TeacherId == t.TeacherId && entry.TimeSlotId == timeSlot.TimeSlotId && entry.Day == day))
                                 .ToList();
 
                             var availableClassrooms = classrooms
-                                .Where(c => !timetable.Any(entry => entry.Group.ClassroomId == c.Id && entry.TimeSlotId == timeSlot.Id && entry.Day == day))
+                                .Where(c => !timetable.Any(entry => entry.Group.ClassroomId == c.ClassroomId && entry.TimeSlotId == timeSlot.TimeSlotId && entry.Day == day))
                                 .ToList();
 
                             // Apply runtime constraints (e.g., teacher availability)
@@ -60,11 +61,11 @@ namespace DMX.Services
                                 // Assign the classroom to the group
                                 group.ClassroomId = classroom.Id;
 
-                                timetable.Add(new TimetableEntry
+                                timetable.Add(new TimeTableEntry
                                 {
                                     GroupId = group.Id,
-                                    TeacherId = teacher.Id,
-                                    TimeSlotId = timeSlot.Id,
+                                    TeacherId = teacher.TeacherId,
+                                    TimeSlotId = timeSlot.TimeSlotId,
                                     Day = day
                                 });
 
@@ -89,7 +90,7 @@ namespace DMX.Services
                 var groupSize = Math.Min(classroomCapacity, remainingStudents);
                 var group = new Group
                 {
-                    SubjectId = subject.Id,
+                    SubjectId = subject.SubjectId,
                     StudentCount = groupSize
                 };
                 groups.Add(group);

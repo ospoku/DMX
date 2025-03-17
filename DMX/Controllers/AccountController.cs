@@ -67,11 +67,11 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult EditUser(string Id)
         {
-            return ViewComponent("EditUser", Id);
+            return ViewComponent(nameof(EditUser), Id);
         }
         public IActionResult DeleteUser()
         {
-            return ViewComponent("DeleteUser");
+            return ViewComponent(nameof(DeleteUser));
         }
         [HttpPost]
         public async Task<IActionResult> EditUserAsync(string Id, AppUser user, EditUserVM editUserVM)
@@ -118,7 +118,7 @@ namespace DMX.Controllers
 
         public IActionResult ViewUsers()
         {
-            return ViewComponent("ViewUsers");
+            return ViewComponent(nameof(ViewUsers));
         }
         [AllowAnonymous]
         [HttpGet]
@@ -177,12 +177,12 @@ namespace DMX.Controllers
         [HttpGet]
         public async Task<IActionResult>UserProfile()
         {
-            return ViewComponent("UserProfile");
+            return ViewComponent(nameof(UserProfile));
         }
         [HttpGet]
         public async Task<IActionResult> EditProfile()
         {
-            return ViewComponent("EditProfile");
+            return ViewComponent(nameof(EditProfile));
         }
         [HttpPost]
         public async Task<IActionResult>EditProfile(EditProfileVM editProfileVM,IFormFile? formFile)

@@ -114,7 +114,7 @@ namespace DMX.Controllers
                 return Json(new { success = false, message = "You do not have access to this resource!" });
             }
 
-            return ViewComponent("EditMemo", id);
+            return ViewComponent(nameof(EditMemo), id);
         }
 
         [HttpPost]

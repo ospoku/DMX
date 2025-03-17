@@ -32,7 +32,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult UserMessages()
         {
-            return ViewComponent("UserMessages");
+            return ViewComponent(nameof(UserMessages));
         }
 
         //[HttpPost]

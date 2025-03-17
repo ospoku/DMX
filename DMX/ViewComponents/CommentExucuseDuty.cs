@@ -39,7 +39,7 @@ namespace DMX.ViewComponents
                 CommentCount = dutyToComment.ExcuseDutyComments.Count(),
                 Comments = dutyToComment.ExcuseDutyComments.OrderBy(m => m.CreatedDate).ToList(),
 
-                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
             };
             
 

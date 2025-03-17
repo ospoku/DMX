@@ -11,7 +11,7 @@ namespace ODS.Controllers
         [HttpGet]
         public IActionResult ViewDashboard()
         {
-            return ViewComponent("ViewDashboard");
+            return ViewComponent(nameof(ViewDashboard));
         }
     }
 }

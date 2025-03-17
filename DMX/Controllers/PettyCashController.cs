@@ -165,7 +165,7 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult CommentPettyCash(string id) => ViewComponent("CommentPettyCash", id);
+        public IActionResult CommentPettyCash(string id) => ViewComponent(nameof(CommentPettyCash), id);
 
         [HttpPost]
         public async Task<IActionResult> CommentPettyCash(string id, PettyCashCommentVM commentVm)

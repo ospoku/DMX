@@ -3,6 +3,7 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
+using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,21 +24,25 @@ namespace DMX.Controllers
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
+        private readonly AssignmentService _assignmentService;
 
         public LetterController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
-            EntityService entityService)
+            EntityService entityService,
+            AssignmentService assignmentService)
         {
             _userManager = userManager;
             _context = context;
             _notyfService = notyfService;
             _entityService = entityService;
+         
+            _assignmentService = assignmentService;
         }
 
         [HttpGet]
-        public IActionResult AddLetter() => ViewComponent("AddLetter");
+        public IActionResult AddLetter() => ViewComponent(nameof(AddLetter));
 
         [HttpPost]
         [RequestFormLimits(MultipartBodyLengthLimit = 104857600)] // 100MB limit
@@ -91,20 +96,34 @@ namespace DMX.Controllers
                 }
 
                 bool result = await _entityService.AddEntityAsync(newLetter, User);
-                if (result)
+                if (!result)
                 {
-                    _notyfService.Success("Record successfully saved!!!", 5);
-                    return RedirectToAction("ViewLetters");
-                }
-                else
-                {
+                
                     _notyfService.Error("Document saving failed.");
                     return RedirectToAction("ViewLetters");
                 }
+                foreach (var userId in addLetterVm.SelectedUsers)
+                {
+                    var assignment = new LetterAssignment
+                    {
+                        LetterId = newLetter.LetterId,
+                        UserId = userId
+                    };
+
+                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    if (!assignResult)
+                    {
+                        _notyfService.Error($"Failed to assign Letter to user {userId}.", 5);
+                    }
+                }
+
+                _notyfService.Success("Letter and assignments successfully processed.", 5);
+                return RedirectToAction(nameof(ViewLetters));
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request: " + ex.Message });
+                _notyfService.Error("An error occurred: " + ex.Message, 5);
+                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
             }
         }
 
@@ -148,7 +167,7 @@ namespace DMX.Controllers
                 else
                 {
                     _notyfService.Error("Document saving failed.");
-                    return ViewComponent("AddDocument");
+                    return ViewComponent(nameof(AddDocument));
                 }
             }
             catch (Exception ex)
@@ -158,10 +177,10 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewLetters() => ViewComponent("ViewLetters");
+        public IActionResult ViewLetters() => ViewComponent(nameof(ViewLetters));
 
         [HttpGet]
-        public IActionResult DeleteLetter() => ViewComponent("ViewLetters");
+        public IActionResult DeleteLetter() => ViewComponent(nameof(ViewLetters));
 
         [HttpPost]
         public async Task<IActionResult> CommentLetter(string id, DocumentCommentVM commentVm)
@@ -201,10 +220,10 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult CommentLetter(string id) => ViewComponent("CommentLetter", id);
+        public IActionResult CommentLetter(string id) => ViewComponent(nameof(CommentLetter), id);
 
         [HttpGet]
-        public IActionResult PrintDocument(string id) => ViewComponent("PrintDocument", id);
+        public IActionResult PrintDocument(string id) => ViewComponent(nameof(PrintDocument), id);
 
         [HttpGet]
         public async Task<IActionResult> Download(string id)

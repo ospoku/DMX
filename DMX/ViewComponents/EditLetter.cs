@@ -22,15 +22,16 @@ namespace DMX.ViewComponents
             {
                 DocumentDate = documentToEdit.DocumentDate,
                 AdditionalNotes=documentToEdit.AdditionalNotes,
-                DocumentSource=documentToEdit.Source,
+                Source=documentToEdit.Source,
                 ReferenceNumber=documentToEdit.ReferenceNumber,
                 DateReceived=documentToEdit.DateReceived,
+                Subject=documentToEdit.Subject,
                
                SelectedUsers = (from x in dcx.LetterAssignments where x.LetterId
                                 == Id
-                                select x.AppUserId).ToList(),
+                                select x.UserId).ToList(),
 
-                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))
             };
             return View(editDocumentVM);
         }

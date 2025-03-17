@@ -32,7 +32,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddUser()
         {
-            return ViewComponent("AddUser");
+            return ViewComponent(nameof(AddUser));
         }
 
 
@@ -188,16 +188,16 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult EditUser(string Id)
         {
-            return ViewComponent("EditUser", Id);
+            return ViewComponent(nameof(EditUser), Id);
         }
 
         public IActionResult DetailUser(string Id)
         {
-            return ViewComponent("DetailUser", Id);
+            return ViewComponent(nameof(DetailUser), Id);
         }
         public IActionResult DeleteUser()
         {
-            return ViewComponent("DeleteUser");
+            return ViewComponent(nameof(DeleteUser));
         }
         [HttpPost]
         public async Task<IActionResult> EditUserAsync(string Id, AppUser user, EditUserVM editUserVM)
@@ -244,12 +244,12 @@ namespace DMX.Controllers
 
         public IActionResult ViewPermissions()
         {
-            return ViewComponent("ViewPermissions");
+            return ViewComponent(nameof(ViewPermissions));
         }
         public IActionResult ManageUserRoles(string Id)
         {
 
-            return ViewComponent("ManageUserRoles", Id);
+            return ViewComponent(nameof(ManageUserRoles), Id);
         }
 
         [HttpPost]
@@ -318,26 +318,26 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult ManagePermissions(string Id)
         {
-            return ViewComponent("ManagePermissions",Id);
+            return ViewComponent(nameof(ManagePermissions),Id);
 
         }
 
         [HttpGet]
         public IActionResult ViewUserRoles()
         {
-            return ViewComponent("ViewUserRoles");
+            return ViewComponent(nameof(ViewUserRoles));
         }
         [HttpGet]
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult ViewRoles()
         {
-            return ViewComponent("ViewRoles");
+            return ViewComponent(nameof(ViewRoles));
         }
 
         [HttpGet]
         public IActionResult AddRole()
         {
-            return ViewComponent("AddRole");
+            return ViewComponent(nameof(AddRole));
         }
 
 
@@ -358,7 +358,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult RolePermissions(string Id)
         {
-            return ViewComponent("RolePermissions", Id);
+            return ViewComponent(nameof(RolePermissions), Id);
         }
         [HttpPost]
         public async Task<IActionResult> RolePermissions (string Id, RolePermissionVM model)

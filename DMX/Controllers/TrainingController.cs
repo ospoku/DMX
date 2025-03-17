@@ -18,21 +18,21 @@ namespace DMX.Controllers
         public readonly INotyfService notyf = notyfService;
         public readonly UserManager<AppUser> usm = userManager;
         public IActionResult ViewExternalTrainings()
-         => ViewComponent("ViewExternalTrainings");
+         => ViewComponent(nameof(ViewExternalTrainings));
         public IActionResult ViewParticipants()
-      => ViewComponent("ViewParticipants");
+      => ViewComponent(nameof(ViewParticipants));
 
 
         [HttpGet]
-        public IActionResult AddTraining() => ViewComponent("AddTraining");
+        public IActionResult AddTraining() => ViewComponent(nameof(AddTraining));
        
       
 
         public IActionResult ViewAttendance()
-    => ViewComponent("ViewAttendance");
+    => ViewComponent(nameof(ViewAttendance));
         [HttpGet]
         public IActionResult ViewTrainings()
-    => ViewComponent("ViewTrainings");
+    => ViewComponent(nameof(ViewTrainings));
         [HttpPost]
         public async Task<IActionResult> AddTraining(AddTrainingVM addTrainingVM)
         {
@@ -51,7 +51,7 @@ namespace DMX.Controllers
             return RedirectToAction("ViewInternalTrainings");
         }
         [HttpGet]
-        public IActionResult MeetingAttendance(string Id) => ViewComponent("MeetingAttendance", Id);
+        public IActionResult MeetingAttendance(string Id) => ViewComponent(nameof(MeetingAttendance), Id);
         [HttpPost]
         public async Task<IActionResult> MeetingAttendance(string Id, MeetingAttendanceVM attVM)
         {
@@ -86,7 +86,7 @@ namespace DMX.Controllers
 
 
 
-                    return ViewComponent("MeetingAttendance");
+                    return ViewComponent(nameof(MeetingAttendance));
                 }
 
 
@@ -104,7 +104,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult AddMeeting()
         {
-            return ViewComponent("AddMeeting");
+            return ViewComponent(nameof(AddMeeting));
         }
 
         [HttpPost]
@@ -140,7 +140,7 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult ViewMeetings()
         {
-            return ViewComponent("ViewMeetings");
+            return ViewComponent(nameof(ViewMeetings));
         }
 
         
@@ -148,7 +148,7 @@ namespace DMX.Controllers
         //[HttpGet]
         //public IActionResult ImportFromStaffList()
         //{
-        //    return ViewComponent("ImportFromStaffList");
+        //    return ViewComponent(nameof(ImportFromStaffList");
         //}
         //[HttpPost]
         //public async Task<IActionResult> ImportFromStaffList(ImportFromStaffListVM importFromStaffListVM)
@@ -178,12 +178,12 @@ namespace DMX.Controllers
 
 
 
-        //    return ViewComponent("ViewParticipants");
+        //    return ViewComponent(nameof(ViewParticipants");
         //}
     //    [HttpGet]
     //    public IActionResult ImportFromExcel()
     //    {
-    //        return ViewComponent("ImportFromExcel");
+    //        return ViewComponent(nameof(ImportFromExcel");
     //    }
     //    [HttpPost]
     //    public async Task<IActionResult> ImportFromExcel(IFormFile formFile)
@@ -229,7 +229,7 @@ namespace DMX.Controllers
     //                }
     //            };
     //        }
-    //        return ViewComponent("ViewParticipants");
+    //        return ViewComponent(nameof(ViewParticipants");
     //    }
     }
 }

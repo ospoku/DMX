@@ -4,7 +4,7 @@ using DMX.Data;
 using DMX.DataProtection;
 using DMX.Models;
 using DMX.Services;
-
+using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -45,13 +45,13 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult ViewExcuseDuties()
         {
-            return ViewComponent("ViewExcuseDuties");
+            return ViewComponent(nameof(ViewExcuseDuties));
         }
 
         [HttpGet]
         public IActionResult DetailExcuseDuty(string id)
         {
-            return ViewComponent("DetailExcuseDuty", id);
+            return ViewComponent(nameof(DetailExcuseDuty), id);
         }
 
         [HttpPost]
@@ -115,7 +115,7 @@ namespace DMX.Controllers
             if (addExcuseDutyVm.SelectedUsers == null || !addExcuseDutyVm.SelectedUsers.Any())
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction("ViewExcuseDuties");
+                return RedirectToAction(nameof(ViewExcuseDuties));
             }
 
             try
@@ -130,7 +130,7 @@ namespace DMX.Controllers
                 if (existingRecord != null)
                 {
                     _notyfService.Error("This record already exists.");
-                    return RedirectToAction("ViewExcuseDuties");
+                    return RedirectToAction(nameof(ViewExcuseDuties));
                 }
 
                 var newExcuseDuty = new ExcuseDuty

@@ -36,10 +36,10 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewTravelRequests() => ViewComponent("ViewTravelRequests");
+        public IActionResult ViewTravelRequests() => ViewComponent(nameof(ViewTravelRequests));
 
         [HttpGet]
-        public IActionResult AddTravelRequest() => ViewComponent("AddTravelRequest");
+        public IActionResult AddTravelRequest() => ViewComponent(nameof(AddTravelRequest));
 
         [HttpPost]
         public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVm)

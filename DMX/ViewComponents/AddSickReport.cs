@@ -18,7 +18,7 @@ namespace DMX.Models
         {
             AddSickReportVM addSickReportVM = new AddSickReportVM()
             {
-                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName")
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))))
             };
             return View(addSickReportVM);
         }

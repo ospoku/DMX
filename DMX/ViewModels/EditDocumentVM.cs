@@ -7,7 +7,8 @@ namespace DMX.ViewModels
     {
 
         public string ReferenceNumber { get; set; }
-        public string DocumentSource { get; set; }
+        public string Source { get; set; }
+        public string Subject { get; set; }
         public DateTime DateReceived { get; set; }
         public DateTime DocumentDate { get; set; }
         [FileExtensions(Extensions = "jpg,jpeg,png,pdf")]

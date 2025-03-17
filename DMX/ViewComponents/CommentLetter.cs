@@ -31,7 +31,7 @@ namespace DMX.ViewComponents
                 //SelectedUsers = AssignedUsers,
                 Document=letterToComment.PDF,
                 CommentCount = letterToComment.LetterComments.Count(),
-                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
             };
             
 

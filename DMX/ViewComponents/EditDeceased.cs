@@ -22,7 +22,7 @@ namespace DMX.ViewComponents
 
             EditDeceasedVM editDeceasedVM = new EditDeceasedVM
             {
-                UsersList = new SelectList(usm.Users.ToList(), "Id", "UserName"),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
                 DeceasedTypes = new SelectList(dcx.DeceasedTypes.ToList(), "DeceasedTypeId", "Code"),
                 DeceasedId=deceasedToEdit.DeceasedId,
                 Depositor=deceasedToEdit.Depositor,

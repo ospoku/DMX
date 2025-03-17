@@ -1,0 +1,82 @@
+﻿@model DMX.ViewModels.AddLetterVM
+<div class="modal fade" id="AddLetter" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Add Letter</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("AddLetter", "Letter", FormMethod.Post, new { id = "addLetterForm", enctype = "multipart/form-data" }))
+                {
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Subject" class="did-floating-input" placeholder="" required />
+                        <label class="did-floating-label">Subject</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="text" asp-for="Source" class="did-floating-input" placeholder="" required />
+                        <label class="did-floating-label">Document Source</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="date" asp-for="@Model.ReceiptDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" placeholder="" required />
+                        <label class="did-floating-label">Receipt Date</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input type="date" asp-for="@Model.DocumentDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" placeholder="" required />
+                        <label class="did-floating-label">Document Date</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" id="formFile" name="formFile" asp-for="UploadFile" hidden />
+                        <label for="formFile" class="uploadLabel">
+                            <i class="fa fa-cloud-upload" style="color: #1e4c82; font-size: medium"></i>
+                            <label id="sFile">Select file</label>
+                            <span id="file-chosen">No file chosen</span>
+                        </label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="" required />
+                        <label class="did-floating-label">Additional Notes</label>
+                    </div>
+                    <div class="did-floating-label-content">
+                        <select id="usersAddLetter" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <label class="did-floating-label">Select Users</label>
+                    </div>
+                    <button id="saveButton" type="button" class="btn btn-block btn-primary">Save</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#usersAddLetter').select2({ dropdownParent: $('#AddLetter') });
+
+        const actualBtn = document.getElementById('formFile');
+        const selectFile = document.getElementById('sFile');
+        const fileChosen = document.getElementById('file-chosen');
+
+        actualBtn.addEventListener('change', function () {
+            fileChosen.textContent = this.files[0].name;
+            selectFile.textContent = "Selected file";
+        });
+
+        document.getElementById("saveButton").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent immediate submission
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to save this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("addLetterForm").submit(); // Correct form ID
+                }
+            });
+        });
+    });
+</script>

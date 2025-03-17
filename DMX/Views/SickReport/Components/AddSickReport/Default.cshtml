@@ -1,0 +1,70 @@
+﻿
+@model DMX.ViewModels.AddSickReportVM;
+<div class="modal fade" id="AddSickReport" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Add Sick Report</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+
+
+            @using (Html.BeginForm("AddSickReport", "SickReport"))
+            {
+
+            
+
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.AdditionalNotes" class="did-floating-input" placeholder="">
+                            <label class="did-floating-label"></label>
+                        </div>
+
+
+
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.AdditionalNotes"  class="form-control" placeholder="">
+                        <label class="did-floating-label"></label>
+                        </div>
+                      
+                          <div class="form-group">
+
+
+                            <textarea class=" form-control" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information"></textarea>
+
+
+                        </div>
+                        <div class="did-floating-label-content">
+                            <select  id="selectSickReportUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            <label class="did-floating-label">Select Users</label>
+                        </div>
+
+
+                      
+
+                     
+
+                        <button class="btn btn-block btn-primary">Save</button>
+
+
+
+                   
+            }
+
+
+        </div>
+    </div>
+</div>
+</div>
+<script>
+  
+       $(document).ready(function () {
+
+           $('#selectSickRportUser').select2({ dropdownParent: $('#AddSickReport') });
+       });
+
+   
+
+</script>

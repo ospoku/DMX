@@ -2,7 +2,7 @@
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using static DMX.Constants.Permissions;
 
 namespace DMX.ViewComponents
 {

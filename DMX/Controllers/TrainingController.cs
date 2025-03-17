@@ -33,65 +33,65 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult ViewTrainings()
     => ViewComponent("ViewTrainings");
-        //[HttpPost]
-        //public async Task<IActionResult> AddTraining(AddTrainingVM addTrainingVM)
-        //{
-        //    Training addThisTraining = new()
-        //    {
-        //        EventName = addTrainingVM.WorkshopTitle,
-        //        Date = addTrainingVM.TrainingDate,
-        //        Description = addTrainingVM.Description,
-        //        CreatedDate = DateTime.UtcNow,
-        //        CreatedBy = usm.GetUserAsync(User).Result?.UserName,
-        //    };
+        [HttpPost]
+        public async Task<IActionResult> AddTraining(AddTrainingVM addTrainingVM)
+        {
+            Training addThisTraining = new()
+            {
+                EventName = addTrainingVM.WorkshopTitle,
+                Date = addTrainingVM.TrainingDate,
+                Description = addTrainingVM.Description,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
+            };
 
-        //    dcx.Trainings.Add(addThisTraining);
-        //    await dcx.SaveChangesAsync();
+            dcx.Trainings.Add(addThisTraining);
+            await dcx.SaveChangesAsync();
 
-        //    return RedirectToAction("ViewInternalTrainings");
-        //}
-        //[HttpGet]
-        //public IActionResult MeetingAttendance(string Id) => ViewComponent("MeetingAttendance", Id);
-        //[HttpPost]
-        //public async Task<IActionResult> MeetingAttendance(string Id, MeetingAttendanceVM attVM)
-        //{
-        //    //    if (ModelState.IsValid)
-        //    //    {
+            return RedirectToAction("ViewInternalTrainings");
+        }
+        [HttpGet]
+        public IActionResult MeetingAttendance(string Id) => ViewComponent("MeetingAttendance", Id);
+        [HttpPost]
+        public async Task<IActionResult> MeetingAttendance(string Id, MeetingAttendanceVM attVM)
+        {
+            //    if (ModelState.IsValid)
+            //    {
 
-        //    foreach (var attendee in attVM.SelectedParticipants)
-        //    {
-        //        MeetingAttendance addThisAttendnace = new()
-        //        {
-        //            CreatedDate = DateTime.UtcNow,
-        //            ParticipantId = attendee,
-        //            EventId = @Encryption.Decrypt(Id),
+            foreach (var attendee in attVM.SelectedParticipants)
+            {
+                MeetingAttendance addThisAttendnace = new()
+                {
+                    CreatedDate = DateTime.UtcNow,
+                    ParticipantId = attendee,
+                    EventId = @Encryption.Decrypt(Id),
 
-        //            CreatedBy = usm.GetUserAsync(User).Result.UserName,
+                    CreatedBy = usm.GetUserAsync(User).Result.UserName,
 
-        //        };
+                };
 
-        //        dcx.MeetingAttendance.Add(addThisAttendnace);
-        //    }
+                dcx.MeetingAttendance.Add(addThisAttendnace);
+            }
 
                
-        //        if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
-        //        {
-        //            notyf.Success("Client successfully created.");
-        //            return RedirectToAction("ViewMeetings");
-        //        }
-        //        else
-        //        {
-        //            notyf.Error("Member creation error!!! Please try again");
+                if (await dcx.SaveChangesAsync(usm.GetUserAsync(User).Result.UserName) > 0)
+                {
+                    notyf.Success("Client successfully created.");
+                    return RedirectToAction("ViewMeetings");
+                }
+                else
+                {
+                    notyf.Error("Member creation error!!! Please try again");
 
 
 
 
-        //            return ViewComponent("MeetingAttendance");
-        //        }
+                    return ViewComponent("MeetingAttendance");
+                }
 
 
 
-        //    }
+            }
         
        
 
@@ -108,34 +108,34 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        //public async Task< IActionResult> AddMeeting(AddMeetingVM addMeetingVM)
-        //{
-        //    Meeting addThisMeeting = new()
-        //    {
-        //        Name = addMeetingVM.Name,
-        //        Description = addMeetingVM.Description,
-        //        CreatedDate = DateTime.Now,
-        //        CreatedBy = usm.GetUserAsync(User).Result?.UserName,
-        //        Date = addMeetingVM.Date,
-        //    };
-        //    dcx.Meetings.Add(addThisMeeting);
+        public async Task< IActionResult> AddMeeting(AddMeetingVM addMeetingVM)
+        {
+            Meeting addThisMeeting = new()
+            {
+                Name = addMeetingVM.Name,
+                Description = addMeetingVM.Description,
+                CreatedDate = DateTime.Now,
+                CreatedBy = usm.GetUserAsync(User).Result?.UserName,
+                Date = addMeetingVM.Date,
+            };
+            dcx.Meetings.Add(addThisMeeting);
 
-        //    if (await dcx.SaveChangesAsync( usm.GetUserAsync(User).Result?.UserName) > 0)
-        //    {
-        //        notyf.Success("Client successfully created.");
-        //        return RedirectToAction("ViewMeetings");
+            if (await dcx.SaveChangesAsync( usm.GetUserAsync(User).Result?.UserName) > 0)
+            {
+                notyf.Success("Client successfully created.");
+                return RedirectToAction("ViewMeetings");
 
-        //    }
-        //    else
-        //    {
-        //        notyf.Error("Member creation error!!! Please try again");
+            }
+            else
+            {
+                notyf.Error("Member creation error!!! Please try again");
 
-        //        return RedirectToAction("AddMeeting");
-        //    }
+                return RedirectToAction("AddMeeting");
+            }
 
 
        
-        //}
+        }
 
         [HttpGet]
         public IActionResult ViewMeetings()

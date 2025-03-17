@@ -1,0 +1,124 @@
+﻿
+@model DMX.ViewModels.EditDocumentVM;
+
+
+<div class="modal fade" id="EditLetter" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h6>Edit Letter</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+            </div>
+            <div class="modal-body">
+                        
+
+                                @using (Html.BeginForm("EditLetter", "Letter", FormMethod.Post, new { enctype = "multipart/form-data", id="editLetterForm" }))
+                                {
+                                    <div class="did-floating-label-content">
+                                     
+                            <input class="did-floating-input" asp-for="@Model.ReferenceNumber" type="text" placeholder="">   <label class="did-floating-label">Reference Number</label>
+                                        </div>
+                                 
+                                    <div class="did-floating-label-content">
+                                    
+                                       
+                                            <input class="did-floating-input" asp-for="@Model.DocumentSource" type="text" placeholder="">
+                            <label class="did-floating-label">Document Source</label>
+                                        </div>
+                               
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text">Receipt Date</span></div>
+                                            <input class="form-control js-datepicker"  value="@Model.DateReceived"  type="date" asp-format="{0:dd/MMM/yyyy}" />
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text">Document Date</span></div>
+                                            <input class="form-control  js-datepicker" value="@Model.DocumentDate"  type="date" asp-format="{0:dd/MMM/yyyy}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+
+
+                                            <select id="selectUser" class="select2 form-control" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple="multiple"></select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+
+                                            <input class=" form-control custom-custom-file-input" id="formFile" name="formFile" type="file" asp-for="UploadFile" />
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-group">
+
+
+                                        <textarea class="tinymce form-control" asp-for="@Model.AdditionalNotes" type="text" placeholder="Additional Information"></textarea>
+                                 
+
+                                    </div>
+
+                                    <button class="btn btn-block btn-primary">Update</button>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+    </div>
+                
+
+
+<script>
+      $(document).ready(function () {
+
+      const formSelector='#editLetterForm';
+      $('#usersEditExcuseDuty').select2({
+          dropdownParent: $('#EditLetter')
+      });
+      document.getElementById("btnEditLetter").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const form = document.querySelector(formSelector);
+                 if (!form.checkValidity()) {
+                form.reportValidity(); // Display browser validation messages
+                return; // Stop further execution if validation fails
+            }
+
+            // Validate fields
+
+            // Show error if invalid
+
+
+            // Confirm save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to update this record?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+   
+
+
+
+
+</script>

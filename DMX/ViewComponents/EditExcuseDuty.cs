@@ -30,7 +30,7 @@ namespace DMX.ViewComponents
                Diagnosis =dutyToUpdate.Diagnosis,
             
                 SelectedUsers = dcx.ExcuseDutyAssignments.Where(x => x.ExcuseDutyId == @Encryption.Decrypt(Id)).Select(x => x.UserId).ToList(),
-                UsersList =  new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
+                UsersList =  new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
                 
             };
             

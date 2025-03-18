@@ -34,7 +34,7 @@ namespace DMX.ViewComponents
                 SelectedUsers = AssignedUsers,
 
         
-                UsersList= new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
+                UsersList= new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
             };
             
 

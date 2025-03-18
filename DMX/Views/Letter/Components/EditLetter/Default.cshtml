@@ -46,7 +46,7 @@
                         <label class="did-floating-label">Additional Notes</label>
                     </div>
                     <div class="did-floating-label-content">
-                        <select id="usersAddLetter" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="usersEditLetter" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         <label class="did-floating-label">Select Users</label>
                     </div>
                     <button id="saveButton" type="button" class="btn btn-block btn-primary">Save</button>
@@ -58,7 +58,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#usersAddLetter').select2({ dropdownParent: $('#AddLetter') });
+        $('#usersEditLetter').select2({ dropdownParent: $('#EditLetter') });
 
         const actualBtn = document.getElementById('formFile');
         const selectFile = document.getElementById('sFile');
@@ -82,7 +82,7 @@
                 confirmButtonText: 'Yes, save it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById("addLetterForm").submit(); // Correct form ID
+                    document.getElementById("editLetterForm").submit(); // Correct form ID
                 }
             });
         });

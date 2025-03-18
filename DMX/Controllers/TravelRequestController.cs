@@ -49,6 +49,11 @@ namespace DMX.Controllers
                 _notyfService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction(nameof(ViewTravelRequests));
             }
+            if (_context.PerDiems.Where(x=>x.UserId== _userManager.GetUserId(User)).Any() != true)
+            {
+                _notyfService.Error($"You must set perdiem rate for {_userManager.GetUserAsync(User).Result.Fullname} to allow for Travel request", 5);
+                return RedirectToAction(nameof(ViewTravelRequests));
+            }
 
             try
             {

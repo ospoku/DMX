@@ -14,7 +14,7 @@ namespace DMX.ViewComponents
         {
             AddExcuseDutyVM addExcuseDutyVM = new()
             {
-                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))))
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))
             };
             return View(addExcuseDutyVM);
         }

@@ -27,7 +27,7 @@ namespace DMX.ViewComponents
              
                 Diagnosis = new ExcuseDuty().  Diagnosis,
                SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == @Encryption.Decrypt(Id) select x.UserId).ToList(),
-                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
             };
             return View(excuseDutyVM);
         }

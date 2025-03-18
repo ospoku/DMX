@@ -26,7 +26,7 @@ namespace DMX.ViewComponents
        Date=pettyCashToUpdate.Date,
        Purpose=pettyCashToUpdate.Purpose,
                 SelectedUsers = dcx.PettyCashAssignments.Where(x => x.PettyCashId == @Encryption.Decrypt(Id)).Select(u => u.UserId).ToList(),
-                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
                 Maximum = dcx.CashLimits.Select(p => p.Amount).FirstOrDefault()
             };
            

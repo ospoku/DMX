@@ -36,7 +36,7 @@ namespace DMX.ViewComponents
                 SelectedUsers = AssignedUsers,
                 Comments = pettycashToComment.Comments.OrderBy(m => m.CreatedDate).ToList(),
                 CommentCount = pettycashToComment.Comments.Count(),
-                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname)))),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
             };
             
 

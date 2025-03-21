@@ -15,7 +15,7 @@ namespace DMX.ViewComponents
             AddLetterVM addLetterVM = new()
             {
 
-                UsersList = new SelectList(usm.Users.ToList(), "Id","UserName"),
+                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id)), (nameof(AppUser.Fullname))),
 
 
             };

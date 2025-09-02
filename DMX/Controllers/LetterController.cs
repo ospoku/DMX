@@ -167,7 +167,7 @@ namespace DMX.Controllers
                 else
                 {
                     _notyfService.Error("Document saving failed.");
-                    return ViewComponent(nameof(AddDocument));
+                    return ViewComponent(nameof(AddLetter));
                 }
             }
             catch (Exception ex)

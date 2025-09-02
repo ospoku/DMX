@@ -57,11 +57,6 @@ namespace DMX.Controllers
 
                     return RedirectToAction(nameof(ViewUsers));
                 }
-
-            
-
-  
-
             return RedirectToAction("AddUser");
         }
         [HttpGet]

@@ -1,8 +1,8 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
 @model DMX.ViewModels.EditPettyCashVM;
 
             
-<div class="modal fade" id="EditPettyCash" data-bs-backdrop="static" data-bs-keyboard="false">
+<dialog class="modal fade" id="EditPettyCashDialog" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -38,7 +38,7 @@
                 </div>
                 </div>
 
-                </div>
+                </dialog>
 <script>
     $(document).ready(function () {
 

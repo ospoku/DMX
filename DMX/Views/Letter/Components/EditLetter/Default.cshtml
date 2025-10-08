@@ -1,5 +1,5 @@
 ﻿
-@model DMX.ViewModels.EditDocumentVM;
+@model DMX.ViewModels.EditLetterVM;
 
 <div class="modal-header">
 
@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body">
                         
-
+    <input type="hidden" asp-for="@Model.Id" />
                                 @using (Html.BeginForm("EditLetter", "Letter", FormMethod.Post, new { enctype = "multipart/form-data", id="editLetterForm" }))
                                 {
    

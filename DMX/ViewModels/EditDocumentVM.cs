@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DMX.ViewModels
 {
-    public class EditDocumentVM
+    public class EditLetterVM
     {
 
         public string ReferenceNumber { get; set; }
@@ -16,7 +16,7 @@ namespace DMX.ViewModels
         public string AdditionalNotes { get; set; }
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
-
+        public string Id { get; set; }
 
 
     }

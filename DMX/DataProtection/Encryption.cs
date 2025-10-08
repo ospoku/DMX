@@ -7,6 +7,10 @@ namespace DMX.DataProtection
 {
     public static class Encryption
     {
+
+
+
+
         private static readonly byte[] _key = Encoding.UTF8.GetBytes("1qazxsw23edcvfr45tgbnhy67ujmuki8");
 
         static Encryption()

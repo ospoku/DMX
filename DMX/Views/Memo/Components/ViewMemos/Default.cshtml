@@ -2,6 +2,7 @@
 @using DMX.DataProtection
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using System.Web
 @inject IAuthorizationService auth
 @inject UserManager<AppUser> usm;
 @inject DMX.Data.XContext dcx;
@@ -76,7 +77,7 @@
                                        
                                             </form> *@
 
-                                        <a href="#" class="dropdown-item-custom" onclick="printMemoIframe('@Encryption.Encrypt(Memo.MemoId)')">
+                                        <a href="#" class="dropdown-item-custom" onclick="printMemoIframe('@HttpUtility.UrlEncode(@Encryption.Encrypt(Memo.MemoId))')">
                                             <i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print
                                         </a>
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.DeleteMemo)).Succeeded)

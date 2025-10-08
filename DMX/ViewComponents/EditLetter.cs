@@ -5,6 +5,7 @@ using DMX.Data;
 using DMX.Models;
 using DMX.ViewModels;
 using DMX.DataProtection;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -16,9 +17,11 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-           
-         var   documentToEdit = (from a in dcx.Letters where a.LetterId == @Encryption.Decrypt(Id) & a.IsDeleted == false select a).FirstOrDefault();
-            EditDocumentVM editDocumentVM = new()
+            var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
+            var decryptedId = Encryption.Decrypt(decodedId);
+
+            var   documentToEdit = (from a in dcx.Letters where a.LetterId == decryptedId & a.IsDeleted == false select a).FirstOrDefault();
+            EditLetterVM editLetterVM = new()
             {
                 DocumentDate = documentToEdit.DocumentDate,
                 AdditionalNotes=documentToEdit.AdditionalNotes,
@@ -28,12 +31,12 @@ namespace DMX.ViewComponents
                 Subject=documentToEdit.Subject,
                
                SelectedUsers = (from x in dcx.LetterAssignments where x.LetterId
-                                == @Encryption.Decrypt(Id)
+                                == decryptedId
                                 select x.UserId).ToList(),
 
                 UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id)),nameof(AppUser.Fullname))
             };
-            return View(editDocumentVM);
+            return View(editLetterVM);
         }
     }
 }

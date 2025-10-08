@@ -1,12 +1,12 @@
 ﻿
 @model DMX.ViewModels.EditDocumentVM;
 
+<div class="modal-header">
 
-<div class="modal fade" id="EditLetter" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-
-        <div class="modal-content">
-            <div class="modal-header">
+    <h6>Edit Field</h6>
+    <button type="button" onclick="document.getElementById('EditFieldDialog').close()" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+</div>
+<div class="modal-header">
 
                 <h6>Edit Letter</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
@@ -52,9 +52,7 @@
                     <button id="saveButton" type="button" class="btn btn-block btn-primary">Save</button>
                 }
             </div>
-        </div>
-    </div>
-</div>
+ 
 
 <script>
     $(document).ready(function () {

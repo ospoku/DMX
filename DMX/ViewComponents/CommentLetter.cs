@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -15,13 +16,11 @@ namespace DMX.ViewComponents
         public readonly UserManager<AppUser> usm = userManager;
         
         public IViewComponentResult Invoke(string Id)
-
-
         {
+            var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
+            var decryptedId = Encryption.Decrypt(decodedId);
 
-
-
-            var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.LetterId == @Encryption.Decrypt(Id) select d).FirstOrDefault();
+            var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.LetterId ==decryptedId select d).FirstOrDefault();
 
             DocumentCommentVM addCommentVM = new()
             {

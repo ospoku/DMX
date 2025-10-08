@@ -2,16 +2,13 @@
 @model DMX.ViewModels.DocumentCommentVM;
 
 
-<div class="modal fade" id="CommentLetter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="CommentLetterLabel">
-    <div class="modal-dialog modal-lg">
 
-        <div class="modal-content">
-            <div class="modal-header">
+            <header class="modal-header">
 
                 <h6 id="CommentletterLabel">Add Comment</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
-            </div>
-            <div class="modal-body">
+            </header>
+            <main>
         
             <div class="container mt-0">
                 <!-- Nav pill tabs -->
@@ -83,47 +80,14 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Submit Comment</button>
                             </form>
-                    </div>
+         
+               
+
+                
+            </div>
                 </div>
         </div>
-    </div>
-    </div>
-    </div>
- </div>
-<script>
-      $(document).ready(function () {
-        // Initialize timeago for comment timestamps
-        $('time.timeago').timeago();
-
-        // Modal selector for reusability
-        const modalSelector = '#CommentLetter';
-        const commentSelector = '#newComment';
-
-        // Initialize TinyMCE when the modal is shown
-        $(modalSelector).off('shown.bs.modal').on('shown.bs.modal', function () {
-            if (!tinymce.get(commentSelector.substring(1))) { // Check if TinyMCE is not already initialized
-                try {
-                    tinymce.init({
-                        selector: commentSelector,
-                        menubar: true,
-                        toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
-                        height: 300, // Set a default height
-                    });
-                } catch (e) {
-                    console.error('TinyMCE initialization failed:', e);
-                }
-            }
-        });
-
-        // Remove TinyMCE instance on modal close
-        $(modalSelector).off('hidden.bs.modal').on('hidden.bs.modal', function () {
-            try {
-                tinymce.remove(commentSelector);
-            } catch (e) {
-                console.error('TinyMCE removal failed:', e);
-            }
-        });
-    });
-
-</script> 
-
+    </main>
+    <footer class="modal-footer">xxxxxxxxxxxxxxx</footer>
+    
+             

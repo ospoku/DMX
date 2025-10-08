@@ -60,7 +60,7 @@
                                        
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentLetter)).Succeeded)
                                         {
-                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentLetter", new { Id = @Encryption.Encrypt(let.LetterId) })" class="dropdown-item-custom" data-bs-target="#CommentLetter"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
+                                            <button type="button" onclick="openDialogFromData(this)" data-url="CommentLetter" data-user-id="@HttpUtility.UrlEncode(Encryption.Encrypt(let.LetterId).ToString())" data-dialog-id="CommentLetterDialog" class="dropdown-item-custom"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Comment</button>
                                         }
 
                                          @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DownloadLetter)).Succeeded)
@@ -94,4 +94,23 @@
 </div>
 <dialog id="EditLetterDialog" class="rounded border-0 col-md-4">
     <div id="EditLetterDialogContent"></div>
+</dialog>
+<dialog id="CommentLetterDialog" class="rounded border-0 col-md-4">
+    <div id="CommentLetterDialogContent"></div>
+
+    <div id="editor"></div>
+    <input type="hidden" name="NewComment" id="NewComment">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Write your comment here...'
+        });
+
+        // Copy HTML content to hidden input before form submit
+        document.querySelector('form').addEventListener('submit', function() {
+            document.querySelector('#NewComment').value = quill.root.innerHTML;
+        });
+    </script>
 </dialog>

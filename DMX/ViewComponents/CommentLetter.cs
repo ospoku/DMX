@@ -27,6 +27,7 @@ namespace DMX.ViewComponents
                 MemoContent = letterToComment.AdditionalNotes,
                 Comments = letterToComment.LetterComments.OrderBy(m => m.CreatedDate).ToList(),
                 Title = letterToComment.ReferenceNumber,
+                MemoId=letterToComment.LetterId,
                 //SelectedUsers = AssignedUsers,
                 Document=letterToComment.PDF,
                 CommentCount = letterToComment.LetterComments.Count(),

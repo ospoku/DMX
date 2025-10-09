@@ -14,6 +14,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DMX.Controllers
 {
@@ -183,12 +184,12 @@ namespace DMX.Controllers
         public IActionResult DeleteLetter() => ViewComponent(nameof(ViewLetters));
 
         [HttpPost]
-        public async Task<IActionResult> CommentLetter(string id, DocumentCommentVM commentVm)
+        public async Task<IActionResult> CommentLetter(DocumentCommentVM commentVm)
         {
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
-                var letterToComment = await _context.Letters.FirstOrDefaultAsync(l => l.LetterId == decryptedId);
+             
+                var letterToComment = await _context.Letters.FirstOrDefaultAsync(l => l.LetterId == commentVm.MemoId);
                 if (letterToComment == null)
                 {
                     return NotFound();

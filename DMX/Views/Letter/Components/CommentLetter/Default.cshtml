@@ -6,10 +6,10 @@
             <header class="modal-header">
 
                 <h6 id="CommentletterLabel">Add Comment</h6>
-                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+    <button type="button" onclick="document.getElementById('CommentLetterDialog').close()" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </header>
             <main>
-        
+
             <div class="container mt-0">
                 <!-- Nav pill tabs -->
                     <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-1 shadow-sm" id="memoPillTabs" role="tablist">
@@ -73,21 +73,23 @@
                     </div>
                     <!-- New Comment -->
                     <div class="tab-pane fade p-1" id="new-comment-pill" role="tabpanel" aria-labelledby="new-comment-pill-tab">
-                        <form method="post" asp-action="Commentletter" asp-controller="letter">
+                <form method="post" asp-action="Commentletter" asp-controller="letter" id="commentForm">
+                    <input type="hidden" asp-for="@Model.MemoId" />
                     
-                            <div class="mb-3">
-                                <textarea  id="newComment" asp-for="NewComment" placeholder="write your comment here........"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit Comment</button>
-                            </form>
-         
-               
+                   
 
-                
+                    <div class="mb-3">
+                        <div id="editor" style="height: 150px;"></div>
+                        <input type="hidden" name="NewComment" id="NewComment" />
+                    </div>
+                            <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            </form> 
             </div>
                 </div>
         </div>
-    </main>
-    <footer class="modal-footer">xxxxxxxxxxxxxxx</footer>
-    
-             
+
+  
+</main>
+    <footer class="modal-footer"></footer>
+
+  

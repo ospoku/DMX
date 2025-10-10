@@ -64,22 +64,57 @@
             selectFile.textContent = "Selected file";
         });
 
-        document.getElementById("saveButton").addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent immediate submission
+//         document.getElementById("saveButton").addEventListener("click", function (event) 
+//         {
+//             event.preventDefault(); // Prevent immediate submission
+//                 const dialog = document.getElementById('EditLetterDialog');
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to save this record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById("editLetterForm").submit(); // Correct form ID
-                }
-            });
+//     dialog.close(); // hide dialog first
+//             Swal.fire({
+//                 title: 'Are you sure?',
+//                 text: "Do you really want to save this record?",
+//                 icon: 'warning',
+//                 showCancelButton: true,
+//                 confirmButtonColor: '#3085d6',
+//                 cancelButtonColor: '#d33',
+//                 confirmButtonText: 'Yes, save it!'
+//             }).then((result) => {
+//                 if (result.isConfirmed) {
+//                     document.getElementById("editLetterForm").submit(); // Correct form ID
+//                 }
+//             });
+//         });
+//     });
+// 
+
+
+
+    document.getElementById("saveButton").addEventListener("click", function (event) {
+        event.preventDefault(); // prevent form from submitting immediately
+
+        const dialog = document.getElementById('EditLetterDialog');
+        const form = document.getElementById("editLetterForm");
+            dialog.close();
+        // ✅ Keep the dialog open while showing SweetAlert
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you really want to save this record?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, save it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ✅ Submit the form and close the dialog only on confirmation
+                form.submit();
+                dialog.close();
+            } else {
+                // ✅ If canceled, just restore focus to the dialog
+                dialog.showModal(); // re-show if needed
+                dialog.focus();
+            }
         });
     });
+});
 </script>

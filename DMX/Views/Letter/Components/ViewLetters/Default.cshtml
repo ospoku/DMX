@@ -99,29 +99,30 @@
     <div id="CommentLetterDialogContent"></div>
 </dialog>
 <script>
-    let quill;
+    let editorInitialized = false;
 
-    // Initialize Quill only once when the New Comment tab becomes active
     document.addEventListener('shown.bs.tab', function (event) {
-        if (event.target.id === 'new-comment-pill-tab' && !quill) {
-            quill = new Quill('#editor', {
-                theme: 'snow',
+        if (event.target.id === 'new-comment-pill-tab' && !editorInitialized) {
+            tinymce.init({
+                selector: '#editor',
+                menubar: false,
+                plugins: 'lists link image',
+                toolbar: 'bold italic underline | bullist numlist | link image',
                 placeholder: 'Write your comment here...',
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        ['link', 'image']
-                    ]
+                setup: function (editor) {
+                    editor.on('init', function () {
+                        editorInitialized = true;
+                    });
                 }
             });
         }
     });
 
-    // Copy Quill content into hidden input before form submit
     document.addEventListener('submit', function (e) {
-        if (e.target && e.target.id === 'commentForm' && quill) {
-            document.querySelector('#NewComment').value = quill.root.innerHTML;
+        if (e.target && e.target.id === 'commentForm') {
+            const content = tinymce.get('editor') ? tinymce.get('editor').getContent() : '';
+            document.querySelector('#NewComment').value = content;
         }
     });
 </script>
+

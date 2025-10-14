@@ -161,10 +161,10 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-bs-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">System</h6>
-                      @*   <a class="collapse-item" asp-action="Preference" asp-controller="Settings">Preferences</a> *@
-                        <a class="collapse-item" asp-action="SystemSetup" asp-controller="Settings">Setup</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Roles & Permissions</h6>
+                    
+                        <a class="collapse-item" asp-action="SystemSetup" asp-controller="Settings">System Setup</a>
+
+                        <a class="collapse-item" asp-action="SystemSetup" asp-controller="Settings">Account Setup</a>
                         <a class="collapse-item" asp-action="ViewRoles" asp-controller="Permission">Roles</a>
                         <a class="collapse-item" asp-action="ViewUserRoles" asp-controller="Permission">User Roles</a> 
                         
@@ -375,6 +375,13 @@
             </div>
         </div>
     </div>
+ 
+
+
+
+
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/lib/jquery/jquery.min.js"></script>

@@ -29,6 +29,8 @@
 //            console.error(err);
 //        });
 //}
+
+
 function openDialogFromData(button) {
     // Get required attributes
     const dialogId = button.getAttribute('data-dialog-id');
@@ -55,14 +57,38 @@ function openDialogFromData(button) {
     }
 
     // Show loading state
+    //contentDiv.innerHTML = `
+    //    <div class="text-center py-4">
+    //        <div class="spinner-border text-primary" role="status">
+    //            <span class="visually-hidden">Loading...</span>
+    //        </div>
+    //        <p class="mt-2">Loading form data...</p>
+    //    </div>
+    //`;
+
+
     contentDiv.innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-2">Loading form data...</p>
+    <style>
+    @@keyframes spinner-border {
+        to { transform: rotate(360deg); }
+    }
+    .spinner-border {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        border: 0.25em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: spinner-border .75s linear infinite;
+    }
+    </style>
+    <div class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
-    `;
+        <p class="mt-2">Loading form data...</p>
+    </div>
+`;
 
     // Set up abort controller
     const controller = new AbortController();
@@ -116,3 +142,10 @@ function openDialogFromData(button) {
         controller.abort();
     });
 }
+
+
+
+
+
+
+

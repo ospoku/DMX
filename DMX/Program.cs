@@ -55,7 +55,7 @@ builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Monster")));
+builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DMX")));
 
 builder.Services.AddIdentity<AppUser,AppRole>()
     .AddEntityFrameworkStores<XContext>();

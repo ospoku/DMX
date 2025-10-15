@@ -35,7 +35,10 @@ namespace DMX.Controllers
             return ViewComponent(nameof(AddUser));
         }
 
-
+        public IActionResult AccountSetup()
+        {
+            return ViewComponent(nameof(AccountSetup));
+        }
 
 
         [HttpPost]

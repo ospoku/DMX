@@ -25,11 +25,7 @@ namespace DMX.Controllers
         public readonly UserManager<AppUser> usm = userManager;
         public readonly EntityService entityServ = entityService;
 
-        public IActionResult Preferences()
-        {
-
-            return ViewComponent(nameof(ViewPreferences));
-        }
+   
         public IActionResult SystemSetup()
         {
             return ViewComponent(nameof(SystemSetup));

@@ -323,23 +323,6 @@
         });
 
      
-        $('#MemoContent').on('input', async function () {
-            let text = $(this).val();
-
-            if (text.length < 5) return;
-
-            let response = await fetch('/api/memo/autocomplete', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text }) 
-            });
-
-            let data = await response.text();
-            if (data) {
-                $('#suggestionBox').text(data);
-            } else {
-                $('#suggestionBox').text("No suggestions found.");
-            }
-        });
+    
     });
 </script>

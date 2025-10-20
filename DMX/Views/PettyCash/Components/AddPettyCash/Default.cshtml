@@ -2,7 +2,7 @@
 @model DMX.ViewModels.AddPettyCashVM;
 
 
-<div class="modal fade" id="AddPettyCash" data-bs-backdrop="static" data-bs-keyboard="false">
+<dialog class="col-md-7 rounded py-0" id="AddPettyCashDialog">
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -32,18 +32,16 @@
                         </div>
                         <button id="btnAddPettyCash" class="btn btn-block btn-primary">Save</button>       
             }
-
-
         </div>
     </div>
 </div>
-</div>
+</dialog>
     <script>
         $(document).ready(function () {
 
 
             $('#selectPettyCashUser').select2({
-                dropdownParent: $('#AddPettyCash')
+                dropdownParent: $('#AddPettyCashDialog')
             });
 
          const addExcuseDutyFormSelector = '#addPettyCashForm';

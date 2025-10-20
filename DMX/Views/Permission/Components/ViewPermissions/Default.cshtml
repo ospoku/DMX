@@ -43,9 +43,9 @@
                                                 Select Action
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ManagePermissions")" class="dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Manage</button>
+                                              @*   <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ManagePermissions")" class="dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Manage</button>
                                       
-                                                <a class="dropdown-item-custom" asp-action="ManagePermissions" asp-controller="Permission" asp-route-Id="@Encryption.Encrypt(user.UserId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Manage Permissions</a>
+                                                <a class="dropdown-item-custom" asp-action="ManagePermissions" asp-controller="Permission" asp-route-Id="@Encryption.Encrypt(user.UserId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Manage Permissions</a> *@
                                                 <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ClientProfile")" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                                 <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
                                                     <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>

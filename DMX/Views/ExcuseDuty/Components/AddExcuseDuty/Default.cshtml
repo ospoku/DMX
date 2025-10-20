@@ -4,7 +4,7 @@
 
 
 
-<div class="modal fade" id="AddExcuseDuty" data-bs-backdrop="static" data-bs-keyboard="false">
+<dialog id="AddExcuseDutyDialog" class="border-0 rounded py-0">
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -63,8 +63,8 @@
         </div>
     </div>
     </div>
-    </div>
-    <script>
+    </dialog>
+     <script>
         $(document).ready(function () {
                    const addExcuseDutyForm = '#addExcuseDutyForm';
                    const txtPatientName='#txtPatientName';
@@ -99,7 +99,7 @@
         });
     });
 
-</script>
+</script> 
 
 
   

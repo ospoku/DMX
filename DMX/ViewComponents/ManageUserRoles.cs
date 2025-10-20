@@ -4,6 +4,7 @@ using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -16,7 +17,9 @@ namespace DMX.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
             var viewModel = new List<UserRolesVM>();
-            var user = await usm.FindByIdAsync(@Encryption.Decrypt(Id));
+            var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
+            var decryptedId = Encryption.Decrypt(decodedId);
+            var user = await usm.FindByIdAsync(decryptedId);
 
             foreach (var role in rol.Roles.ToList())
             {

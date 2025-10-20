@@ -49,6 +49,8 @@
                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                 <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditUser", new { Id = @Encryption.Encrypt(user.UserId) })" class="dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
                                                 <button class="dropdown-item-custom" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditService", new { Id = @Encryption.Encrypt(user.UserId) })" data-bs-target="#DetailMemo"><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Profile</button>
+                                             
+                                                
                                                 @if ((await auth.AuthorizeAsync(User, Permissions.User.Delete)).Succeeded)
                                                 {
                                                     <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">

@@ -1,7 +1,6 @@
 ﻿@model DMX.ViewModels.AddLetterVM
-<div class="modal fade" id="AddLetter" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<dialog id="AddLetterDialog" class="border-0 rounded col-md-7">
+  
             <div class="modal-header">
                 <h6>Add Letter</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
@@ -44,9 +43,8 @@
                     <button id="saveButton" type="button" class="btn btn-block btn-primary">Save</button>
                 }
             </div>
-        </div>
-    </div>
-</div>
+      
+</dialog>
 
 <script>
     $(document).ready(function () {

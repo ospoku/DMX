@@ -1,7 +1,7 @@
 ﻿
 @model DMX.ViewModels.EditUserVM
 
-<div class="modal fade" id="EditUser" data-bs-backdrop="static" data-bs-keyboard="false">
+<dialog class="modal fade" id="EditUserDialog" >
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -48,7 +48,7 @@
             }
         </div>
     </div>
-</div>
+</dialog>
 <script>
       document.getElementById("btnAddMemo").addEventListener("click", function (event) {
             event.preventDefault();

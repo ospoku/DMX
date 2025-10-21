@@ -2,7 +2,7 @@
 @model DMX.ViewModels.AddPettyCashVM;
 
 
-<dialog class="col-md-7 rounded py-0" id="AddPettyCashDialog">
+<dialog class=" border-0 rounded py-0" id="AddPettyCashDialog">
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -26,7 +26,7 @@
             
                     <div class="form-group">
                         <div class="did-floating-label-content">
-                        <select id="selectPettyCashUser" class="did-floating-select"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectPettyCashUser" class="dmx-choices did-floating-select"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                             <label class="did-floating-label">Select Approver(s)</label>
                         </div>
                         </div>

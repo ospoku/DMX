@@ -29,6 +29,10 @@
     {
       "library": "quill@2.0.2",
       "destination": "wwwroot/ospapps/quill/"
+    },
+    {
+      "library": "choices.js@11.1.0",
+      "destination": "wwwroot/lib/choices.js/"
     }
   ]
 }

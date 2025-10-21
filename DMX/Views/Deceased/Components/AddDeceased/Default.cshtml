@@ -2,10 +2,8 @@
 @model DMX.ViewModels.AddDeceasedVM;
 
 
-<div class="modal fade" id="AddDeceased" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-lg">
+<dialog id="AddDeceasedDialog" class="border-0 rounded py-0 col-md-4">
 
-        <div class="modal-content">
             <div class="modal-header">
 
                 <h6>Add Deceased</h6>
@@ -93,9 +91,9 @@
                 <div class="modal-footer">
                     <button id="btnAddDeceased" class="btn btn-block btn-primary">Save</button></div>
             }
-        </div>
-</div>
-</div>
+        
+
+</dialog>
 <script>
     $(document).ready(function ()
     {

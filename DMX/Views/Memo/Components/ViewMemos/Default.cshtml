@@ -13,7 +13,7 @@
 
 
 
-<div id="PlaceHolderHere"></div>
+
 
 
 <div class="card shadow mb-4">
@@ -21,6 +21,7 @@
         <h6 class="m-0 font-weight-bold text-primary d-inline">Memos</h6>
         
             <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddMemo" data-bs-url="@Url.Action("AddMemo")"><i class="fa fa-fw fa-plus-circle"></i>Add Memo</button>
+        <button id="btnAddMemo" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" onclick="document.getElementById('AddMemoDialog').showModal()"><i class="fa fa-fw fa-plus-circle"></i>Add Memo</button>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -158,3 +159,4 @@
     });
 </script>
 
+@await Component.InvokeAsync("AddMemo")

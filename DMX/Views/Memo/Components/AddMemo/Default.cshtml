@@ -209,9 +209,8 @@
 @model DMX.ViewModels.AddMemoVM;
 
 <!-- Modal Structure for Add Memo -->
-<div class="modal fade" id="AddMemo" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<dialog class="col-md-4 border-0 py-0 rounded" id="AddMemoDialog">
+  
             <div class="modal-header">
                 <h6>Add Memo</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
@@ -245,9 +244,8 @@
                     <button id="btnAddMemo" class="btn btn-block btn-primary">Save</button>
                 </div>
             }
-        </div>
-    </div>
-</div>
+       
+</dialog>
 
 <!-- JavaScript Code to Handle Form and Modal Behavior -->
 <script>

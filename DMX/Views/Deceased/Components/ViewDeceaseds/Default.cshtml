@@ -10,13 +10,14 @@
 @model IEnumerable<DMX.ViewModels.ViewPatientsVM>;
 
 
-<div id="PlaceHolderHere"></div>
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Deceaseds</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddDeceased" data-bs-url="@Url.Action("AddDeceased")"><i class="fa fa-fw fa-plus-circle"></i>Add Deceased</button>
+       
+        <button id="btnAddDeceased" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" onclick="document.getElementById('AddDeceasedDialog').showModal()"><i class="fa fa-fw fa-plus-circle"></i>Add Deceased</button>
 
     </div>
     <div class="card-body">
@@ -100,4 +101,4 @@
     <div id="CommentDeceasedDialogContent"></div>
 </dialog>
 
-                                
+@await Component.InvokeAsync("AddDeceased")                      

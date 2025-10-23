@@ -1,10 +1,9 @@
 ﻿@model DMX.ViewModels.AddServiceRequestVM;
-<div class="modal fade" id="AddServiceRequest" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<dialog class="rounded-0 py-0 border-0 col-md-4" id="AddServiceRequestDialog">
+  
             <div class="modal-header">
                 <h6>Add Service Request</h6>
-                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" aria-label="Close" class="btn btn-sm btn-outline-danger" onclick="document.getElementById('AddServiceRequestDialog').close()">Close</button>
             </div>
             @using (Html.BeginForm("AddServiceRequest", "ServiceRequest", FormMethod.Post, new { id = "addServiceRequestForm", enctype = "multipart/form-data" }))
             {
@@ -60,12 +59,12 @@
                     <button id="btnAddServiceRequest" class="btn btn-block btn-primary">Save</button>
                 </div>
             }
-        </div>
-    </div>
-</div>
+        </dialog>
+ 
 
 <script>
-    $(document).ready(function () {
+    documenet.addEventListener()
+    {
         const modalSelector = '#AddServiceRequest';
         const descriptionContentSelector = '#txtDescription';
         const addServiceRequestForm = '#addServiceRequestForm';
@@ -141,7 +140,7 @@
                 }
             });
         });
-    });
+    };
 </script>
 
 <style>

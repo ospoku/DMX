@@ -8,12 +8,12 @@
 @model IEnumerable<DMX.ViewModels.ViewServiceRequestsVM>;
 
 
-<div id="PlaceHolderHere"></div>
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Service Requests</h6>
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddServiceRequest" data-bs-url="@Url.Action("AddServiceRequest")"><i class="fa fa-fw fa-plus-circle"></i>Add Service Request</button>
+        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" onclick="document.getElementById('AddServiceRequestDialog').showModal()"><i class="fa fa-fw fa-plus-circle"></i>Add Service Request</button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -74,3 +74,4 @@
         </div>
     </div>
 </div>
+@await Component.InvokeAsync("AddServiceRequest")

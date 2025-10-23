@@ -1,313 +1,102 @@
-﻿@* 
-@model DMX.ViewModels.AddMemoVM;
+﻿@model DMX.ViewModels.AddMemoVM;
 
-<div class="modal fade" id="AddMemo" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-lg">
-
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <h6>Add Memo</h6>
-                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
-            </div>
-             @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post, new{id="addMemoForm"}))
-            {
-            <div class="modal-body">
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="" required>
-                        <label class="did-floating-label">Memo Title</label>
-                    </div>
-                
-                  
-                        <textarea class="form-control" id="MemoContent" asp-for="@Model.Content"  placeholder="Memo Content"></textarea>
-                        <div id="suggestionBox" style="color: gray; font-style: italic;"></div>
-                  
-                    <div class="did-floating-label-content">
-
-                        <select id="selectMemoUser" class="did-floating-select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                        <label class="did-floating-label">Select Approver(s)</label>
-                    </div>
-
-                    </div>
-                    <div class="modal-footer"><button id="btnAddMemo" class="btn btn-block btn-primary">Save</button></div>
-                }
-            </div>
+<dialog id="AddMemoDialog" class="col-md-6 border-0 rounded p-0">
+    <div class="modal-header">
+        <h6>Add Memo</h6>
+        <button type="button" aria-label="Close"
+                class="btn btn-sm btn-outline-danger"
+                onclick="document.getElementById('AddMemoDialog').close()">
+            Close
+        </button>
     </div>
-</div>
 
-
-
-
-
-
-
-
-
-@* <script>
-            $(document).ready(function () {
-        const modalSelector = '#AddMemo';
-        const memoContentSelector = '#MemoContent';
-        const addMemoFormSelector = '#addMemoForm';
-
-        // Initialize Select2 for dropdowns
-        $('#selectMemoUser').select2({
-            dropdownParent: $(modalSelector)
-        });
-
-        // Initialize TinyMCE when modal is shown
-        $(modalSelector).on('shown.bs.modal', function () {
-            if (!tinymce.get(memoContentSelector.substring(1))) {
-                tinymce.init({
-                    selector: memoContentSelector,
-                    menubar: true,
-                    toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
-                    height: 300
-                });
-            }
-        });
-
-        // Remove TinyMCE and reset form on modal close
-        $(modalSelector).on('hidden.bs.modal', function () {
-            try {
-                tinymce.remove(memoContentSelector);
-            } catch (e) {
-                console.error('TinyMCE removal failed:', e);
-            }
-            $(addMemoFormSelector).trigger("reset");
-            $(addMemoFormSelector).find(".is-invalid").removeClass("is-invalid");
-        });
-
-        // Add memo button click handler
-        document.getElementById("btnAddMemo").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            const form = document.querySelector(addMemoFormSelector);
-                 if (!form.checkValidity()) {
-                form.reportValidity(); // Display browser validation messages
-                return; // Stop further execution if validation fails
-            }
-
-            // Validate fields
-            
-            // Show error if invalid
-          
-
-            // Confirm save
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to save this record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-   
-</script>
- *@
-
-
-
-@* <script>
-    $(document).ready(function () {
-        const modalSelector = '#AddMemo';
-        const memoContentSelector = '#MemoContent';
-        const addMemoFormSelector = '#addMemoForm';
-
-        // Initialize Select2 for dropdowns
-        $('#selectMemoUser').select2({
-            dropdownParent: $(modalSelector)
-        });
-
-        // Initialize TinyMCE when modal is shown
-        $(modalSelector).on('shown.bs.modal', function () {
-            if (!tinymce.get(memoContentSelector.substring(1))) {
-                tinymce.init({
-                    selector: memoContentSelector,
-                    menubar: true,
-                    toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
-                    height: 300
-                });
-            }
-        });
-
-        // Remove TinyMCE and reset form on modal close
-        $(modalSelector).on('hidden.bs.modal', function () {
-            let editor = tinymce.get(memoContentSelector.substring(1));
-            if (editor) {
-                editor.remove();
-            }
-            $(addMemoFormSelector).trigger("reset");
-            $(addMemoFormSelector).find(".is-invalid").removeClass("is-invalid");
-        });
-
-        // Add memo button click handler
-        document.getElementById("btnAddMemo").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            const form = document.querySelector(addMemoFormSelector);
-            if (!form.checkValidity()) {
-                form.reportValidity(); // Display browser validation messages
-                return; // Stop further execution if validation fails
-            }
-
-            // Validate fields
-            const selectedUsers = $('#selectMemoUser').val();
-            const memoContent = tinymce.get('MemoContent')?.getContent().trim();
-
-            if (!selectedUsers || selectedUsers.length === 0) {
-                Swal.fire('Error', 'Please select at least one user.', 'error');
-                return;
-            }
-            if (!memoContent) {
-                Swal.fire('Error', 'Memo content cannot be empty.', 'error');
-                return;
-            }
-
-            // Confirm save
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to save this record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-
-        // Memo autocomplete feature
-        document.getElementById("MemoContent").addEventListener("input", async function () {
-            let text = this.value;
-
-            if (text.length < 5) return;
-
-            let response = await fetch('/api/memo/autocomplete', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text }) // Send text inside an object
-            });
-
-            let data = await response.text();
-            document.getElementById("suggestionBox").innerText = data;
-        });
-    });
-</script> *@
-
-
-
-
-@model DMX.ViewModels.AddMemoVM;
-
-<!-- Modal Structure for Add Memo -->
-<dialog class="col-md-4 border-0 py-0 rounded" id="AddMemoDialog">
-  
-            <div class="modal-header">
-                <h6>Add Memo</h6>
-                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+    @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post, new { id = "addMemoForm" }))
+    {
+        <div class="modal-body">
+            <!-- Memo Title -->
+            <div class="did-floating-label-content">
+                <input type="text" asp-for="@Model.Title" class="did-floating-input" required />
+                <label class="did-floating-label">Memo Title</label>
             </div>
 
-            @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post, new { id = "addMemoForm" }))
-            {
-                <div class="modal-body">
-                    <!-- Memo Title Input -->
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="" required>
-                        <label class="did-floating-label">Memo Title</label>
-                    </div>
-                    <div class="form-group">
-                    <!-- Memo Content (TinyMCE Editor) -->
-                    <textarea  class="form-control" id="MemoContent" asp-for="@Model.Content" placeholder="Memo Content"></textarea>
-                   </div>
-                   <div class="form-group">
-                    <div id="suggestionBox"  style="color: gray; font-style: italic;"></div>
-                    </div>
-                    <!-- Select Approver(s) -->
-                    
-                    <div class="did-floating-label-content">
-                        <select id="selectMemoUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                        <label class="did-floating-label">Select Approver(s)</label>
-                    </div>
-                </div>
+            <!-- Memo Content -->
+            <div class="form-group">
+                <textarea id="MemoContent" class="dmx-textarea" asp-for="@Model.Content" placeholder="Memo Content"></textarea>
+            </div>
 
-                <!-- Modal Footer with Save Button -->
-                <div class="modal-footer">
-                    <button id="btnAddMemo" class="btn btn-block btn-primary">Save</button>
-                </div>
-            }
-       
+            <!-- Select Approvers -->
+         
+                <select id="selectMemoUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+            
+         
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <button id="btnAddMemo" type="button" class="btn btn-primary w-100">Save</button>
+        </div>
+    }
 </dialog>
 
-<!-- JavaScript Code to Handle Form and Modal Behavior -->
 <script>
-    $(document).ready(function () {
-        const modalSelector = '#AddMemo';
-        const memoContentSelector = '#MemoContent';
-        const addMemoFormSelector = '#addMemoForm';
+    document.addEventListener('DOMContentLoaded', function () {
+        const dialog = document.getElementById('AddMemoDialog');
+        const addMemoForm = document.getElementById('addMemoForm');
 
-      
-        $('#selectMemoUser').select2({
-            dropdownParent: $(modalSelector)
+        // Initialize Choices.js (or Select2 if you prefer)
+        const userSelect = document.getElementById('selectMemoUser');
+        const choices = new Choices(userSelect, {
+            removeItemButton: true,
+            placeholder: true,
+            placeholderValue: 'Select approver(s)...',
+            searchEnabled: true,
+            position: 'bottom',
         });
 
-       
-        $(modalSelector).on('shown.bs.modal', function () {
-            if (!tinymce.get(memoContentSelector.substring(1))) {
+        // Initialize TinyMCE when dialog opens
+        dialog.addEventListener('show', () => {
+            if (!tinymce.get('MemoContent')) {
                 tinymce.init({
-                    selector: memoContentSelector,
+                    selector: '#MemoContent',
                     menubar: true,
                     toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
-                    height: 300
+                    height: 250
                 });
             }
         });
 
-      
-        $(modalSelector).on('hidden.bs.modal', function () {
-            let editor = tinymce.get(memoContentSelector.substring(1));
-            if (editor) {
-                editor.remove();
-            }
-            $(addMemoFormSelector).trigger("reset");
-            $(addMemoFormSelector).find(".is-invalid").removeClass("is-invalid");
+        // Close TinyMCE and reset when dialog closes
+        dialog.addEventListener('close', () => {
+            const editor = tinymce.get('MemoContent');
+            if (editor) editor.remove();
+            addMemoForm.reset();
         });
 
-      
-        $('#btnAddMemo').click(function (event) {
+        // Save button handler
+        document.getElementById('btnAddMemo').addEventListener('click', function (event) {
             event.preventDefault();
 
-            const form = $(addMemoFormSelector)[0];
-            if (!form.checkValidity()) {
-                form.reportValidity();
+            if (!addMemoForm.checkValidity()) {
+                addMemoForm.reportValidity();
                 return;
             }
 
-      
-            const selectedUsers = $('#selectMemoUser').val();
-            const memoContent = tinymce.get('MemoContent')?.getContent().trim();
+            const selectedUsers = choices.getValue(true);
+            const memoContent = tinymce.get('MemoContent')?.getContent()?.trim();
 
             if (!selectedUsers || selectedUsers.length === 0) {
                 Swal.fire('Error', 'Please select at least one user.', 'error');
                 return;
             }
+
             if (!memoContent) {
                 Swal.fire('Error', 'Memo content cannot be empty.', 'error');
                 return;
             }
 
-           
             Swal.fire({
                 title: 'Are you sure?',
-                text: "Do you really want to save this record?",
+                text: 'Do you really want to save this record?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -315,12 +104,9 @@
                 confirmButtonText: 'Yes, save it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.submit();
+                    addMemoForm.submit();
                 }
             });
         });
-
-     
-    
     });
 </script>

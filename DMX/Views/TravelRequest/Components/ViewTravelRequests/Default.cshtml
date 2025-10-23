@@ -9,13 +9,13 @@
 
 
 
-<div id="PlaceHolderHere"></div>
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Travel Requests</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddTravelRequest" data-bs-url="@Url.Action("AddTravelRequest")"><i class="fa fa-fw fa-plus-circle"></i>Add Travel Request</button>
+        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" onclick="document.getElementById('AddTravelRequestDialog').showModal()"><i class="fa fa-fw fa-plus-circle"></i>Add Travel Request</button>
 
     </div>
     <div class="card-body">
@@ -90,3 +90,4 @@
     </div>
     <div class="card-footer"></div>
 </div>
+@await Component.InvokeAsync("AddTravelRequest")

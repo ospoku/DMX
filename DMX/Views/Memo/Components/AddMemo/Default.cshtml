@@ -38,39 +38,12 @@
     }
 </dialog>
 
-<script>
+ <script>
     document.addEventListener('DOMContentLoaded', function () {
         const dialog = document.getElementById('AddMemoDialog');
         const addMemoForm = document.getElementById('addMemoForm');
 
-        // Initialize Choices.js (or Select2 if you prefer)
-        const userSelect = document.getElementById('selectMemoUser');
-        const choices = new Choices(userSelect, {
-            removeItemButton: true,
-            placeholder: true,
-            placeholderValue: 'Select approver(s)...',
-            searchEnabled: true,
-            position: 'bottom',
-        });
-
-        // Initialize TinyMCE when dialog opens
-        dialog.addEventListener('show', () => {
-            if (!tinymce.get('MemoContent')) {
-                tinymce.init({
-                    selector: '#MemoContent',
-                    menubar: true,
-                    toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright',
-                    height: 250
-                });
-            }
-        });
-
-        // Close TinyMCE and reset when dialog closes
-        dialog.addEventListener('close', () => {
-            const editor = tinymce.get('MemoContent');
-            if (editor) editor.remove();
-            addMemoForm.reset();
-        });
+   
 
         // Save button handler
         document.getElementById('btnAddMemo').addEventListener('click', function (event) {
@@ -109,4 +82,4 @@
             });
         });
     });
-</script>
+</script> 

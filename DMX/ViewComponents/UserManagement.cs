@@ -2,7 +2,7 @@
 
 namespace DMX.ViewComponents
 {
-    public class AccountSetup:ViewComponent
+    public class UserManagement:ViewComponent
     {
 
         public IViewComponentResult Invoke()

@@ -94,43 +94,6 @@
         
 
 </dialog>
-<script>
-    $(document).ready(function ()
-    {
-        $('#selectPatientUser').select2({ dropdownParent: $('#AddDeceased') });
-    const addDeceasedFormSelector = "#addDeceasedForm";
-   
-   
-      document.getElementById("btnAddDeceased").addEventListener("click", function (event) {
-            event.preventDefault();
 
-            const form = document.querySelector(addDeceasedFormSelector);
-                 if (!form.checkValidity()) {
-                form.reportValidity(); // Display browser validation messages
-                return; // Stop further execution if validation fails
-            }
-
-            // Validate fields
-
-            // Show error if invalid
-
-
-            // Confirm save
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to save this record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    });
-</script>
 
     

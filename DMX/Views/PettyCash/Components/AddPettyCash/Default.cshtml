@@ -32,41 +32,7 @@
         </div>
 
 </dialog>
-    <script>
-        $(document).ready(function () {
 
-
-            $('#selectPettyCashUser').select2({
-                dropdownParent: $('#AddPettyCashDialog')
-            });
-
-         const addExcuseDutyFormSelector = '#addPettyCashForm';
-
-            const form = document.querySelector(addExcuseDutyFormSelector);
-         document.getElementById("btnAddPettyCash").addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent immediate submission
-                if (!form.checkValidity()) {
-                form.reportValidity(); // Display browser validation messages
-                return; // Stop further execution if validation fails
-            }
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to save this record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById("addPettyCashForm").submit(); // Correct form ID
-                }
-            });
-        });
-    });
-
-</script>
 
 
 

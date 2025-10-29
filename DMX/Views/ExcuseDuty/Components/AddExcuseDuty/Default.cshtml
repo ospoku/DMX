@@ -156,42 +156,5 @@
    
 </dialog>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        $('#usersAddExcuseDuty').select2({
-            dropdownParent: $('#AddExcuseDutyDialog')
-        });
 
-        const form = document.getElementById("addExcuseDutyForm");
-
-        document.getElementById("btnAddExcuseDuty").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const patientName = document.getElementById("txtPatientName").value.trim();
-            if (patientName === "") {
-                Swal.fire('Error', 'Patient name cannot be empty.', 'error');
-                return;
-            }
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to save this record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    });
-</script>
 

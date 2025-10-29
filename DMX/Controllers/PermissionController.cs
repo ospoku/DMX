@@ -35,9 +35,9 @@ namespace DMX.Controllers
             return ViewComponent(nameof(AddUser));
         }
 
-        public IActionResult AccountSetup()
+        public IActionResult UserManagement()
         {
-            return ViewComponent(nameof(AccountSetup));
+            return ViewComponent(nameof(UserManagement));
         }
 
 

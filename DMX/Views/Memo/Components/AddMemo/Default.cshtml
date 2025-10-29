@@ -33,53 +33,9 @@
 
         <!-- Footer -->
         <div class="modal-footer">
-            <button id="btnAddMemo" type="button" class="btn btn-primary w-100">Save</button>
+            <button id="btnAddMemo"  class="btn btn-primary w-100">Save</button>
         </div>
     }
 </dialog>
 
- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dialog = document.getElementById('AddMemoDialog');
-        const addMemoForm = document.getElementById('addMemoForm');
-
-   
-
-        // Save button handler
-        document.getElementById('btnAddMemo').addEventListener('click', function (event) {
-            event.preventDefault();
-
-            if (!addMemoForm.checkValidity()) {
-                addMemoForm.reportValidity();
-                return;
-            }
-
-            const selectedUsers = choices.getValue(true);
-            const memoContent = tinymce.get('MemoContent')?.getContent()?.trim();
-
-            if (!selectedUsers || selectedUsers.length === 0) {
-                Swal.fire('Error', 'Please select at least one user.', 'error');
-                return;
-            }
-
-            if (!memoContent) {
-                Swal.fire('Error', 'Memo content cannot be empty.', 'error');
-                return;
-            }
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Do you really want to save this record?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    addMemoForm.submit();
-                }
-            });
-        });
-    });
-</script> 
+  

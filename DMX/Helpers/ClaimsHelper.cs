@@ -15,6 +15,8 @@ namespace DMX.Helpers
             {
                 allPermissions.Add(new RoleClaimsVM { Value = fi.GetValue(null).ToString(), Type = "Permissions" });
             }
+
+           
         }
         public static async Task AddPermissionClaim(this RoleManager<AppRole> roleManager, AppRole role, string permission)
         {

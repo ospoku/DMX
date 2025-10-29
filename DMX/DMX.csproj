@@ -6,6 +6,12 @@
     <UserSecretsId>aspnet-DMX-c605a1ef-694c-4f05-881e-d2d9df3db693</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Views\Permission\Components\ManagePermissions\**" />
+    <Content Remove="Views\Permission\Components\ManagePermissions\**" />
+    <EmbeddedResource Remove="Views\Permission\Components\ManagePermissions\**" />
+    <None Remove="Views\Permission\Components\ManagePermissions\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="CsvHelper" Version="31.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0" />
@@ -17,9 +23,6 @@
     <PackageReference Include="Microsoft.ML" Version="4.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Permission\Components\ManagePermissions\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Training\Components\ViewTrainings\Default.cshtml" />

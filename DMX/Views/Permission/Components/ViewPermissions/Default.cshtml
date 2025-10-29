@@ -1,6 +1,6 @@
 ﻿
 @using DMX.DataProtection
-@model IEnumerable<DMX.ViewModels.ViewUsersVM>
+@model IEnumerable<DMX.ViewModels.ViewPermissionsVM>
 
 
 <div class="card shadow mb-4">
@@ -32,10 +32,10 @@
                             {
                                 <tr>
                                     <td></td>
-                                    <td>@user.Fullname</td>
-                                    <td> @user.Username</td>
+                                    <td>@user.RoleName</td>
+                                    <td> @user.RoleId</td>
 
-                                    <td>@user.Email</td>
+                                    <td>@user.RoleName</td>
 
                                     <td>
                                         <div class="btn-group" role="group">
@@ -64,3 +64,34 @@
         </div>
     </div>
     </div>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th style="width: 30%;">Role</th>
+            <th>Assigned Permissions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td><strong>@role.RoleName</strong></td>
+                <td>
+                    @if (role.AssignedPermissions != null && role.AssignedPermissions.Any())
+                    {
+                        <ul class="mb-0">
+                            @foreach (var perm in role.AssignedPermissions)
+                            {
+                                <li>@perm</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No permissions assigned</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

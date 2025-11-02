@@ -1,8 +1,8 @@
 ﻿using DMX.Data;
 using DMX.DataProtection;
+using DMX.Helpers;
 using DMX.Models;
 using DMX.ViewModels;
-using DMX.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Web;
 
 namespace DMX.Controllers
 {
@@ -361,7 +362,9 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult RolePermissions(string Id)
         {
-            return ViewComponent(nameof(RolePermissions), Id);
+           
+
+            return ViewComponent(nameof(RolePermissions),Id);
         }
         [HttpPost]
         public async Task<IActionResult> RolePermissions (string Id, RolePermissionVM model)

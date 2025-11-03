@@ -10,20 +10,15 @@
                 @using (Html.BeginForm("RolePermissions","Permission",FormMethod.Post))
                 { <input asp-for="@Model.RoleId" type="hidden"/>
                 <div class="modal-body">
-                  <table class="table table-sm table-condensed">
-                <thead>
-                    <tr>
+               
+               
                     
-                        <th>
+                     
                             Permission
-                        </th>
-                        <th>
+                       
                            
                                     <input type="checkbox" id="checkAll" /> Select All
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+                  
                     @for (int i = 0; i < Model.RoleClaims.Count(); i++)
                     {
                    <div class="form-inline"></div>
@@ -37,8 +32,7 @@
                                 </div>
                        
                     }
-                </tbody>
-            </table>
+              
        
      
                 </div>

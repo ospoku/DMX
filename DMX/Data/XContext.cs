@@ -54,6 +54,9 @@ namespace DMX.Data
         public DbSet<Status> Statuses { get; set; }
        public DbSet<Category> Categories { get; set; }
         public DbSet <Priority> Priorities { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<ActionItem> Actions { get; set; }
       
    
     }

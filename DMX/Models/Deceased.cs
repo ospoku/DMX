@@ -8,9 +8,9 @@ namespace DMX
     public class Deceased : TableAudit
     { 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+      public int Id { get; set; }
 
-        public string DeceasedId { get; set; }
+        public Guid DeceasedId { get; set; }= Guid.NewGuid();
         [Required]
         [RegularExpression(@"^[A-Za-z\s]+")]
         public  string Name { get; set; }

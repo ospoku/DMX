@@ -18,7 +18,7 @@ namespace DMX.ViewModels
         
         public string[] SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
-        public string LetterId { get; set; }
+        public Guid LetterId { get; set; }
         public DateTime? CreatedDate { get; set; }
      
     }

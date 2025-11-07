@@ -7,8 +7,8 @@ namespace DMX.Models
     public class LetterAssignment : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+   public int Id { get; set; }
+        public Guid AssignmentId { get; set; }
         public string LetterId { get; set; }
         public Letter Letter { get; set; }  
         public string UserId { get; set; }

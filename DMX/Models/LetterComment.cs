@@ -7,8 +7,8 @@ namespace DMX.Models
     public class LetterComment:TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+      public int id { get; set; }
+        public Guid CommentId { get; set; } = Guid.NewGuid();
         public required string Message { get; set; }
         public required string LetterId { get; set; }
         public  string UserId { get; set; }

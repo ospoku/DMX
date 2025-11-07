@@ -9,7 +9,7 @@ namespace DMX.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public Guid ServiceId { get; set; }
 
         public string MorgueServiceId { get; set; }
         [ForeignKey(nameof(MorgueServiceId))]

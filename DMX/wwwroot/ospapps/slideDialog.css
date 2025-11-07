@@ -1,0 +1,21 @@
+﻿dialog.slide-in {
+    border: none;
+    border-radius: 0;
+  
+    width: 400px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: -400px; /* hidden off screen */
+    transition: right 0.3s ease-in-out;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+    dialog.slide-in[open] {
+        right: 0; /* slide into view */
+    }
+
+    dialog.slide-in::backdrop {
+        background: rgba(0, 0, 0, 0.4);
+    }

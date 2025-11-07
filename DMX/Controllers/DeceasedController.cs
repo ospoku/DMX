@@ -23,7 +23,7 @@ namespace DMX.Controllers
         public readonly AssignmentService assignmentServ = assignmentService;
 
         [HttpGet]
-        public IActionResult EditDeceased(string Id)
+        public IActionResult EditDeceased(Guid Id)
         {
             return ViewComponent(nameof(EditDeceased), Id);
         }
@@ -45,6 +45,8 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDeceased(AddDeceasedVM addDeceasedVM)
         {
+
+
             if (addDeceasedVM.SelectedUsers?.Any() != true)
             {
                 notyf.Error("You must select at least one user for assignment.", 5);
@@ -123,13 +125,13 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult PrintPatient(string Id)
+        public IActionResult PrintPatient(Guid Id)
         {
             return ViewComponent(nameof(PrintPatient), Id);
         }
 
         [HttpGet]
-        public IActionResult CommentDeceased(string Id)
+        public IActionResult CommentDeceased(Guid Id)
         {
             return ViewComponent(nameof(CommentDeceased), Id);
         }

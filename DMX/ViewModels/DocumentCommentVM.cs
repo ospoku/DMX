@@ -5,7 +5,7 @@ namespace DMX.ViewModels
 {
     public class DocumentCommentVM
     {
-        public string MemoId { get; set; }
+        public Guid MemoId { get; set; }
         public string MemoContent { get; set; }
         public string Title { get; set; }
         public byte[] Document { get; set; }

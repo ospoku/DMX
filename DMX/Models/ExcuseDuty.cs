@@ -5,9 +5,9 @@ using DMX.Data;
 namespace DMX.Models
 {
     public class ExcuseDuty : TableAudit
-    {[Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+    {[Key]  public int Id { get; set; }
+        public Guid ExcuseDutyId { get; set; }
+      
        
         public string PatientName { get; set; }
         public string PatientId { get; set; }

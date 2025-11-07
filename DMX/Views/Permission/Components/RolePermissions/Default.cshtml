@@ -3,44 +3,7 @@
 @inject RoleManager<AppRole> rol;
 @model DMX.ViewModels.RolePermissionVM
         
-       @*       
-            <div class="card-header">
-                    <h6>Add/Remove Roles for <br /><b>@rol.FindByIdAsync(@Model.RoleId).Result.Rolename</b></h6> <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
-                </div>
-                @using (Html.BeginForm("RolePermissions","Permission",FormMethod.Post))
-                { <input asp-for="@Model.RoleId" type="hidden"/>
-                <div class="modal-body">
-               
-               
-                    
-                     
-                            Permission
-                       
-                           
-                                    <input type="checkbox" id="checkAll" /> Select All
-                  
-                    @for (int i = 0; i < Model.RoleClaims.Count(); i++)
-                    {
-                   <div class="form-inline"></div>
-                                <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
-                                
-                                <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
-                                @Model.RoleClaims[i].Value
-                      
-                                <div class="toggle-switch">
-                                    <input asp-for="@Model.RoleClaims[i].Selected" class="toggle-switch"/>
-                                </div>
-                       
-                    }
-              
-       
-     
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary btn-block">Update</button>
-              
-                </div>
-                } *@
+      
 
 
 <div class="card-header d-flex justify-content-between align-items-center">
@@ -51,92 +14,8 @@
     <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
 </div>
 
-@* @using (Html.BeginForm("RolePermissions", "Permission", FormMethod.Post))
-{
-    <input asp-for="@Model.RoleId" type="hidden" />
 
-    <div class="modal-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="mb-0">Permissions</h6>
-            <div>
-                <input type="checkbox" id="checkAll" /> <label for="checkAll">Select All</label>
-            </div>
-        </div>
 
-        <div class="row g-3">
-            @for (int i = 0; i < Model.RoleClaims.Count(); i++)
-            {
-                <div class="col-md-3 col-sm-6">
-                    <div class="border rounded p-2 h-100">
-                        <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
-                        <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
-
-                        <label class="form-check-label d-block mb-2">
-                            @Model.RoleClaims[i].Value
-                        </label>
-
-                        <label class="toggle-switch">
-                            <input asp-for="@Model.RoleClaims[i].Selected" type="checkbox" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-    <div class="modal-footer">
-        <button class="btn btn-primary w-100">Update</button>
-    </div>
-}
- *@<style>
-    .permissions-table {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.05);
-        overflow: hidden;
-    }
-
-        .permissions-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .permissions-table td, .permissions-table th {
-            vertical-align: middle;
-            padding: 0.75rem;
-            text-align: center;
-        }
-
-            .permissions-table td:first-child {
-                text-align: left;
-                font-weight: 500;
-                color: #333;
-            }
-
-    .form-check-input {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-    }
-
-        .form-check-input:checked {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-
-    .table-container {
-        padding: 2rem;
-        background-color: #f3f6fa;
-        border-radius: 12px;
-    }
-
-    h5 {
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-    }
-</style>
 
 <div class="table-container">
     <h5>Permissions</h5>
@@ -188,94 +67,6 @@
         <button class="btn btn-primary">Save Changes</button>
     </div>
 </div>
-@{
-    // make sure RoleClaims is a list so we can FindIndex
-    var claims = Model.RoleClaims.ToList();
-
-    // permission columns you expect (change/add if you have other permission names)
-    var permissions = new List<string> { "Read", "Create", "Update", "Delete", "Export" };
-
-    // distinct rows (modules/entities)
-    var distinctTypes = claims.Select(c => c.Type).Distinct().ToList();
-}
-
-<style>
-    .permissions-table th {
-        text-align: center;
-    }
-
-    .permissions-table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-        .permissions-table td.module-name {
-            text-align: left;
-            font-weight: 500;
-        }
-
-    .form-check-input.check-small {
-        width: 18px;
-        height: 18px;
-    }
-</style>
-
-<div class="permissions-table table-responsive">
-    <table class="table table-borderless align-middle">
-        <thead>
-            <tr>
-                <th style="width:30%;">Roles / Modules</th>
-                @for (int p = 0; p < permissions.Count; p++)
-                {
-                    <th>@permissions[p]</th>
-                }
-            </tr>
-        </thead>
-
-        <tbody>
-            @* Use a for loop over distinctTypes (rows) *@
-            @for (int r = 0; r < distinctTypes.Count; r++)
-            {
-                var typeName = distinctTypes[r];
-
-                <tr>
-                    <td class="module-name">@typeName</td>
-
-                    @* For each permission, find the corresponding claim index in the original list,
-                       then render a checkbox with asp-for that points to Model.RoleClaims[index].Selected *@
-                    @for (int p = 0; p < permissions.Count; p++)
-                    {
-                        var permName = permissions[p];
-
-                        // find the index of the claim in the original claims list
-                        var claimIndex = claims.FindIndex(c => c.Type == typeName && c.Value == permName);
-
-                        if (claimIndex >= 0)
-                        {
-                            <td>
-                                @* Hidden fields to keep Type and Value in the posted model *@
-                                <input asp-for="@Model.RoleClaims[@claimIndex].Type" type="hidden" />
-                                <input asp-for="@Model.RoleClaims[@claimIndex].Value" type="hidden" />
-
-                                <div class="form-check">
-                                    <input asp-for="@Model.RoleClaims[@claimIndex].Selected"
-                                           class="form-check-input check-small" />
-                                </div>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                @* If that permission isn't present for the module, show an empty placeholder *@
-                                <span class="text-muted">—</span>
-                            </td>
-                        }
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
 
 <div class="text-end mt-3">
     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -292,23 +83,10 @@
 </script>
 
 
-<style>
-    .permission-matrix {
-        width: 100%;
-        border-collapse: collapse;
-    }
 
-        .permission-matrix th, .permission-matrix td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
 
-        .permission-matrix th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
 
+<<<<<<< HEAD
     .module-header {
         text-align: left;
         background: #f1f1f1;
@@ -331,3 +109,5 @@
     </thead>
    
 </table>
+=======
+>>>>>>> 1454a21726b35c461febf31d14b931aa5002a26b

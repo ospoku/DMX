@@ -8,8 +8,8 @@ namespace DMX.Models
     public class DeceasedType:TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string DeceasedTypeId { get; set; }
+     public int Id { get; set; }
+        public Guid DeceasedTypeId { get; set; }
         [Required]
         public   string Name { get; set; }
         [Required]

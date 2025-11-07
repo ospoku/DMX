@@ -291,12 +291,6 @@
     });
 </script>
 
-@{
-    // Group permissions by module name
-    var groupedPermissions = Model.RoleClaims
-        .GroupBy(p => p.Type.Split('.')[1]) // e.g. "Permissions.Letters.Create" => "Letters"
-        .ToList();
-}
 
 <style>
     .permission-matrix {
@@ -335,29 +329,5 @@
             <th>Print</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var moduleGroup in groupedPermissions)
-        {
-            var moduleName = moduleGroup.Key;
-            <tr>
-                <td class="module-header">@moduleName</td>
-                @foreach (var action in new[] { "Create", "View", "Edit", "Delete", "Comment", "Download", "Print" })
-                {
-                    var claim = moduleGroup.FirstOrDefault(c => c.Value.EndsWith(action, StringComparison.OrdinalIgnoreCase));
-                    <td>
-                        @if (claim != null)
-                        {
-                            <input asp-for="@claim.Selected" type="checkbox" />
-                            <input asp-for="@claim.Type" type="hidden" />
-                            <input asp-for="@claim.Value" type="hidden" />
-                        }
-                        else
-                        {
-                            <span>–</span>
-                        }
-                    </td>
-                }
-            </tr>
-        }
-    </tbody>
+   
 </table>

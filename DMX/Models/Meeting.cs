@@ -7,7 +7,7 @@ namespace DMX.Models
     public class Meeting:TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string MeetingId { get; set; }
         public string Name { get; set; }
         public string Description { get; set;}

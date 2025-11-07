@@ -7,8 +7,8 @@ namespace DMX.Models
     public class PettyCashAssignment : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public Guid AssignmentId { get; set; } = Guid.NewGuid();
         public string PettyCashId { get; set; }
         [ForeignKey("PettyCashId")]
         public PettyCash PettyCash { get; set; }

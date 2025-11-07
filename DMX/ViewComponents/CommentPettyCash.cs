@@ -26,7 +26,7 @@ namespace DMX.ViewComponents
             //}
 
             PettyCash pettycashToComment = new();
-            pettycashToComment = (from p in dcx.PettyCash.Include(p => p.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(c => c.AppUser) where p.PettyCashId == @Encryption.Decrypt(Id) select p).FirstOrDefault();
+            pettycashToComment = (from p in dcx.PettyCash.Include(p => p.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(c => c.AppUser) where p.PettyCashId.ToString() == @Encryption.Decrypt(Id) select p).FirstOrDefault();
 
             PettyCashCommentVM  addCommentVM = new()
             {

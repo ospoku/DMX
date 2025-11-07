@@ -6,10 +6,10 @@ namespace DMX.Models
 {
     public class ServiceRequest:TableAudit
     {
-        
+
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string RequestId { get; set; }
+        public int Id { get; set; }
+        public Guid RequestId { get; set; } = Guid.NewGuid();
         public string RequestNumber { get; set; } = "SR" + Guid.NewGuid().ToString("N").Substring(0, 5);
 
      public string Title { get; set; }

@@ -7,8 +7,8 @@ namespace DMX.Models
     public class MeetingAttendance : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string AttendanceId { get; set; }
+        public int Id { get; set; }
+        public Guid AssignmentId { get; set; } = Guid.NewGuid();
         public string ParticipantId { get;  set; }
         
         public string EventId { get; set; }

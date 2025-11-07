@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 namespace DMX.Models
 {
     public class PettyCash : TableAudit
-    {[Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string PettyCashId { get; set; }
+    {
+        
+        [Key]
+        public int Id { get; set; }
+    public Guid PettyCashId { get; set; } = Guid.NewGuid();
         public string ReferenceNumber { get; set; } = "P" + Guid.NewGuid().ToString("N").Substring(0, 5);  
      
         public string Purpose { get; set; }

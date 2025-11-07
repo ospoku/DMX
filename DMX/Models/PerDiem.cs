@@ -12,7 +12,7 @@ namespace DMX.Models
 
         }
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string PerDiemId { get; set; }
         [ForeignKey(nameof(UserId))]
         public AppUser AppUser { get; set; }

@@ -7,8 +7,8 @@ namespace DMX.Models
     public class ServiceAssignment : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public Guid AssignmentId { get; set; } = Guid.NewGuid();
         public string ServiceRequestId { get; set; }
         public ServiceRequest ServiceRequest { get; set; }
         public string UserId { get; set; }

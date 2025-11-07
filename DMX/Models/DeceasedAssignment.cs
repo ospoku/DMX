@@ -7,9 +7,9 @@ namespace DMX.Models
     public class DeceasedAssignment : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
-        public required string DeceasedId { get; set; }
+        public int Id { get; set; }
+        public Guid AssignmentId { get; set; }
+        public required Guid DeceasedId { get; set; }
         [ForeignKey(nameof(DeceasedId))]
         public Deceased Deceased { get; set; }
         public required string UserId { get; set; }

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DMX.Controllers
 {
@@ -98,7 +99,7 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditMemoAsync(string id)
+        public async Task<IActionResult> EditMemoAsync(Guid id)
         {
             var decryptedId = Encryption.Decrypt(id);
             var memo = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == decryptedId);
@@ -229,8 +230,12 @@ namespace DMX.Controllers
         {
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
-                var memoToDelete = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == decryptedId);
+           
+                var decodedId = HttpUtility.UrlDecode(id)?.Replace(" ", "+");
+                var decryptedString = Encryption.Decrypt(decodedId);
+                if (!Guid.TryParse(decryptedString, out Guid memoGuid))
+                    return BadRequest("Invalid memo ID format.");
+                var memoToDelete = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == memoGuid);
                 if (memoToDelete == null)
                 {
                     return NotFound();

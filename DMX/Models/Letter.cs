@@ -8,8 +8,8 @@ namespace DMX.Models
     {
         
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public  string? LetterId { get; set; }
+  public int Id { get; set; }
+        public  Guid LetterId { get; set; }= Guid.NewGuid();
         public  string Source { get; set; }
         public  string Subject {  get; set; }
         public bool NeedReply {  get; set; }

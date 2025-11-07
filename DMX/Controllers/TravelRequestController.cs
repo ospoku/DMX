@@ -181,6 +181,10 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> EditTravelRequest(string id, EditMemoVM editMemoVm)
         {
+            var decryptedTravelId = Encryption.Decrypt(id);
+            var 
+            var memoGuid = Encryption.Decrypt(id);
+
             if (editMemoVm.SelectedUsers == null || !editMemoVm.SelectedUsers.Any())
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
@@ -190,7 +194,7 @@ namespace DMX.Controllers
             try
             {
                 var decryptedId = Encryption.Decrypt(id);
-                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == decryptedId);
+                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == memoGuid);
                 if (memoToUpdate == null)
                 {
                     _notyfService.Error("Memo not found.", 5);

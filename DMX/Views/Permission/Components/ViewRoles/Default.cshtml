@@ -46,7 +46,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                 <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditRole", new{Id=Encryption.Encrypt(role.Id)})" class="dropdown-item-custom" data-bs-target="#EditRole"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                        <button type="button" data-ng-open="permissionPanel" onclick="openDialogFromData(this)" data-url="RolePermissions" data-user-id="@HttpUtility.UrlEncode(Encryption.Encrypt(role.Id).ToString())" data-dialog-id="RolePermissionsDialog" data-panel="permissionPanel" ><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Role Permissions</button>
+                                        <button type="button" data-open="permissionPanel" onclick="openDialogFromData(this)" data-url="RolePermissions" data-user-id="@HttpUtility.UrlEncode(Encryption.Encrypt(role.Id).ToString())" data-dialog-id="RolePermissionsDialog" data-panel="permissionPanel" ><i style="width:15px;height:15px" class="fa fa-info mr-3"></i>Role Permissions</button>
                              
 
                                         <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
@@ -67,4 +67,6 @@
     </div>
     <div class="card-footer"></div>
     </div>
-<dialog id="RolePermissionsDialog" class="slide-panel" data-panel="permissionPanel"><div id="RolePermissionsDialogContent"></div></dialog>
+<dialog id="RolePermissionsDialog" class="slide-panel" data-panel="permissionPanel">
+    <div id="RolePermissionsDialogContent"></div>
+    </dialog>

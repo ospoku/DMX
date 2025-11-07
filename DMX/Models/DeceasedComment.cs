@@ -7,8 +7,8 @@ namespace DMX.Models
     public class DeceasedComment:TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+     public int Id { get; set; }
+        public Guid CommentId { get; set; }= Guid.NewGuid();
         [Required]
         public string Message { get; set; }
         [ForeignKey(nameof(DeceasedId))]

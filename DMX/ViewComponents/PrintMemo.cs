@@ -14,7 +14,7 @@ namespace DMX.ViewComponents
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
 
-        public async  Task<IViewComponentResult> InvokeAsync(string Id)
+        public async  Task<IViewComponentResult> InvokeAsync(Guid Id)
         {
 
 

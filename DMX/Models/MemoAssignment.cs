@@ -7,9 +7,9 @@ namespace DMX.Models
     public class MemoAssignment : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
-        public string MemoId { get; set; }
+      public int Id { get; set; }
+        public Guid AssignmentId { get; set; }
+        public Guid MemoId { get; set; }
         [ForeignKey("MemoId")]
         public Memo Memo { get; set; }  
         public string UserId { get; set; }

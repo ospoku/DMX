@@ -129,14 +129,14 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditLetter(string Id) => ViewComponent(nameof(EditLetter), Id);
+        public IActionResult EditLetter(Guid Id) => ViewComponent(nameof(EditLetter), Id);
 
         [HttpPost]
-        public async Task<IActionResult> EditLetterAsync(string id, Letter letter, IFormFile formFile)
+        public async Task<IActionResult> EditLetterAsync(Guid id, Letter letter, IFormFile formFile)
         {
             try
             {
-                var letterToUpdate = await _context.Letters.FirstOrDefaultAsync(a => a.LetterId == id);
+                var letterToUpdate = await _context.Letters.FirstOrDefaultAsync(a => a.LetterId == letter.LetterId);
                 if (letterToUpdate == null)
                 {
                     return NotFound();

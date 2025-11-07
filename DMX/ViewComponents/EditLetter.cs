@@ -13,29 +13,38 @@ namespace DMX.ViewComponents
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-       
 
         public IViewComponentResult Invoke(string Id)
         {
-            var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
+            // Decode and decrypt PublicId
+            var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+");
             var decryptedId = Encryption.Decrypt(decodedId);
+            if (!Guid.TryParse(decryptedId, out Guid letterGuid))
+                return View("BadRequest", "Invalid memo ID format.");
 
-            var   documentToEdit = (from a in dcx.Letters where a.LetterId == decryptedId & a.IsDeleted == false select a).FirstOrDefault();
+            var documentToEdit = dcx.Letters
+                .FirstOrDefault(a => a.LetterId == letterGuid && a.IsDeleted == false);
+
+            if (documentToEdit == null)
+                return View("NotFound");
+
             EditLetterVM editLetterVM = new()
             {
                 DocumentDate = documentToEdit.DocumentDate,
-                AdditionalNotes=documentToEdit.AdditionalNotes,
-                Source=documentToEdit.Source,
-                ReferenceNumber=documentToEdit.ReferenceNumber,
-                DateReceived=documentToEdit.DateReceived,
-                Subject=documentToEdit.Subject,
-               
-               SelectedUsers = (from x in dcx.LetterAssignments where x.LetterId
-                                == decryptedId
-                                select x.UserId).ToList(),
+                AdditionalNotes = documentToEdit.AdditionalNotes,
+                Source = documentToEdit.Source,
+                ReferenceNumber = documentToEdit.ReferenceNumber,
+                DateReceived = documentToEdit.DateReceived,
+                Subject = documentToEdit.Subject,
 
-                UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id)),nameof(AppUser.Fullname))
+                SelectedUsers = dcx.LetterAssignments
+                                   .Where(x => x.LetterId == decryptedId)
+                                   .Select(x => x.UserId)
+                                   .ToList(),
+
+                UsersList = new SelectList(usm.Users.ToList(), nameof(AppUser.Id), nameof(AppUser.Fullname))
             };
+
             return View(editLetterVM);
         }
     }

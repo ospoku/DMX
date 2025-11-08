@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -25,7 +26,18 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            Deceased deceasedToEdit = (from m in dcx.Deceased.Include(m => m.DeceasedComments.OrderBy(m => m.CreatedDate)) where m.DeceasedId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+            var decodedId= HttpUtility.UrlDecode(Id)?.Replace(" ", "+");
+            var decryptedId = Encryption.Decrypt(decodedId);
+            if(string.IsNullOrEmpty(decryptedId))
+            {
+                return View("Error", "Invalid Deceased Id");
+            }
+            if(!Guid.TryParse(decryptedId, out Guid deceasedGuid))
+            {
+                return View("Error", "Invalid Deceased Id format");
+            }
+
+            Deceased deceasedToEdit = (from m in dcx.Deceased.Include(m => m.DeceasedComments.OrderBy(m => m.CreatedDate)) where m.DeceasedId == deceasedGuid select m).FirstOrDefault();
 
             DeceasedCommentVM addCommentVM = new DeceasedCommentVM
             {

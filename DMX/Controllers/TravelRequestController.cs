@@ -181,9 +181,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> EditTravelRequest(string id, EditMemoVM editMemoVm)
         {
-            var decryptedTravelId = Encryption.Decrypt(id);
-            var 
-            var memoGuid = Encryption.Decrypt(id);
+            
 
             if (editMemoVm.SelectedUsers == null || !editMemoVm.SelectedUsers.Any())
             {
@@ -193,7 +191,12 @@ namespace DMX.Controllers
 
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
+                if(!Guid.TryParse(Encryption.Decrypt(id), out Guid memoGuid))
+                {
+                    _notyfService.Error("Invalid memo ID format.", 5);
+                    return RedirectToAction("ViewMemos");
+                }
+
                 var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == memoGuid);
                 if (memoToUpdate == null)
                 {
@@ -211,7 +214,7 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewMemos");
                 }
 
-                var existingAssignments = _context.MemoAssignments.Where(a => a.MemoId == decryptedId);
+                var existingAssignments = _context.MemoAssignments.Where(a => a.MemoId == memoGuid);
                 _context.MemoAssignments.RemoveRange(existingAssignments);
 
                 bool atLeastOneFailed = false;

@@ -101,8 +101,13 @@ namespace DMX.Controllers
         [HttpGet]
         public async Task<IActionResult> EditMemoAsync(Guid id)
         {
-            var decryptedId = Encryption.Decrypt(id);
-            var memo = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == decryptedId);
+            var decodedId = HttpUtility.UrlDecode(id.ToString())?.Replace(" ", "+");
+            var decryptedId = Encryption.Decrypt(decodedId);
+            if (!Guid.TryParse(decryptedId, out Guid memoGuid))
+            {
+                return BadRequest("Invalid memo ID format.");
+            }
+            var memo = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == memoGuid);
             if (memo == null)
             {
                 return NotFound();

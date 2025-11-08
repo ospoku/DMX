@@ -7,9 +7,10 @@ namespace DMX.Models
     public class ExcuseDutyAssignment : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
-        public string ExcuseDutyId { get; set; }
+       
+        public int Id { get; set; }
+        public Guid AssignmentId { get; set; }
+        public Guid ExcuseDutyId { get; set; }
         [ForeignKey("ExcuseDutyId")]
         public ExcuseDuty ExcuseDuty { get; set; }
         public string UserId { get; set; }

@@ -8,10 +8,9 @@ namespace DMX.Models
     {
         [Key]
         public int Id { get; set; }
-<<<<<<< HEAD
 
-=======
->>>>>>> 1454a21726b35c461febf31d14b931aa5002a26b
+
+
         public Guid MemoId { get; set; } = Guid.NewGuid();
         public string ReferenceId { get; set; }="M"+ Guid.NewGuid().ToString("N").Substring(0,5);
         public string Title { get; set; }

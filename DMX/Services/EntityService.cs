@@ -177,7 +177,11 @@ namespace DMX.Services
         public async Task<bool> EditMemoAsync(string Id, EditMemoVM editMemoVM, ClaimsPrincipal userClaim)
         {
             var decryptedId = Encryption.Decrypt(Id);
-            var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == decryptedId);
+            if(!Guid.TryParse(decryptedId, out Guid memoGuid))
+            {
+                return false; // Invalid ID format
+            }
+            var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == memoGuid);
 
             if (updateThisMemo == null)
             {
@@ -193,7 +197,7 @@ namespace DMX.Services
             }
 
             // Remove existing memo assignments
-            var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == decryptedId);
+            var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == memoGuid);
             dcx.MemoAssignments.RemoveRange(existingAssignments);
 
             // Add new memo assignments

@@ -15,10 +15,15 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-            
+            var decodedId = System.Web.HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
+            var decryptedId = Encryption.Decrypt(decodedId);
+            if (!Guid.TryParse(decryptedId, out Guid dutyGuid))
+            {
+                return View("Error", "Invalid Excuse Duty Id format");
+            }
 
             ExcuseDuty excuseDutyDetail = new();
-            excuseDutyDetail = (from a in dcx.ExcuseDuties where a.Id == @Encryption.Decrypt(Id) & a.IsDeleted == false select a).FirstOrDefault();
+            excuseDutyDetail = (from a in dcx.ExcuseDuties where a.ExcuseDutyId == dutyGuid & a.IsDeleted == false select a).FirstOrDefault();
             DetailExcuseDutyVM excuseDutyVM = new ()
             {
                
@@ -26,7 +31,7 @@ namespace DMX.ViewComponents
                 ExcuseDays=new ExcuseDuty().ExcuseDays,
              
                 Diagnosis = new ExcuseDuty().  Diagnosis,
-               SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == @Encryption.Decrypt(Id) select x.UserId).ToList(),
+               SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == dutyGuid select x.UserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
             };
             return View(excuseDutyVM);

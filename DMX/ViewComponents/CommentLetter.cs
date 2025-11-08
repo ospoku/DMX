@@ -19,8 +19,11 @@ namespace DMX.ViewComponents
         {
             var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
             var decryptedId = Encryption.Decrypt(decodedId);
-
-            var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.LetterId ==decryptedId select d).FirstOrDefault();
+            if(!Guid.TryParse(decryptedId, out Guid letterGuid))
+            {
+                return View("Error", "Invalid Letter Id format");
+            }
+            var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.LetterId ==letterGuid select d).FirstOrDefault();
 
             DocumentCommentVM addCommentVM = new()
             {

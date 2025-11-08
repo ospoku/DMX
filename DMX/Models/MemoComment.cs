@@ -10,7 +10,7 @@ namespace DMX.Models
         public int Id { get; set; }
         public Guid CommentId { get; set; } = Guid.NewGuid();
         public string Message { get; set; }
-        public string MemoId {  get; set; } 
+        public Guid MemoId {  get; set; } 
         public string UserId { get; set; }
         [ForeignKey("MemoId")]
         public Memo Memo { get; set; }

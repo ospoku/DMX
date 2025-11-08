@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -25,8 +26,14 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
+            var decodedId= HttpUtility.UrlDecode(Id)?.Replace(" ", "+");
+            var decryptedId = Encryption.Decrypt(decodedId);
             ExcuseDuty dutyToComment = new();
-            dutyToComment = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)).ThenInclude(u =>u.AppUser) where m.Id == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+            if(!Guid.TryParse(decryptedId, out Guid dutyGuid))
+            {
+                return View("Error", "Invalid Excuse Duty Id format");
+            }
+            dutyToComment = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)).ThenInclude(u =>u.AppUser) where m.ExcuseDutyId == dutyGuid select m).FirstOrDefault();
 
             ExcuseDutyCommentVM addCommentVM = new()
             {

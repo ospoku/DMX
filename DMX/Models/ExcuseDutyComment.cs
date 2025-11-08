@@ -7,11 +7,11 @@ namespace DMX.Models
     public class ExcuseDutyComment:TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
-      
+        
+        public int Id { get; set; }
+      public Guid CommentId { get; set; }
         public string Message { get; set; }
-        public string ExcuseDutyId { get; set; }
+        public Guid ExcuseDutyId { get; set; }
         public string UserId { get; set; }
         [ForeignKey(nameof(ExcuseDutyId))]
                public ExcuseDuty ExcuseDuty { get; set; }

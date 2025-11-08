@@ -57,9 +57,22 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentExcuseDuty(string Id, ExcuseDutyCommentVM commentVm)
         {
+            var decodedId = System.Net.WebUtility.UrlDecode(Id)?.Replace(" ", "+");
+            var decryptedId = Encryption.Decrypt(Id);
+   if(string.IsNullOrEmpty(commentVm.NewComment))
+            {
+                _notyfService.Error("Comment cannot be empty.", 5);
+                return RedirectToAction("ViewExcuseDuties");
+            }
+   if(!Guid.TryParse(decryptedId, out Guid excuseDutyGuid))
+            {
+                _notyfService.Error("Invalid Excuse Duty ID format.", 5);
+                return RedirectToAction("ViewExcuseDuties");
+            }
+
             try
             {
-                var dutyToComment = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == @Encryption.Decrypt(Id));
+                var dutyToComment = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.ExcuseDutyId == excuseDutyGuid);
                 if (dutyToComment == null)
                 {
                     _notyfService.Error("The recoord could not be found");
@@ -67,7 +80,7 @@ namespace DMX.Controllers
 
                 var newComment = new ExcuseDutyComment
                 {
-                    ExcuseDutyId = dutyToComment.Id,
+                    ExcuseDutyId = dutyToComment.ExcuseDutyId,
                     Message = commentVm.NewComment,
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
@@ -93,8 +106,17 @@ namespace DMX.Controllers
         [HttpGet]
         public async Task<IActionResult> EditExcuseDutyAsync(string id)
         {
-            var decryptedId = Encryption.Decrypt(id);
-            var excuseDuty = await _context.ExcuseDuties.FirstOrDefaultAsync(x => x.Id == decryptedId);
+            var decodedId = System.Net.WebUtility.UrlDecode(id)?.Replace(" ", "+");
+            var decryptedId = Encryption.Decrypt(decodedId);
+            if(string.IsNullOrEmpty(decryptedId))
+            {
+                return BadRequest();
+            }
+            if(!Guid.TryParse(decryptedId, out Guid excuseDutyGuid))
+            {
+                return BadRequest();
+            }
+            var excuseDuty = await _context.ExcuseDuties.FirstOrDefaultAsync(x => x.ExcuseDutyId == excuseDutyGuid);
             if (excuseDuty == null)
             {
                 return NotFound();
@@ -153,7 +175,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new ExcuseDutyAssignment
                     {
-                        ExcuseDutyId = newExcuseDuty.Id,
+                        ExcuseDutyId = newExcuseDuty.ExcuseDutyId,
                         UserId = user
                     };
 
@@ -187,7 +209,7 @@ namespace DMX.Controllers
             try
             {
                 var decryptedId = Encryption.Decrypt(id);
-                var excuseDutyToUpdate = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.Id == decryptedId);
+                var excuseDutyToUpdate = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.ExcuseDutyId == decryptedId);
                 if (excuseDutyToUpdate == null)
                 {
                     return NotFound();

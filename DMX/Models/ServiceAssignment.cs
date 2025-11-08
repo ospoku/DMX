@@ -9,7 +9,7 @@ namespace DMX.Models
         [Key]
         public int Id { get; set; }
         public Guid AssignmentId { get; set; } = Guid.NewGuid();
-        public string ServiceRequestId { get; set; }
+        public Guid ServiceRequestId { get; set; }
         public ServiceRequest ServiceRequest { get; set; }
         public string UserId { get; set; }
         public AppUser AppUser { get; set; }

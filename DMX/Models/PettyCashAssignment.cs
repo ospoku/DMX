@@ -9,7 +9,7 @@ namespace DMX.Models
         [Key]
         public int Id { get; set; }
         public Guid AssignmentId { get; set; } = Guid.NewGuid();
-        public string PettyCashId { get; set; }
+        public Guid PettyCashId { get; set; }
         [ForeignKey("PettyCashId")]
         public PettyCash PettyCash { get; set; }
         public string UserId { get; set; }

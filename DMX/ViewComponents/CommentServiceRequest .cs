@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -18,8 +19,11 @@ namespace DMX.ViewComponents
        
         public IViewComponentResult Invoke(string Id)
         {
+            var decodedId=HttpUtility.UrlDecode( Id)?.Replace(" ", "+"); // sanitize
+            var decryptedId = Encryption.Decrypt( decodedId);
+            if (!Guid.TryParse(decryptedId, out Guid requestGuid)) ;
             ServiceRequest serviceToComment = new();
-           serviceToComment = (from m in dcx.ServiceRequests.Include(m=>m.Category).Include(m => m.Priority).Include(m => m.RequestType).Include(m => m.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(m => m.AppUser) where m.RequestId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+           serviceToComment = (from m in dcx.ServiceRequests.Include(m=>m.Category).Include(m => m.Priority).Include(m => m.RequestType).Include(m => m.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(m => m.AppUser) where m.RequestId == requestGuid select m).FirstOrDefault();
 
             ServiceRequestCommentVM addCommentVM = new()
             {

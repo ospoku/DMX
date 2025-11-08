@@ -17,13 +17,10 @@ namespace DMX.ViewComponents
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-<<<<<<< HEAD
         
-        public IViewComponentResult Invoke(Guid Id)
-=======
-
         public IViewComponentResult Invoke(string Id)
->>>>>>> 1454a21726b35c461febf31d14b931aa5002a26b
+
+     
         {
             var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
             var decryptedId = Encryption.Decrypt(decodedId);

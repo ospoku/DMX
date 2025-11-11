@@ -6,6 +6,7 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace DMX.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var roles = _roleManager.Roles.ToList();
-            var viewModelList = new List<ViewPermissionsVM>();
+            var viewModelList = new List<ViewRolePermissionsVM>();
 
             foreach (var role in roles)
             {
@@ -49,13 +50,13 @@ namespace DMX.ViewComponents
                 // ✅ Group by Module and Action for better display
                 var groupedPermissions = allPermissions
                     .GroupBy(p => new { p.Module.Name })
-                    .Select(g => new ViewPermissionsVM
+                    .Select(g => new ViewRolePermissionsVM
                     {
                         ModuleName = g.Key.Name,
                         ActionName = g.Key.Name,
-                        Code = string.Join(",", g.Select(x => x.Code)),
-                        Description = $"Permissions under {g.Key.Name} module - {g.Key.Name} action",
-                        RoleClaims = g.ToList()
+                        //Code = string.Join(",", g.Select(x => x.Code)),
+                        //Description = $"Permissions under {g.Key.Name} module - {g.Key.Name} action",
+                        //RoleClaims = g.ToList()
                     })
                     .ToList();
 

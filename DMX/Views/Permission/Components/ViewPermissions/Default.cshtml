@@ -8,40 +8,34 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Permissions</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddUser" data-bs-url="@Url.Action("AddUser")"><i class="fa fa-fw fa-plus-circle"></i>Add User</button>
+        
+        <button id="openpermissionPanel" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-open="permissionPanel"><i class="fa fa-fw fa-plus-circle"></i>Add Permission</button>
 
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            
-                <div class="card-body">
-                 
 
-                    <table class="table id=" dataTable"">
-    <thead class="table-dark">
+
+
+
+            <table class="table dataTables_wrapper" id="dtPermissions">
+    <thead>
         <tr>
-            <th style="width: 30%;">Role</th>
-    
-
-
-
-
-                    
+            <th>Role</th>
+   
                         <th>Module</th>
                         <th>Action</th>
                         <th>Code</th>
                         <th>Description</th>
-                        <th class="text-center" style="width: 10%;">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Any())
-                    {
-                        var sn = 1;
-                        foreach (var perm in Model)
+                
+                        @foreach (var perm in Model)
                         {
                             <tr>
-                                <td>@sn</td>
+                                <td></td>
                                 <td>@perm.ModuleName</td>
                                 <td>@perm.ActionName</td>
                                 <td>@perm.Code</td>
@@ -77,21 +71,16 @@
                                     </div>
                                 </td>
                             </tr>
-                            sn++;
-                        }
+                   
+                        
                     }
-                    else
-                    {
-                        <tr>
-                            <td colspan="6" class="text-center text-muted">No permissions found</td>
-                        </tr>
-                    }
+            
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-</div>
+
 
 <!-- Add Permission Partial -->
-@await Component.InvokeAsync(nameof(AddPermission))
+@await Component.InvokeAsync("AddPermission")

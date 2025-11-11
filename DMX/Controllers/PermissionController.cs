@@ -245,7 +245,7 @@ namespace DMX.Controllers
 
             return View("Users");
         }
-
+        [HttpGet]
         public IActionResult ViewPermissions()
         {
             return ViewComponent(nameof(ViewPermissions));
@@ -394,21 +394,14 @@ namespace DMX.Controllers
             return RedirectToAction("ViewUserRoles");
         }
         [HttpPost]
-        public async Task <IActionResult> AddPermission ()
+        public async Task <IActionResult> AddPermission(AddPermissionVM addPermissionVM)
         {
 
             
             return RedirectToAction(nameof(ViewPermissions));
 
         }
-        [HttpGet]
-        public IActionResult AddPermission(AddPermissionVM addPermission)
-        {
-
-
-            return ViewComponent(nameof(AddPermission));
-
-        }
+    
 
     }
 }

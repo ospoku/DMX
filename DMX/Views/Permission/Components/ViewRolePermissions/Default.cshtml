@@ -1,13 +1,14 @@
 ﻿@using DMX.DataProtection
+@using DMX.ViewComponents
 
-@model IEnumerable<DMX.ViewModels.ViewPermissionsVM>
+@model IEnumerable<DMX.ViewModels.ViewRolePermissionsVM>
 
 
 <div class="card shadow mb-4 rounded-5">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">Permissions</h6>
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Role Permissions</h6>
 
-        <button id="permissionPanel" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-open="permissionPanel"><i class="fa fa-fw fa-plus-circle"></i>Add Permission</button>
+       
 
     </div>
     <div class="card-body">
@@ -30,7 +31,7 @@
                             {
                                 <tr>
                                     <td></td>
-                                    <td>@perm.ModuleName</td>
+                                    <td></td>
                             
                             
                                 <td>
@@ -68,4 +69,4 @@
     </div>
     <div class="card-footer"></div>
     </div>
-    @await invoke
+@*     @await Component.InvokeAsync(nameof(AddPermission)) *@

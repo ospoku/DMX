@@ -5,7 +5,7 @@
 
 
 
-<div class="card shadow mb-4">
+<div class="card shadow mb-4 rounded-5">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Cash Limit</h6>
 
@@ -29,8 +29,6 @@
                     <tr>
                         <td></td>
                         <td>@limit.Amount</td>
-                      
-                     
                            <td>
                             <div class="btn-group" role="group">
                                 <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,7 +41,6 @@
                                         <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentMemo", new { Id= @Encryption.Encrypt(limit.CashLimitId)})" class="dropdown-item-custom" data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         <form asp-action="PrintMemo" asp-route-Id="@Encryption.Encrypt(limit.CashLimitId)" asp-controller="Memo" method="get">
                                             <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</button>
-                                       
                                             </form>
                                             <form asp-action="DeleteMemo" asp-route-Id="" onsubmit="return jQueryAjaxDeleteMemo(this);">
                                             <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
@@ -62,5 +59,4 @@
     <div class="card-footer">
     </div>
 </div>
-
 @await Component.InvokeAsync(nameof(AddCashLimit))

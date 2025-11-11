@@ -1,15 +1,15 @@
-﻿$(function () {
-    var PlaceHolderElement = $('#PlaceHolderHere');
-    $(' button[data-bs-toggle="ajax-modal"]').on('click', function (event) {
-        var url = $(this).data('bs-url');
-        var decodeUrl = decodeURI(url);
-        $.get(decodeUrl).done(function (data) {
-            PlaceHolderElement.html(data);
-            PlaceHolderElement.find('.modal').modal('show');
+﻿//$(function () {
+//    var PlaceHolderElement = $('#PlaceHolderHere');
+//    $(' button[data-bs-toggle="ajax-modal"]').on('click', function (event) {
+//        var url = $(this).data('bs-url');
+//        var decodeUrl = decodeURI(url);
+//        $.get(decodeUrl).done(function (data) {
+//            PlaceHolderElement.html(data);
+//            PlaceHolderElement.find('.modal').modal('show');
 
-        });
-    });
-});
+//        });
+//    });
+//});
 $(document).ready(function () {
     // Initialize DataTables for each table element
     $('.table').each(function () {
@@ -156,11 +156,7 @@ $(function () {
 });
    
    
-$(function () {
-    $('#smartwizard').smartWizard({
-        theme: 'arrows'
-    });
-});
+
 
    
 $(function () {
@@ -261,13 +257,13 @@ jQueryAjaxDeletePatient = form => {
     }
     return false;
 }
-$(function LoadPatients() {
-    $.ajax({
-        type: "GET",
-        url: "/Patient/Patients",
+//$(function LoadPatients() {
+//    $.ajax({
+//        type: "GET",
+//        url: "/Patient/Patients",
 
-    });
-});
+//    });
+//});
 
 jQueryAjaxDeleteLetter = form => {
     if (confirm('Are you sure to delete this Patient?')) {

@@ -26,6 +26,7 @@ namespace DMX.ViewComponents
         {
             try
             {
+
                 // Fetch deceased records
                 var deceasedRecords = await _context.Deceased
                     .Where(a => !a.IsDeleted)
@@ -33,15 +34,15 @@ namespace DMX.ViewComponents
                     .ToListAsync();
 
                 // Fetch all services for the deceased records in a single query
-                var deceasedIds = deceasedRecords.Select(a => a.DeceasedId).ToList();
+                var deceasedIds = deceasedRecords.Select(a => a.PublicId).ToList();
                 var allServices = await _context.DeceasedServices
                     .Include(d => d.MorgueService)
-                    .Where(d => deceasedIds.Contains(d.DeceasedId))
+                    .Where(d => deceasedIds.Contains(d.PublicId))
                     .ToListAsync();
 
                 // Group services by DeceasedId for easy lookup
                 var servicesByDeceasedId = allServices
-                    .GroupBy(d => d.DeceasedId)
+                    .GroupBy(d => d.PublicId)
                     .ToDictionary(g => g.Key, g => g.ToList());
 
                 // Process deceased records
@@ -51,8 +52,8 @@ namespace DMX.ViewComponents
                     int numberOfDays = (int)timeSpan.TotalDays;
 
                     // Get the services for the current deceased record
-                    var selectedServices = servicesByDeceasedId.ContainsKey(deceased.DeceasedId)
-                        ? servicesByDeceasedId[deceased.DeceasedId]
+                    var selectedServices = servicesByDeceasedId.ContainsKey(deceased.PublicId)
+                        ? servicesByDeceasedId[deceased.PublicId]
                         : new List<DeceasedService>();
 
                     // Calculate the total amount of selected services
@@ -63,7 +64,7 @@ namespace DMX.ViewComponents
 
                     return new ViewPatientsVM
                     {
-                        PatientId = deceased.DeceasedId,
+                        PatientId = deceased.PublicId,
                         PatientName = deceased.Name,
                         FinalDiagnoses = deceased.Diagnoses,
                         FolderNo = deceased.FolderNo,

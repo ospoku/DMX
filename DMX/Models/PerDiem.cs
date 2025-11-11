@@ -13,7 +13,7 @@ namespace DMX.Models
         }
         [Key]
         public int Id { get; set; }
-        public string PerDiemId { get; set; }
+        public Guid PerDiemId { get; set; }
         [ForeignKey(nameof(UserId))]
         public AppUser AppUser { get; set; }
        

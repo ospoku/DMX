@@ -181,7 +181,7 @@ namespace DMX.Services
             {
                 return false; // Invalid ID format
             }
-            var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.MemoId == memoGuid);
+            var updateThisMemo = await dcx.Memos.FirstOrDefaultAsync(a => a.PublicId == memoGuid);
 
             if (updateThisMemo == null)
             {
@@ -197,7 +197,7 @@ namespace DMX.Services
             }
 
             // Remove existing memo assignments
-            var existingAssignments = dcx.MemoAssignments.Where(x => x.MemoId == memoGuid);
+            var existingAssignments = dcx.MemoAssignments.Where(x => x.PublicId  == memoGuid);
             dcx.MemoAssignments.RemoveRange(existingAssignments);
 
             // Add new memo assignments
@@ -206,7 +206,7 @@ namespace DMX.Services
             {
                 dcx.MemoAssignments.Add(new MemoAssignment
                 {
-                    MemoId = updateThisMemo.MemoId,
+                    MemoId = updateThisMemo.Id,
                     UserId = userId,
                     CreatedBy = user?.Id,
                     CreatedDate = DateTime.UtcNow,

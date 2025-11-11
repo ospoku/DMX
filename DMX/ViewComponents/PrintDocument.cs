@@ -1,8 +1,10 @@
 ﻿using DMX.Data;
+using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -13,14 +15,20 @@ namespace DMX.ViewComponents
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
         
-        public IViewComponentResult Invoke(Guid Id)
+        public IViewComponentResult Invoke(string Id)
         {
+            var decodedId=HttpUtility.UrlDecode(Id).Replace(" ","+");
+            var decryptedId=Encryption.Decrypt(decodedId);
+            if(!Guid.TryParse(decryptedId, out Guid printGuid))
+                {
+
+            }
                Letter documentToEdit = new Letter();
-            documentToEdit = (from d in dcx.Letters where d.LetterId == Id select d).FirstOrDefault();
+            documentToEdit = (from d in dcx.Letters where d.PublicId == printGuid select d).FirstOrDefault();
             PrintDocumentVM printDocumentVM = new PrintDocumentVM
             {
                 AdditionalNotes = documentToEdit.AdditionalNotes,
-                Comments = (from c in dcx.LetterComments where c.LetterId == documentToEdit.LetterId select c).ToList(),
+                Comments = (from c in dcx.LetterComments where c.LetterId == documentToEdit.Id select c).ToList(),
                 ReferenceNumber = documentToEdit.ReferenceNumber,
                 //SelectedUsers = AssignedUsers,               
             };

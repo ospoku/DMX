@@ -5,6 +5,7 @@ using DMX.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using DMX.Controllers;
 using DMX.Services;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -15,11 +16,17 @@ namespace DMX.ViewComponents
 
         public IViewComponentResult Invoke(string Id)
         {
-            var deceased = dcx.Deceased.Include(d => d.DeceasedComments.OrderBy(d => d.CreatedDate)).Include(d=>d.DeceasedServices).Where(d => d.IsDeleted == false & d.DeceasedId == @Encryption.Decrypt(Id)).Select(d => d)
+            var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
+            var decryptedId=Encryption.Decrypt(decodedId);
+            if(!Guid.TryParse(decryptedId, out Guid patientGuid))
+            {
+
+            }
+            var deceased = dcx.Deceased.Include(d => d.DeceasedComments.OrderBy(d => d.CreatedDate)).Include(d=>d.DeceasedServices).Where(d => d.IsDeleted == false & d.PublicId == patientGuid).Select(d => d)
             .FirstOrDefault();
             TimeSpan difference = DateTime.Now - deceased.CreatedDate.Value;
             int numberOfDays = (int)difference.TotalDays;
-           var selectedServices = dcx.DeceasedServices.Where(d=>d.DeceasedId==deceased.DeceasedId);
+           var selectedServices = dcx.DeceasedServices.Where(d=>d.PublicId==patientGuid);
             PrintMorgueVM printMorgueVM = new()
             {
                 FinalDiagnoses = deceased.Diagnoses,

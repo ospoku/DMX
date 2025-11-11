@@ -16,7 +16,7 @@ namespace DMX.ViewComponents
                Name=t.Name,
                Max=t.MaxDays,
                Min=t.MinDays,
-               Id=t.Id  ,
+               PublicId= t.PublicId  ,
             }).ToList();
             
     

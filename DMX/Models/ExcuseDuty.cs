@@ -5,10 +5,10 @@ using DMX.Data;
 namespace DMX.Models
 {
     public class ExcuseDuty : TableAudit
-    {[Key]  public int Id { get; set; }
-        public Guid ExcuseDutyId { get; set; }
+    {[Key]  
+        public int Id { get; set; }
+        public Guid PublicId { get; set; }= Guid.NewGuid();
       
-       
         public string PatientName { get; set; }
         public string PatientId { get; set; }
         public DateTime DateofDischarge { get; set; }

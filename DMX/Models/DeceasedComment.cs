@@ -8,12 +8,12 @@ namespace DMX.Models
     {
         [Key]
      public int Id { get; set; }
-        public Guid CommentId { get; set; }= Guid.NewGuid();
+        public Guid PublicId { get; set; }= Guid.NewGuid();
         [Required]
         public string Message { get; set; }
         [ForeignKey(nameof(DeceasedId))]
         [Required]
-        public  string DeceasedId { get; set; }
+        public  Guid DeceasedId { get; set; }
         [Required]
         public string UserId { get; set; }
         public Deceased Deceased { get; set; }

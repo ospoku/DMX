@@ -13,19 +13,19 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link custom-tab rounded-1" id="pills-userroles-tab" data-bs-toggle="pill" data-bs-target="#pills-userroles" type="button" role="tab" aria-controls="pills-userroles" aria-selected="true">User Roles</button>
     </li>
-@*     <li class="nav-item" role="presentation">
+    <li class="nav-item" role="presentation">
 
-        <button class="nav-link custom-tab rounded-1" id="pills-permissions-tab" data-bs-toggle="pill" data-bs-target="#pills-permissions" type="button" role="tab" aria-controls="pills-permissions" aria-selected="true">Permissions</button>
+        <button class="nav-link custom-tab rounded-1" id="pills-permissions-tab" data-bs-toggle="pill" data-bs-target="#pills-permissions" type="button" role="tab" aria-controls="pills-permissions" aria-selected="true">Role Permissions</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link custom-tab  rounded-1" id="pills-rolespermissions-tab" data-bs-toggle="pill" data-bs-target="#pills-rolepermissions" type="button" role="tab" aria-controls="pills-rolepermissions" aria-selected="true">Role Permissions</button>
+        <button class="nav-link custom-tab  rounded-1" id="pills-rolespermissions-tab" data-bs-toggle="pill" data-bs-target="#pills-rolepermissions" type="button" role="tab" aria-controls="pills-rolepermissions" aria-selected="true">Permissions</button>
     </li>
 
-    <li class="nav-item" role="presentation">
+   @*  <li class="nav-item" role="presentation">
         <button class="nav-link custom-tab rounded-1 " id="pills-userpermissions-tab" data-bs-toggle="pill" data-bs-target="#pills-userpermissions" type="button" role="tab" aria-controls="pills-userpermissions" aria-selected="true">User Permissions</button>
-    </li>
+    </li> *@
     
-    <li class="nav-item" role="presentation">
+  @*   <li class="nav-item" role="presentation">
         <button class="nav-link custom-tab rounded-1" id="pills-perdiem-tab" data-bs-toggle="pill" data-bs-target="#pills-perdiem" type="button" role="tab" aria-controls="pills-perdiem" aria-selected="true">Per Diems</button>
     </li> *@
     
@@ -33,7 +33,9 @@
 <div class="tab-content mt-3" id="pills-tabContent">
     <div class="tab-pane fade show active" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">@await Component.InvokeAsync(nameof(ViewUsers))</div>
     <div class="tab-pane fade" id="pills-roles" role="tabpanel" aria-labelledby="pills-roles-tab">@await Component.InvokeAsync(nameof(ViewRoles))</div>  
-    <div class="tab-pane fade" id="pills-userroles" role="tabpanel" aria-labelledby="pills-userroles-tab">@await Component.InvokeAsync(nameof( ViewUserRoles))</div>
-  </div>
+    <div class="tab-pane fade" id="pills-userroles" role="tabpanel" aria-labelledby="pills-userroles-tab">@await Component.InvokeAsync(nameof(ViewUserRoles))</div>
+    <div class="tab-pane fade" id="pills-rolepermissions" role="tabpanel" aria-labelledby="pills-rolepermissions-tab">@await Component.InvokeAsync(nameof(ViewRolePermissions))</div>
+    <div class="tab-pane fade" id="pills-rolepermissions" role="tabpanel" aria-labelledby="pills-rolepermissions-tab">@await Component.InvokeAsync(nameof(ViewRolePermissions))</div>
+</div>
 
 

@@ -23,7 +23,7 @@ namespace DMX.ViewComponents
                 return View("BadRequest", "Invalid memo ID format.");
 
             var documentToEdit = dcx.Letters
-                .FirstOrDefault(a => a.LetterId == letterGuid && a.IsDeleted == false);
+                .FirstOrDefault(a => a.PublicId == letterGuid && a.IsDeleted == false);
 
             if (documentToEdit == null)
                 return View("NotFound");
@@ -38,7 +38,7 @@ namespace DMX.ViewComponents
                 Subject = documentToEdit.Subject,
 
                 SelectedUsers = dcx.LetterAssignments
-                                   .Where(x => x.LetterId == decryptedId)
+                                   .Where(x => x.PublicId == letterGuid)
                                    .Select(x => x.UserId)
                                    .ToList(),
 

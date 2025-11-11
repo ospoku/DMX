@@ -11,7 +11,7 @@ namespace DMX.Models
         public Guid CommentId { get; set; } = Guid.NewGuid();
 
         public string Message { get; set; }
-        public string ServiceRequestId { get; set; }
+        public Guid ServiceRequestId { get; set; }
         public string UserId { get; set; }
         public ServiceRequest ServiceRequest { get; set; }
         public AppUser AppUser { get; set; }

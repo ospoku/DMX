@@ -70,7 +70,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new PettyCashAssignment
                     {
-                        PettyCashId = newPettyCash.PettyCashId,
+                        PettyCashId = newPettyCash.Id,
                         UserId = userId
                     };
 
@@ -106,7 +106,12 @@ namespace DMX.Controllers
             try
             {
                 var decryptedId = Encryption.Decrypt(id);
-                var pettyCashToUpdate = await _context.PettyCash.FirstOrDefaultAsync(a => a.PettyCashId == decryptedId);
+                if(!Guid.TryParse(decryptedId, out Guid pettyCashGuid))
+                {
+                    _notyfService.Error("Invalid petty cash ID format.", 5);
+                    return RedirectToAction("ViewPettyCash");
+                }
+                var pettyCashToUpdate = await _context.PettyCash.FirstOrDefaultAsync(a => a.PublicId == pettyCashGuid);
                 if (pettyCashToUpdate == null)
                 {
                     _notyfService.Error("Petty cash record not found.", 5);
@@ -123,7 +128,7 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewPettyCash");
                 }
 
-                var existingAssignments = _context.PettyCashAssignments.Where(x => x.PettyCashId == decryptedId);
+                var existingAssignments = _context.PettyCashAssignments.Where(x => x.PublicId == pettyCashGuid);
                 _context.PettyCashAssignments.RemoveRange(existingAssignments);
 
                 bool atLeastOneFailed = false;
@@ -133,7 +138,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new PettyCashAssignment
                     {
-                        PettyCashId = pettyCashToUpdate.PettyCashId,
+                        PettyCashId = pettyCashToUpdate.Id,
                         UserId = userId
                     };
 
@@ -173,7 +178,11 @@ namespace DMX.Controllers
             try
             {
                 var decryptedId = Encryption.Decrypt(id);
-                var pettyCashToComment = await _context.PettyCash.FirstOrDefaultAsync(a => a.PettyCashId == decryptedId);
+                if(!Guid.TryParse(decryptedId, out Guid decryptedIdGuid))
+                {
+                    return NotFound();
+                }
+                var pettyCashToComment = await _context.PettyCash.FirstOrDefaultAsync(a => a.PublicId == decryptedIdGuid);
                 if (pettyCashToComment == null)
                 {
                     return NotFound();
@@ -181,7 +190,7 @@ namespace DMX.Controllers
 
                 var newComment = new PettyCashComment
                 {
-                    PettyCashId = pettyCashToComment.PettyCashId,
+                    PettyCashId = pettyCashToComment.Id,
                     Message = commentVm.NewComment,
                     UserId = (await _userManager.GetUserAsync(User)).Id,
                     CreatedDate = DateTime.Now

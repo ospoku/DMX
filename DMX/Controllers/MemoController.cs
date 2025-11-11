@@ -77,7 +77,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new MemoAssignment
                     {
-                        MemoId = newMemo.MemoId,
+                        MemoId = newMemo.Id,
                         UserId = userId
                     };
 
@@ -107,7 +107,7 @@ namespace DMX.Controllers
             {
                 return BadRequest("Invalid memo ID format.");
             }
-            var memo = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == memoGuid);
+            var memo = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
             if (memo == null)
             {
                 return NotFound();
@@ -134,8 +134,14 @@ namespace DMX.Controllers
 
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
-                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == decryptedId);
+                var decodedId = HttpUtility.UrlDecode(id)?.Replace(" ", "+");
+                var decryptedId = Encryption.Decrypt(decodedId);
+                if (decryptedId == null) { }
+                if(!Guid.TryParse(decryptedId,out Guid memoGuid))
+                {
+
+                }
+                var memoToUpdate =  _context.Memos.FirstOrDefault(m => m.PublicId == memoGuid);
                 if (memoToUpdate == null)
                 {
                     _notyfService.Error("Memo not found.", 5);
@@ -152,7 +158,7 @@ namespace DMX.Controllers
                     return RedirectToAction(nameof(ViewMemos));
                 }
 
-                var existingAssignments = _context.MemoAssignments.Where(a => a.MemoId == decryptedId);
+                var existingAssignments = _context.MemoAssignments.Where(a => a.PublicId == memoGuid);
                 _context.MemoAssignments.RemoveRange(existingAssignments);
 
                 bool atLeastOneFailed = false;
@@ -162,7 +168,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new MemoAssignment
                     {
-                        MemoId = memoToUpdate.MemoId,
+                        MemoId = memoToUpdate.Id,
                         UserId = userId
                     };
 
@@ -197,9 +203,10 @@ namespace DMX.Controllers
         public async Task<IActionResult> CommentMemo(string id, MemoCommentVM commentVm)
         {
             try
-            {
-                var decryptedId = Encryption.Decrypt(id);
-                var memoToComment = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == decryptedId);
+            { var decodedId=HttpUtility.UrlDecode(id)?.Replace(" ","+");
+                var decryptedId = Encryption.Decrypt(decodedId);
+                if(!Guid.TryParse(decryptedId, out Guid memoGuid)) { }
+                var memoToComment = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
                 if (memoToComment == null)
                 {
                     return NotFound();
@@ -207,7 +214,7 @@ namespace DMX.Controllers
 
                 var newComment = new MemoComment
                 {
-                    MemoId = memoToComment.MemoId,
+                    MemoId = memoToComment.Id,
                     Message = commentVm.NewComment,
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
@@ -240,7 +247,7 @@ namespace DMX.Controllers
                 var decryptedString = Encryption.Decrypt(decodedId);
                 if (!Guid.TryParse(decryptedString, out Guid memoGuid))
                     return BadRequest("Invalid memo ID format.");
-                var memoToDelete = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == memoGuid);
+                var memoToDelete = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
                 if (memoToDelete == null)
                 {
                     return NotFound();

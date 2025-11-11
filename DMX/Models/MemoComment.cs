@@ -8,9 +8,9 @@ namespace DMX.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid CommentId { get; set; } = Guid.NewGuid();
+        public Guid PublicId { get; set; } = Guid.NewGuid();
         public string Message { get; set; }
-        public Guid MemoId {  get; set; } 
+        public int MemoId {  get; set; } 
         public string UserId { get; set; }
         [ForeignKey("MemoId")]
         public Memo Memo { get; set; }

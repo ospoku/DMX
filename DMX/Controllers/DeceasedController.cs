@@ -96,7 +96,7 @@ namespace DMX.Controllers
                     {
                         var assignment = new DeceasedAssignment
                         {
-                            DeceasedId = deceased.DeceasedId,
+                            DeceasedId = deceased.Id,
                             UserId = userId,
                         };
 

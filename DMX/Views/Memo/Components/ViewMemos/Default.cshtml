@@ -55,9 +55,9 @@
                                     Select Action
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                   @if(dcx.MemoComments.Any(c=>c.MemoId==Memo.MemoId))
+                                   @if(dcx.MemoComments.Any(c=>c.PublicId==Memo.MemoId))
                                    {
-                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @Encryption.Encrypt(Memo.MemoId) })" class="dropdown-item-custom d-none" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @Encryption.Encrypt((Memo.MemoId).ToString()) })" class="dropdown-item-custom d-none" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
                                         
                                    }
                                         else
@@ -65,12 +65,12 @@
                                             @if((await auth.AuthorizeAsync(User,Permissions.Modules.EditMemo)).Succeeded)
                                             {
                                                
-                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @Encryption.Encrypt(Memo.MemoId) })" class=" dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @Encryption.Encrypt(Memo.MemoId.ToString()) })" class=" dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
                                             }
                                        }
                                         @if ((await auth.AuthorizeAsync(User, Permissions.Modules.CommentMemo)).Succeeded)
                                         {
-                                        <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentMemo", new { Id= @Encryption.Encrypt(Memo.MemoId)})" class="dropdown-item-custom" data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
+                                        <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentMemo", new { Id= @Encryption.Encrypt(Memo.MemoId.ToString())})" class="dropdown-item-custom" data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         
                                         }
                                        @*  <form asp-action="PrintMemo" asp-route-Id="@Encryption.Encrypt(Memo.MemoId)" asp-controller="Memo" method="get">
@@ -78,12 +78,12 @@
                                        
                                             </form> *@
 
-                                        <a href="#" class="dropdown-item-custom" onclick="printMemoIframe('@HttpUtility.UrlEncode(@Encryption.Encrypt(Memo.MemoId))')">
+                                        <a href="#" class="dropdown-item-custom" onclick="printMemoIframe('@HttpUtility.UrlEncode(@Encryption.Encrypt(Memo.MemoId.ToString()))')">
                                             <i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print
                                         </a>
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.DeleteMemo)).Succeeded)
                                         {
-                                            <form asp-action="DeleteMemo" asp-route-Id="@Encryption.Encrypt(Memo.MemoId)" onsubmit="return jQueryAjaxDeleteMemo(this);">
+                                            <form asp-action="DeleteMemo" asp-route-Id="@Encryption.Encrypt(Memo.MemoId.ToString())" onsubmit="return jQueryAjaxDeleteMemo(this);">
                                                 <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
                                             </form>
                                         }

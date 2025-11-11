@@ -105,7 +105,17 @@ namespace DMX.Controllers
         {
             try
             {
-                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == Id);
+                if(string.IsNullOrWhiteSpace(commentVm.NewComment))
+                {
+                    _notyfService.Error("Comment cannot be empty.", 5);
+                    return RedirectToAction(nameof(ViewServiceRequests));
+                }
+                if(!Guid.TryParse(Encryption.Decrypt(Id), out Guid decryptedIdGuid))
+                {
+                    _notyfService.Error("Invalid Service Request ID.", 5);
+                    return RedirectToAction(nameof(ViewServiceRequests));
+                }
+                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == decryptedIdGuid);
                 if (serviceRequest == null)
                 {
                     return NotFound();
@@ -153,7 +163,12 @@ namespace DMX.Controllers
             try
             {
                 var decryptedId = Encryption.Decrypt(id);
-                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == decryptedId);
+                if(!Guid.TryParse(decryptedId, out Guid guidDecryptedId))
+                {
+                    _notyfService.Error("Invalid Service Request ID.", 5);
+                    return RedirectToAction("ViewServiceRequests");
+                }
+                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == guidDecryptedId);
                 if (serviceRequestToUpdate == null)
                 {
                     _notyfService.Error("Service request not found.", 5);
@@ -171,12 +186,12 @@ namespace DMX.Controllers
                 }
 
                 // Remove existing assignments
-                var existingAssignments = _context.ServiceAssignments.Where(x => x.ServiceRequestId == decryptedId);
+                var existingAssignments = _context.ServiceAssignments.Where(x => x.ServiceRequestId == guidDecryptedId);
                 _context.ServiceAssignments.RemoveRange(existingAssignments);
 
                 // Add new assignments
                 var newAssignments = editServiceRequestVm.SelectedUsers
-                    .Select(userId => new ServiceAssignment { ServiceRequestId = decryptedId, UserId = userId })
+                    .Select(userId => new ServiceAssignment { ServiceRequestId = guidDecryptedId, UserId = userId })
                     .ToList();
 
                 await _context.ServiceAssignments.AddRangeAsync(newAssignments);

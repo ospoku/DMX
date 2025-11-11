@@ -8,9 +8,9 @@ namespace DMX.Models
     {
         [Key]
       public int id { get; set; }
-        public Guid CommentId { get; set; } = Guid.NewGuid();
+        public Guid PublicId { get; set; } = Guid.NewGuid();
         public required string Message { get; set; }
-        public required string LetterId { get; set; }
+        public required int LetterId { get; set; }
         public  string UserId { get; set; }
         public Letter Letter { get; set; }
         public AppUser AppUser { get; set; }

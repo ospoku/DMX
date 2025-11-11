@@ -17,7 +17,7 @@ namespace DMX.ViewComponents
             
             var dTypes = dcx.DeceasedTypes.Where(a => a.IsDeleted == false).Select(a => new ViewDTypesVM
             {
-                TypeId = a.DeceasedTypeId,
+                TypeId = a.PublicId,
                 Code = a.Code,
                 Name= a.Name,
             Description = a.Description,

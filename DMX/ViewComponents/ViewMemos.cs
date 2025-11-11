@@ -18,7 +18,7 @@ namespace DMX.ViewComponents
             var user = (await usm.GetUserAsync(HttpContext.User)).Id;
             var memoList = dcx.MemoAssignments.Where(a=>a.AppUser.Id==user||a.Memo.CreatedBy==user & a.Memo.IsDeleted==false).Select(a => new ViewMemosVM
             {
-                MemoId = a.Memo.MemoId,
+                MemoId = a.Memo.PublicId,
 
                 Content = a.Memo.Content,
                 ReferenceNumber=a.Memo.ReferenceId,

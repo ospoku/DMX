@@ -15,7 +15,7 @@ namespace DMX.ViewComponents
             var user = (await usm.GetUserAsync(HttpContext.User)).Id;
             var iList = dcx.ExcuseDutyAssignments.Where(a => a.AppUser.Id == user || a.ExcuseDuty.CreatedBy == user & a.ExcuseDuty.IsDeleted == false).Select(a => new ViewExcuseDutiesVM
             {
-                ExcuseDutyId = a.ExcuseDuty.Id,
+                PublicId = a.ExcuseDuty.PublicId,
                 DateofDischarge = a.ExcuseDuty.DateofDischarge,
                 ExcuseDays = a.ExcuseDuty.ExcuseDays,
                 OperationDiagnosis = a.ExcuseDuty. Diagnosis,

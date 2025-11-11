@@ -4,7 +4,7 @@
     {
     
 
-        public string PatientId { get; set; }
+        public Guid PatientId { get; set; }
         public DateTime Date { get; set; }
         public string PatientName { get; set; }
         public decimal OtherFees { get; set; }

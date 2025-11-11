@@ -23,7 +23,7 @@ namespace DMX.ViewComponents
             }
 
             ExcuseDuty excuseDutyDetail = new();
-            excuseDutyDetail = (from a in dcx.ExcuseDuties where a.ExcuseDutyId == dutyGuid & a.IsDeleted == false select a).FirstOrDefault();
+            excuseDutyDetail = (from a in dcx.ExcuseDuties where a.PublicId == dutyGuid & a.IsDeleted == false select a).FirstOrDefault();
             DetailExcuseDutyVM excuseDutyVM = new ()
             {
                
@@ -31,7 +31,7 @@ namespace DMX.ViewComponents
                 ExcuseDays=new ExcuseDuty().ExcuseDays,
              
                 Diagnosis = new ExcuseDuty().  Diagnosis,
-               SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.ExcuseDutyId == dutyGuid select x.UserId).ToList(),
+               SelectedUsers = (from x in dcx.ExcuseDutyAssignments where x.PublicId == dutyGuid select x.UserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
             };
             return View(excuseDutyVM);

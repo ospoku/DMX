@@ -2,7 +2,8 @@
 {
     public class ViewExcuseDutiesVM
     {
-        public string ExcuseDutyId { get; set; }
+
+        public Guid PublicId { get; set; }
         public string Sender { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateofDischarge { get; set; }

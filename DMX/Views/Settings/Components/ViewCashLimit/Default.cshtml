@@ -1,4 +1,5 @@
 ﻿@using DMX.DataProtection
+@using DMX.ViewComponents
 
 @model IEnumerable<DMX.ViewModels.ViewCashLimitVM>;
 
@@ -62,4 +63,4 @@
     </div>
 </div>
 
-@await Component.InvokeAsync("AddCashLimit")
+@await Component.InvokeAsync(nameof(AddCashLimit))

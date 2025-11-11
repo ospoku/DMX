@@ -7,8 +7,8 @@ namespace DMX.Models
     public class FeeStructure : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public Guid PublicId { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
@@ -28,7 +28,7 @@ namespace DMX.Models
         public decimal Fee { get; set; }
 
         [Required(ErrorMessage = "Deceased type is required.")]
-        public string DeceasedTypeId { get; set; } // True for died in ward, false for brought in dead
+        public int DeceasedTypeId { get; set; } // True for died in ward, false for brought in dead
         [ForeignKey("DeceasedTypeId")]
         public DeceasedType DeceasedType { get; set; }
     }

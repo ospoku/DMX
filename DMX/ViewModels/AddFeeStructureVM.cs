@@ -7,7 +7,7 @@ namespace DMX.ViewModels
     {
         [DataType(DataType.Text)]
         public string Name { get; set; }
-        public string DeceasedTypeId{get;set;}
+        public int DeceasedTypeId{get;set;}
         public SelectList DeceasedTypes { get; set; }
         public int Min { get; set; } = 0;
         public int Max { get; set; } = 0;   

@@ -4,6 +4,7 @@ using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -16,13 +17,16 @@ namespace DMX.ViewComponents
         }
 
         public IViewComponentResult Invoke(string Id)
-
-
         {
-           
+           var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
+            var decryptedId=Encryption.Decrypt(decodedId);
+            if(!Guid.TryParse(decryptedId, out Guid requestGuid))
+            {
+
+            }
 
             ServiceRequest serviceRequestToEdit = new ServiceRequest();
-            serviceRequestToEdit = (from sr in dcx.ServiceRequests.Include(sr => sr.Comments.OrderBy(m=>m.CreatedDate)) where sr.RequestId ==Encryption.Decrypt(Id) select sr ).FirstOrDefault();
+            serviceRequestToEdit = (from sr in dcx.ServiceRequests.Include(sr => sr.Comments.OrderBy(m=>m.CreatedDate)) where sr.RequestId ==requestGuid select sr ).FirstOrDefault();
 
             EditServiceRequestVM editServiceRequestVM = new EditServiceRequestVM
             {

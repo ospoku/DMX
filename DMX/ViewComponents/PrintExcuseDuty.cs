@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -16,7 +17,13 @@ namespace DMX.ViewComponents
 
         public async  Task<IViewComponentResult> InvokeAsync(string Id)
         { 
-         var   dutyToPrint = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)) where m.Id == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+            var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
+            var decryptdId=Encryption.Decrypt(decodedId);
+            if(!Guid.TryParse(decryptdId,out Guid dutyGuid))
+            {
+
+            }
+         var   dutyToPrint = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)) where m.PublicId == dutyGuid select m).FirstOrDefault();
 
             ExcuseDutyCommentVM addCommentVM = new()
             {

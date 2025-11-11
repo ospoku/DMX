@@ -10,7 +10,7 @@ namespace DMX.Models
         
         [Key]
         public int Id { get; set; }
-    public Guid PettyCashId { get; set; } = Guid.NewGuid();
+    public Guid PublicId { get; set; } = Guid.NewGuid();
         public string ReferenceNumber { get; set; } = "P" + Guid.NewGuid().ToString("N").Substring(0, 5);  
      
         public string Purpose { get; set; }

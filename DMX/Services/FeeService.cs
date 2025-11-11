@@ -20,7 +20,7 @@ namespace DMX.Services
         /// <param name="numberOfDays">The number of days the deceased stayed.</param>
         /// <param name="deceasedTypeId">The ID of the deceased type (e.g., 1 = died in ward, 2 = brought in dead).</param>
         /// <returns>The calculated fee.</returns>
-        public decimal FeeCalculator(int numberOfDays, string deceasedTypeId, List<DeceasedService> selectedServices)
+        public decimal FeeCalculator(int numberOfDays, int deceasedTypeId, List<DeceasedService> selectedServices)
         {
             decimal totalFee = 0;
 

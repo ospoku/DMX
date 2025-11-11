@@ -197,7 +197,7 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewMemos");
                 }
 
-                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.MemoId == memoGuid);
+                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
                 if (memoToUpdate == null)
                 {
                     _notyfService.Error("Memo not found.", 5);
@@ -214,7 +214,7 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewMemos");
                 }
 
-                var existingAssignments = _context.MemoAssignments.Where(a => a.MemoId == memoGuid);
+                var existingAssignments = _context.MemoAssignments.Where(a => a.PublicId == memoGuid);
                 _context.MemoAssignments.RemoveRange(existingAssignments);
 
                 bool atLeastOneFailed = false;
@@ -224,7 +224,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new MemoAssignment
                     {
-                        MemoId = memoToUpdate.MemoId,
+                        MemoId = memoToUpdate.Id,
                         UserId = userId
                     };
 

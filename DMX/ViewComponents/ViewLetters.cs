@@ -18,7 +18,7 @@ namespace DMX.ViewComponents
             var documentList = dcx.Letters.Where(d => d.IsDeleted == false).Select(d => new ViewDocumentsVM
             {
 
-                LetterId = d.LetterId,
+                LetterId = d.PublicId,
                 AdditionalNotes = d.AdditionalNotes,
                 DocumentSource = d.Source,
                 DocumentDate = d.DocumentDate,

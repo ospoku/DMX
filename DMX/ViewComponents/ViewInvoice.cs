@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -42,8 +43,13 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke(string Id)
         {
             // Fetch the selected deceased record
+            var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
+            var decryptedId=Encryption.Decrypt(decodedId);
+            if (!Guid.TryParse(decryptedId, out Guid invoiceGuid))
+            {
+            }
             var selectedDeceased = _context.Deceased
-                .Where(d => d.DeceasedId == Encryption.Decrypt(Id))
+                .Where(d => d.PublicId == invoiceGuid)
                 .FirstOrDefault();
 
             if (selectedDeceased == null)
@@ -57,7 +63,7 @@ namespace DMX.ViewComponents
             int numberOfDays = (int)timeSpan.TotalDays;
             // Fetch selected services (if any)
             var selectedServices = _context.DeceasedServices
-                .Where(s => s.DeceasedId == selectedDeceased.DeceasedId).Select(s=>s.MorgueService)
+                .Where(s => s.PublicId == selectedDeceased.PublicId).Select(s=>s.MorgueService)
                 .ToList();
             // Calculate the tier charges
             var tierCharges = FeeCalculator(numberOfDays, selectedDeceased.DeceasedTypeId, selectedServices);
@@ -83,7 +89,7 @@ namespace DMX.ViewComponents
         }
 
 
-        public List<TierCharge> FeeCalculator(int numberOfDays, string deceasedTypeId, List<MorgueService> selectedServices)
+        public List<TierCharge> FeeCalculator(int numberOfDays, int deceasedTypeId, List<MorgueService> selectedServices)
         {
             var tierCharges = new List<TierCharge>();
 

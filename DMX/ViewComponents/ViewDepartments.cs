@@ -12,7 +12,7 @@ namespace DMX.ViewComponents
         {
             var dept = ctx.Departments.Select(x=>new ViewDepartmentsVM {
             
-            Id=x.Id,
+            Id=x.PublicId,
             Description=x.Description,
             Name=x.Name,
 

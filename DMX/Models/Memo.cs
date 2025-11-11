@@ -11,7 +11,7 @@ namespace DMX.Models
 
 
 
-        public Guid MemoId { get; set; } = Guid.NewGuid();
+        public Guid PublicId { get; set; } = Guid.NewGuid();
         public string ReferenceId { get; set; }="M"+ Guid.NewGuid().ToString("N").Substring(0,5);
         public string Title { get; set; }
         public string Content { get; set; }

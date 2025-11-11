@@ -6,7 +6,7 @@ namespace DMX.ViewModels
     {
         
         public string Title {  get; set; }
-        public string ServiceRequestId { get; set; }
+        public Guid ServiceRequestId { get; set; }
             public string RequestNumber { get; set; }
             public string ServiceRequestedBy { get; set; }
             public DateTime RequestDate { get; set; }

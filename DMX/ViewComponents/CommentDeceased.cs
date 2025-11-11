@@ -37,7 +37,7 @@ namespace DMX.ViewComponents
                 return View("Error", "Invalid Deceased Id format");
             }
 
-            Deceased deceasedToEdit = (from m in dcx.Deceased.Include(m => m.DeceasedComments.OrderBy(m => m.CreatedDate)) where m.DeceasedId == deceasedGuid select m).FirstOrDefault();
+            Deceased deceasedToEdit = (from m in dcx.Deceased.Include(m => m.DeceasedComments.OrderBy(m => m.CreatedDate)) where m.PublicId == deceasedGuid select m).FirstOrDefault();
 
             DeceasedCommentVM addCommentVM = new DeceasedCommentVM
             {

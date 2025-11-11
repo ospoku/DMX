@@ -2,7 +2,7 @@
 {
     public class ViewFeeStructuresVM
     {
-        public string Id { get; set; }
+        public Guid PublicId { get; set; }
         public string Name { get; set; }   
         public string DeceasedType { get; set; }
         public int Min {  get; set; }

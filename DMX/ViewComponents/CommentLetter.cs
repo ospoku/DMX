@@ -23,14 +23,14 @@ namespace DMX.ViewComponents
             {
                 return View("Error", "Invalid Letter Id format");
             }
-            var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.LetterId ==letterGuid select d).FirstOrDefault();
+            var letterToComment = (from d in dcx.Letters.Include(d=>d.LetterComments.OrderBy(l=>l.CreatedDate)) where d.PublicId ==letterGuid select d).FirstOrDefault();
 
             DocumentCommentVM addCommentVM = new()
             {
                 MemoContent = letterToComment.AdditionalNotes,
                 Comments = letterToComment.LetterComments.OrderBy(m => m.CreatedDate).ToList(),
                 Title = letterToComment.ReferenceNumber,
-                MemoId=letterToComment.LetterId,
+                MemoId=letterToComment.PublicId,
                 //SelectedUsers = AssignedUsers,
                 Document=letterToComment.PDF,
                 CommentCount = letterToComment.LetterComments.Count(),

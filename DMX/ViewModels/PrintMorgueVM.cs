@@ -15,7 +15,7 @@ namespace DMX.ViewModels
         public DateTime Date { get; set; }
         public string TagNo { get; set; } = string.Empty;
         public string FolderNo { get; set; } = string.Empty;
-        public string DeceasedTypeId { get; set; } = string.Empty;
+        public int DeceasedTypeId { get; set; } 
         public SelectList DeceasedTypes { get; set; }
         public string Description { get; set; } = string.Empty;
     }

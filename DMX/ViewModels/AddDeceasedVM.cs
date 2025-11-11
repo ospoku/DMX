@@ -29,7 +29,7 @@ namespace DMX.ViewModels
         public DateTime Date { get; set; }
         public string TagNo { get; set; }
         public string FolderNo {  get; set; }
-        public string DeceasedTypeId { get; set; }
+        public int DeceasedTypeId { get; set; }
         public SelectList DeceasedTypes { get; set; }
         public string Description { get; set; }
         public  List<CheckBoxItem>MorgueServices { get; set; }

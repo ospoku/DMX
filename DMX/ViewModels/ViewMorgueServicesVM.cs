@@ -4,7 +4,7 @@ namespace DMX.ViewModels
 {
     public class ViewMorgueServicesVM
     {
-        public string MorgueServiceId { get; set; }
+        public Guid MorgueServiceId { get; set; }
         public string ServiceName { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }

@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DMX.Controllers
 {
@@ -72,7 +73,7 @@ namespace DMX.Controllers
 
             try
             {
-                var dutyToComment = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.ExcuseDutyId == excuseDutyGuid);
+                var dutyToComment = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.PublicId == excuseDutyGuid);
                 if (dutyToComment == null)
                 {
                     _notyfService.Error("The recoord could not be found");
@@ -80,7 +81,7 @@ namespace DMX.Controllers
 
                 var newComment = new ExcuseDutyComment
                 {
-                    ExcuseDutyId = dutyToComment.ExcuseDutyId,
+                    ExcuseDutyId = dutyToComment.Id,
                     Message = commentVm.NewComment,
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
@@ -116,7 +117,7 @@ namespace DMX.Controllers
             {
                 return BadRequest();
             }
-            var excuseDuty = await _context.ExcuseDuties.FirstOrDefaultAsync(x => x.ExcuseDutyId == excuseDutyGuid);
+            var excuseDuty = await _context.ExcuseDuties.FirstOrDefaultAsync(x => x.PublicId == excuseDutyGuid);
             if (excuseDuty == null)
             {
                 return NotFound();
@@ -175,7 +176,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new ExcuseDutyAssignment
                     {
-                        ExcuseDutyId = newExcuseDuty.ExcuseDutyId,
+                        ExcuseDutyId = newExcuseDuty.Id,
                         UserId = user
                     };
 
@@ -208,8 +209,15 @@ namespace DMX.Controllers
 
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
-                var excuseDutyToUpdate = await _context.ExcuseDuties.FirstOrDefaultAsync(a => a.ExcuseDutyId == decryptedId);
+                var decodedId= HttpUtility.UrlDecode(id)?.Replace(" ","+");
+                var decryptedId = Encryption.Decrypt(decodedId);
+                if(!Guid.TryParse(decryptedId, out Guid dutyGuid))
+                {
+
+                    return View("Error", "Invalid Excuse Duty Id format");
+
+                }
+                var excuseDutyToUpdate = _context.ExcuseDuties.FirstOrDefault(a => a.PublicId == dutyGuid);
                 if (excuseDutyToUpdate == null)
                 {
                     return NotFound();
@@ -228,7 +236,7 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewMemos");
                 }
 
-                var existingAssignments = _context.ExcuseDutyAssignments.Where(x => x.Id == decryptedId);
+                var existingAssignments = _context.ExcuseDutyAssignments.Where(x => x.PublicId == dutyGuid);
                 _context.ExcuseDutyAssignments.RemoveRange(existingAssignments);
 
                 foreach (var userId in editExcuseDutyVm.SelectedUsers)

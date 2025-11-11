@@ -107,7 +107,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new LetterAssignment
                     {
-                        LetterId = newLetter.LetterId,
+                        LetterId = newLetter.Id,
                         UserId = userId
                     };
 
@@ -136,7 +136,7 @@ namespace DMX.Controllers
         {
             try
             {
-                var letterToUpdate = await _context.Letters.FirstOrDefaultAsync(a => a.LetterId == letter.LetterId);
+                var letterToUpdate = await _context.Letters.FirstOrDefaultAsync(a => a.PublicId == letter.PublicId);
                 if (letterToUpdate == null)
                 {
                     return NotFound();
@@ -189,7 +189,7 @@ namespace DMX.Controllers
             try
             {
              
-                var letterToComment = await _context.Letters.FirstOrDefaultAsync(l => l.LetterId == commentVm.MemoId);
+                var letterToComment = await _context.Letters.FirstOrDefaultAsync(l => l.PublicId == commentVm.MemoId);
                 if (letterToComment == null)
                 {
                     return NotFound();
@@ -197,7 +197,7 @@ namespace DMX.Controllers
 
                 var newComment = new LetterComment
                 {
-                    LetterId = letterToComment.LetterId,
+                    LetterId = letterToComment.Id,
                     Message = commentVm.NewComment,
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
@@ -230,7 +230,11 @@ namespace DMX.Controllers
         public async Task<IActionResult> Download(string id)
         {
             var decryptedId = Encryption.Decrypt(id);
-            var letter = await _context.Letters.FirstOrDefaultAsync(m => m.LetterId == decryptedId);
+            if(!Guid.TryParse(decryptedId, out Guid letterGuid))
+            {
+                return BadRequest("Invalid document ID format.");
+            }
+            var letter = await _context.Letters.FirstOrDefaultAsync(m => m.PublicId == letterGuid);
             if (letter == null || letter.PDF == null)
             {
                 return NotFound();

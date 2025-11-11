@@ -2,8 +2,11 @@
 {
     public class ViewPermissionsVM
     {
-        public string RoleId { get; set; }
-        public string RoleName { get; set; }
-        public List<string> AssignedPermissions { get; set; }
+     public string PublicId {  get; set; }
+        public string ModuleName { get; set; }
+        public string ActionName { get; set; }
+        public string Code {  get; set; }
+       public string Description {  get; set; }
+        public List<PermissionVM> RoleClaims { get; set; }
     }
 }

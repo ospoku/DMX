@@ -8,8 +8,8 @@ namespace DMX.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid AssignmentId { get; set; }
-        public required Guid DeceasedId { get; set; }
+        public Guid PublicId { get; set; }
+        public required int DeceasedId { get; set; }
         [ForeignKey(nameof(DeceasedId))]
         public Deceased Deceased { get; set; }
         public required string UserId { get; set; }

@@ -15,11 +15,9 @@ namespace DMX.ViewComponents
             var pettyList = dcx.PettyCashAssignments.Where(a => a.AppUser.Id == user || a.CreatedBy == user).Select(a => 
              new ViewPettyCashVM
             {
-                PettyCashId = a.PettyCashId,
+                PettyCashId = a.PublicId,
                 Amount = a.PettyCash.Amount,
 
-               
-                
                 Purpose = a.PettyCash.Purpose,
                 ReferenceNumber=a.PettyCash.ReferenceNumber,
                 CreatedDate = a.CreatedDate,

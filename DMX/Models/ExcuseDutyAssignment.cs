@@ -9,8 +9,8 @@ namespace DMX.Models
         [Key]
        
         public int Id { get; set; }
-        public Guid AssignmentId { get; set; }
-        public Guid ExcuseDutyId { get; set; }
+        public Guid PublicId { get; set; }
+        public int ExcuseDutyId { get; set; }
         [ForeignKey("ExcuseDutyId")]
         public ExcuseDuty ExcuseDuty { get; set; }
         public string UserId { get; set; }

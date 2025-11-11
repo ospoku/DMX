@@ -2,7 +2,7 @@
 {
     public class ViewPettyCashVM
     {
-        public string PettyCashId { get; set; }
+        public Guid PettyCashId { get; set; }
      
         public string   Sender { get; set; }
         

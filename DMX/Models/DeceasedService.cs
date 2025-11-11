@@ -8,15 +8,15 @@ namespace DMX.Models
     public class DeceasedService : TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid ServiceId { get; set; }
+        public int Id { get; set; }
+        public Guid PublicId { get; set; }= Guid.NewGuid();
 
-        public string MorgueServiceId { get; set; }
-        [ForeignKey(nameof(MorgueServiceId))]
+        public int MorgueServiceId { get; set; }
+        [ForeignKey(nameof(MorgueService.Id))]
         public MorgueService MorgueService { get; set; }
 
         // Foreign key to Deceased
-        public  string DeceasedId { get; set; }
+        public  int DeceasedId { get; set; }
 
         // Navigation property to Deceased
         [ForeignKey(nameof(DeceasedId))]

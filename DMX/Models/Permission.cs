@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DMX.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMX.Models
 {
-    public class Permission
+    public class Permission:TableAudit
     {
         [Key]
         public int PermissionId { get; set; }

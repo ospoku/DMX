@@ -15,30 +15,34 @@ namespace DMX.ViewComponents
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-       
-       
+
+
         public IViewComponentResult Invoke(string Id)
         {
-            var decodedId =HttpUtility.UrlDecode( Id)?.Replace(" ", "+"); // sanitize
-            var decryptedId = Encryption.Decrypt( decodedId);
-            if (!Guid.TryParse(decryptedId, out Guid memoGuid));
-
-                Memo memoToComment = new();
-            memoToComment = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)).ThenInclude(c => c.AppUser) where m.MemoId ==  memoGuid select m).FirstOrDefault();
-
-            MemoCommentVM addCommentVM = new()
+            var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
+            var decryptedId = Encryption.Decrypt(decodedId);
+            if (!Guid.TryParse(decryptedId, out Guid memoGuid))
             {
-                MemoContent = memoToComment.Content,
 
-                Comments = memoToComment.MemoComments.OrderBy(m => m.CreatedDate).ToList(),
-                Title = memoToComment.Title,
-                CommentCount = memoToComment.MemoComments.Count(),
+                return View("Error", "Invalid Excuse Duty Id format");
+            }
+                Memo memoToComment = new();
+                memoToComment = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)).ThenInclude(c => c.AppUser) where m.PublicId == memoGuid select m).FirstOrDefault();
 
-            };
-            
+                MemoCommentVM addCommentVM = new()
+                {
+                    MemoContent = memoToComment.Content,
 
-            return View(addCommentVM);
+                    Comments = memoToComment.MemoComments.OrderBy(m => m.CreatedDate).ToList(),
+                    Title = memoToComment.Title,
+                    CommentCount = memoToComment.MemoComments.Count(),
+
+                };
+
+
+                return View(addCommentVM);
+            }
         }
     }
-}
+
 

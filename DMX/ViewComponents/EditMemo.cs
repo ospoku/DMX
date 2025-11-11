@@ -27,12 +27,12 @@ namespace DMX.ViewComponents
             if (!Guid.TryParse(decryptedId, out Guid memoGuid))
             {   return View("BadRequest", "Invalid memo ID format."); }
                 Memo memoToEdit = new();
-                memoToEdit = (from m in dcx.Memos where m.MemoId == memoGuid select m).FirstOrDefault();
+                memoToEdit = (from m in dcx.Memos where m.PublicId == memoGuid select m).FirstOrDefault();
                 EditMemoVM editMemoVM = new()
                 {
                     Title = memoToEdit.Title,
                     Content = memoToEdit.Content,
-                    SelectedUsers = (from x in dcx.MemoAssignments where x.MemoId == memoGuid select x.UserId).ToList(),
+                    SelectedUsers = (from x in dcx.MemoAssignments where x.PublicId == memoGuid select x.UserId).ToList(),
                     UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id), nameof(AppUser.Fullname))),
                 };
 

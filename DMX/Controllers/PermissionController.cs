@@ -393,6 +393,22 @@ namespace DMX.Controllers
             result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
             return RedirectToAction("ViewUserRoles");
         }
+        [HttpPost]
+        public async Task <IActionResult> AddPermission ()
+        {
+
+            
+            return RedirectToAction(nameof(ViewPermissions));
+
+        }
+        [HttpGet]
+        public IActionResult AddPermission(AddPermissionVM addPermission)
+        {
+
+
+            return ViewComponent(nameof(AddPermission));
+
+        }
 
     }
 }

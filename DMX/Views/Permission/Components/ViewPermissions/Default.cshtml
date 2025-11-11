@@ -1,11 +1,12 @@
 ﻿
 @using DMX.DataProtection
+@using DMX.ViewComponents
 @model IEnumerable<DMX.ViewModels.ViewPermissionsVM>
 
 
-<div class="card shadow mb-4">
+<div class="card shadow mb-4 rounded">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">User Permissions</h6>
+        <h6 class="m-0 font-weight-bold text-primary d-inline">Permissions</h6>
 
         <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddUser" data-bs-url="@Url.Action("AddUser")"><i class="fa fa-fw fa-plus-circle"></i>Add User</button>
 
@@ -14,84 +15,83 @@
         <div class="table-responsive">
             
                 <div class="card-body">
-                    <table class="table" id="dataTable">
-                        <thead>
-                            <tr>
+                 
 
-                            <tr>
-                                <th>SN</th>
-                                <th>Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in Model)
-                            {
-                                <tr>
-                                    <td></td>
-                                    <td>@user.RoleName</td>
-                                    <td> @user.RoleId</td>
-
-                                    <td>@user.RoleName</td>
-
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Select Action
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                              @*   <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ManagePermissions")" class="dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Manage</button>
-                                      
-                                                <a class="dropdown-item-custom" asp-action="ManagePermissions" asp-controller="Permission" asp-route-Id="@Encryption.Encrypt(user.UserId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Manage Permissions</a> *@
-                                                <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ClientProfile")" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
-                                                <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
-                                                    <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                                </form>
-                                            </div>
-                                        </div>
-
-
-
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-        </div>
-    </div>
-    </div>
-<table class="table table-bordered table-striped">
+                    <table class="table id=" dataTable"">
     <thead class="table-dark">
         <tr>
             <th style="width: 30%;">Role</th>
-            <th>Assigned Permissions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var role in Model)
-        {
-            <tr>
-                <td><strong>@role.RoleName</strong></td>
-                <td>
-                    @if (role.AssignedPermissions != null && role.AssignedPermissions.Any())
+    
+
+
+
+
+                    
+                        <th>Module</th>
+                        <th>Action</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th class="text-center" style="width: 10%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
                     {
-                        <ul class="mb-0">
-                            @foreach (var perm in role.AssignedPermissions)
-                            {
-                                <li>@perm</li>
-                            }
-                        </ul>
+                        var sn = 1;
+                        foreach (var perm in Model)
+                        {
+                            <tr>
+                                <td>@sn</td>
+                                <td>@perm.ModuleName</td>
+                                <td>@perm.ActionName</td>
+                                <td>@perm.Code</td>
+                                <td>@perm.Description</td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                            Select
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item"
+                                                        data-bs-toggle="ajax-modal"
+                                                        data-bs-target="#EditPermissionModal"
+                                                        data-bs-url="@Url.Action("EditPermission", "Permission", new { id = perm.PublicId })">
+                                                    <i class="fa fa-edit me-2"></i> Edit
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <form asp-action="DeletePermission"
+                                                      asp-controller="Permission"
+                                                      asp-route-id="@perm.PublicId"
+                                                      onsubmit="return jQueryAjaxDelete(this);">
+                                                    <button type="submit" class="dropdown-item text-danger">
+                                                        <i class="fa fa-trash me-2"></i> Delete
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            sn++;
+                        }
                     }
                     else
                     {
-                        <span class="text-muted">No permissions assigned</span>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No permissions found</td>
+                        </tr>
                     }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Add Permission Partial -->
+@await Component.InvokeAsync(nameof(AddPermission))

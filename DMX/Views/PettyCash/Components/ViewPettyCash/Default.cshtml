@@ -54,15 +54,17 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.EditPettyCash)).Succeeded)
-                                        { <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditPettyCash", new {Id=@Encryption.Encrypt(petty.PettyCashId)})" class="dropdown-item-custom" data-bs-target="#EditPettyCash"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                        {
+                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditPettyCash", new { Id = @Encryption.Encrypt(petty.PettyCashId.ToString()) })" class="dropdown-item-custom" data-bs-target="#EditPettyCash"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
                                         }
                                        
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.PrintPettyCash)).Succeeded)
-                                        { <a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="@Encryption.Encrypt(petty.PettyCashId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
+                                        {
+                                            <a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="@Encryption.Encrypt(petty.PettyCashId.ToString())"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
                                         }
                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentPettyCash)).Succeeded)
                                         {
-                                              <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentPettyCash", new { Id = @Encryption.Encrypt(petty.PettyCashId) })" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
+                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentPettyCash", new { Id = @Encryption.Encrypt(petty.PettyCashId.ToString()) })" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         } 
                                         @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeletePettyCash)).Succeeded)
                                         {

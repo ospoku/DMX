@@ -7,7 +7,7 @@ namespace DMX.Models
     public class CashLimit:TableAudit
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string CashLimitId { get; set; }
         [Required]
         [DataType(DataType.Currency)]

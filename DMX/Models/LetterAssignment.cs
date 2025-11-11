@@ -8,8 +8,8 @@ namespace DMX.Models
     {
         [Key]
    public int Id { get; set; }
-        public Guid AssignmentId { get; set; }
-        public string LetterId { get; set; }
+        public Guid PublicId { get; set; }= Guid.NewGuid();
+        public int LetterId { get; set; }
         public Letter Letter { get; set; }  
         public string UserId { get; set; }
         public AppUser AppUser { get; set; }

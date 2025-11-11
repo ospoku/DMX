@@ -5,6 +5,7 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -16,10 +17,15 @@ namespace DMX.ViewComponents
 
 
         {
-           
+          var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+"); 
+            var decryptedId=Encryption.Decrypt(decodedId);
+            if(!Guid.TryParse(decryptedId, out Guid dutyGuid))
+            {
+
+            }
 
            ExcuseDuty dutyToUpdate = new();
-            dutyToUpdate = (from d in dcx.ExcuseDuties where d.Id == @Encryption.Decrypt(Id) select d).FirstOrDefault();
+            dutyToUpdate = (from d in dcx.ExcuseDuties where d.PublicId == dutyGuid select d).FirstOrDefault();
 
             EditExcuseDutyVM editMemoVM = new()
             {PatientId=dutyToUpdate.PatientId,
@@ -29,7 +35,7 @@ namespace DMX.ViewComponents
                ExcuseDays=dutyToUpdate.ExcuseDays,  
                Diagnosis =dutyToUpdate.Diagnosis,
             
-                SelectedUsers = dcx.ExcuseDutyAssignments.Where(x => x.ExcuseDutyId == @Encryption.Decrypt(Id)).Select(x => x.UserId).ToList(),
+                SelectedUsers = dcx.ExcuseDutyAssignments.Where(x => x.PublicId == dutyGuid).Select(x => x.UserId).ToList(),
                 UsersList =  new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
                 
             };

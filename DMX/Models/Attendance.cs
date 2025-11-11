@@ -8,7 +8,7 @@ namespace DMX.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid AssignmentId { get; set; } = Guid.NewGuid();
+        public Guid AttendanceId { get; set; } = Guid.NewGuid();
         public string ParticipantId { get;  set; }
         
         public string EventId { get; set; }

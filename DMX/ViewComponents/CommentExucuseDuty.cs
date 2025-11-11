@@ -33,7 +33,7 @@ namespace DMX.ViewComponents
             {
                 return View("Error", "Invalid Excuse Duty Id format");
             }
-            dutyToComment = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)).ThenInclude(u =>u.AppUser) where m.ExcuseDutyId == dutyGuid select m).FirstOrDefault();
+            dutyToComment = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)).ThenInclude(u =>u.AppUser) where m.PublicId == dutyGuid select m).FirstOrDefault();
 
             ExcuseDutyCommentVM addCommentVM = new()
             {

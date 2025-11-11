@@ -10,7 +10,7 @@ namespace DMX
         [Key]
       public int Id { get; set; }
 
-        public Guid DeceasedId { get; set; }= Guid.NewGuid();
+        public Guid PublicId { get; set; }= Guid.NewGuid();
         [Required]
         [RegularExpression(@"^[A-Za-z\s]+")]
         public  string Name { get; set; }
@@ -26,7 +26,7 @@ namespace DMX
         [ForeignKey(nameof(DeceasedTypeId))]
         public DeceasedType DeceasedType { get; set; }
         [Required]
-        public  string DeceasedTypeId { get; set; }
+        public  int DeceasedTypeId { get; set; }
         [Required]
         public  string Description { get; set; }
         public  ICollection<DeceasedService> DeceasedServices { get; set; } = new List<DeceasedService>();

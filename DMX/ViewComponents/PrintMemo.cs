@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace DMX.ViewComponents
 {
@@ -14,12 +15,14 @@ namespace DMX.ViewComponents
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
 
-        public async  Task<IViewComponentResult> InvokeAsync(Guid Id)
+        public async  Task<IViewComponentResult> InvokeAsync(string Id)
         {
-
+            var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
+            var decryptedId=Encryption.Decrypt(decodedId);
+            if (!Guid.TryParse(decryptedId, out Guid printGuid)) { }
 
            
-         var   memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.MemoId == @Encryption.Decrypt(Id) select m).FirstOrDefault();
+         var   memoToEdit = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)) where m.PublicId == printGuid select m).FirstOrDefault();
 
             MemoCommentVM addCommentVM = new()
             {

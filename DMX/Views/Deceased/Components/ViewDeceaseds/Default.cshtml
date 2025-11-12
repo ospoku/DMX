@@ -2,6 +2,7 @@
 @using DMX.Controllers
 @using DMX.DataProtection
 
+@using DMX.ViewComponents
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService auth;
 @{
@@ -101,4 +102,4 @@
     <div id="CommentDeceasedDialogContent"></div>
 </dialog>
 
-@await Component.InvokeAsync("AddDeceased")                      
+@await Component.InvokeAsync(nameof(AddDeceased))                      

@@ -396,6 +396,11 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task <IActionResult> AddPermission(AddPermissionVM addPermissionVM)
         {
+            Permission addThisPermission = new Permission
+            {
+                ActionId = addPermissionVM.ActionName
+            };
+
 
             
             return RedirectToAction(nameof(ViewPermissions));

@@ -16,55 +16,58 @@ namespace DMX.ViewComponents
     {
         private readonly XContext _context;
         private readonly RoleManager<AppRole> _roleManager;
+
         public ViewRolePermissions(XContext context, RoleManager<AppRole> roleManager)
         {
             _context = context;
             _roleManager = roleManager;
         }
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var roles = _roleManager.Roles.ToList();
+            var roles = await _roleManager.Roles.ToListAsync();
             var viewModelList = new List<ViewRolePermissionsVM>();
+
+            // Load all permissions once
+            var allPermissions = await _context.Permissions
+                .Select(p => new PermissionVM
+                {
+                    PermissionId = p.PermissionId,
+                    PublicId = p.PublicId,
+                    Module = p.Module,
+                    Action = p.Action,
+                    Code = p.Code,
+                })
+                .ToListAsync();
 
             foreach (var role in roles)
             {
-                var appRole = await _roleManager.FindByIdAsync(role.Id);
-                var claims = await _roleManager.GetClaimsAsync(appRole);
+                var claims = await _roleManager.GetClaimsAsync(role);
                 var roleClaimCodes = claims.Select(c => c.Value).ToList();
 
-                // ✅ Fetch all permissions from DB
-                var allPermissions = await _context.Permissions
-                    .Select(p => new PermissionVM
-                    {
-                        PermissionId = p.PermissionId,
-                        PublicId = p.PublicId,
-                        ModuleId = p.Module,
-                        Action = p.Action,
-                        Code = p.Code,
-                        Selected = roleClaimCodes.Contains(p.Code)
-                    })
-                    .ToListAsync();
-
-                // ✅ Group by Module and Action for better display
-                var groupedPermissions = allPermissions
-                    .GroupBy(p=>p.ModuleId)
+                var grouped = allPermissions
+                    .GroupBy(p => new { p.Module, p.Action })
                     .Select(g => new ViewRolePermissionsVM
                     {
-                        //RoleId=g.Key.Module.ModuleId.ToString(),
-                          Module=g.Select(x=>x.ModuleId).ToString(),   
-                          
-                        //Action = g.Key.ToString(),
-                        //Code = string.Join(",", g.Select(x => x.Code)),
-                        //Description = $"Permissions under {g} module - {g} action",
-                   //RoleClaims=g.Select(x=>x.Selected).ToList()
+                        RoleId = role.Id,
+                        RoleName = role.Name,
+
+                        Module = g.Key.Module,
+                        Action = g.Key.Action,
+                        PermissionCodes = g.Select(x => x.Code).ToList(),
+
+                        // ✔ Mark Selected = true if ANY code in the group is in the role’s claims
+                        Selected = g.Any(p => roleClaimCodes.Contains(p.Code)),
+
+                        // ✔ Pass role claims for this group (optional)
+                        RoleClaims = roleClaimCodes
                     })
                     .ToList();
 
-                viewModelList.AddRange(groupedPermissions);
+                viewModelList.AddRange(grouped);
             }
 
             return View(viewModelList);
         }
     }
 }
-

@@ -4,10 +4,12 @@
     { public string PublicId { get; set; }
         public string RoleId { get; set; }
         public string RoleName { get; set; }
-        public List<string>RoleClaims { get; set; }
-
-       public string Module { get; set; }
-       public string Action {get;set; }
+   
+        public string PublicId { get; set; }
+        public string ModuleName { get; set; }
+       public string ActionName {get;set; }
+        public List<string> PermissionCodes { get; set; }
+        public List<bool> RoleClaims { get; set; }
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using DMX.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
 namespace DMX.ViewModels
@@ -6,15 +7,16 @@ namespace DMX.ViewModels
     public class PermissionVM
     {
         public int PermissionId { get; set; }
-        public Guid PublicId { get; set; } = Guid.NewGuid();
+        public Guid PublicId { get; set; } 
         
-        public string ModuleId { get; set; }
+        public string Module { get; set; }
         public string Action { get; set; }
         
         public string Code { get; set; }
+        public bool SelectedClaims { get; set; }
 
         // Add this property for UI selection
-        public bool Selected { get; set; } = false;
+        public List <SelectListItem>AvailableClaims  { get; set; }
     }
 
 }

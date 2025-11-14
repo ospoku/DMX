@@ -6,8 +6,8 @@
         public string RoleName { get; set; }
         public List<string>RoleClaims { get; set; }
 
-       public string ModuleName { get; set; }
-       public string ActionName {get;set; }
+       public string Module { get; set; }
+       public string Action {get;set; }
 
 
     }

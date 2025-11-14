@@ -1,13 +1,16 @@
-﻿using DMX.Data;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using DMX.Data;
 using DMX.DataProtection;
 using DMX.Helpers;
 using DMX.Models;
+using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
@@ -22,13 +25,17 @@ namespace DMX.Controllers
         public readonly RoleManager<AppRole> rol;
         public readonly SignInManager<AppUser> sim;
         public readonly IWebHostEnvironment env;
-        public PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment)
+        public readonly EntityService ens;
+        public readonly INotyfService notyf;
+        public PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment,EntityService entityService,INotyfService notyfService)
         {
             usm = userManager;
             xct = xContext;
             rol = roleManager;
             sim = signinmanager;
             env = environment;
+            ens = entityService;
+            notyf = notyfService;
         }
         [HttpGet]
         public IActionResult AddUser()
@@ -398,13 +405,24 @@ namespace DMX.Controllers
         {
             Permission addThisPermission = new Permission
             {
-                ActionId = addPermissionVM.ActionName
+                Action = addPermissionVM.ActionName,
+                Module=addPermissionVM.ModuleName,
+                Description= addPermissionVM.Description,
+               
+              
             };
+            bool result = await ens.AddEntityAsync(addThisPermission, User);
+            if (!result)
+            {
+                notyf.Error("An error occurred while processing the request.", 5);
+                return ViewComponent(nameof(ViewPermissions));
+            }
+            else
+            {
 
 
-            
-            return RedirectToAction(nameof(ViewPermissions));
-
+                return ViewComponent(nameof(ViewPermissions));
+            }
         }
     
 

@@ -7,10 +7,10 @@ namespace DMX.ViewModels
     {
         public int PermissionId { get; set; }
         public Guid PublicId { get; set; } = Guid.NewGuid();
-        public Module Module { get; set; }
-        public int ModuleId { get; set; }
-        public ActionItem Action { get; set; }
-        public int ActionId { get; set; }
+        
+        public string ModuleId { get; set; }
+        public string Action { get; set; }
+        
         public string Code { get; set; }
 
         // Add this property for UI selection

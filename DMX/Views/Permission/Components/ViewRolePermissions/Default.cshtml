@@ -35,10 +35,10 @@
                             
                             
                                 <td>
-                                    @foreach(var rol in perm.RoleClaims)
+                                     @foreach(var rol in perm.RoleClaims.ToList())
                                 {
-                                  <span class="badge badge-dark">  @rol</span>
-                                }
+                                  <span class="badge badge-dark">@rol</span>
+                                } 
                             </td>
                             
                                     <td>

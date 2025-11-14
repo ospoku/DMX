@@ -38,9 +38,7 @@ namespace DMX.ViewComponents
                     {
                         PermissionId = p.PermissionId,
                         PublicId = p.PublicId,
-                        ModuleId = p.ModuleId,
-                        Module = p.Module,
-                        ActionId = p.ActionId,
+                        ModuleId = p.Module,
                         Action = p.Action,
                         Code = p.Code,
                         Selected = roleClaimCodes.Contains(p.Code)
@@ -49,14 +47,16 @@ namespace DMX.ViewComponents
 
                 // ✅ Group by Module and Action for better display
                 var groupedPermissions = allPermissions
-                    .GroupBy(p => new { p.Module.Name })
+                    .GroupBy(p=>p.ModuleId)
                     .Select(g => new ViewRolePermissionsVM
                     {
-                        ModuleName = g.Key.Name,
-                        ActionName = g.Key.Name,
+                        //RoleId=g.Key.Module.ModuleId.ToString(),
+                          Module=g.Select(x=>x.ModuleId).ToString(),   
+                          
+                        //Action = g.Key.ToString(),
                         //Code = string.Join(",", g.Select(x => x.Code)),
-                        //Description = $"Permissions under {g.Key.Name} module - {g.Key.Name} action",
-                        //RoleClaims = g.ToList()
+                        //Description = $"Permissions under {g} module - {g} action",
+                   //RoleClaims=g.Select(x=>x.Selected).ToList()
                     })
                     .ToList();
 

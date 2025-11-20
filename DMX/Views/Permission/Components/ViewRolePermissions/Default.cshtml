@@ -1,5 +1,6 @@
 ﻿@using DMX.DataProtection
 @using DMX.ViewComponents
+@using System.Web
 
 @model IEnumerable<DMX.ViewModels.ViewRolePermissionsVM>
 
@@ -20,9 +21,7 @@
                             <tr>
                                 <th>SN</th>
                                 <th>Name</th>
-                                
-                                <th>Role(s)</th>
-                                
+                                <th>Permission(s)</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -30,14 +29,14 @@
                             @foreach (var perm in Model)
                             {
                                 <tr>
-                                    <td></td>
-                                    <td></td>
+                                    <td>@perm.RoleId</td>
+                                    <td>@perm.RoleName</td>
                             
                             
                                 <td>
-                                     @foreach(var rol in perm.RoleClaims.ToList())
+                                     @foreach(var rol in @perm.SelectedPermissions.ToList())
                                 {
-                                  <span class="badge badge-dark">@rol</span>
+                                  <span class="badge badge-dark">@rol.ToString()</span>
                                 } 
                             </td>
                             
@@ -47,13 +46,14 @@
                                                 Select Action
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ManageUserRoles", new { Id = @Encryption.Encrypt(perm.PublicId) })" class="dropdown-item-custom" data-bs-target="#ManageUserRoles"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("UserPermissions", new { Id = @Encryption.Encrypt(perm.PublicId) })" class="dropdown-item-custom" data-bs-target="#UserPermissions"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>User Permissions</button>
+                                       @*  <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ManageRolePermissions", new { Id = @Encryption.Encrypt(perm.PublicId.ToString()) })" class="dropdown-item-custom" data-bs-target="#ManageRolePermissions"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("UserPermissions", new { Id = @Encryption.Encrypt(perm.PublicId.ToString()) })" class="dropdown-item-custom" data-bs-target="#UserPermissions"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>User Permissions</button> *@
+                                        <button type="button" onclick="openDialogFromData(this)" data-url="ManageRolePermissions" data-user-id="@HttpUtility.UrlEncode(Encryption.Encrypt(perm.RoleId.ToString()))" data-dialog-id="ManageRolePermissionsDialog" class="btn btn-primary"><i style="width:15px; height:15px" class=" fa fa-edit"></i></button>
 
 
-                                        <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
+                                      @*   <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
                                                     <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                                </form>
+                                                </form> *@
                                             </div>
                                         </div>
 
@@ -69,3 +69,4 @@
     </div>
     <div class="card-footer"></div>
     </div>
+    <dialog id="ManageRolePermissionsDialog" class="border-0 rounded-3 border-dark-subtle"><div id="ManageRolePermissionsDialogContent"></div></dialog>

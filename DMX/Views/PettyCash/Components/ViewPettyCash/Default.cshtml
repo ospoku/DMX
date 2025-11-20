@@ -1,5 +1,6 @@
 ﻿@using DMX.Constants
 @using DMX.DataProtection
+@using DMX.ViewComponents
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService auth
 @{
@@ -86,4 +87,4 @@
     <div class="card-footer">
     </div>
 </div>
-@await Component.InvokeAsync("AddPettyCash")
+@await Component.InvokeAsync(nameof(AddPettyCash))

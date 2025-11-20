@@ -1,5 +1,6 @@
 ﻿@using DMX.DataProtection
 @using DMX.Constants
+@using DMX.ViewComponents
 @using Microsoft.AspNetCore.Authorization
 @using System.Web
 @inject IAuthorizationService auth
@@ -84,7 +85,7 @@
     </div>
     <div class="card-footer"></div>
 </div>
-@await Component.InvokeAsync("AddExcuseDuty");
+@await Component.InvokeAsync(nameof(AddExcuseDuty));
 <iframe id="printFrame" style="display:none;"></iframe>
 
     <script type="text/javascript">

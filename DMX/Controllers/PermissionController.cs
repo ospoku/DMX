@@ -367,11 +367,11 @@ namespace DMX.Controllers
             return RedirectToAction("ViewRoles");
         }
         [HttpGet]
-        public IActionResult RolePermissions(string Id)
+        public IActionResult ManageRolePermissions(string Id)
         {
            
 
-            return ViewComponent(nameof(RolePermissions),Id);
+            return ViewComponent(nameof(ManageRolePermissions),Id);
         }
         [HttpPost]
         public async Task<IActionResult> RolePermissions (string Id, RolePermissionVM model)
@@ -388,7 +388,7 @@ namespace DMX.Controllers
                 await rol.AddPermissionClaim(role, claim.Value);
             }
             
-            return RedirectToAction("ViewRoles");
+            return RedirectToAction(nameof(ViewRoles));
         }
 
         [HttpPost]
@@ -398,7 +398,7 @@ namespace DMX.Controllers
             var roles = await usm.GetRolesAsync(user);
             var result = await usm.RemoveFromRolesAsync(user, roles);
             result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
-            return RedirectToAction("ViewUserRoles");
+            return RedirectToAction(nameof(ViewUserRoles));
         }
         [HttpPost]
         public async Task <IActionResult> AddPermission(AddPermissionVM addPermissionVM)
@@ -408,20 +408,19 @@ namespace DMX.Controllers
                 Action = addPermissionVM.ActionName,
                 Module=addPermissionVM.ModuleName,
                 Description= addPermissionVM.Description,
-               
-              
             };
             bool result = await ens.AddEntityAsync(addThisPermission, User);
             if (!result)
             {
                 notyf.Error("An error occurred while processing the request.", 5);
-                return ViewComponent(nameof(ViewPermissions));
+              
+                return ViewComponent(nameof(UserManagement));
             }
             else
             {
+                notyf.Success("Permission successfully created");
 
-
-                return ViewComponent(nameof(ViewPermissions));
+                return ViewComponent(nameof(UserManagement));
             }
         }
     

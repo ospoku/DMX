@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Web;
 namespace DMX.ViewComponents
 {
-    public class RolePermissions(RoleManager<AppRole>roleManager) : ViewComponent
+    public class ManageRolePermissions(RoleManager<AppRole>roleManager) : ViewComponent
     {
         public readonly RoleManager<AppRole> rol = roleManager;
         public async Task<IViewComponentResult> InvokeAsync(string Id)
@@ -20,8 +20,8 @@ namespace DMX.ViewComponents
             var decryptedId = Encryption.Decrypt(decodedId);
             var model = new RolePermissionVM();
             var allPermissions = new List<RoleClaimsVM>();
-
-            allPermissions.GetPermissions(typeof(Permissions.Modules), decryptedId);
+            
+            allPermissions.GetPermissions(typeof(Permissions),decryptedId);
             var role = await rol.FindByIdAsync(decryptedId);
             model.RoleId = decryptedId;
             var claims = await rol.GetClaimsAsync(role);

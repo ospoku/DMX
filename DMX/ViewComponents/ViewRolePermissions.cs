@@ -43,24 +43,31 @@ namespace DMX.ViewComponents
             foreach (var role in roles)
             {
                 var claims = await _roleManager.GetClaimsAsync(role);
-                var roleClaimCodes = claims.Select(c => c.Value).ToList();
 
+                // Only permission claims
+                var roleClaimCodes = claims
+                    .Where(c => c.Type == "Permissions")
+                    .Select(c => c.Value)
+                    .ToList();
+
+                // Group permissions by Module (one row per Module)
                 var grouped = allPermissions
-                    .GroupBy(p => new { p.Module, p.Action })
+                    .GroupBy(p => p.Module)
                     .Select(g => new ViewRolePermissionsVM
                     {
                         RoleId = role.Id,
                         RoleName = role.Name,
 
-                        Module = g.Key.Module,
-                        Action = g.Key.Action,
+                        Module = g.Key,
+
+                        // All permission codes under the module
                         PermissionCodes = g.Select(x => x.Code).ToList(),
 
-                        // ✔ Mark Selected = true if ANY code in the group is in the role’s claims
-                        Selected = g.Any(p => roleClaimCodes.Contains(p.Code)),
-
-                        // ✔ Pass role claims for this group (optional)
-                        RoleClaims = roleClaimCodes
+                        // Only those the role has
+                        SelectedPermissions = g
+                            .Where(x => roleClaimCodes.Contains(x.Code))
+                            .Select(x => x.Code)
+                            .ToList()
                     })
                     .ToList();
 
@@ -69,5 +76,6 @@ namespace DMX.ViewComponents
 
             return View(viewModelList);
         }
+
     }
 }

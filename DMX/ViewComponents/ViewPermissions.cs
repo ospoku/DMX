@@ -13,6 +13,9 @@ namespace DMX.ViewComponents
         { 
             var perms = dcx.Permissions.Where(r => r.IsDeleted == false).Select(r => new ViewPermissionsVM
             {
+           ActionName=r.Action,
+           ModuleName=r.Module,
+           Code=r.Code,
            
                Description=r.Description,
             

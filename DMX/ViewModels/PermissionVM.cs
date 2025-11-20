@@ -13,7 +13,7 @@ namespace DMX.ViewModels
         public string Action { get; set; }
         
         public string Code { get; set; }
-        public bool SelectedClaims { get; set; }
+    
 
         // Add this property for UI selection
         public List <SelectListItem>AvailableClaims  { get; set; }

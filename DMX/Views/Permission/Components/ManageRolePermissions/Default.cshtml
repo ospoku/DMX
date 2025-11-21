@@ -13,59 +13,25 @@
     </h6>
     <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
 </div>
-
-
-
-
-<div class="table-container">
-    <h5>Permissions</h5>
-
-    <div class="permissions-table table-responsive">
-        <table class="table table-bordered mb-0 align-middle">
-            <thead>
-                <tr>
-                    <th>Roles / Modules</th>
-                    <th>Read</th>
-                    <th>Create</th>
-                    <th>Update</th>
-                    <th>Delete</th>
-                    <th>Export</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var roleClaimGroup in Model.RoleClaims.GroupBy(r => r.Type))
-                {
-                    <tr>
-                        <td>@roleClaimGroup.Key</td>
-                        <td>
-                            <input type="checkbox" class="form-check-input"
-                                   checked="@roleClaimGroup.Any(c => c.Value == "Read" && c.Selected)" />
-                        </td>
-                        <td>
-                            <input type="checkbox" class="form-check-input"
-                                   checked="@roleClaimGroup.Any(c => c.Value == "Create" && c.Selected)" />
-                        </td>
-                        <td>
-                            <input type="checkbox" class="form-check-input"
-                                   checked="@roleClaimGroup.Any(c => c.Value == "Update" && c.Selected)" />
-                        </td>
-                        <td>
-                            <input type="checkbox" class="form-check-input"
-                                   checked="@roleClaimGroup.Any(c => c.Value == "Delete" && c.Selected)" />
-                        </td>
-                        <td>
-                            <input type="checkbox" class="form-check-input"
-                                   checked="@roleClaimGroup.Any(c => c.Value == "Export" && c.Selected)" />
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="container py-4">
+    <h3>xxxxxxxxxxxxxxx</h3>
+    <div class="mb-4">
+        
+        <button class="btn btn-primary btn-sm me-2">All</button>
     </div>
-
-    <div class="text-end mt-3">
-        <button class="btn btn-primary">Save Changes</button>
-    </div>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3">
+@foreach (var permission in Model.AvailableClaims)
+{
+    <div class="card">
+                
+            <div class="card-body">
+               <div class="card-text">@permission.Text</div>
+                <span class="fw-semibold">@permission.Text</span>
+            </div>
+        </div>
+    
+}
+</div>
 </div>
 
 <div class="text-end mt-3">
@@ -87,19 +53,5 @@
 
 
 
-<table class="permission-matrix">
-    <thead>
-        <tr>
-            <th>Module</th>
-            <th>Create</th>
-            <th>View</th>
-            <th>Edit</th>
-            <th>Delete</th>
-            <th>Comment</th>
-            <th>Download</th>
-            <th>Print</th>
-        </tr>
-    </thead>
-   
-</table>
+
 

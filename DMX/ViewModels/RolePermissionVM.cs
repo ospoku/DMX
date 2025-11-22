@@ -6,10 +6,14 @@ namespace DMX.ViewModels
     public class RolePermissionVM
     {
         
-        public Guid PublicId { get; set; }
+     
         public string RoleId { get; set; }
+        public string RoleName {  get; set; }
         public IList<RoleClaimsVM> RoleClaims { get; set; }
         public List<SelectListItem> AvailableClaims { get; set; }
+       
+        // NEW grouped list for UI table
+        public List<ModulePermissionVM> ModulePermissions { get; set; }
     }
 
 }

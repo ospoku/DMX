@@ -4,49 +4,202 @@
 @model DMX.ViewModels.RolePermissionVM
         
       
-
-
-<div class="card-header d-flex justify-content-between align-items-center">
+@* <div class="modal-header">
     <h6 class="mb-0">
-        Add/Remove Roles for <br />
-        <b>@rol.FindByIdAsync(@Model.RoleId).Result.Rolename</b>
+        Manage Role Permissions<br />
+        <b>@rol.FindByIdAsync(Model.RoleId).Result.Rolename</b>
     </h6>
-    <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
-</div>
-<div class="container py-4">
-    <h3>xxxxxxxxxxxxxxx</h3>
-    <div class="mb-4">
-        
-        <button class="btn btn-primary btn-sm me-2">All</button>
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3">
-@foreach (var permission in Model.AvailableClaims)
-{
-    <div class="card">
-                
-            <div class="card-body">
-               <div class="card-text">@permission.Text</div>
-                <span class="fw-semibold">@permission.Text</span>
-            </div>
-        </div>
-    
+
+    <button type="button" class="btn btn-sm btn-outline-danger"
+            onclick="document.getElementById('ManageRolePermissionsDialog').close()">
+        Close
+    </button>
+</div> *@
+
+@* @{
+    var allActions = Model.RoleClaims
+        .Select(r => r.Action)
+        .Distinct()
+        .OrderBy(a => a)
+        .ToList();
 }
-</div>
+@*  
+@using( id="rolePermissionsForm">
+    <input type="hidden" name="roleId" value="@Model.RoleId" />
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Module</th>
+
+                @foreach (var action in allActions)
+                {
+                    <th class="text-center">
+                        <div class="perm-header"
+                             data-action="@action">
+                            @action
+                        </div>
+                    </th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var module in Model.ModulePermissions)
+            {
+                <tr data-module="@module.Module">
+                    <td><strong>@module.Module</strong></td>
+
+                    @foreach (var action in allActions)
+                    {
+                        var perm = module.Permissions.FirstOrDefault(p => p.Action == action);
+
+                        <td class="text-center">
+                            @if (perm == null)
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                            else
+                            {
+                                var cellId = $"{module.Module}_{perm.Action}".Replace(" ", "_");
+                                var checkedState = perm.Selected ? "checked" : "";
+
+                                <div class="perm-badge @(perm.Selected ? "active" : "")"
+                                     data-action="@perm.Action"
+                                     data-module="@perm.Module">
+
+                                    <input type="checkbox"
+                                           id="@cellId"
+                                           name="selectedPermissions"
+                                           class="perm-checkbox"
+                                           value="@perm.Value"
+                                           style="display:none"
+                                           @checkedState />
+
+                                    <label for="@cellId" style="cursor:pointer; margin:0;">
+                                        @perm.Action
+                                    </label>
+                                </div>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+    <div class="mt-2">
+        <button id="saveRolePermissions" type="button" class="btn btn-primary">Save</button>
+        <button id="cancelRolePermissions" type="button" class="btn btn-secondary">Cancel</button>
+    </div>
+}
+ *@
+
+
+
+
+
+
+
+
+
+<div class="modal-header">
+    <h6 class="mb-0">
+        Manage Role Permissions<br/>
+        <b>@( (await rol.FindByIdAsync(Model.RoleId)).Rolename )</b>
+    </h6>
+    <button type="button" class="btn btn-sm btn-outline-danger" onclick="document.getElementById('ManageRolePermissionsDialog').close()">Close</button>
 </div>
 
-<div class="text-end mt-3">
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-</div>
 
 
-                                    <script>
-    $(document).ready(function () {
-        $("#checkAll").on("change", function () {
-            $(".toggle-switch").prop("checked", this.checked);
-           
-        });
-    });
-</script>
+@{
+    // dynamic action columns (Action names must match DB exactly)
+    var allActions = Model.RoleClaims.Select(r => r.Action).Distinct().OrderBy(a => a).ToList();
+}
+
+<form id="rolePermissionsForm">
+    <input type="hidden" name="roleId" value="@Model.RoleId" />
+
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th style="width:18%">Module</th>
+                    @foreach (var action in allActions)
+                    {
+                        // header id and classes are generated from action string (safe as provided)
+                        <th class="text-center" style="vertical-align:middle;">
+                            <span id="header-@action"
+                                  class="perm-header badge badge-@action"
+                                  data-action="@action"
+                                  title="Toggle all @action">
+                                @action
+                            </span>
+                        </th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var module in Model.ModulePermissions)
+                {
+                    <tr data-module="@module.Module">
+                        <td style="vertical-align:middle;"><strong>@module.Module</strong></td>
+
+                        @foreach (var action in allActions)
+                        {
+                            var perm = module.Permissions.FirstOrDefault(p => p.Action == action);
+                            <td class="text-center">
+                                @if (perm == null)
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                                else
+                                {
+                                    var safeId = $"{module.Module}_{perm.Action}".Replace(" ", "_");
+                                    var selectedClass = perm.Selected ? "selected" : "";
+                                    var checkedAttr = perm.Selected ? "checked" : "";
+                                    <span class="perm-badge badge badge-@perm.Action @selectedClass"
+                                          data-action="@perm.Action"
+                                          data-value="@perm.Value"
+                                          title="@perm.Value">
+
+                                        <!-- hidden checkbox keeps values for form submission -->
+                                        <input type="checkbox"
+                                               class="perm-checkbox"
+                                               id="@safeId"
+                                               name="selectedPermissions"
+                                               value="@perm.Value"
+                                               style="display:none"
+                                               @checkedAttr />
+
+                                        <label for="@safeId" style="cursor:pointer; margin:0; padding:6px 10px; display:inline-block;">
+                                            @perm.Action
+                                        </label>
+                                    </span>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-end mt-2">
+        <button id="saveRolePermissions" type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('ManageRolePermissionsDialog').close()">Cancel</button>
+    </div>
+</form>
+
+<!-- style: base + per-action colors -->
+
+
+
+
 
 
 

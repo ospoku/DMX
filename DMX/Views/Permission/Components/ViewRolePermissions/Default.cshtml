@@ -69,4 +69,236 @@
     </div>
     <div class="card-footer"></div>
     </div>
-    <dialog id="ManageRolePermissionsDialog" class="border-0 rounded-3 border-dark-subtle"><div id="ManageRolePermissionsDialogContent"></div></dialog>
+    <dialog id="ManageRolePermissionsDialog" class="border-0 rounded-3 border-dark-subtle"><div id="ManageRolePermissionsDialogContent"></div>
+ @*    <style>
+        .perm-badge {
+            display: inline-block;
+            border-radius: 6px;
+            background: #e9ecef;
+            padding: 3px;
+            margin: 2px;
+            cursor: pointer;
+        }
+
+            .perm-badge.active {
+                color: #fff;
+            }
+
+                .perm-badge.active label {
+                    color: #fff;
+                }
+
+            .perm-badge label {
+                margin: 0;
+                font-size: 13px;
+            }
+
+        .perm-header {
+            padding: 6px 10px;
+            background: #f1f1f1;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+            .perm-header.active {
+                background: #4caf50;
+                color: #fff;
+            }
+
+            .perm-header.multi {
+                background: #bdbdbd;
+                color: #fff;
+            }
+    </style> *@
+
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        .perm-badge {
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: #6c757d; /* default (unselected) */
+            color: #fff;
+            display: inline-block;
+            cursor: pointer;
+            transition: background .15s ease;
+            margin: 2px;
+        }
+
+        .perm-header {
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #f1f1f1;
+            color: #222;
+            cursor: pointer;
+            display: inline-block;
+            transition: background .15s ease, color .15s ease;
+            font-weight: 600;
+        }
+
+        /* Selected colors (per your mapping) */
+        .badge-Add.selected {
+            background: #28a745 !important;
+        }
+        /* green */
+        .badge-Delete.selected {
+            background: #dc3545 !important;
+        }
+        /* red */
+        .badge-Print.selected {
+            background: #0d6efd !important;
+        }
+        /* blue */
+        .badge-View.selected {
+            background: orange !important;
+        }
+        /* orange */
+        .badge-Edit.selected {
+            background: #ffc107 !important;
+        }
+        /* amber/yellow */
+        .badge-Download.selected {
+            background: #343a40 !important;
+        }
+        /* dark */
+
+        /* header active state (when all column selected) */
+        .perm-header.active {
+            background: #343a40;
+            color: #fff;
+        }
+        /* generic active if needed */
+        /* optional: color headers by action when active */
+        #header-Add.active {
+            background: #28a745;
+            color: #fff;
+        }
+
+        #header-Delete.active {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        #header-Print.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        #header-View.active {
+            background: orange;
+            color: #fff;
+        }
+
+        #header-Edit.active {
+            background: #ffc107;
+            color: #000;
+        }
+
+        #header-Download.active {
+            background: #343a40;
+            color: #fff;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Utility: find all distinct actions from headers (dynamic)
+            const headers = Array.from(document.querySelectorAll(".perm-header"));
+
+            headers.forEach(header => {
+                const action = header.dataset.action;
+                // all badges for this action (rows)
+                const rowBadges = Array.from(document.querySelectorAll(`.perm-badge[data-action="${action}"]`));
+
+                // click each row badge to toggle selection
+                rowBadges.forEach(badge => {
+                    badge.addEventListener("click", function (evt) {
+                        // if label or inner checkbox clicked, same behavior; we just toggle selected class
+                        const checkbox = badge.querySelector(".perm-checkbox");
+                        const newState = !badge.classList.contains("selected");
+                        badge.classList.toggle("selected", newState);
+                        if (checkbox) checkbox.checked = newState;
+
+                        // update header only if ALL are selected; otherwise ensure header NOT active
+                        updateHeaderState(header, rowBadges);
+                    });
+                });
+
+                // header click toggles entire column
+                header.addEventListener("click", function () {
+                    // if already fully selected (header active) -> unselect all, else select all
+                    const allSelected = rowBadges.length > 0 && rowBadges.every(b => b.classList.contains("selected"));
+                    const setTo = !allSelected;
+
+                    rowBadges.forEach(badge => {
+                        const checkbox = badge.querySelector(".perm-checkbox");
+                        badge.classList.toggle("selected", setTo);
+                        if (checkbox) checkbox.checked = setTo;
+                    });
+
+                    // update header (it will be active only if setTo is true and all rows exist)
+                    updateHeaderState(header, rowBadges);
+                });
+
+                // init header state on load
+                updateHeaderState(header, rowBadges);
+            });
+
+            // update header: active only when ALL badges in column are selected
+            function updateHeaderState(headerElem, badges) {
+                if (!headerElem) return;
+                const total = badges.length;
+                const selectedCount = badges.filter(b => b.classList.contains("selected")).length;
+
+                // header should be active only when every badge is selected
+                if (total > 0 && selectedCount === total) {
+                    headerElem.classList.add("active");
+                } else {
+                    headerElem.classList.remove("active");
+                }
+            }
+
+            // Save handler (AJAX POST). Adjust URL to your controller/action if different.
+            document.getElementById("saveRolePermissions").addEventListener("click", function () {
+                const roleId = document.querySelector('input[name="roleId"]').value;
+                const selected = Array.from(document.querySelectorAll('.perm-checkbox:checked')).map(cb => cb.value);
+
+                fetch('@Url.Action("SaveRolePermissions", "Roles")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': (document.querySelector('input[name="__RequestVerificationToken"]') || {}).value || ''
+                    },
+                    body: JSON.stringify({ roleId: roleId, selectedClaims: selected })
+                })
+                .then(r => r.json())
+                .then(result => {
+                    if (result && result.success) {
+                        // optionally show success message
+                        alert('Permissions saved');
+                        // close dialog if you want:
+                        // document.getElementById('ManageRolePermissionsDialog').close();
+                    } else {
+                        alert('Save failed: ' + (result && result.message ? result.message : 'unknown'));
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('An error occurred saving permissions.');
+                });
+            });
+
+        });
+    </script>
+</dialog>

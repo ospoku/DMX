@@ -68,7 +68,7 @@ namespace DMX.ViewComponents
                             .Where(x => roleClaimCodes.Contains(x.Code))
                             .Select(x => x.Code)
                             .ToList()
-                    })
+                    }).Distinct()
                     .ToList();
 
                 viewModelList.AddRange(grouped);

@@ -1,24 +1,25 @@
 ﻿using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
 
 namespace DMX.ViewComponents
 {
-    public class PrintDocument(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class PrintDocument(XContext dContext, UserManager<AppUser> userManager, IDataProtector protector) : ViewComponent
     {
 
 
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-        
+        public readonly IDataProtectionProvider provider = protector.CreateProtector("IdProtector");
         public IViewComponentResult Invoke(string Id)
         {
             var decodedId=HttpUtility.UrlDecode(Id).Replace(" ","+");
-            var decryptedId=Encryption.Decrypt(decodedId);
+            var decryptedId=protector.Unprotect(decodedId);
             if(!Guid.TryParse(decryptedId, out Guid printGuid))
                 {
 

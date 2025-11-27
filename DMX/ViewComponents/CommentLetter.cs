@@ -1,5 +1,4 @@
 ﻿using DMX.Data;
-using DMX.DataProtection;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -18,8 +17,8 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke(string Id)
         {
             var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
-            var decryptedId = Encryption.Decrypt(decodedId);
-            if(!Guid.TryParse(decryptedId, out Guid letterGuid))
+            var unprotectedId = (decodedId);
+            if(!Guid.TryParse(unprotectedId, out Guid letterGuid))
             {
                 return View("Error", "Invalid Letter Id format");
             }

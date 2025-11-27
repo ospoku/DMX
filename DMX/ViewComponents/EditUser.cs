@@ -1,23 +1,25 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DMX.Data;
+﻿using DMX.Data;
 using DMX.Models;
 using DMX.ViewModels;
-using DMX.DataProtection;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.Scaffolding.Shared;
+
 
 namespace DMX.ViewComponents
 {
-    public class EditUser(UserManager<AppUser> userManager, RoleManager<AppRole> rolManager) : ViewComponent
+    public class EditUser(UserManager<AppUser> userManager, RoleManager<AppRole> rolManager, IDataProtectionProvider provider) : ViewComponent
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = rolManager;
-        
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
         public IViewComponentResult Invoke(string Id)
         {
 
-            AppUser userToEdit = (from u in usm.Users where u.Id == @Encryption.Decrypt(Id) select u).FirstOrDefault();
+            AppUser userToEdit = (from u in usm.Users where u.Id == @protector.Unprotect(Id) select u).FirstOrDefault();
 
             EditUserVM editUserVM = new()
             {

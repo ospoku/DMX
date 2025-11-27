@@ -1,6 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewComponents;
@@ -124,7 +124,7 @@ namespace DMX.Controllers
             {
                 // Find the travel request by ID
                 var travelRequest = await _context.TravelRequests
-                    .FirstOrDefaultAsync(t => t.TravelRequestId == @Encryption.Decrypt(Id));
+                    .FirstOrDefaultAsync(t => t.TravelRequestId ==  (Id));
 
                 if (travelRequest == null)
                 {
@@ -161,8 +161,8 @@ namespace DMX.Controllers
         [HttpGet]
         public async Task<IActionResult> EditTravelRequestAsync(string Id)
         {
-            var decryptedId = Encryption.Decrypt(Id);
-            var travel = await _context.TravelRequests.FirstOrDefaultAsync(m => m.TravelRequestId == decryptedId);
+            var unprotectedId = (Id);
+            var travel = await _context.TravelRequests.FirstOrDefaultAsync(m => m.TravelRequestId == unprotectedId);
             if (travel == null)
             {
                 return NotFound();
@@ -191,7 +191,7 @@ namespace DMX.Controllers
 
             try
             {
-                if(!Guid.TryParse(Encryption.Decrypt(id), out Guid memoGuid))
+                if(!Guid.TryParse((id), out Guid memoGuid))
                 {
                     _notyfService.Error("Invalid memo ID format.", 5);
                     return RedirectToAction("ViewMemos");

@@ -1,24 +1,26 @@
 ﻿using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.Scaffolding.Shared;
 using System.Web;
 
 namespace DMX.ViewComponents
 {
-    public class EditExcuseDuty(XContext dContext, UserManager<AppUser>userManager) : ViewComponent
+    public class EditExcuseDuty(XContext dContext, UserManager<AppUser>userManager, IDataProtectionProvider provider) : ViewComponent
     {
         public readonly XContext dcx = dContext;
-        public readonly UserManager<AppUser> usm=userManager;
+        public readonly UserManager<AppUser> usm=userManager; public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
         public IViewComponentResult Invoke(string Id)
 
 
         {
           var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+"); 
-            var decryptedId=Encryption.Decrypt(decodedId);
+            var decryptedId=protector.Unprotect(decodedId);
             if(!Guid.TryParse(decryptedId, out Guid dutyGuid))
             {
 

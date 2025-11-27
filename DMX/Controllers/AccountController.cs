@@ -5,23 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using DMX.ViewModels;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using Microsoft.AspNetCore.Authorization;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace DMX.Controllers
 {
-    public class AccountController(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, INotyfService  notification) : Controller
+    public class AccountController(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, INotyfService  notification, IDataProtectionProvider protectionProvider) : Controller
     {
         public readonly XContext dcx = dContext;
         public readonly INotyfService notyf = notification;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = roleManager;
         public readonly SignInManager<AppUser> sim = signinmanager;
+        public readonly IDataProtector protector = protectionProvider.CreateProtector("IdProtector");
 
         [HttpGet]
         public IActionResult AddUser()
@@ -216,7 +218,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> DeletePhoto(string Id)
         {
-            var photoToDelete = (from u in usm.Users where u.Id == Encryption.Decrypt(Id) select u).FirstOrDefault();
+            var photoToDelete = (from u in usm.Users where u.Id == protector.Protect(Id) select u).FirstOrDefault();
             photoToDelete.Picture=null;
 
             await usm.UpdateAsync(photoToDelete);

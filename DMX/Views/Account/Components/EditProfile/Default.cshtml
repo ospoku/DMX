@@ -1,8 +1,15 @@
 ﻿
 @model DMX.ViewModels.EditProfileVM
-@using DMX.DataProtection;
+
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> usm;
+
+@inject Microsoft.AspNetCore.DataProtection.IDataProtectionProvider DataProtectionProvider
+@using Microsoft.AspNetCore.DataProtection
+@{
+    // Optional: create protector in view (same purpose string)
+    var protector = DataProtectionProvider.CreateProtector("IdProtector");
+}
 <div class="card">
 <div class="card-header py-3">
     <h6 class="m-0 font-weight-bold text-primary">Edit Profile</h6>
@@ -60,7 +67,7 @@
                                     
                                     <input type="file" class="btn border-1 border-dark w-100 mr-3 rounded" id="upload" name="formFile"  asp-for="@Model.UploadFile" onchange="ShowImagePreview(this)"/>
 
-                                    <button  asp-action="DeletePhoto" asp-route-Id="@Encryption.Encrypt(usm.GetUserAsync(User).Result?.Id)" asp-controller="Account" class="btn btn-danger w-100 rounded" onclick="return jQueryAjaxDeletePhoto(this)" >
+                                    <button  asp-action="DeletePhoto" asp-route-Id="@protector.Protect(usm.GetUserAsync(User).Result?.Id)" asp-controller="Account" class="btn btn-danger w-100 rounded" onclick="return jQueryAjaxDeletePhoto(this)" >
                                         <i style="width:15px; height:15px" class="fa fa-trash">
                                         </i> Delete Photo
                                      </button>

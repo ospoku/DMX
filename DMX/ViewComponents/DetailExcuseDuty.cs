@@ -1,22 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Identity;
-using DMX.Data;
+﻿using DMX.Data;
 using DMX.Models;
 using DMX.ViewModels;
-using DMX.DataProtection;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.Scaffolding.Shared;
+
 
 namespace DMX.ViewComponents
 {
-    public class DetailExcuseDuty(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class DetailExcuseDuty(XContext dContext, UserManager<AppUser> userManager, IDataProtectionProvider provider) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
         public IViewComponentResult Invoke(string Id)
         {
-            var decodedId = System.Web.HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
-            var decryptedId = Encryption.Decrypt(decodedId);
+            
+            var decryptedId = protector.Unprotect(Id);
             if (!Guid.TryParse(decryptedId, out Guid dutyGuid))
             {
                 return View("Error", "Invalid Excuse Duty Id format");

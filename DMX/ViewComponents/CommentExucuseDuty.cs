@@ -1,7 +1,8 @@
 ﻿using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,11 +11,11 @@ using System.Web;
 
 namespace DMX.ViewComponents
 {
-    public class CommentExcuseDuty(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
+    public class CommentExcuseDuty(XContext dContext, UserManager<AppUser> userManager , IDataProtectionProvider provider) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
-
+        public readonly IDataProtector protector=provider.CreateProtector("IdProtector");
         public IViewComponentResult Invoke(string Id)
 
 
@@ -26,10 +27,10 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
 
-            var decodedId= HttpUtility.UrlDecode(Id)?.Replace(" ", "+");
-            var decryptedId = Encryption.Decrypt(decodedId);
+         
+            var unprotectedId = protector.Unprotect( Id);
             ExcuseDuty dutyToComment = new();
-            if(!Guid.TryParse(decryptedId, out Guid dutyGuid))
+            if(!Guid.TryParse(unprotectedId, out Guid dutyGuid))
             {
                 return View("Error", "Invalid Excuse Duty Id format");
             }

@@ -3,20 +3,22 @@ using AspNetCoreHero.ToastNotification.Notyf;
 using CsvHelper;
 using CsvHelper.Configuration;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Globalization;
 namespace DMX.Controllers
 {
-    public class TrainingController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager) : Controller
+    public class TrainingController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, IDataProtectionProvider provider) : Controller
     {
         public readonly XContext dcx = context;
         public readonly INotyfService notyf = notyfService;
         public readonly UserManager<AppUser> usm = userManager;
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
         public IActionResult ViewExternalTrainings()
          => ViewComponent(nameof(ViewExternalTrainings));
         public IActionResult ViewParticipants()
@@ -64,7 +66,7 @@ namespace DMX.Controllers
                 {
                     CreatedDate = DateTime.UtcNow,
                     ParticipantId = attendee,
-                    EventId = @Encryption.Decrypt(Id),
+                    EventId = protector.Unprotect(Id),
 
                     CreatedBy = usm.GetUserAsync(User).Result.UserName,
 

@@ -1,10 +1,12 @@
 ﻿using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.Scaffolding.Shared;
 using Microsoft.EntityFrameworkCore;
 using System.Web;
 
@@ -14,10 +16,12 @@ namespace DMX.ViewComponents
     {
         public readonly XContext dcx;
         public readonly UserManager<AppUser> usm;
-        public ServiceComment(XContext dContext, UserManager<AppUser> userManager)
+        public readonly IDataProtector protector;
+        public ServiceComment(XContext dContext, UserManager<AppUser> userManager,IDataProtectionProvider provider)
         {
             dcx = dContext;
-            usm = userManager;
+            usm = userManager;  
+            protector = provider.CreateProtector("IdProtector");
         }
 
         public IViewComponentResult Invoke(string Id)
@@ -31,7 +35,7 @@ namespace DMX.ViewComponents
             //    AssignedUsers.Add(user);
             //}
             var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
-            var decryptedId=Encryption.Decrypt(decodedId);
+            var decryptedId=protector.Unprotect(decodedId);
             if(!Guid.TryParse(decodedId, out Guid serviceGuid))
             {
 

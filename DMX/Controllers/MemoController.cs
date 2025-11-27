@@ -1,10 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,13 +26,13 @@ namespace DMX.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly EntityService _entityService;
         private readonly AssignmentService _assignmentService;
-
+        public readonly IDataProtector protector;
         public MemoController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
             IAuthorizationService authorizationService,
-
+            IDataProtectionProvider provider,
             EntityService entityService,
             AssignmentService assignmentService)
         {
@@ -41,6 +42,7 @@ namespace DMX.Controllers
             _authorizationService = authorizationService;
             _entityService = entityService;
             _assignmentService = assignmentService;
+            protector = provider.CreateProtector("IdProtector");
         }
 
         [HttpGet]
@@ -99,11 +101,11 @@ namespace DMX.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditMemoAsync(Guid id)
+        public async Task<IActionResult> EditMemoAsync(string id)
         {
-            var decodedId = HttpUtility.UrlDecode(id.ToString())?.Replace(" ", "+");
-            var decryptedId = Encryption.Decrypt(decodedId);
-            if (!Guid.TryParse(decryptedId, out Guid memoGuid))
+           
+            var unprotectedId = protector.Unprotect(id);
+            if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
             {
                 return BadRequest("Invalid memo ID format.");
             }
@@ -134,10 +136,10 @@ namespace DMX.Controllers
 
             try
             {
-                var decodedId = HttpUtility.UrlDecode(id)?.Replace(" ", "+");
-                var decryptedId = Encryption.Decrypt(decodedId);
-                if (decryptedId == null) { }
-                if(!Guid.TryParse(decryptedId,out Guid memoGuid))
+           
+                var unprotectedId = protector.Unprotect(id);
+                if (unprotectedId == null) { }
+                if(!Guid.TryParse(unprotectedId,out Guid memoGuid))
                 {
 
                 }
@@ -203,9 +205,9 @@ namespace DMX.Controllers
         public async Task<IActionResult> CommentMemo(string id, MemoCommentVM commentVm)
         {
             try
-            { var decodedId=HttpUtility.UrlDecode(id)?.Replace(" ","+");
-                var decryptedId = Encryption.Decrypt(decodedId);
-                if(!Guid.TryParse(decryptedId, out Guid memoGuid)) { }
+            { 
+                var unprotectedId = protector.Unprotect(id);
+                if(!Guid.TryParse(unprotectedId, out Guid memoGuid)) { }
                 var memoToComment = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
                 if (memoToComment == null)
                 {
@@ -243,9 +245,9 @@ namespace DMX.Controllers
             try
             {
            
-                var decodedId = HttpUtility.UrlDecode(id)?.Replace(" ", "+");
-                var decryptedString = Encryption.Decrypt(decodedId);
-                if (!Guid.TryParse(decryptedString, out Guid memoGuid))
+                
+                var unprotectedId = protector.Unprotect(id);
+                if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
                     return BadRequest("Invalid memo ID format.");
                 var memoToDelete = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
                 if (memoToDelete == null)

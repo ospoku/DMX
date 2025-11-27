@@ -1,17 +1,17 @@
 ﻿using DMX.Data;
-using DMX.DataProtection;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DMX.ViewComponents
 {
-    public class EditPerDiem(XContext dContext):ViewComponent
+    public class EditPerDiem(XContext dContext,IDataProtector protector):ViewComponent
     {
         public readonly XContext ctx=dContext;
-
+        public readonly IDataProtectionProvider provider;
        public  IViewComponentResult Invoke(string Id)
         {
-            var perdiemToEdit = ctx.Users.Where(x => x.Id == @Encryption.Decrypt(Id)).Select(x => new EditPerdiemVM { 
+            var perdiemToEdit = ctx.Users.Where(x => x.Id == protector.Unprotect(Id)).Select(x => new EditPerdiemVM { 
                 Id=Id,
                 Amount= ctx.PerDiems.Where(a => a.UserId == x.Id).Select(a => a.Amount).SingleOrDefault(),
             Department=x.DepartmentId,

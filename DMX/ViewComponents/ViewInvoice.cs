@@ -1,10 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +24,7 @@ namespace DMX.ViewComponents
         private readonly IAuthorizationService _authorizationService;
         private readonly EntityService _entityService;
         private readonly AssignmentService _assignmentService;
+        public readonly IDataProtector protector;
 
         public ViewInvoice(
             XContext context,
@@ -30,7 +32,7 @@ namespace DMX.ViewComponents
             INotyfService notyfService,
             IAuthorizationService authorizationService,
             EntityService entityService,
-            AssignmentService assignmentService)
+            AssignmentService assignmentService, IDataProtectionProvider provider)
         {
             _context = context;
             _userManager = userManager;
@@ -38,13 +40,13 @@ namespace DMX.ViewComponents
             _authorizationService = authorizationService;
             _entityService = entityService;
             _assignmentService = assignmentService;
+            protector = provider.CreateProtector("IdProtector");
         }
 
         public IViewComponentResult Invoke(string Id)
         {
-            // Fetch the selected deceased record
-            var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
-            var decryptedId=Encryption.Decrypt(decodedId);
+           
+            var decryptedId=protector.Unprotect(Id);
             if (!Guid.TryParse(decryptedId, out Guid invoiceGuid))
             {
             }

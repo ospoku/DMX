@@ -1,12 +1,13 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AspNetCoreHero.ToastNotification.Notyf;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace DMX.Controllers
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
         private readonly AssignmentService _assignmentService;
+        public readonly IDataProtector protector;
 
         public ExcuseDutyController(
             XContext context,
@@ -33,7 +35,7 @@ namespace DMX.Controllers
             INotyfService notyfService,
             EntityService entityService,
             IAuthorizationService authorizationService,
-            AssignmentService assignmentService)
+            AssignmentService assignmentService, IDataProtectionProvider protectionProvider)
         {
             _authorizationService = authorizationService;
             _userManager = userManager;
@@ -41,6 +43,7 @@ namespace DMX.Controllers
             _notyfService = notyfService;
             _entityService = entityService;
             _assignmentService = assignmentService;
+            protector = protectionProvider.CreateProtector("IdProtector");
         }
 
         [HttpGet]
@@ -58,14 +61,14 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentExcuseDuty(string Id, ExcuseDutyCommentVM commentVm)
         {
-            var decodedId = System.Net.WebUtility.UrlDecode(Id)?.Replace(" ", "+");
-            var decryptedId = Encryption.Decrypt(Id);
+            
+            var protectedId = protector.Protect(Id);
    if(string.IsNullOrEmpty(commentVm.NewComment))
             {
                 _notyfService.Error("Comment cannot be empty.", 5);
                 return RedirectToAction("ViewExcuseDuties");
             }
-   if(!Guid.TryParse(decryptedId, out Guid excuseDutyGuid))
+   if(!Guid.TryParse(protectedId, out Guid excuseDutyGuid))
             {
                 _notyfService.Error("Invalid Excuse Duty ID format.", 5);
                 return RedirectToAction("ViewExcuseDuties");
@@ -107,13 +110,13 @@ namespace DMX.Controllers
         [HttpGet]
         public async Task<IActionResult> EditExcuseDutyAsync(string id)
         {
-            var decodedId = System.Net.WebUtility.UrlDecode(id)?.Replace(" ", "+");
-            var decryptedId = Encryption.Decrypt(decodedId);
-            if(string.IsNullOrEmpty(decryptedId))
+            
+            var protectedId = protector.Unprotect(id);
+            if(string.IsNullOrEmpty(protectedId))
             {
                 return BadRequest();
             }
-            if(!Guid.TryParse(decryptedId, out Guid excuseDutyGuid))
+            if(!Guid.TryParse(protectedId, out Guid excuseDutyGuid))
             {
                 return BadRequest();
             }
@@ -209,9 +212,9 @@ namespace DMX.Controllers
 
             try
             {
-                var decodedId= HttpUtility.UrlDecode(id)?.Replace(" ","+");
-                var decryptedId = Encryption.Decrypt(decodedId);
-                if(!Guid.TryParse(decryptedId, out Guid dutyGuid))
+                
+                var unprotectedId = protector.Unprotect(id);
+                if(!Guid.TryParse(unprotectedId, out Guid dutyGuid))
                 {
 
                     return View("Error", "Invalid Excuse Duty Id format");

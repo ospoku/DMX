@@ -1,5 +1,5 @@
 ﻿using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -27,12 +27,12 @@ namespace DMX.ViewComponents
             //}
 
             var decodedId= HttpUtility.UrlDecode(Id)?.Replace(" ", "+");
-            var decryptedId = Encryption.Decrypt(decodedId);
-            if(string.IsNullOrEmpty(decryptedId))
+            var unprotectedId = (decodedId);
+            if(string.IsNullOrEmpty(unprotectedId))
             {
                 return View("Error", "Invalid Deceased Id");
             }
-            if(!Guid.TryParse(decryptedId, out Guid deceasedGuid))
+            if(!Guid.TryParse(unprotectedId, out Guid deceasedGuid))
             {
                 return View("Error", "Invalid Deceased Id format");
             }

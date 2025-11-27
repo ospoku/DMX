@@ -1,12 +1,13 @@
 ﻿
 using DMX.Constants;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Helpers;
 using DMX.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,7 +22,7 @@ namespace DMX.ViewComponents
     //    public async Task<IViewComponentResult> InvokeAsync(string Id)
     //    {
     //        var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
-    //        var decryptedId = Encryption.Decrypt(decodedId);
+    //        var decryptedId = protector.Unprotect(decodedId);
     //        var model = new RolePermissionVM();
     //        var allPermissions = new List<RoleClaimsVM>();
 
@@ -65,18 +66,18 @@ namespace DMX.ViewComponents
     {
         private readonly RoleManager<AppRole> _roleManager;
         private readonly XContext _ctx;
-
-        public ManageRolePermissions(RoleManager<AppRole> roleManager, XContext ctx)
+        public readonly IDataProtector protector;
+        public ManageRolePermissions(RoleManager<AppRole> roleManager, XContext ctx,IDataProtectionProvider provider)
         {
             _roleManager = roleManager;
             _ctx = ctx;
+            protector = provider.CreateProtector("IdProtector");
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string encryptedId)
         {
-            // decrypt incoming id (you already had Encryption.Decrypt)
-            var decoded = HttpUtility.UrlDecode(encryptedId)?.Replace(" ", "+");
-            var roleId = Encryption.Decrypt(decoded);
+            
+            var roleId = protector.Unprotect(encryptedId);
 
             var model = new RolePermissionVM();
             model.RoleId = roleId;
@@ -98,7 +99,7 @@ namespace DMX.ViewComponents
 
             // Role claims (permission claims only). Use claim type "Permissions" if that's what you used.
             var claims = await _roleManager.GetClaimsAsync(role);
-            var roleClaimValues = claims.Where(c => c.Type == "Permissions").Select(c => c.Value).ToHashSet();
+            var roleClaimValues = claims.Where(c => c.Type == "Permission").Select(c => c.Value).ToHashSet();
 
             // Mark selected
             foreach (var p in allPermissions)

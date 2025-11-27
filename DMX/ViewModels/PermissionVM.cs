@@ -8,7 +8,7 @@ namespace DMX.ViewModels
     {
         public int PermissionId { get; set; }
         public Guid PublicId { get; set; } 
-        
+        public string RoleId { get; set; }
         public string Module { get; set; }
         public string Action { get; set; }
         

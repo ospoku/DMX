@@ -1,6 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Helpers;
 using DMX.Models;
 using DMX.ViewModels;
@@ -176,8 +176,8 @@ namespace DMX.Services
 
         public async Task<bool> EditMemoAsync(string Id, EditMemoVM editMemoVM, ClaimsPrincipal userClaim)
         {
-            var decryptedId = Encryption.Decrypt(Id);
-            if(!Guid.TryParse(decryptedId, out Guid memoGuid))
+            var unprotectedId = (Id);
+            if(!Guid.TryParse(unprotectedId, out Guid memoGuid))
             {
                 return false; // Invalid ID format
             }

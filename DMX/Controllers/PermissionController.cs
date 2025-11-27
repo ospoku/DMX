@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
+
 using DMX.Helpers;
 using DMX.Models;
 using DMX.Services;
@@ -8,6 +9,7 @@ using DMX.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -27,7 +29,8 @@ namespace DMX.Controllers
         public readonly IWebHostEnvironment env;
         public readonly EntityService ens;
         public readonly INotyfService notyf;
-        public PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment,EntityService entityService,INotyfService notyfService)
+        public readonly IDataProtector protector;
+        public PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment,EntityService entityService,INotyfService notyfService, IDataProtectionProvider dataProvider)
         {
             usm = userManager;
             xct = xContext;
@@ -36,6 +39,7 @@ namespace DMX.Controllers
             env = environment;
             ens = entityService;
             notyf = notyfService;
+            protector = dataProvider.CreateProtector("IdProtector");
         }
         [HttpGet]
         public IActionResult AddUser()
@@ -374,27 +378,29 @@ namespace DMX.Controllers
             return ViewComponent(nameof(ManageRolePermissions),Id);
         }
         [HttpPost]
-        public async Task<IActionResult> RolePermissions (string Id, RolePermissionVM model)
+        public async Task<IActionResult>ManageRolePermissions (RolePermissionVM model)
         {
-            var role = await rol.FindByIdAsync(@Encryption.Decrypt(Id));
+            var roleId = protector.Unprotect(model.RoleId);
+            var role = await rol.FindByIdAsync(roleId);
             var claims = await rol.GetClaimsAsync(role);
             foreach (var claim in claims)
             {
                 await rol.RemoveClaimAsync(role, claim);
             }
-            var selectedClaims = model.RoleClaims.Where(a => a.Selected).ToList();
+            var selectedClaims = model.SelectedClaimValues.ToList();
             foreach (var claim in selectedClaims)
             {
-                await rol.AddPermissionClaim(role, claim.Value);
+                await rol.AddPermissionClaim(role,claim);
             }
             
-            return RedirectToAction(nameof(ViewRoles));
+            return RedirectToAction(nameof(UserManagement));
         }
 
         [HttpPost]
         public async Task<IActionResult> ManageUserRoles(string Id, ManageUserRolesVM model)
         {
-            var user = await usm.FindByIdAsync(@Encryption.Decrypt(Id));
+            var unprotectedId = protector.Unprotect(Id);
+            var user = await usm.FindByIdAsync((unprotectedId));
             var roles = await usm.GetRolesAsync(user);
             var result = await usm.RemoveFromRolesAsync(user, roles);
             result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));

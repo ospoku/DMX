@@ -1,9 +1,10 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,19 +22,20 @@ namespace DMX.Controllers
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
         private readonly AssignmentService _assignmentService;
-
+        public readonly IDataProtector protector;
         public PettyCashController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
             EntityService entityService,
-            AssignmentService assignmentService)
+            AssignmentService assignmentService, IDataProtectionProvider provider)
         {
             _userManager = userManager;
             _context = context;
             _notyfService = notyfService;
             _entityService = entityService;
             _assignmentService = assignmentService;
+            protector = provider.CreateProtector("IdProtector");
         }
 
         [HttpGet]
@@ -105,7 +107,7 @@ namespace DMX.Controllers
 
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
+                var decryptedId = protector.Unprotect(id);
                 if(!Guid.TryParse(decryptedId, out Guid pettyCashGuid))
                 {
                     _notyfService.Error("Invalid petty cash ID format.", 5);
@@ -177,7 +179,7 @@ namespace DMX.Controllers
         {
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
+                var decryptedId = protector.Unprotect(id);
                 if(!Guid.TryParse(decryptedId, out Guid decryptedIdGuid))
                 {
                     return NotFound();

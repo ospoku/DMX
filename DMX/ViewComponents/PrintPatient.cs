@@ -1,24 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DMX.Controllers;
 using DMX.Data;
-using DMX.ViewModels;
-using DMX.DataProtection;
-using Microsoft.EntityFrameworkCore;
-using DMX.Controllers;
 using DMX.Services;
+using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared;
+using Microsoft.EntityFrameworkCore;
 using System.Web;
 
 namespace DMX.ViewComponents
 {
-    public class PrintPatient(XContext dContext, FeeService feeService) : ViewComponent
+    public class PrintPatient(XContext dContext, FeeService feeService, IDataProtectionProvider provider) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly FeeService fs = feeService;
-
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
         public IViewComponentResult Invoke(string Id)
         {
-            var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
-            var decryptedId=Encryption.Decrypt(decodedId);
-            if(!Guid.TryParse(decryptedId, out Guid patientGuid))
+           
+            var unprotectedId=protector.Unprotect(Id);
+            if(!Guid.TryParse(Id, out Guid patientGuid))
             {
 
             }

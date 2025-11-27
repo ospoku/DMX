@@ -1,4 +1,6 @@
-﻿namespace DMX.ViewModels
+﻿using Newtonsoft.Json.Linq;
+
+namespace DMX.ViewModels
 {
     public class ViewRolePermissionsVM   
     {
@@ -6,17 +8,17 @@
         public string RoleId { get; set; }
         public string RoleName { get; set; }
    
-      
+      public string Value { get; set; }
         public string Module { get; set; }
        public string Action {get;set; }
-        public List<string> PermissionCodes { get; set; }
+
         public List<string> SelectedPermissions { get; set; }
-      
-    
 
-
-
+     
     }
 
 
+
 }
+
+

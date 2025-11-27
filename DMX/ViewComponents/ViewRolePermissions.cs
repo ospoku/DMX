@@ -25,57 +25,30 @@ namespace DMX.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var roles = await _roleManager.Roles.ToListAsync();
-            var viewModelList = new List<ViewRolePermissionsVM>();
+            var roles = _roleManager.Roles.ToList();
 
-            // Load all permissions once
-            var allPermissions = await _context.Permissions
-                .Select(p => new PermissionVM
-                {
-                    PermissionId = p.PermissionId,
-                    PublicId = p.PublicId,
-                    Module = p.Module,
-                    Action = p.Action,
-                    Code = p.Code,
-                })
-                .ToListAsync();
+            var model = new List<ViewRolePermissionsVM>();
 
             foreach (var role in roles)
             {
                 var claims = await _roleManager.GetClaimsAsync(role);
 
-                // Only permission claims
-                var roleClaimCodes = claims
-                    .Where(c => c.Type == "Permissions")
+                var permissionCodes = claims
+                    .Where(c => c.Type == "Permission")
                     .Select(c => c.Value)
                     .ToList();
 
-                // Group permissions by Module (one row per Module)
-                var grouped = allPermissions
-                    .GroupBy(p => p.Module)
-                    .Select(g => new ViewRolePermissionsVM
-                    {
-                        RoleId = role.Id,
-                        RoleName = role.Name,
-
-                        Module = g.Key,
-
-                        // All permission codes under the module
-                        PermissionCodes = g.Select(x => x.Code).ToList(),
-
-                        // Only those the role has
-                        SelectedPermissions = g
-                            .Where(x => roleClaimCodes.Contains(x.Code))
-                            .Select(x => x.Code)
-                            .ToList()
-                    }).Distinct()
-                    .ToList();
-
-                viewModelList.AddRange(grouped);
+                model.Add(new ViewRolePermissionsVM
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Rolename,
+                    SelectedPermissions = permissionCodes,
+                    
+                    
+                });
             }
 
-            return View(viewModelList);
+            return View(model);
         }
-
     }
 }

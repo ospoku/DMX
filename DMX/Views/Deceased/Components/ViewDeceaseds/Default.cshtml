@@ -1,6 +1,6 @@
 ﻿@using DMX.Constants
 @using DMX.Controllers
-@using DMX.DataProtection
+
 
 @using DMX.ViewComponents
 @using Microsoft.AspNetCore.Authorization
@@ -11,6 +11,12 @@
 @model IEnumerable<DMX.ViewModels.ViewPatientsVM>;
 
 
+@inject Microsoft.AspNetCore.DataProtection.IDataProtectionProvider DataProtectionProvider
+@using Microsoft.AspNetCore.DataProtection
+@{
+    // Optional: create protector in view (same purpose string)
+    var protector = DataProtectionProvider.CreateProtector("IdProtector");
+}
 
 
 <div class="card shadow mb-4">
@@ -55,20 +61,20 @@
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                        @if (( await auth.AuthorizeAsync(User,Permissions.Modules.EditDeceased)).Succeeded)
                                         {
-                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditDeceased",new{Id=Encryption.Encrypt(patient.PatientId.ToString())})" class="dropdown-item-custom" data-bs-target="#EditDeceased"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
+                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditDeceased",new{Id=protector.Protect(patient.PatientId.ToString())})" class="dropdown-item-custom" data-bs-target="#EditDeceased"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
                                         }
                                    
                                          @if (( await auth.AuthorizeAsync(User,Permissions.Modules.PrintDeceased)).Succeeded)
                                         {
-                                            <a class="dropdown-item-custom" asp-action="PrintDeceased" asp-controller="Patient" asp-route-Id="@Encryption.Encrypt(patient.PatientId.ToString())"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
+                                            <a class="dropdown-item-custom" asp-action="PrintDeceased" asp-controller="Patient" asp-route-Id="@protector.Protect(patient.PatientId.ToString())"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
                                         }
                                          @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentDeceased)).Succeeded)
                                         {
-                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentDeceased",new { Id = Encryption.Encrypt(patient.PatientId.ToString())})" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
+                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentDeceased",new { Id = protector.Protect(patient.PatientId.ToString())})" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         }
                                         @if ((await auth.AuthorizeAsync(User, Permissions.Modules.CommentDeceased)).Succeeded)
                                         {
-                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ViewInvoice", new { Id = Encryption.Encrypt(patient.PatientId.ToString()) })" class="dropdown-item-custom" data-bs-target="#ViewInvoice"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>View Invoice</button>
+                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ViewInvoice", new { Id = protector.Protect(patient.PatientId.ToString()) })" class="dropdown-item-custom" data-bs-target="#ViewInvoice"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>View Invoice</button>
                                         }
                                         @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteDeceased)).Succeeded)
                                         {

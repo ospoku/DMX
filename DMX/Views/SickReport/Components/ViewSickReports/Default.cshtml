@@ -1,5 +1,4 @@
 ﻿@using DMX.Constants
-@using DMX.DataProtection
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService auth
 @{
@@ -52,7 +51,7 @@
                                         }
                                        
                                          @if (( await auth.AuthorizeAsync(User,Permissions.Modules.PrintSickReport)).Succeeded)
-                                        {<a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="@Encryption.Encrypt(s.SickReportId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
+                                        {<a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="protector.Protect(s.SickReportId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
                                         }
                                          @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentSickReport)).Succeeded)
                                         {

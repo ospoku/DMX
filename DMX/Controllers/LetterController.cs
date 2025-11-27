@@ -1,11 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewComponents;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,19 +27,19 @@ namespace DMX.Controllers
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
         private readonly AssignmentService _assignmentService;
-
+        public readonly IDataProtector protector;
         public LetterController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
             EntityService entityService,
-            AssignmentService assignmentService)
+            AssignmentService assignmentService, IDataProtectionProvider provider)
         {
             _userManager = userManager;
             _context = context;
             _notyfService = notyfService;
             _entityService = entityService;
-         
+            protector = provider.CreateProtector("IdProtector");
             _assignmentService = assignmentService;
         }
 
@@ -229,7 +230,7 @@ namespace DMX.Controllers
         [HttpGet]
         public async Task<IActionResult> Download(string id)
         {
-            var decryptedId = Encryption.Decrypt(id);
+            var decryptedId = protector.Unprotect(id);
             if(!Guid.TryParse(decryptedId, out Guid letterGuid))
             {
                 return BadRequest("Invalid document ID format.");

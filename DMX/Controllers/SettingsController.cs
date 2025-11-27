@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using DMX.Helpers;
 using DMX.Services;
 using Microsoft.AspNetCore.Components.Web;
-using DMX.DataProtection;
+
 
 namespace DMX.Controllers
 {
@@ -182,8 +182,8 @@ namespace DMX.Controllers
 
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
-                var limitToUpdate = await dcx.CashLimits.FirstOrDefaultAsync(m => m.CashLimitId == decryptedId);
+                var unprotectedId = (id);
+                var limitToUpdate = await dcx.CashLimits.FirstOrDefaultAsync(m => m.CashLimitId == unprotectedId);
                 if (limitToUpdate == null)
                 {
                     notyf.Error("Limit not found.", 5);
@@ -251,15 +251,15 @@ else
         {
             try
             {
-                var decryptedId = Encryption.Decrypt(Id);
-                var perdiemToUpdate = await dcx.PerDiems.FirstOrDefaultAsync(m => m.UserId == decryptedId);
+                var unprotectedId = (Id);
+                var perdiemToUpdate = await dcx.PerDiems.FirstOrDefaultAsync(m => m.UserId == unprotectedId);
 
                 if (perdiemToUpdate == null)
                 {
                     // User not found, create a new PerDiem record
                     var newPerDiem = new PerDiem
                     {
-                        UserId = decryptedId,
+                        UserId = unprotectedId,
                         Amount = editPerdiemVM.Amount
                     };
 

@@ -1,24 +1,26 @@
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared;
 using System.Web;
 
 namespace DMX.ViewComponents
 {
-    public class ManageUserRoles(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : ViewComponent
+    public class ManageUserRoles(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,IDataProtectionProvider provider) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = roleManager;
-
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
             var viewModel = new List<UserRolesVM>();
             var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
-            var decryptedId = Encryption.Decrypt(decodedId);
+            var decryptedId = protector.Unprotect(decodedId);
             var user = await usm.FindByIdAsync(decryptedId);
 
             foreach (var role in rol.Roles.ToList())
@@ -39,7 +41,7 @@ namespace DMX.ViewComponents
             }
             var model = new ManageUserRolesVM()
             {
-                UserId = @Encryption.Decrypt(Id),
+                UserId = @protector.Unprotect(Id),
 
                 UserRoles = viewModel
             };

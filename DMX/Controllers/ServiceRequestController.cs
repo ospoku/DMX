@@ -1,10 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.Data;
-using DMX.DataProtection;
+
 using DMX.Models;
 using DMX.Services;
 using DMX.ViewComponents;
 using DMX.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,19 +22,21 @@ namespace DMX.Controllers
         private readonly INotyfService _notyfService;
         private readonly EntityService _entityService;
         private readonly AssignmentService _assignmentService;
+        public readonly IDataProtector protector;
         public ServiceRequestController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
             EntityService entityService,
-            AssignmentService assignmentService)
+            AssignmentService assignmentService,IDataProtectionProvider provider)
         {
             _userManager = userManager;
             _context = context;
             _notyfService = notyfService;
             _entityService = entityService;
             _assignmentService = assignmentService;
-            
+
+            protector = provider.CreateProtector("IdProtector");
         }
 
         [HttpGet]
@@ -110,12 +113,13 @@ namespace DMX.Controllers
                     _notyfService.Error("Comment cannot be empty.", 5);
                     return RedirectToAction(nameof(ViewServiceRequests));
                 }
-                if(!Guid.TryParse(Encryption.Decrypt(Id), out Guid decryptedIdGuid))
+                var unprotectedId = protector.Unprotect(Id);
+                if(!Guid.TryParse((Id), out Guid unprotectedIdGuid))
                 {
                     _notyfService.Error("Invalid Service Request ID.", 5);
                     return RedirectToAction(nameof(ViewServiceRequests));
                 }
-                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == decryptedIdGuid);
+                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == unprotectedIdGuid);
                 if (serviceRequest == null)
                 {
                     return NotFound();
@@ -162,13 +166,13 @@ namespace DMX.Controllers
 
             try
             {
-                var decryptedId = Encryption.Decrypt(id);
-                if(!Guid.TryParse(decryptedId, out Guid guidDecryptedId))
+                var unprotectedId = protector.Unprotect(id);
+                if(!Guid.TryParse(unprotectedId, out Guid guidUnprotectedId))
                 {
                     _notyfService.Error("Invalid Service Request ID.", 5);
                     return RedirectToAction("ViewServiceRequests");
                 }
-                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == guidDecryptedId);
+                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == guidUnprotectedId);
                 if (serviceRequestToUpdate == null)
                 {
                     _notyfService.Error("Service request not found.", 5);
@@ -186,12 +190,12 @@ namespace DMX.Controllers
                 }
 
                 // Remove existing assignments
-                var existingAssignments = _context.ServiceAssignments.Where(x => x.ServiceRequestId == guidDecryptedId);
+                var existingAssignments = _context.ServiceAssignments.Where(x => x.ServiceRequestId == guidUnprotectedId);
                 _context.ServiceAssignments.RemoveRange(existingAssignments);
 
                 // Add new assignments
                 var newAssignments = editServiceRequestVm.SelectedUsers
-                    .Select(userId => new ServiceAssignment { ServiceRequestId = guidDecryptedId, UserId = userId })
+                    .Select(userId => new ServiceAssignment { ServiceRequestId = guidUnprotectedId, UserId = userId })
                     .ToList();
 
                 await _context.ServiceAssignments.AddRangeAsync(newAssignments);

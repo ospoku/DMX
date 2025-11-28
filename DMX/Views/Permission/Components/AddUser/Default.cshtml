@@ -1,18 +1,16 @@
 ﻿
-@model DMX.ViewModels.AddUserVM 
+@model DMX.ViewModels.AddUserVM
 
 
-       
 
-    <div class="modal-dialog">
 
-        <div class="modal-content">
-            <div class="modal-header">
-
+<dialog id="AddUserDialog" class="border-0 rounded py-0 col-md-4">
+    <div class="card-header">
+      
                 <h6>Add User</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div> 
-            @using (Html.BeginForm("AddUser", "Account", FormMethod.Post,new{id="addUserForm"}))
+            @using (Html.BeginForm("AddUser", "Permission", FormMethod.Post,new{id="addUserForm"}))
             {
             <div class="modal-body">
                        
@@ -50,9 +48,9 @@
                     </div>
                 <div class="modal-footer">  <button id="btnAddUser" class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
                 }
-                </div>
-            </div>
-
+              
+         
+</dialog>
     <script>
         $(document).ready(function () {
 

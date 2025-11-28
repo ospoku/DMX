@@ -17,7 +17,7 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">Users</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddUser" data-bs-url="@Url.Action("AddUser")"><i class="fa fa-fw fa-plus-circle"></i>Add User</button>
+        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" onclick="document.getElementById('AddUserDialog').showModal()" data-bs-target="#AddUser" data-bs-url="@Url.Action("AddUser")"><i class="fa fa-fw fa-plus-circle"></i>Add User</button>
 
     </div>
     <div class="card-body">

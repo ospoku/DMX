@@ -68,7 +68,7 @@
                                    }
                                         else
                                         {
-                                            @if((await auth.AuthorizeAsync(User,"EditMemo")).Succeeded)
+                                            @if((await auth.AuthorizeAsync(User,"MemoOwnerPolicy")).Succeeded)
                                             {
                                                
                                             <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @protector.Protect(Memo.MemoId.ToString()) })" class=" dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>

@@ -286,7 +286,8 @@ namespace DMX.Controllers
                 userClaims.AddClaim(new Claim("Email", user.Email));
                 userClaims.AddClaim(new Claim("Firstname", user.Firstname));
                 userClaims.AddClaim(new Claim("Surname", user.Surname));
-             
+                userClaims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+
 
                 userClaims.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", from p in xct.UserRoles
                                                                                 join role in xct.Roles on p.RoleId equals role.Id

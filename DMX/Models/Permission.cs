@@ -13,7 +13,7 @@ namespace DMX.Models
         public string Module { get; set; }
        
         public string Action { get; set; }
-        public string Code { get { return $"{Module}.{Action}"; } set { } } 
+        public string Code { get { return $"Permission.{Module}.{Action}"; } set { } } 
         //public void GenerateCode()
         //{
         //    Code = $"{Module}.{Action}";

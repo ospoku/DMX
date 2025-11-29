@@ -1,18 +1,25 @@
 ﻿
 @model DMX.ViewModels.AddRoleVM 
 
+<<<<<<< HEAD
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
        
 
     <dialog class="modal-dialog">
+=======
+>>>>>>> fixed user management
 
-        <div class="modal-content">
-            <div class="modal-header">
+       
+<dialog class="col-sm-4 border-0 rounded p-0" id="AddRoleDialog">
+
+
+    
+        <div class="modal-header">
 
                 <h6>Add Role</h6>
-                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" onclick="document.getElementById('AddRoleDialog').close()" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div> 
             @using (Html.BeginForm("AddRole", "Account", FormMethod.Post))
             {
@@ -30,9 +37,15 @@
                     </div>
                 <div class="modal-footer">  <button class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
                 }
+<<<<<<< HEAD
                 </div>
             </dialog>
 
+=======
+      
+        
+</dialog>
+>>>>>>> fixed user management
 
    
 

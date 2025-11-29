@@ -13,8 +13,8 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary d-inline">User Role(s)</h6>
 
-        <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddUserRole" data-bs-url="@Url.Action("AddUserRole")"><i class="fa fa-fw fa-plus-circle"></i>Add User Role(s)</button>
-
+       @*  <button class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" data-bs-toggle="ajax-modal" data-bs-target="#AddUserRole" data-bs-url="@Url.Action("AddUserRole")"><i class="fa fa-fw fa-plus-circle"></i>Add User Role(s)</button>
+ *@
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -47,18 +47,19 @@
                             </td>
                             
                                     <td>
-                                        <div class="btn-group" role="group">
-                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Select Action
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ManageUserRoles", new { Id = @protector.Protect(user.UserId) })" class="dropdown-item-custom" data-bs-target="#ManageUserRoles"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("UserPermissions", new { Id = @protector.Protect(user.UserId) })" class="dropdown-item-custom" data-bs-target="#UserPermissions"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>User Permissions</button>
+                         
 
+                                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                            <div class="btn-group" role="group">
+                                          
+                                        <button type="button" class="btn btn-outline-warning"><i  class=" fa fa-user-edit"></i></button>
+                                        <button type="button" class="btn btn-warning"><i  class=" fa fa-file-edit"></i></button>
 
-                                        <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
-                                                    <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                                </form>
+                                                 
+
+                                   
+                              
+                                    
                                             </div>
                                         </div>
 

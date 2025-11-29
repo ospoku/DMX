@@ -3,12 +3,18 @@
 
 
 
+<<<<<<< HEAD
+=======
+    <dialog class="col-sm-4 border-0 rounded p-0" id="AddUserDialog">
+
+            <div class="modal-header">
+>>>>>>> fixed user management
 
 <dialog id="AddUserDialog" class="border-0 rounded py-0 col-md-4">
     <div class="card-header">
       
                 <h6>Add User</h6>
-                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button"  onclick="document.getElementById('AddUserDialog').close()" class="btn btn-sm btn-outline-danger">Close</button>
             </div> 
             @using (Html.BeginForm("AddUser", "Permission", FormMethod.Post,new{id="addUserForm"}))
             {
@@ -35,22 +41,21 @@
                                     <input class="did-floating-input" type="password" asp-for="@Model.Password" placeholder="" required  />
                         <label class="did-floating-label">Password</label>
                                 </div>
-                       
-                         
-                            <div class="did-floating-label-content">
-
-                        <select id="selectRole" class="did-floating-select"  asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles"></select>
-                              <label class="did-floating-label">Select Role(s)</label>
-                            </div>
-                        
-                       
-                       
+                 
+                    <select id="selectRole" class="dmx-choices" asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles"></select>
+                           
                     </div>
                 <div class="modal-footer">  <button id="btnAddUser" class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
                 }
+<<<<<<< HEAD
               
          
 </dialog>
+=======
+            
+            </dialog>
+
+>>>>>>> fixed user management
     <script>
         $(document).ready(function () {
 

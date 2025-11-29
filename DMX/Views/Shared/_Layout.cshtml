@@ -38,7 +38,7 @@
     <link href="~/ospapps/avatar.css" rel="stylesheet" type="text/css"/>
     <link href="~/ospapps/fileuploadbutton.css" rel="stylesheet" type="text/css"/>
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"  type="text/css"/>
-   
+    <link href="~/ospapps/popup.css" rel="stylesheet" />
 
     
     <link href="~/lib/sweetalert2/sweetalert2.css" rel="stylesheet" />
@@ -167,12 +167,12 @@
                         <a class="collapse-item" asp-action="SystemSetup" asp-controller="Settings">System Setup</a>
 
                         <a class="collapse-item" asp-action="UserManagement" asp-controller="Permission">User Management</a>
-                        <a class="collapse-item" asp-action="ViewRoles" asp-controller="Permission">Roles</a>
+                       @*  <a class="collapse-item" asp-action="ViewRoles" asp-controller="Permission">Roles</a>
                         <a class="collapse-item" asp-action="ViewUserRoles" asp-controller="Permission">User Roles</a> 
                         
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Account</h6>
-                        <a class="collapse-item" asp-action="ViewUsers" asp-controller="Account">Users</a>
+                        <a class="collapse-item" asp-action="ViewUsers" asp-controller="Account">Users</a> *@
                       
                     </div>
                 </div>
@@ -407,7 +407,7 @@
     <script src="~/ospapps/choices.js"></script>
     <script src="~/lib/choices.js/choices.js"></script>
     <script src="~/lib/choices.js/choices.min.js"></script>
-
+    <script src="~/ospapps/popup.js"></script>
     <script src="~/ospapps/tinymce.js"></script>
     <script src="~/ospapps/openDialogByParams.js"></script>
     <script src="~/ospapps/openDialogFromData.js"></script>

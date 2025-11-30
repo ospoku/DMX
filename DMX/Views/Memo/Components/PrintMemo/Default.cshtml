@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@* @using Microsoft.AspNetCore.Identity
 @model DMX.ViewModels.MemoCommentVM
 @inject UserManager<AppUser> usm
 
@@ -155,8 +155,148 @@
         </span>
     </div>
 </body>
-</html>
+</html> *@
  
+
+
+@using Microsoft.AspNetCore.Identity
+@model DMX.ViewModels.MemoCommentVM
+@inject UserManager<AppUser> usm
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Memo Printing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 15.6px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .memo-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header img {
+            height: 150px;
+            width: 100px;
+        }
+
+        .memo-info {
+            margin-bottom: 20px;
+        }
+
+        .memo-info span {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .memo-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+
+        .memo-content {
+            flex: 1;
+            word-wrap: break-word;
+            word-break: break-word;
+            padding: 10px 0;
+        }
+
+        hr {
+            border: 1px solid #007BFF;
+            margin: 10px 0 20px 0;
+        }
+
+        footer {
+            font-weight: bold;
+            font-style: italic;
+            font-family: "Times New Roman";
+            font-size: 12px;
+            color: #000;
+            text-align: right;
+        }
+
+        /* Multi-page printing */
+        @@media print {
+            @@page {
+                margin: 20mm;
+                counter-increment: page;
+            }
+
+            body {
+                counter-reset: page;
+            }
+
+            footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+
+            .page-number:after {
+                content: "Page " counter(page) " of " counter(pages);
+            }
+
+            .memo-content {
+                page-break-inside: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="memo-container">
+        <!-- Header -->
+        <header>
+            <img src="~/images/Logo.jpg" alt="Logo" />
+            <div>P. O. BOX 26, Bolgatanga, GHANA</div>
+            <div>Digital Address: UB-0093-1594</div>
+            <div>UPPER EAST REGIONAL HOSPITAL</div>
+            <div>Quote this number and date on all correspondence</div>
+        </header>
+
+        <!-- Memo Information -->
+        <div class="memo-info">
+            <span><strong>From:</strong> @Model.Sender</span>
+            <span><strong>To:</strong></span>
+            <span><strong>Subject:</strong> @Model.Title</span>
+            <span><strong>Date:</strong> </span>
+        </div>
+
+        <hr />
+
+        <!-- Memo Title -->
+        <div class="memo-title">INTERNAL MEMO</div>
+
+        <!-- Memo Content -->
+        <div class="memo-content">
+            @Html.Raw(@Model.MemoContent)
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div>Tel: +233 (0) 545 585 600</div>
+            <div>Email: uppereast.rhuer@ghs.gov.gh</div>
+            <div>Website: www.ghs.gov.gh</div>
+            <div class="page-number"></div>
+        </footer>
+    </div>
+</body>
+</html>
+
 
 
 

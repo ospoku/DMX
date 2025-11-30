@@ -28,7 +28,7 @@ namespace DMX.ViewComponents
                 Firstname = userToEdit.Firstname,
                 Username = userToEdit.UserName,
                 Surname = userToEdit.Surname,
-                Telephone = userToEdit.PhoneNumber,
+                PhoneNumber = userToEdit.PhoneNumber,
             };
 
             return View(editUserVM);

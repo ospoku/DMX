@@ -1,28 +1,31 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using DMX.Data;
+using DMX.Models;
+using DMX.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using DMX.ViewModels;
-using DMX.Data;
-
-using DMX.Models;
-using Microsoft.AspNetCore.Authorization;
-using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.DataProtection;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Claims;
 
 namespace DMX.Controllers
 {
-    public class AccountController(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, INotyfService  notification, IDataProtectionProvider protectionProvider) : Controller
+    public class AccountController(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment, INotyfService  notification, IDataProtectionProvider protectionProvider) : Controller
     {
         public readonly XContext dcx = dContext;
         public readonly INotyfService notyf = notification;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = roleManager;
         public readonly SignInManager<AppUser> sim = signinmanager;
+        public readonly IWebHostEnvironment env = environment;
         public readonly IDataProtector protector = protectionProvider.CreateProtector("IdProtector");
 
         [HttpGet]
@@ -32,35 +35,7 @@ namespace DMX.Controllers
         }
 
        
-        [HttpPost]
-        public async Task<IActionResult> AddUser(AddUserVM addUserVM)
-        {
-           
-        
 
-
-        AppUser addThisUser = new()
-                {
-                    UserName = addUserVM.Username,
-                    Email=addUserVM.Email,
-          
-                };
-                IdentityResult result = await usm.CreateAsync(addThisUser, addUserVM.Password);
-                if (result.Succeeded)
-                {
-                    AppRole applicationRole = await rol.FindByIdAsync(addUserVM.ApplicationRoleId);
-                    if (applicationRole != null)
-                    {
-                        await usm.AddToRoleAsync(addThisUser, applicationRole.Name);
-                    };
-
-                notyf.Success("User successfully created");
-
-
-                    return RedirectToAction(nameof(ViewUsers));
-                }
-            return RedirectToAction("AddUser");
-        }
         [HttpGet]
         public IActionResult EditUser(string Id)
         {
@@ -70,48 +45,7 @@ namespace DMX.Controllers
         {
             return ViewComponent(nameof(DeleteUser));
         }
-        [HttpPost]
-        public async Task<IActionResult> EditUserAsync(string Id, AppUser user, EditUserVM editUserVM)
-        {
-            AppUser searchUser = (from u in usm.Users where u.Id == Id select u).FirstOrDefault();
-            if (searchUser != null)
-            {
-
-                searchUser.Email = user.Email;
-                searchUser.Firstname = user.Firstname;
-                searchUser.Surname = user.Surname;
-                searchUser.PhoneNumber = user.PhoneNumber;
-
-                searchUser.UserName = user.UserName;
-
-                IdentityResult identityResult = await usm.UpdateAsync(searchUser);
-                IdentityResult result = identityResult;
-                if (result.Succeeded)
-                {
-                    string existingRole = usm.GetRolesAsync(searchUser).Result.SingleOrDefault();
-                    string existingRoleId = rol.Roles.Single(r => r.Name == existingRole).Id;
-                    if (existingRoleId != editUserVM.ApplicationRoleId)
-                    {
-                        IdentityResult roleResult = await usm.RemoveFromRoleAsync(searchUser, existingRole);
-                        if (roleResult.Succeeded)
-                        {
-                            AppRole applicationRole = await rol.FindByIdAsync(editUserVM.ApplicationRoleId);
-                            if (applicationRole != null)
-                            {
-                                IdentityResult newRoleResult = await usm.AddToRoleAsync(searchUser, applicationRole.Name);
-                                if (newRoleResult.Succeeded)
-                                {
-                                    return RedirectToAction("ViewUsers");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            return View("ViewUsers");
-        }
+  
 
         public IActionResult ViewUsers()
         {
@@ -123,42 +57,29 @@ namespace DMX.Controllers
         {
             return View(loginVM);
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> LoginAsync(LoginVM loginVM)
         {
+            if (!ModelState.IsValid)
+                return View(loginVM);
 
+            var result = await sim.PasswordSignInAsync(
+                loginVM.Username,
+                loginVM.Password,
+                loginVM.RememberMe,
+                lockoutOnFailure: false);
 
-            if (ModelState.IsValid)
+            if (result.Succeeded)
             {
-                var user = await usm.FindByNameAsync(loginVM.Username);
-               
-                if (user != null)
-                {
-                    await sim.PasswordSignInAsync(user, loginVM.Password,true,false);
-
-                    var userClaims = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                    userClaims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-
-
-
-
-                    //userClaims.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", from p in dcx.UserRoles
-                    //                                                                join role in dcx.Roles on p.RoleId equals role.Id
-                    //                                                                where p.UserId == user.Id
-                    //                                                                select role.Name.ToString())));
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userClaims), new AuthenticationProperties { IsPersistent = loginVM.RememberMe });
-
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                }
-
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
-
-            return View();
+            ModelState.AddModelError("", "Invalid username or password");
+            return View(loginVM);
         }
+
 
 
 
@@ -234,5 +155,99 @@ namespace DMX.Controllers
         {
             return View();
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> VerifyEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                TempData["Error"] = "Invalid verification link.";
+                return RedirectToAction("Login");
+            }
+
+            var user = await usm.FindByIdAsync(userId);
+            if (user == null)
+            {
+                TempData["Error"] = "User not found.";
+                return RedirectToAction("Login");
+            }
+
+            var result = await usm.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                TempData["Message"] = "Email successfully verified! You can now login.";
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                TempData["Error"] = "Email verification failed.";
+                return RedirectToAction("Login");
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResendVerificationEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["Error"] = "Please provide a valid email address.";
+                return RedirectToAction("Login");
+            }
+
+            var user = await usm.FindByEmailAsync(email);
+            if (user == null)
+            {
+                TempData["Error"] = "No user found with this email.";
+                return RedirectToAction("Login");
+            }
+
+            if (user.EmailConfirmed)
+            {
+                TempData["Message"] = "Email is already confirmed. You can log in.";
+                return RedirectToAction("Login");
+            }
+
+            try
+            {
+                // Generate token and confirmation link
+                var token = await usm.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action(
+                    nameof(VerifyEmail),
+                    "Account",
+                    new { userId = user.Id, token },
+                    Request.Scheme);
+
+                // Read email template
+                string body = await System.IO.File.ReadAllTextAsync(
+                    Path.Combine(env.WebRootPath, "Templates", "EmailTemplate", "EmailConfirmationTemplate.cshtml"));
+                body = body.Replace("{UserName}", user.UserName).Replace("{url}", confirmationLink);
+
+                // Send email
+                using var mailMessage = new MailMessage();
+                mailMessage.Subject = "Email Verification";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.To.Add(user.Email);
+                mailMessage.From = new MailAddress("ospoku@gmail.com");
+                mailMessage.Body = body;
+
+                using var smtp = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    Credentials = new NetworkCredential("ospoku@gmail.com", "az36400@osp"),
+                    EnableSsl = true
+                };
+
+                await smtp.SendMailAsync(mailMessage);
+
+                TempData["Message"] = "Verification email resent successfully. Please check your inbox.";
+            }
+            catch (SmtpException)
+            {
+                TempData["Error"] = "Unable to send email. Please check your internet connection and try again.";
+            }
+
+            return RedirectToAction("Login");
+        }
+
     }
 }

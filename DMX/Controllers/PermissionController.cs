@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using DMX.Constants;
 using DMX.Data;
 
 
@@ -12,35 +13,28 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Web;
+using static DMX.Constants.Permissions;
 
 namespace DMX.Controllers
 {
-    public class PermissionController : Controller
+    public class PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment, EntityService entityService, INotyfService notyfService, IDataProtectionProvider dataProvider) : Controller
     {
-        public readonly XContext xct;
-        public readonly UserManager<AppUser> usm;
-        public readonly RoleManager<AppRole> rol;
-        public readonly SignInManager<AppUser> sim;
-        public readonly IWebHostEnvironment env;
-        public readonly EntityService ens;
-        public readonly INotyfService notyf;
-        public readonly IDataProtector protector;
-        public PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment,EntityService entityService,INotyfService notyfService, IDataProtectionProvider dataProvider)
-        {
-            usm = userManager;
-            xct = xContext;
-            rol = roleManager;
-            sim = signinmanager;
-            env = environment;
-            ens = entityService;
-            notyf = notyfService;
-            protector = dataProvider.CreateProtector("IdProtector");
-        }
+        public readonly XContext xct = xContext;
+        public readonly UserManager<AppUser> usm = userManager;
+        public readonly RoleManager<AppRole> rol = roleManager;
+        public readonly SignInManager<AppUser> sim = signinmanager;
+        public readonly IWebHostEnvironment env = environment;
+        public readonly EntityService ens = entityService;
+        public readonly INotyfService notyf = notyfService;
+        public readonly IDataProtector protector = dataProvider.CreateProtector("IdProtector");
+
         [HttpGet]
         public IActionResult AddUser()
         {
@@ -52,154 +46,80 @@ namespace DMX.Controllers
             return ViewComponent(nameof(UserManagement));
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserVM addUserVM)
         {
-
-
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                AppUser addThisUser = new()
+                TempData["ResultMessage"] = "User creation error: Invalid data.";
+                return RedirectToAction("AddUser");
+            }
+
+            // 1️⃣ Create the user
+            var newUser = new AppUser
+            {
+                UserName = addUserVM.Username,
+                Email = addUserVM.Email,
+                PhoneNumber = addUserVM.Telephone,
+                Firstname = addUserVM.Firstname,
+                Surname = addUserVM.Surname
+            };
+
+            var createResult = await usm.CreateAsync(newUser, addUserVM.Password);
+
+            if (!createResult.Succeeded)
+            {
+                TempData["ResultMessage"] = "User creation failed: " + string.Join(", ", createResult.Errors.Select(e => e.Description));
+                return RedirectToAction("AddUser");
+            }
+
+            // 2️⃣ Assign role if provided
+            if (!string.IsNullOrEmpty(addUserVM.ApplicationRoleId))
+            {
+                var role = await rol.FindByIdAsync(addUserVM.ApplicationRoleId);
+                if (role != null)
                 {
-
-                    UserName = addUserVM.Username,
-                    Email = addUserVM.Email,
-                    PhoneNumber = addUserVM.Telephone,
-                    Firstname = addUserVM.Firstname,
-                    Surname = addUserVM.Surname,
-                };
-                IdentityResult result = await usm.CreateAsync(addThisUser, addUserVM.Password);
-                if (result.Succeeded)
-                {
-                    AppRole applicationRole = await rol.FindByIdAsync(addUserVM.ApplicationRoleId);
-                    if (applicationRole == null)
-                    {
-                    }
-                    else
-                    {
-                        await usm.AddToRoleAsync(addThisUser, applicationRole.Name);
-
-                    }
-                    ViewBag.Message = "New User created";
-
-
-                    string ctoken = usm.GenerateEmailConfirmationTokenAsync(addThisUser).Result;
-                    string ctokenLink = Url.Action(nameof(VerifyEmail), "Account", new { userId = addThisUser.Id, token = ctoken }, Request.Scheme);
-
-                    using (MailMessage mailMessage = new())
-                    {
-
-                        mailMessage.Subject = "EMAIL VERIFICATION";
-                        mailMessage.IsBodyHtml = true;
-                        mailMessage.To.Add(addThisUser.Email);
-                        mailMessage.From = new MailAddress("ospoku@gmail.com");
-                        string body = string.Empty;
-                        using (StreamReader reader = new(env.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                      + "Templates"
-                            + Path.DirectorySeparatorChar.ToString()
-                            + "EmailTemplate"
-                            + Path.DirectorySeparatorChar.ToString()
-                            + "EmailConfirmationTemplate.cshtml"))
-                        {
-                            body = reader.ReadToEnd();
-
-                        };
-                        body = body.Replace("{UserName}", addThisUser.UserName);
-                        body = body.Replace("{url}", ctokenLink);
-                        mailMessage.Body = body;
-                        using (SmtpClient smtp = new())
-                        {
-
-                            smtp.Host = "smtp.gmail.com";
-                            smtp.Port = 587;
-                            smtp.Credentials = new NetworkCredential("ospoku@gmail.com", "az36400@osp");
-                            smtp.EnableSsl = true;
-                            smtp.Send(mailMessage);
-                        };
-                    }
-
-
-
-
-
-
-
-                    //we creating the necessary URL string:
-                    string URL = "https://frog.wigal.com.gh/ismsweb/sendmsg?";
-
-                    string from = "JHC";
-                    string username = "KofiPoku";
-                    string password = "Az36400@osp";
-                    string to = "233244139692";
-                    string messageText = "Testing JHC Message Alerts";
-
-                    // Creating URL to send sms
-                    string message = URL
-                        + "username="
-                        + username
-                        + "&password="
-                        + password
-                        + "&from="
-                        + from
-                        + "&to="
-                        + to
-                        + "&service="
-                        + "SMS"
-                        + "&message="
-                        + messageText;
-
-
-
-                    ////we creating the necessary URL string:
-                    //string URL = "https://frog.wigal.com.gh/api/v2/sendmsg";
-
-                    //string username = "KofiPoku";
-                    //string password = "Az36400@osp";
-
-                    //string messageText = "Testing JHC Message Alerts";
-                    //string destinations = "233244139692";
-                    //string senderid = "JHC";
-                    //// Creating URL to send sms
-                    //string message = URL
-                    //    + "username="
-                    //    + username
-                    //    + "&password="
-                    //    + password
-                    //    + "&senderid="
-                    //    + senderid
-                    //    + "&destinations="
-                    //    + destinations
-                    //    + "&service="
-                    //    + "SMS"
-                    //    + "&message="
-                    //    + messageText;
-
-
-                    HttpClient httpclient = new();
-
-                    var response2 = await httpclient.SendAsync(new HttpRequestMessage(HttpMethod.Post, message));
-                    if (response2.StatusCode == HttpStatusCode.OK)
-                    {
-                        // Do something with response. Example get content:
-                        // var responseContent = await response.Content.ReadAsStringAsync ().ConfigureAwait (false);
-                    }
-                    TempData["Message"] = "New User Created";
-
-                    return RedirectToAction("ViewUsers");
-
+                    await usm.AddToRoleAsync(newUser, role.Name);
                 }
-
             }
 
-            else
+            TempData["Message"] = "New User Created Successfully.";
+
+            // 3️⃣ Send email confirmation
+            var emailToken = await usm.GenerateEmailConfirmationTokenAsync(newUser);
+            var confirmationLink = Url.Action(nameof(VerifyEmail), "Account", new { userId = newUser.Id, token = emailToken }, Request.Scheme);
+
+            string emailBody = await System.IO.File.ReadAllTextAsync(Path.Combine(env.WebRootPath, "Templates", "EmailTemplate", "EmailConfirmationTemplate.cshtml"));
+            emailBody = emailBody.Replace("{UserName}", newUser.UserName).Replace("{url}", confirmationLink);
+
+            using (var mailMessage = new MailMessage())
             {
-                TempData["ResultMessage"] = "User creation error";
+                mailMessage.Subject = "EMAIL VERIFICATION";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.To.Add(newUser.Email);
+                mailMessage.From = new MailAddress("ospoku@gmail.com");
+                mailMessage.Body = emailBody;
+
+                using (var smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.Credentials = new NetworkCredential("ospoku@gmail.com", "az36400@osp");
+                    smtp.EnableSsl = true;
+                    await smtp.SendMailAsync(mailMessage);
+                }
             }
 
-            return RedirectToAction("AddUser");
+            // 4️⃣ Send SMS notification
+            string smsUrl = "https://frog.wigal.com.gh/ismsweb/sendmsg?";
+            string smsMessage = $"username=KofiPoku&password=Az36400@osp&from=JHC&to=233244139692&service=SMS&message=Testing JHC Message Alerts";
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.PostAsync(smsUrl + smsMessage, null);
+                // Optionally check response.StatusCode and handle errors
+            }
+
+            return RedirectToAction("ViewUsers");
         }
+
         [HttpGet]
         public IActionResult EditUser(string Id)
         {
@@ -215,47 +135,57 @@ namespace DMX.Controllers
             return ViewComponent(nameof(DeleteUser));
         }
         [HttpPost]
-        public async Task<IActionResult> EditUserAsync(string Id, AppUser user, EditUserVM editUserVM)
+        public async Task<IActionResult> EditUserAsync(string Id, EditUserVM editUserVM)
         {
-            AppUser searchUser = (from u in usm.Users where u.Id == Id select u).FirstOrDefault();
-            if (searchUser != null)
+            // Get the user by Id
+            var searchUser = await usm.FindByIdAsync(Id);
+            if (searchUser == null)
+                return NotFound();
+
+            // Update system-level fields only (admin-level edits)
+            searchUser.Email = editUserVM.Email;
+            searchUser.EmailConfirmed = editUserVM.EmailConfirmed;       // Checkbox
+            searchUser.PhoneNumber = editUserVM.PhoneNumber;             // System phone number
+            searchUser.UserName = editUserVM.Username;
+            searchUser.LockoutEnabled = !editUserVM.IsActive;            // Deactivate / Activate account
+            searchUser.LockoutEnd = editUserVM.IsActive ? null : DateTimeOffset.MaxValue;
+
+           // Example
+
+            // Apply updates
+            var updateResult = await usm.UpdateAsync(searchUser);
+            if (!updateResult.Succeeded)
             {
+                // handle errors, maybe add ModelState errors
+                TempData["Error"] = "Failed to update user.";
+                return View("Users");
+            }
 
-                searchUser.Email = user.Email;
-                searchUser.Firstname = user.Firstname;
-                searchUser.Surname = user.Surname;
-                searchUser.PhoneNumber = user.PhoneNumber;
-
-                searchUser.UserName = user.UserName;
-
-                IdentityResult identityResult = await usm.UpdateAsync(searchUser);
-                IdentityResult result = identityResult;
-                if (result.Succeeded)
+            // Handle Roles (if changed)
+            var currentRoles = await usm.GetRolesAsync(searchUser);
+            if (currentRoles.SingleOrDefault() != editUserVM.ApplicationRoleId)
+            {
+                await usm.RemoveFromRolesAsync(searchUser, currentRoles);
+                if (!string.IsNullOrEmpty(editUserVM.ApplicationRoleId))
                 {
-                    string existingRole = usm.GetRolesAsync(searchUser).Result.SingleOrDefault();
-                    string existingRoleId = rol.Roles.Single(r => r.Name == existingRole).Id;
-                    if (existingRoleId != editUserVM.ApplicationRoleId)
-                    {
-                        IdentityResult roleResult = await usm.RemoveFromRoleAsync(searchUser, existingRole);
-                        if (roleResult.Succeeded)
-                        {
-                            AppRole applicationRole = await rol.FindByIdAsync(editUserVM.ApplicationRoleId);
-                            if (applicationRole != null)
-                            {
-                                IdentityResult newRoleResult = await usm.AddToRoleAsync(searchUser, applicationRole.Name);
-                                if (newRoleResult.Succeeded)
-                                {
-                                    return RedirectToAction("Users");
-                                }
-                            }
-                        }
-                    }
+                    await usm.AddToRoleAsync(searchUser, editUserVM.ApplicationRoleId);
                 }
             }
 
+            // Handle Reset Password
+            if (!string.IsNullOrEmpty(editUserVM.ResetPassword))
+            {
+                var token = await usm.GeneratePasswordResetTokenAsync(searchUser);
+                await usm.ResetPasswordAsync(searchUser, token, editUserVM.ResetPassword);
+            }
 
-            return View("Users");
+            // TODO: Handle Permissions (if your system supports claims/permissions)
+            // await UpdateUserPermissions(searchUser, editUserVM.SelectedPermissions);
+
+            TempData["Success"] = "User successfully updated.";
+            return RedirectToAction("Users");
         }
+
         [HttpGet]
         public IActionResult ViewPermissions()
         {
@@ -267,68 +197,10 @@ namespace DMX.Controllers
             return ViewComponent(nameof(ManageUserRoles), Id);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> LoginAsync(LoginVM loginVM)
-        {
-            if (!ModelState.IsValid)
-            {
-
-                return View();
+ 
 
 
-            };
-            var user = await usm.FindByNameAsync(loginVM.Username);
-            var result = await sim.PasswordSignInAsync(loginVM.Username, loginVM.Password, loginVM.RememberMe, false);
-            if (result.Succeeded)
-            {
-                var userClaims = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                userClaims.AddClaim(new Claim("Name", user.UserName));
-                userClaims.AddClaim(new Claim("Email", user.Email));
-                userClaims.AddClaim(new Claim("Firstname", user.Firstname));
-                userClaims.AddClaim(new Claim("Surname", user.Surname));
-                userClaims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
-
-                userClaims.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", from p in xct.UserRoles
-                                                                                join role in xct.Roles on p.RoleId equals role.Id
-                                                                                where p.UserId == user.Id
-                                                                                select role.Name.ToString())));
-                //string.Join(",", from p in gcx.UserRoles
-                //                 join role in gcx.Roles on p.RoleId equals role.Id
-                //                 where p.UserId == user.Id
-                //                 select role.Name.ToString())););
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userClaims), new AuthenticationProperties { IsPersistent = true });
-
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-            else
-            {
-                ViewBag.Message = "login error!";
-
-                return View(loginVM);
-
-            }
-
-        }
-
-
-        public async Task<IActionResult> VerifyEmail(string userId, string token)
-        {
-
-            var user = await usm.FindByIdAsync(userId);
-            await usm.ConfirmEmailAsync(user, token);
-
-            return BadRequest();
-        }
-        public async Task<IActionResult> SendEmailConfirmation(string userId, string token)
-        {
-
-            AppUser user = await usm.FindByIdAsync(userId);
-            await usm.ConfirmEmailAsync(user, token);
-
-
-            return BadRequest();
-        }
 
      
         [HttpGet]
@@ -430,7 +302,8 @@ namespace DMX.Controllers
                 return ViewComponent(nameof(UserManagement));
             }
         }
-    
+        
+
 
     }
 }

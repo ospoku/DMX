@@ -2,21 +2,34 @@
 using DMX.Models;
 using Humanizer.Localisation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace DMX.Authorization
 {
-    public class MemoOwnerHandler : AuthorizationHandler<MemoOwnerRequirement, Memo>
+    public class MemoOwnerHandler(UserManager<AppUser> userManager) : AuthorizationHandler<MemoOwnerRequirement, Memo>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MemoOwnerRequirement requirement, Memo resource)
+
+        private readonly UserManager<AppUser> usm = userManager;
+
+        protected override async Task HandleRequirementAsync(
+            AuthorizationHandlerContext context,
+            MemoOwnerRequirement requirement,
+            Memo resource)
         {
-            // Check if the user has a claim of type ClaimTypes.Name with the value of resource.CreatedBy
-            if (context.User.HasClaim(x=>x.Type==ClaimTypes.NameIdentifier && x.Value==resource.CreatedBy))
+            // Get logged-in user object
+            var user = await usm.GetUserAsync(context.User);
+
+            if (user == null)
+            {
+                return;
+            }
+
+            // Compare logged-in user with memo owner
+            if (user.Id == resource.CreatedBy)
             {
                 context.Succeed(requirement);
             }
-
-            return Task.CompletedTask;
         }
     }
 }

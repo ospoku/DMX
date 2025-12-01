@@ -23,8 +23,8 @@ namespace DMX.ViewComponents
 
      
         {
-            var decodedId = HttpUtility.UrlDecode(Id)?.Replace(" ", "+"); // sanitize
-            var decryptedId = protector.Unprotect(decodedId);
+           
+            var decryptedId = protector.Unprotect(Id);
             if (!Guid.TryParse(decryptedId, out Guid memoGuid))
             {   return View("BadRequest", "Invalid memo ID format."); }
                 Memo memoToEdit = new();

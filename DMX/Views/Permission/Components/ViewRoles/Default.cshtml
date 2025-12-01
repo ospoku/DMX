@@ -50,7 +50,7 @@
                                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                     <div class="btn-group me-2" role="group" aria-label="First group">
                              
-                    <button type="button" class="btn btn-warning" onclick="openDialogFromData(this)" data-url="RolePermissions" data-user-id="@HttpUtility.UrlEncode(protector.Protect(role.Id).ToString())" data-dialog-id="RolePermissionsDialog"><i class="fa fa-edit"></i></button>
+                    <button type="button" class="btn btn-warning" onclick="openDialogFromData(this)" data-url="RolePermissions" data-user-id="@protector.Protect(role.Id).ToString())" data-dialog-id="RolePermissionsDialog"><i class="fa fa-edit"></i></button>
                                                 <button type="button" class="btn btn-danger" onclick="handleRoleDelete('@role.Id')"><i class="fa fa-trash"></i></button>
                                    
                               

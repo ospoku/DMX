@@ -225,9 +225,16 @@ namespace DMX.Controllers
         [HttpGet]
         public IActionResult ManageRolePermissions(string Id)
         {
-           
 
-            return ViewComponent(nameof(ManageRolePermissions),Id);
+
+            return ViewComponent(nameof(ManageRolePermissions), Id);
+        }
+        [HttpGet]
+        public IActionResult ManageUserPermissions(string Id)
+        {
+
+
+            return ViewComponent(nameof(ManageUserPermissions), Id);
         }
         [HttpPost]
         public async Task<IActionResult>ManageRolePermissions (RolePermissionVM model)
@@ -261,7 +268,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task <IActionResult> AddPermission(AddPermissionVM addPermissionVM)
         {
-            Permission addThisPermission = new Permission
+            Permission addThisPermission = new()
             {
                 Action = addPermissionVM.ActionName,
                 Module=addPermissionVM.ModuleName,

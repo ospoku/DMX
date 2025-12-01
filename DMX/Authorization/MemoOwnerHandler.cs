@@ -19,7 +19,7 @@ namespace DMX.Authorization
         {
             // Get logged-in user object
             var user = await usm.GetUserAsync(context.User);
-
+          
             if (user == null)
             {
                 return;

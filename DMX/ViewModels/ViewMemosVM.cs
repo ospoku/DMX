@@ -12,7 +12,7 @@ namespace DMX.ViewModels
         public List<string> Assignees { get; set; }
         public string ReferenceNumber { get; set; }
         public string CreatedBy { get; set; }
-        public Guid MemoId { get; set; }
+        public Guid PublicId { get; set; }
         public DateTime? CreatedDate { get;  set; }
     }
 }

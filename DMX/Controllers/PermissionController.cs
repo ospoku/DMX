@@ -85,37 +85,16 @@ namespace DMX.Controllers
 
             TempData["Message"] = "New User Created Successfully.";
 
-            // 3️⃣ Send email confirmation
-            var emailToken = await usm.GenerateEmailConfirmationTokenAsync(newUser);
-            var confirmationLink = Url.Action(nameof(VerifyEmail), "Account", new { userId = newUser.Id, token = emailToken }, Request.Scheme);
-
-            string emailBody = await System.IO.File.ReadAllTextAsync(Path.Combine(env.WebRootPath, "Templates", "EmailTemplate", "EmailConfirmationTemplate.cshtml"));
-            emailBody = emailBody.Replace("{UserName}", newUser.UserName).Replace("{url}", confirmationLink);
-
-            using (var mailMessage = new MailMessage())
-            {
-                mailMessage.Subject = "EMAIL VERIFICATION";
-                mailMessage.IsBodyHtml = true;
-                mailMessage.To.Add(newUser.Email);
-                mailMessage.From = new MailAddress("ospoku@gmail.com");
-                mailMessage.Body = emailBody;
-
-                using (var smtp = new SmtpClient("smtp.gmail.com", 587))
-                {
-                    smtp.Credentials = new NetworkCredential("ospoku@gmail.com", "az36400@osp");
-                    smtp.EnableSsl = true;
-                    await smtp.SendMailAsync(mailMessage);
-                }
-            }
+            
 
             // 4️⃣ Send SMS notification
-            string smsUrl = "https://frog.wigal.com.gh/ismsweb/sendmsg?";
-            string smsMessage = $"username=KofiPoku&password=Az36400@osp&from=JHC&to=233244139692&service=SMS&message=Testing JHC Message Alerts";
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.PostAsync(smsUrl + smsMessage, null);
-                // Optionally check response.StatusCode and handle errors
-            }
+            //string smsUrl = "https://frog.wigal.com.gh/ismsweb/sendmsg?";
+            //string smsMessage = $"username=KofiPoku&password=Az36400@osp&from=JHC&to=233244139692&service=SMS&message=Testing JHC Message Alerts";
+            //using (var httpClient = new HttpClient())
+            //{
+            //    var response = await httpClient.PostAsync(smsUrl + smsMessage, null);
+            //    // Optionally check response.StatusCode and handle errors
+            //}
 
             return RedirectToAction("ViewUsers");
         }

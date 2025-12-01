@@ -73,6 +73,7 @@ namespace DMX.Controllers
 
             if (result.Succeeded)
             {
+
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 

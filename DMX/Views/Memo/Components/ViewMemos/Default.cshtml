@@ -56,46 +56,31 @@
                         <td><span class="badge badge-pill badge-dark">@assignee</span></td>
 }
                            <td>
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Select Action
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                   @if(dcx.MemoComments.Any(c=>c.PublicId==Memo.PublicId))
-                                   {
-                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @protector.Protect((Memo.PublicId).ToString()) })" class="dropdown-item-custom d-none" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                        
-                                   }
-                                        else
-                                        {
-                                            @if((await auth.AuthorizeAsync(User,"MemoOwnerPolicy")).Succeeded)
-                                            {
-                                               
-                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditMemo", new { Id = @protector.Protect(Memo.PublicId.ToString()) })" class=" dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                            }
-                                       }
-                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.CommentMemo)).Succeeded)
-                                        {
-                                        <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentMemo", new { Id= @protector.Protect(Memo.PublicId.ToString())})" class="dropdown-item-custom" data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
-                                        
-                                        }
-                                       @*  <form asp-action="PrintMemo" asp-route-Id="@protector.Protect(Memo.MemoId)" asp-controller="Memo" method="get">
-                                            <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</button>
-                                       
-                                            </form> *@
 
-                                        <a href="#" class="dropdown-item-custom" onclick="printMemoIframe('@HttpUtility.UrlEncode(@protector.Protect(Memo.PublicId.ToString()))')">
-                                            <i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print
+                                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                    <div class="btn-group me-2" role="group" aria-label="First group">
+
+
+                                        <button type="button" onclick="openDialogFromData(this)" data-url="EditMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="EditMemoDialog" class="btn btn-primary"><i style="width:15px; height:15px" class=" fa fa-edit"></i></button>
+                                     
+                                  
+                                        <button type="button" class="btn btn-primary" data-bs-url="@Url.Action("CommentMemo", new { Id= @protector.Protect(Memo.PublicId.ToString())})"  data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i></button>
+                                        
+                                        
+                                 
+
+                                        <a href="#" class="bt btn-primary" onclick="printMemoIframe(@protector.Protect(Memo.PublicId.ToString()))">
+                                            <i style="width:15px; height:15px" class="fa fa-print mr-3"></i>
                                         </a>
-                                        @if (( await auth.AuthorizeAsync(User,Permissions.Modules.DeleteMemo)).Succeeded)
-                                        {
+                                      
                                             <form asp-action="DeleteMemo" asp-route-Id="@protector.Protect(Memo.PublicId.ToString())" onsubmit="return jQueryAjaxDeleteMemo(this);">
-                                                <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
+                                                <button type="submit" class="btn btn-primary"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i></button>
                                             </form>
-                                        }
+                                        
                                        
-                                    </div>
-                            </div>
+                                  </div>
+                                  </div>
+                        
 
                         </td>
                     </tr>
@@ -108,6 +93,7 @@
     <div class="card-footer">
     </div>
 </div>
+<dialog id="EditMemoDialog"><div id="EditMemoDialogContent"></div></dialog>
 <iframe id="printFrame" style="display:none;"></iframe>
 
 <script type="text/javascript">

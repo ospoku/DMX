@@ -52,46 +52,38 @@
                                         Select Action
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.EditExcuseDuty)).Succeeded)
-                                        {
-                                            <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditExcuseDuty", new { Id = protector.Protect(Excuse.PublicId.ToString()) })" class="dropdown-item-custom" data-bs-target="#EditExcuseDuty">
-                                                <i style="width:15px; height:15px" class="fa fa-edit mr-3"></i> Edit
-                                            </button>
 
-                                            <button type="button" onclick="openDialogFromData(this)" data-url="EditExcuseDuty" data-user-id="@protector.Protect(Excuse.PublicId.ToString()))" data-dialog-id="EditExcuseDutyDialog" class="btn btn-primary"><i style="width:15px; height:15px" class=" fa fa-edit"></i></button>
+                                        
 
-                                        }
-                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.CommentExcuseDuty)).Succeeded)
-                                        {
-                                            <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("CommentExcuseDuty", new { Id = protector.Protect(Excuse.PublicId.ToString()) })" class="dropdown-item-custom" data-bs-target="#CommentExcuseDuty">
-                                                <i style="width:15px; height:15px" class="fa fa-comments mr-3"></i> Comment
+                                            <button type="button"  class="dropdown-item-custom" onclick="openDialogFromData(this)" data-url="EditExcuseDuty" data-user-id="@protector.Protect(Excuse.PublicId.ToString())" data-dialog-id="EditExcuseDutyDialog"><i style="width:15px; height:15px" class=" fa fa-edit bg-warning"></i>Edit</button>
+
+                                        
+                                            <button type="button" onclick="openDialogFromData(this)"  data-url="CommentExcuseDuty"data-user-id="protector.Protect(Excuse.PublicId.ToString())" class="dropdown-item-custom bg-dark">
+                                                <i style="width:15px; height:15px" class="fa fa-comments text-white"></i>Comment
                                             </button>
-                                        }
-                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.PrintExcuseDuty)).Succeeded)
-                                        {
-                                            <button class="dropdown-item-custom" onclick="printExcuseDutyIframe('@protector.Protect(Excuse.PublicId.ToString())')">
-                                                <i style="width:15px; height:15px" class="fa fa-print mr-3"></i> Print
+                                  
+                                            <button type="button" class="btn btn-primary" onclick="printExcuseDutyIframe('@protector.Protect(Excuse.PublicId.ToString())')">
+                                                <i style="width:15px; height:15px" class="fa fa-print"></i>
                                             </button>
-                                        }
-                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteExcuseDuty)).Succeeded)
-                                        {
-                                            <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDeleteExcuseDuty(this);">
-                                                <button type="submit" class="dropdown-item-custom">
-                                                    <i style="width:15px; height:15px" class="fa fa-trash mr-3"></i> Delete
+                                        
+                                            
+                                                <button type="button" class="btn btn-primary">
+                                                    <i style="width:15px; height:15px" class="fa fa-trash"></i>
                                                 </button>
-                                            </form>
-                                        }
+                                          
+                                        
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                    }
+                   }
                 </tbody>
             </table>
         </div>
     </div>
     <div class="card-footer"></div>
 </div>
+<dialog id="EditExcuseDutyDialog"><div id="EditExcuseDutyDialogContent"></div></dialog>
 @await Component.InvokeAsync(nameof(AddExcuseDuty));
 <iframe id="printFrame" style="display:none;"></iframe>
 

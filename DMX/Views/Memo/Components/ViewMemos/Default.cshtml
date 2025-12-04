@@ -57,25 +57,27 @@
 }
                            <td>
 
-                                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                    <div class="btn-group me-2" role="group" aria-label="First group">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Select Action
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
-
-                                        <button type="button" onclick="openDialogFromData(this)" data-url="EditMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="EditMemoDialog" class="btn btn-primary"><i style="width:15px; height:15px" class=" fa fa-edit"></i></button>
+                                        <button  onclick="openDialogFromData(this)" data-url="EditMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="EditMemoDialog" class="dropdown-item-custom"><i style="width:15px; height:15px" class=" fa fa-edit mr-3 text-warning"></i>Edit</button>
                                      
                                   
-                                        <button type="button" class="btn btn-primary" data-bs-url="@Url.Action("CommentMemo", new { Id= @protector.Protect(Memo.PublicId.ToString())})"  data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i></button>
+                                        <button type="button" class="dropdown-item-custom" data-bs-url="@Url.Action("CommentMemo", new { Id= @protector.Protect(Memo.PublicId.ToString())})"  data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
                                         
                                         
                                  
 
-                                        <a href="#" class="bt btn-primary" onclick="printMemoIframe(@protector.Protect(Memo.PublicId.ToString()))">
-                                            <i style="width:15px; height:15px" class="fa fa-print mr-3"></i>
-                                        </a>
+                                        <button type="button" class="dropdown-item-custom" onclick="printMemoIframe(@protector.Protect(Memo.PublicId.ToString()))">
+                                            <i style="width:15px; height:15px" class="fa fa-print mr-3 text-primary"></i>Print
+                                        </button>
                                       
-                                            <form asp-action="DeleteMemo" asp-route-Id="@protector.Protect(Memo.PublicId.ToString())" onsubmit="return jQueryAjaxDeleteMemo(this);">
-                                                <button type="submit" class="btn btn-primary"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i></button>
-                                            </form>
+                                             
+                                                <button type="button" onclick="de" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3 text-danger"></i>Delete</button>
+                                          
                                         
                                        
                                   </div>

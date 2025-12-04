@@ -99,30 +99,30 @@ namespace DMX.Controllers
                 return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
             }
         }
-
+      
         [HttpGet]
         public async Task<IActionResult> EditMemoAsync(string id)
         {
            
-            var unprotectedId = protector.Unprotect(id);
+           var unprotectedId = protector.Unprotect(id);
             if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
-            {
-                return BadRequest("Invalid memo ID format.");
-            }
-            var memo = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
-            if (memo == null)
-            {
-                return NotFound();
-            }
+          {
+              return BadRequest("Invalid memo ID format.");
+          }
+           var memo = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
+           if (memo == null)
+           {
+               return NotFound();
+           }
 
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, memo, "MemoOwnerPolicy");
-            if (!authorizationResult.Succeeded)
-            {
-                _notyfService.Error("You do not have access to this resource!", 5);
-                return Json(new { success = false, message = "You do not have access to this resource!" });
-            }
+           var authorizationResult = await _authorizationService.AuthorizeAsync(User, memo, "MemoOwnerPolicy");
+           if (!authorizationResult.Succeeded)
+           {
+               _notyfService.Error("You do not have access to this resource!", 5);
+              return Json(new { success = false, message = "You do not have access to this resource!" });
+           }
 
-            return ViewComponent(nameof(EditMemo), id);
+          return ViewComponent(nameof(EditMemo), id);
         }
 
         [HttpPost]

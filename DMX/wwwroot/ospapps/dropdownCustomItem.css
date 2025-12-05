@@ -13,12 +13,12 @@
 
     .dropdown-item-custom:hover, .dropdown-item-custom:focus {
         /* color: #fff;*/
-        text-decoration: none;
-         background-color: #448aff;
+     /*   text-decoration: none;
+         background-color: #448aff;*/
     }
 
     .dropdown-item-custom.active, .dropdown-item-custom:active {
         /* color: #fff;*/
-        text-decoration: none;
-         background-color: #448aff;
+/*        text-decoration: none;
+         background-color: #448aff;*/
     }

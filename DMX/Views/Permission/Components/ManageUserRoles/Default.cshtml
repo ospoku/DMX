@@ -4,9 +4,7 @@
 @model DMX.ViewModels.ManageUserRolesVM;
 
 <dialog class="modal fade" id="ManageUserRoles">
-    <div class="modal-dialog">
-
-        <div class="modal-content">
+    
             <div class="modal-header">
                     <h6>Add/Remove Roles for<br /> <b>@usm.FindByIdAsync(@Model.UserId).Result.Fullname</b></h6> <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
                 </div>
@@ -31,7 +29,7 @@
               
                 </div>
                 }
-            </div>
+       
       
-    </div>
+  
 </dialog>

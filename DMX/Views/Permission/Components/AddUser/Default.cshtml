@@ -41,7 +41,7 @@
                     </div>
                 <div class="modal-footer">  <button id="btnAddUser" class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Save</button></div>
                 }
-<<<<<<< HEAD
+
               
          
 </dialog>
@@ -50,48 +50,7 @@
           
 
 
-    <script>
-        $(document).ready(function () {
 
-            const addUserFormSelector="#addUserForm";
-
-            $('#selectRole').select2({
-                dropdownParent: $('#AddUser')
-            });
-
-        
-          document.getElementById("btnAddUser").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            const form = document.querySelector(addUserFormSelector);
-                 if (!form.checkValidity()) {
-                form.reportValidity(); // Display browser validation messages
-                return; // Stop further execution if validation fails
-            }
-
-            // Validate fields
-
-            // Show error if invalid
-
-
-            // Confirm save
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to save this record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    });
-
-</script>
 
 
 

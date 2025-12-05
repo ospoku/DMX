@@ -6,6 +6,7 @@
 
 
 @inject Microsoft.AspNetCore.DataProtection.IDataProtectionProvider DataProtectionProvider
+@using DMX.ViewComponents
 @using Microsoft.AspNetCore.DataProtection
 @{
     // Optional: create protector in view (same purpose string)
@@ -66,4 +67,4 @@
     <div class="card-footer">
     </div>
 </div>
-@await Component.InvokeAsync("AddDeceasedType")
+@await Component.InvokeAsync(nameof(AddDeceasedType))

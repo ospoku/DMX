@@ -1,4 +1,4 @@
-﻿@using DMX.Constants
+﻿
 @using DMX.ViewComponents
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService auth
@@ -25,7 +25,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table dataTables_wrapper">
+            <table class="table dataTables_wrapper" id="dtUsers">
                
                 
                         <thead>
@@ -80,6 +80,4 @@
 <dialog id="EditUserDialog" class="rounded border-0 col-md-4"><div id="EditUserDialogContent"></div></dialog>
 
 @await Component.InvokeAsync(nameof(AddUser)) 
-
-    @await Component.InvokeAsync(nameof(AddUser))
 

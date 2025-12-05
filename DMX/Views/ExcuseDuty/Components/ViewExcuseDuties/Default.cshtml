@@ -1,5 +1,5 @@
 ﻿
-@using DMX.Constants
+
 @using DMX.ViewComponents
 @using Microsoft.AspNetCore.Authorization
 @using System.Web
@@ -94,49 +94,6 @@
             printFrame.contentWindow.print();
         };
     }
-    $(document).ready(function() {
-        var table = $('#example').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'pdfHtml5',
-                    text: 'Export PDF',
-                    title: 'Acme Corporation',
-                    messageTop: 'Employee Report',
-                    exportOptions: {
-                        columns: ':visible'
-                    },
-                    customize: function (doc) {
-                        // Add company logo
-                        doc.content.splice(0, 0, {
-                            alignment: 'center',
-                            image: 'data:image/png;base64,YOUR_BASE64_ENCODED_IMAGE',
-                            width: 100,
-                            margin: [0, 0, 0, 10]
-                        });
-                        // Add company details
-                        doc.content.splice(1, 0, {
-                            alignment: 'center',
-                            text: 'Acme Corporation\n1234 Elm Street, Springfield, USA\nTel: (555) 123-4567\nEmail: info@acmecorp.com',
-                            margin: [0, 0, 0, 10]
-                        });
-                        // Adjust page margins
-                        doc.pageMargins = [10, 10, 10, 10];
-                        doc.defaultStyle.fontSize = 10;
-                        doc.styles.tableHeader.fontSize = 12;
-                        doc.styles.title.fontSize = 14;
-                        // Customize footer with page number
-                        doc['footer'] = function (currentPage, pageCount) {
-                            return {
-                                text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
-                                alignment: 'center',
-                                margin: [0, 10, 0, 10]
-                            };
-                        };
-                    }
-                }
-            ]
-        });
-    });
+
     
 </script>

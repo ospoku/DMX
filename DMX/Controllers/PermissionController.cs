@@ -1,5 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using DMX.Constants;
+
 using DMX.Data;
 
 
@@ -20,7 +20,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Web;
-using static DMX.Constants.Permissions;
+
 
 namespace DMX.Controllers
 {
@@ -220,7 +220,7 @@ namespace DMX.Controllers
 
             await rol.CreateAsync(appRole);
 
-            return RedirectToAction("ViewRoles");
+            return RedirectToAction(nameof(ViewRoles));
         }
         [HttpGet]
         public IActionResult ManageRolePermissions(string Id)
@@ -237,23 +237,47 @@ namespace DMX.Controllers
             return ViewComponent(nameof(ManageUserPermissions), Id);
         }
         [HttpPost]
-        public async Task<IActionResult>ManageRolePermissions (RolePermissionVM model)
+   
+        public async Task<IActionResult> ManageRolePermissions(RolePermissionVM model)
         {
-            var roleId = protector.Unprotect(model.RoleId);
-            var role = await rol.FindByIdAsync(roleId);
-            var claims = await rol.GetClaimsAsync(role);
-            foreach (var claim in claims)
+            try
             {
-                await rol.RemoveClaimAsync(role, claim);
+                var roleId = protector.Unprotect(model.RoleId);
+                var role = await rol.FindByIdAsync(roleId);
+
+                var claims = await rol.GetClaimsAsync(role);
+
+                // Remove old claims
+                foreach (var claim in claims)
+                {
+                    await rol.RemoveClaimAsync(role, claim);
+                }
+
+                // Add new claims
+                var selectedClaims = model.SelectedClaimValues?.ToList() ?? new List<string>();
+                foreach (var claim in selectedClaims)
+                {
+                    await rol.AddPermissionClaim(role, claim);
+                }
+
+                // ✅ Notify only if successful
+                notyf.Success("Permissions successfully updated");
             }
-            var selectedClaims = model.SelectedClaimValues.ToList();
-            foreach (var claim in selectedClaims)
+            catch (Exception ex)
             {
-                await rol.AddPermissionClaim(role,claim);
+                // ❌ Notify on error
+                notyf.Error("Something went wrong while updating permissions");
+
+                // Optional: log the error
+                // _logger.LogError(ex, "Error updating role permissions");
+
+                return RedirectToAction(nameof(UserManagement));
             }
-            
+
             return RedirectToAction(nameof(UserManagement));
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> ManageUserRoles(string Id, ManageUserRolesVM model)
@@ -279,7 +303,7 @@ namespace DMX.Controllers
             {
                 notyf.Error("An error occurred while processing the request.", 5);
               
-                return ViewComponent(nameof(UserManagement));
+                return ViewComponent(nameof(UserManagement),addPermissionVM);
             }
             else
             {

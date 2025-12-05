@@ -1,4 +1,4 @@
-﻿@using DMX.Constants
+﻿
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService auth
 @{
@@ -45,24 +45,20 @@
                                                 Select Action
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                @if (( await auth.AuthorizeAsync(User,Permissions.Modules.EditSickReport)).Succeeded)
-                                        { 
+                                     
                                             <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("EditSickReport")" class="dropdown-item-custom" data-bs-target="#EditMemo"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                        }
+                                        
                                        
-                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.PrintSickReport)).Succeeded)
-                                        {<a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="protector.Protect(s.SickReportId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
-                                        }
-                                         @if (( await auth.AuthorizeAsync(User,Permissions.Modules.CommentSickReport)).Succeeded)
-                                        {
+                                        <a class="dropdown-item-custom" asp-action="PrintProfile" asp-controller="Client" asp-route-Id="protector.Protect(s.SickReportId)"><i style="width:15px; height:15px" class="fa fa-print mr-3"></i>Print</a>
+                                        
+                                      
                                             <button type="button" data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ClientProfile")" class="dropdown-item-custom" data-bs-target="#ClientProfile"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
-                                        }  
-                                        @if ((await auth.AuthorizeAsync(User, Permissions.Modules.DeleteSickReport)).Succeeded)
-                                                {
+                                         
+                                      
                                                     <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
                                                         <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
                                                 </form>
-                                                }
+                                                
                                             </div>
                                         </div>
 

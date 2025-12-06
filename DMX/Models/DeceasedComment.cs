@@ -7,13 +7,13 @@ namespace DMX.Models
     public class DeceasedComment:TableAudit
     {
         [Key]
-     public int Id { get; set; }
+     public int DeceasedCommentId { get; set; }
         public Guid PublicId { get; set; }= Guid.NewGuid();
         [Required]
         public string Message { get; set; }
         [ForeignKey(nameof(DeceasedId))]
         [Required]
-        public  Guid DeceasedId { get; set; }
+        public  int DeceasedId { get; set; }
         [Required]
         public string UserId { get; set; }
         public Deceased Deceased { get; set; }

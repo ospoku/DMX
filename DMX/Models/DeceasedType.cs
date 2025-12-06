@@ -8,7 +8,7 @@ namespace DMX.Models
     public class DeceasedType:TableAudit
     {
         [Key]
-     public int Id { get; set; }
+     public int DeceasedTypeId { get; set; }
         public Guid PublicId { get; set; }
         [Required]
         public   string Name { get; set; }

@@ -10,7 +10,7 @@ namespace DMX.ViewModels
         public string Title { get; set; }
         public int CommentCount { get; set; }
         public string NewComment { get; set; }
-    public ICollection<ServiceRequestComment>Comments { get; set; }
+    public ICollection<ServiceComment>Comments { get; set; }
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
     }

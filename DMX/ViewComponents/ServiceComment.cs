@@ -34,15 +34,15 @@ namespace DMX.ViewComponents
             //foreach (var user in result) {
             //    AssignedUsers.Add(user);
             //}
-            var decodedId=HttpUtility.UrlDecode(Id)?.Replace(" ","+");
-            var decryptedId=protector.Unprotect(decodedId);
-            if(!Guid.TryParse(decodedId, out Guid serviceGuid))
+         
+            var decryptedId=protector.Unprotect(Id);
+            if(!Guid.TryParse(decryptedId, out Guid serviceGuid))
             {
 
             }
 
             ServiceRequest serviceRequestToEdit = new ServiceRequest();
-            serviceRequestToEdit = (from m in dcx.ServiceRequests.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.RequestId == serviceGuid select m).FirstOrDefault();
+            serviceRequestToEdit = (from m in dcx.ServiceRequests.Include(m => m.Comments.OrderBy(m => m.CreatedDate)) where m.PublicId == serviceGuid select m).FirstOrDefault();
 
             ServiceRequestCommentVM addCommentVM = new()
             {

@@ -68,7 +68,7 @@ namespace DMX.ViewComponents
                 .Where(s => s.PublicId == selectedDeceased.PublicId).Select(s=>s.MorgueService)
                 .ToList();
             // Calculate the tier charges
-            var tierCharges = FeeCalculator(numberOfDays, selectedDeceased.DeceasedTypeId, selectedServices);
+            var tierCharges = FeeCalculator(numberOfDays, selectedDeceased. DeceasedTypeId, selectedServices);
 
             // Calculate the total invoice amount
             decimal totalInvoiceAmount = tierCharges.Sum(t => t.TotalCharge) + selectedServices.Sum(s => s.Amount);

@@ -1,10 +1,9 @@
 ﻿
 @model DMX.ViewModels.EditMemoVM;
 
+  
 
-    <div class="modal-dialog modal-lg">
-
-        <div class="modal-content">
+      
             <div class="modal-header">
 
                 <h6>Edit Memo</h6>
@@ -22,16 +21,16 @@
                      <div class="form-group">     
                     <textarea id="MemoContent" class="did-floating-input" type="text"  asp-for="@Model.Content" required="required" style="min-height:300px"></textarea>
                     </div>
-                            <div class="did-floating-label-content">
-                                    <select id="selectUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple ></select>
-                               <label class="did-floating-label">Select User(s)</label>
-                            </div>
+                            
+                                    <select id="selectUser" class="dmx-choices did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple ></select>
+                        
+                           
                        
                                 <button id="btnEditMemo" class="btn btn-block btn-primary">Update</button>         
       }
      </div>
-     </div>
-     </div>
+
+ 
     
 <script>
     $(document).ready(function () {

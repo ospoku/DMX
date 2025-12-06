@@ -63,21 +63,13 @@
                             </td>
                             
                                     <td>
-                                        <div class="btn-group" role="group">
-                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-rounded btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Select Action
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                       @*  <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("ManageRolePermissions", new { Id = @protector.Protect(perm.PublicId.ToString()) })" class="dropdown-item-custom" data-bs-target="#ManageRolePermissions"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>Edit</button>
-                                        <button data-bs-toggle="ajax-modal" data-bs-url="@Url.Action("UserPermissions", new { Id = @protector.Protect(perm.PublicId.ToString()) })" class="dropdown-item-custom" data-bs-target="#UserPermissions"><i style="width:15px; height:15px" class=" fa fa-edit mr-3"></i>User Permissions</button> *@
-                                        <button type="button" onclick="openDialogFromData(this)" data-url="ManageRolePermissions" data-user-id="@protector.Protect(perm.RoleId)" data-dialog-id="ManageRolePermissionsDialog" class="btn btn-primary"><i style="width:15px; height:15px" class=" fa fa-edit"></i></button>
+                              
+                                       
+                                        <button type="button" onclick="openDialogFromData(this)" data-url="ManageRolePermissions" data-user-id="@protector.Protect(perm.RoleId)" data-dialog-id="ManageRolePermissionsDialog" class="btn btn-sm btn-outline-primary">Configure</button>
 
 
-                                      @*   <form asp-action="DeleteClient" asp-route-Id="" onsubmit="return jQueryAjaxDelete(this);">
-                                                    <button type="submit" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3"></i>Delete</button>
-                                                </form> *@
-                                            </div>
-                                        </div>
+                                      
+                                     
 
 
 

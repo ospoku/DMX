@@ -18,13 +18,15 @@
 @{
     // Optional: create protector in view (same purpose string)
     var protector = DataProtectionProvider.CreateProtector("IdProtector");
+    var canEditMemo = auth.AuthorizeAsync(User,"EditMemo");
+    var canPrintMemo = auth.AuthorizeAsync(User, "PrintMemo");
 }
 
 
 
 
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+    <div class="card-header py-3"><i class="fas fa-fw fa-file-alt"></i>
         <h6 class="m-0 font-weight-bold text-primary d-inline">Memos</h6>
         
           
@@ -63,19 +65,20 @@
                                         Select Action
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    
 
                                         <button  onclick="openDialogFromData(this)" data-url="EditMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="EditMemoDialog" class="dropdown-item-custom"><i style="width:15px; height:15px" class=" fa fa-edit mr-3 text-warning"></i>Edit</button>
-                                     
+                                        
                                   
                                         <button type="button" class="dropdown-item-custom" data-bs-url="@Url.Action("CommentMemo", new { Id= @protector.Protect(Memo.PublicId.ToString())})"  data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
-                                        
-                                        
-                                 
+
+
+ 
 
                                         <button type="button" class="dropdown-item-custom" onclick="printMemoIframe('@protector.Protect(Memo.PublicId.ToString())')">
                                             <i style="width:15px; height:15px" class="fa fa-print mr-3 text-primary"></i>Print
                                         </button>
-                                      
+    
                                              
                                                 <button type="button" onclick="de" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3 text-danger"></i>Delete</button>
                                           

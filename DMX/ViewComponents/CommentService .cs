@@ -24,7 +24,7 @@ namespace DMX.ViewComponents
             var decryptedId = protector.Unprotect(Id);
             if (!Guid.TryParse(decryptedId, out Guid requestGuid)) ;
             ServiceRequest serviceToComment = new();
-           serviceToComment = (from m in dcx.ServiceRequests.Include(m=>m.Category).Include(m => m.Priority).Include(m => m.RequestType).Include(m => m.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(m => m.AppUser) where m.RequestId == requestGuid select m).FirstOrDefault();
+           serviceToComment = (from m in dcx.ServiceRequests.Include(m=>m.Category).Include(m => m.Priority).Include(m => m.RequestType).Include(m => m.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(m => m.AppUser) where m.PublicId == requestGuid select m).FirstOrDefault();
 
             ServiceRequestCommentVM addCommentVM = new()
             {

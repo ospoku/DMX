@@ -1,5 +1,5 @@
 ﻿@model DMX.ViewModels.AddServiceRequestVM;
-<dialog class="rounded-0 py-0 border-0 col-md-4" id="AddServiceRequestDialog">
+<dialog class="rounded p-0 border-0 col-md-4" id="AddServiceRequestDialog">
   
             <div class="modal-header">
                 <h6>Add Service Request</h6>
@@ -31,26 +31,14 @@
                             <div class="vr"></div>
                         </div>
                         <div class="col-md-4">
-                            <div class="did-floating-label-content">
-                                <select id="selectRequestTypes" class="did-floating-select" asp-items="@Model.RequestTypes" asp-for="@Model.RequestTypeId"></select>
-                                <label class="did-floating-label">Request Type</label>
-                            </div>
-                            <div class="did-floating-label-content">
-                                <select id="selectCategory" asp-for="@Model.CategoryId" class="did-floating-select" asp-items="@Model.Categories"></select>
-                                <label class="did-floating-label">Select Category</label>
-                            </div>
-                            <div class="did-floating-label-content">
-                                <select id="selectUrgency" class="did-floating-select" asp-items="@Model.Urgency" asp-for="@Model.PriorityId"></select>
-                                <label class="did-floating-label">Select Priority</label>
-                            </div>
-                            <div class="did-floating-label-content">
-                                <select id="selectStatus" class="did-floating-select" asp-items="@Model.Status" asp-for="@Model.StatusId"></select>
-                                <label class="did-floating-label">Select Status</label>
-                            </div>
-                            <div class="did-floating-label-content">
-                                <select id="selectUsers" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                                <label class="did-floating-label">Select User</label>
-                            </div>
+                        
+                                <select id="selectRequestTypes" class="dmx-choices did-floating-select" asp-items="@Model.RequestTypes" asp-for="@Model.RequestTypeId"></select>
+                                <select id="selectCategory" asp-for="@Model.CategoryId" class="dmx-choices did-floating-select" asp-items="@Model.Categories"></select>
+                                <select id="selectUrgency" class="dmx-choices did-floating-select" asp-items="@Model.Urgency" asp-for="@Model.PriorityId"></select>
+                                <select id="selectStatus" class="dmx-choices did-floating-select" asp-items="@Model.Status" asp-for="@Model.StatusId"></select>
+                                <select id="selectUsers" class="dmx-choices did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                            
+                        
                         </div>
                     </div>
                 </div>

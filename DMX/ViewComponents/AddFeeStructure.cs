@@ -14,7 +14,7 @@ namespace DMX.ViewComponents
 
             return View(new AddFeeStructureVM
             { 
-                DeceasedTypes = new SelectList(dcx.DeceasedTypes.ToList(), nameof(DeceasedType.Id), nameof(DeceasedType.Name)) });
+                DeceasedTypes = new SelectList(dcx.DeceasedTypes.ToList(), nameof(DeceasedType.DeceasedTypeId), nameof(DeceasedType.Name)) });
         }
     }
 }

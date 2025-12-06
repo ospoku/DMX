@@ -37,86 +37,86 @@ $(document).ready(function () {
 
 
 
-$(function ()
-{
-    $('.table').DataTable();
+//$(function ()
+//{
+//    $('.table').DataTable();
   
-    $('#dataTableAtt').DataTable(
-        {
-            "lengthMenu": [[-1], ["All"]],
-        });
+//    $('#dataTableAtt').DataTable(
+//        {
+//            "lengthMenu": [[-1], ["All"]],
+//        });
 
-    var table = document.getElementById('#dataTableRpt').DataTable({
-        dom:
-            "<'row'<'col-sm-4'l><'col-sm-4'B><'col-sm-4'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+//    var table = document.getElementById('#dataTableRpt').DataTable({
+//        dom:
+//            "<'row'<'col-sm-4'l><'col-sm-4'B><'col-sm-4'f>>" +
+//            "<'row'<'col-sm-12'tr>>" +
+//            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
-        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-        /*    searchBuilder: true,*/
+//        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+//        /*    searchBuilder: true,*/
 
-        //buttons: [
-        //    {
-        //        extend: 'collection',
-        //        className: 'collectionButton',
-        //        text: 'Export',
+//        //buttons: [
+//        //    {
+//        //        extend: 'collection',
+//        //        className: 'collectionButton',
+//        //        text: 'Export',
 
-        //        buttons: [
+//        //        buttons: [
 
-        //            'pdf',
-        //            'csv',
-        //            'excel',
-        //            'colvis'],      
-        //    }],
-        //buttons: ['searchBuilder']
-        buttons: {
-            buttons: [
-                {
-                    extend: 'colvis',
-                    className: 'colvisButton',
-                    text: 'Column Visibility',
-                },
+//        //            'pdf',
+//        //            'csv',
+//        //            'excel',
+//        //            'colvis'],      
+//        //    }],
+//        //buttons: ['searchBuilder']
+//        buttons: {
+//            buttons: [
+//                {
+//                    extend: 'colvis',
+//                    className: 'colvisButton',
+//                    text: 'Column Visibility',
+//                },
 
-                {
-                    extend: 'pdf',
-                    className: 'pdfButton',
-                    text: 'PDF',
+//                {
+//                    extend: 'pdf',
+//                    className: 'pdfButton',
+//                    text: 'PDF',
 
-                },
+//                },
 
-                {
-                    extend: 'csv',
-                    className: 'csvButton',
-                    text: 'CSV',
-                },
-                {
-                    extend: 'print',
-                    className: 'printButton',
-                    text: 'Print',
-                },
+//                {
+//                    extend: 'csv',
+//                    className: 'csvButton',
+//                    text: 'CSV',
+//                },
+//                {
+//                    extend: 'print',
+//                    className: 'printButton',
+//                    text: 'Print',
+//                },
 
-                {
-                    extend: 'searchBuilder',
-                    className: 'searchBuilderButton',
-                    text: 'Search Builder',
-                },
-            ]
-        }
-
-
+//                {
+//                    extend: 'searchBuilder',
+//                    className: 'searchBuilderButton',
+//                    text: 'Search Builder',
+//                },
+//            ]
+//        }
 
 
-        //buttons: ['csv'],
-        //buttons: ['excel'],
-        //buttons: ['colvis'],
-        //buttons: ['searchBuilder']
 
-    });
 
-    table.buttons().container().appendTo($('.card-header'));
-    /*  table.searchBuilder.container().prependTo($('.card-header'));*/
-    /* table.searchBuilder.container().prependTo(table.table().container());*/
-});
+//        //buttons: ['csv'],
+//        //buttons: ['excel'],
+//        //buttons: ['colvis'],
+//        //buttons: ['searchBuilder']
+
+//    });
+
+//    table.buttons().container().appendTo($('.card-header'));
+//    /*  table.searchBuilder.container().prependTo($('.card-header'));*/
+//    /* table.searchBuilder.container().prependTo(table.table().container());*/
+//});
 
 
 $(function () {
@@ -124,10 +124,7 @@ $(function () {
 $('time.timeago').timeago();
 });
 
-$(function () {
 
-    $('.did-floating-select').select2();
-});
 $(function () {
     tinymce.init({
         selector: 'texterea',
@@ -257,13 +254,7 @@ jQueryAjaxDeletePatient = form => {
     }
     return false;
 }
-//$(function LoadPatients() {
-//    $.ajax({
-//        type: "GET",
-//        url: "/Patient/Patients",
 
-//    });
-//});
 
 jQueryAjaxDeleteLetter = form => {
     if (confirm('Are you sure to delete this Patient?')) {

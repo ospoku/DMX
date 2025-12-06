@@ -70,7 +70,7 @@ namespace DMX.Controllers
                     return RedirectToAction(nameof(ViewDeceaseds));
                 }
 
-                Deceased deceased = new Deceased()
+                Deceased deceased = new()
                 {
                     TagNo=addDeceasedVM.TagNo,
                     FolderNo=addDeceasedVM.FolderNo,
@@ -96,7 +96,7 @@ namespace DMX.Controllers
                     {
                         var assignment = new DeceasedAssignment
                         {
-                            DeceasedId = deceased.Id,
+                            DeceasedId = deceased.DeceasedId,
                             UserId = userId,
                         };
 

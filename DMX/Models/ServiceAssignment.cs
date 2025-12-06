@@ -7,9 +7,10 @@ namespace DMX.Models
     public class ServiceAssignment : TableAudit
     {
         [Key]
-        public int Id { get; set; }
-        public Guid AssignmentId { get; set; } = Guid.NewGuid();
-        public Guid ServiceRequestId { get; set; }
+        public int ServiceAssignmentId { get; set; }
+        public Guid PublicId { get; set; } = Guid.NewGuid();
+        public int ServiceRequestId { get; set; }
+        [ForeignKey(nameof(ServiceRequestId))]
         public ServiceRequest ServiceRequest { get; set; }
         public string UserId { get; set; }
         public AppUser AppUser { get; set; }

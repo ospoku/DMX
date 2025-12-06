@@ -3,7 +3,7 @@ using DMX.Data;
 
 using DMX.Models;
 using DMX.Services;
-using DMX.ViewComponents;
+
 using DMX.ViewModels;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
@@ -64,11 +64,9 @@ namespace DMX.Controllers
                 if (formFile != null)
                 {
 
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await formFile.CopyToAsync(memoryStream);
-                        newServiceRequest.Attachments = memoryStream.ToArray();
-                    }
+                    using var memoryStream = new MemoryStream();
+                    await formFile.CopyToAsync(memoryStream);
+                    newServiceRequest.Attachments = memoryStream.ToArray();
                 }
 
                 bool result = await _entityService.AddEntityAsync(newServiceRequest, User);
@@ -82,7 +80,7 @@ namespace DMX.Controllers
                 {
                     var assignment = new ServiceAssignment
                     {
-                        ServiceRequestId = newServiceRequest.RequestId,
+                        ServiceRequestId = newServiceRequest.ServiceRequestId,
                         UserId = userId
                     };
 
@@ -119,15 +117,15 @@ namespace DMX.Controllers
                     _notyfService.Error("Invalid Service Request ID.", 5);
                     return RedirectToAction(nameof(ViewServiceRequests));
                 }
-                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == unprotectedIdGuid);
+                var serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.PublicId == unprotectedIdGuid);
                 if (serviceRequest == null)
                 {
                     return NotFound();
                 }
 
-                var newComment = new ServiceRequestComment
+                var newComment = new ServiceComment
                 {
-                    ServiceRequestId = serviceRequest.RequestId,
+                    ServiceRequestId = serviceRequest.ServiceRequestId,
                     Message = commentVm.NewComment,
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
@@ -172,7 +170,7 @@ namespace DMX.Controllers
                     _notyfService.Error("Invalid Service Request ID.", 5);
                     return RedirectToAction("ViewServiceRequests");
                 }
-                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.RequestId == guidUnprotectedId);
+                var serviceRequestToUpdate = await _context.ServiceRequests.FirstOrDefaultAsync(s => s.PublicId == guidUnprotectedId);
                 if (serviceRequestToUpdate == null)
                 {
                     _notyfService.Error("Service request not found.", 5);
@@ -190,12 +188,12 @@ namespace DMX.Controllers
                 }
 
                 // Remove existing assignments
-                var existingAssignments = _context.ServiceAssignments.Where(x => x.ServiceRequestId == guidUnprotectedId);
+                var existingAssignments = _context.ServiceAssignments.Where(x => x.PublicId == guidUnprotectedId);
                 _context.ServiceAssignments.RemoveRange(existingAssignments);
 
                 // Add new assignments
                 var newAssignments = editServiceRequestVm.SelectedUsers
-                    .Select(userId => new ServiceAssignment { ServiceRequestId = guidUnprotectedId, UserId = userId })
+                    .Select(userId => new ServiceAssignment { PublicId = guidUnprotectedId, UserId = userId })
                     .ToList();
 
                 await _context.ServiceAssignments.AddRangeAsync(newAssignments);

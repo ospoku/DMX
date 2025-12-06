@@ -16,7 +16,7 @@ namespace DMX.ViewComponents
             var servList = dcx.ServiceAssignments.Where(a => a.AppUser.Id == user || a.ServiceRequest.CreatedBy == user).Select(a => new 
              ViewServiceRequestsVM
             {
-                ServiceRequestId=a.ServiceRequestId,
+                PublicId=a.PublicId,
                 Title=a.ServiceRequest.Title,
           Description=a.ServiceRequest.Description,
            

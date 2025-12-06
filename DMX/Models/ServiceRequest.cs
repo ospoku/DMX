@@ -8,8 +8,8 @@ namespace DMX.Models
     {
 
         [Key]
-        public int Id { get; set; }
-        public Guid RequestId { get; set; } = Guid.NewGuid();
+        public int ServiceRequestId { get; set; }
+        public Guid PublicId { get; set; } = Guid.NewGuid();
         public string RequestNumber { get; set; } = "SR" + Guid.NewGuid().ToString("N").Substring(0, 5);
 
      public string Title { get; set; }
@@ -31,7 +31,7 @@ namespace DMX.Models
            public Status Status { get; set; }
             public string StatusId { get; set; } // Current status (Pending, In Progress, Completed, Cancelled)
        
-        public virtual ICollection<ServiceRequestComment>Comments { get; set; }    
+        public virtual ICollection<ServiceComment>Comments { get; set; }    
        
       
     }

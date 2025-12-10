@@ -11,9 +11,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-7">
-                            <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="">
-                                <label class="did-floating-label">Title</label>
+                            <div class="floating-group">
+                                <input type="text" asp-for="@Model.Title"  placeholder="">
+                                <label >Title</label>
+                                <i class="fas fa-heading"></i>
                             </div>
                             <div class="form-group">
                                 <textarea type="text" id="txtDescription" asp-for="@Model.Description"></textarea>

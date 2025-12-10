@@ -1,0 +1,90 @@
+.floating-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+    /* Input Styling: Padding-left increased to 40px for the icon space */
+    .floating-group input {
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+    /* Label Styling: Initial left position moved to 40px to start after the icon */
+    .floating-group label {
+        position: absolute;
+        left: 40px;
+        top: 12px;
+        font-size: 14px;
+        color: #777;
+        transition: top 0.3s ease, font-size 0.3s ease, color 0.3s ease;
+        pointer-events: none;
+    }
+
+    .floating-group input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+        /* Floating Label Effect adjustments: Floating left position is now 36px */
+        .floating-group input:focus + label,
+        .floating-group input:not(:placeholder-shown) + label {
+            top: -10px;
+            font-size: 13px;
+            color: #007bff;
+            background-color: #ffffff;
+            padding: 0 4px;
+            border-radius: 4px;
+            left: 36px;
+        }
+
+    /* Icon Styling: Positioned on the left */
+    .floating-group i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+        font-size: 18px;
+        pointer-events: none;
+        transition: color 0.3s ease;
+    }
+
+    /* Icon Color Change on Focus */
+    .floating-group input:focus ~ i {
+        color: #007bff;
+    }
+
+    .floating-group select {
+        width: 100%;
+        padding: 10px 10px 10px 40px; /* leave space for icon */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        appearance: none; /* removes default arrow for styling */
+        background-color: #fff;
+        transition: border-color 0.3s ease;
+    }
+
+        .floating-group select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+            /* Floating label effect */
+            .floating-group select:focus + label,
+            .floating-group select:not([value=""]) + label {
+                top: -10px;
+                font-size: 13px;
+                color: #007bff;
+                background-color: #ffffff;
+                padding: 0 4px;
+                border-radius: 4px;
+                left: 36px;
+            }
+            .floating-group select:focus ~ i {
+                color: #007bff;
+            }

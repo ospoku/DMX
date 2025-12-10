@@ -26,7 +26,7 @@ namespace DMX.ViewModels
         [RegularExpression(@"^[A-Za-z\s]+")]
 
         public string WardInCharge { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         public string TagNo { get; set; }
         public string FolderNo {  get; set; }
         public int DeceasedTypeId { get; set; }

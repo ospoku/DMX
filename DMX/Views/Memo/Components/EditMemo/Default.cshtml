@@ -14,12 +14,12 @@
 
                         @using(Html.BeginForm("EditMemo", "Memo", FormMethod.Post,new{id="editMemoForm"}))
                         {
-                            <div class="did-floating-label-content">
-                                <input class="did-floating-input" asp-for="@Model.Title" placeholder="" />
-                                <label class="did-floating-label">Title</label>
+                            <div class="floating-group">
+                                <input  asp-for="@Model.Title" placeholder="" />
+                                <label >Title</label>
                             </div>
                      <div class="form-group">     
-                    <textarea id="MemoContent" class="did-floating-input" type="text"  asp-for="@Model.Content" required="required" style="min-height:300px"></textarea>
+                    <textarea id="MemoContent"  type="text"  asp-for="@Model.Content" required="required" style="min-height:300px"></textarea>
                     </div>
                             
                                     <select id="selectUser" class="dmx-choices did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple ></select>

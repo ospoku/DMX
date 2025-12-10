@@ -14,26 +14,26 @@
             {
             <div class="modal-body">
                        
-                       <div class="did-floating-label-content">
-                        <input class="did-floating-input" asp-for="@Model.Username" placeholder="" required />
-                        <label class="did-floating-label">Username</label>
+                       <div class="floating-group">
+                        <input  asp-for="@Model.Username" placeholder="" required />
+                        <label >Username</label>
                        </div>
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" asp-for="@Model.Firstname" placeholder="" required />
-                        <label class="did-floating-label">Firstname</label>
+                    <div class="floating-group">
+                        <input  asp-for="@Model.Firstname" placeholder="" required />
+                        <label >Firstname</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" asp-for="@Model.Surname" placeholder="" required />
-                        <label class="did-floating-label">Surname</label>
+                    <div class="floating-group">
+                        <input  asp-for="@Model.Surname" placeholder="" required />
+                        <label >Surname</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="email" asp-for="@Model.Email" placeholder="" required />
-                        <label class="did-floating-label">Email</label>
+                    <div class="floating-group">
+                        <input  type="email" asp-for="@Model.Email" placeholder="" required />
+                        <label >Email</label>
                     </div>
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
    
-                                    <input class="did-floating-input" type="password" asp-for="@Model.Password" placeholder="" required  />
-                        <label class="did-floating-label">Password</label>
+                                    <input  type="password" asp-for="@Model.Password" placeholder="" required  />
+                        <label >Password</label>
                                 </div>
                  
                     <select id="selectRole" class="dmx-choices" asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles"></select>

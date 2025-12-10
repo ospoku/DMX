@@ -18,18 +18,18 @@
                 
 
                
-                <div class="did-floating-label-content">
-                        <input type="number" step="0.0001" asp-for="@Model.Amount" max="@Model.Maximum" class="did-floating-input" placeholder="" required />
-                    <label class="did-floating-label">Amount</label>
+                <div class="floating-group">
+                        <input type="number" step="0.0001" asp-for="@Model.Amount" max="@Model.Maximum"  placeholder="" required />
+                    <label >Amount</label>
                 </div>
-                <div class="did-floating-label-content">
-                    <input type="text" asp-for="@Model.Purpose" class="did-floating-input" placeholder="" required />
-                    <label class="did-floating-label">Purpose</label>
+                <div class="floating-group">
+                    <input type="text" asp-for="@Model.Purpose"  placeholder="" required />
+                    <label >Purpose</label>
                 </div>
              
-                <div class="did-floating-label-content">
+                <div class="floating-group">
                     <select id="selectPettyCashUser" class="did-floating-select" required asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                    <label class="did-floating-label">Select User(s)</label>
+                    <label >Select User(s)</label>
                 </div>
 
                 <button id="btnEditPettyCash" type="button" class="btn btn-block btn-primary">Update</button>

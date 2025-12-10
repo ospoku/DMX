@@ -11,34 +11,34 @@
             @using (Html.BeginForm("EditUser", "Account", FormMethod.Post))
             {
                 <div class="modal-body">
-                    <div class="did-floating-label-content">
-                            <input class="did-floating-input" type="text" asp-for="@Model.Username"placeholder="" />
-                            <label class="did-floating-label">Username</label>
+                    <div class="floating-group">
+                            <input  type="text" asp-for="@Model.Username"placeholder="" />
+                            <label >Username</label>
                         </div>
                    
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
                     
-                            <input class="did-floating-input" type="text" asp-for="@Model.Surname" placeholder="" />
-                            <label class="did-floating-label">First Name</label>
+                            <input  type="text" asp-for="@Model.Surname" placeholder="" />
+                            <label >First Name</label>
                         </div>
                 
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
                        
-                            <input class="did-floating-input" asp-for="@Model.Username" placeholder="" />
-                            <label class="did-floating-label"> Other Name</label>
+                            <input  asp-for="@Model.Username" placeholder="" />
+                            <label > Other Name</label>
                         </div>
                    
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
                   
                         
-                            <input class="did-floating-input" type="text" asp-for="@Model.Email" placeholder="" />
-                       <label class="did-floating-label">Email</label>
+                            <input  type="text" asp-for="@Model.Email" placeholder="" />
+                       <label >Email</label>
                     </div>
 
-                <div class="did-floating-label-content">
+                <div class="floating-group">
 
-                    <input class="did-floating-input" type="text" asp-for="@Model.PhoneNumber" placeholder="" />
-                        <label class="did-floating-label">Telephone</label>
+                    <input  type="text" asp-for="@Model.PhoneNumber" placeholder="" />
+                        <label >Telephone</label>
                     </div>
                     </div>
                 <div class="modal-footer">  <button class="btn btn-block btn-primary"><i class="fa fa-fw fa-lg"></i>Update</button></div>

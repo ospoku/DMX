@@ -17,18 +17,18 @@
            
 
 
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Name" class="did-floating-input" placeholder=""/>
-                        <label class="did-floating-label">Meeting Name</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Name"  placeholder=""/>
+                        <label >Meeting Name</label>
                     </div>
 
-                    <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.Date"  class="did-floating-input" placeholder="" asp-format="{0:dd/MMMM/yyyy}"/>
-                        <label class="did-floating-label">Meeting Date</label>
+                    <div class="floating-group">
+                        <input type="date" asp-for="@Model.Date"   placeholder="" asp-format="{0:dd/MMMM/yyyy}"/>
+                        <label >Meeting Date</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description" class="did-floating-input" placeholder="" required />
-                        <label class="did-floating-label">Meeting Description</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Description"  placeholder="" required />
+                        <label >Meeting Description</label>
                     </div>
 
 

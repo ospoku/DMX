@@ -14,24 +14,24 @@
             {
             <div class="modal-body">
 
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.WorkshopTitle" class="did-floating-input" placeholder="" required/>
-                        <label class="did-floating-label">Workshop Title</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.WorkshopTitle"  placeholder="" required/>
+                        <label >Workshop Title</label>
                     </div>
-                     <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.TrainingDate" class="did-floating-input" placeholder="" asp-format="{0:dd-MMM-yyyy}" required/>
-                        <label class="did-floating-label">Training Date</label>
-                        </div> <div class="did-floating-label-content">
-                            <input type="number" asp-for="@Model.NumberofDays" class="did-floating-input" placeholder="" required/>
-                            <label class="did-floating-label">Number of Days</label>
+                     <div class="floating-group">
+                        <input type="date" asp-for="@Model.TrainingDate"  placeholder="" asp-format="{0:dd-MMM-yyyy}" required/>
+                        <label >Training Date</label>
+                        </div> <div class="floating-group">
+                            <input type="number" asp-for="@Model.NumberofDays"  placeholder="" required/>
+                            <label >Number of Days</label>
                         </div>
-                        <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.TrainingGroup" class="did-floating-input" placeholder="" required/>
-                            <label class="did-floating-label">Training Group</label>
+                        <div class="floating-group">
+                            <input type="text" asp-for="@Model.TrainingGroup"  placeholder="" required/>
+                            <label >Training Group</label>
                         </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description"  class="did-floating-input" placeholder="" required/>
-                        <label class="did-floating-label">Meeting Description</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Description"   placeholder="" required/>
+                        <label >Meeting Description</label>
                     </div>
                     
                     </div>

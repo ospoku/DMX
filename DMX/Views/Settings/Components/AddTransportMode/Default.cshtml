@@ -12,17 +12,17 @@
              @using (Html.BeginForm("AddTransportMode", "Settings", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Name" id="txtAddTransportName"  class="did-floating-input"  required/>
-                        <label class="did-floating-label" for="txtAddTransportName">Name</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Name" id="txtAddTransportName"    required/>
+                        <label  for="txtAddTransportName">Name</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Code"id="txtAddTransportCode" class="did-floating-input"  required/>
-                        <label class="did-floating-label" for="txtAddTransportCode">Code</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Code"id="txtAddTransportCode"   required/>
+                        <label  for="txtAddTransportCode">Code</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description"  id="txtAddTransportDescription" class="did-floating-input" placeholder="" required/>
-                        <label class="did-floating-label" for="txtAddTransportDescription">Description</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Description"  id="txtAddTransportDescription"  placeholder="" required/>
+                        <label  for="txtAddTransportDescription">Description</label>
                     </div>
                    
                     </div>

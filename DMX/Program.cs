@@ -57,7 +57,7 @@ builder.Services.AddAuthorization(options =>
 
 // Register handlers
 builder.Services.AddSingleton<IAuthorizationHandler, TravelRequestOwnerHandler>();
-builder.Services.AddSingleton<IAuthorizationHandler, MemoOwnerHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, MemoOwnerHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, ExcuseDutyOwnerHandler>();
 
 

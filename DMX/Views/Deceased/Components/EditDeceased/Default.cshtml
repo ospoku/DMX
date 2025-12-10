@@ -17,21 +17,21 @@
                         {
                             
                            
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Deceased" class="did-floating-input" placeholder="" required/>
-                        <label class="did-floating-label">Deceased</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Deceased"  placeholder="" required/>
+                        <label >Deceased</label>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.FolderNo" class="did-floating-input" placeholder="" required/>
-                                <label class="did-floating-label">Folder No</label>
+                            <div class="floating-group">
+                                <input type="text" asp-for="@Model.FolderNo"  placeholder="" required/>
+                                <label >Folder No</label>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.TagNo" class="did-floating-input" placeholder="" required/>
-                                <label class="did-floating-label">Tag No</label>
+                            <div class="floating-group">
+                                <input type="text" asp-for="@Model.TagNo"  placeholder="" required/>
+                                <label >Tag No</label>
                             </div>
                         </div>
                         <div class="col">
@@ -53,34 +53,34 @@
 
                     </div>
                   
-                        <div class="did-floating-label-content">
+                        <div class="floating-group">
                         <input class="did-floating-input vh-15" asp-for="@Model.Diagnoses" placeholder="" required/>
-                            <label class="did-floating-label">Final Diagnoses</label>
+                            <label >Final Diagnoses</label>
                  
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.WardInCharge" class="did-floating-input" placeholder="" required />
-                        <label class="did-floating-label">In-Charge</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.WardInCharge"  placeholder="" required />
+                        <label >In-Charge</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Depositor" class="did-floating-input" placeholder="" required>
-                        <label class="did-floating-label">Depositor</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Depositor"  placeholder="" required>
+                        <label >Depositor</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.DepositorAddress" class="did-floating-input" placeholder="" required>
-                        <label class="did-floating-label">Depositor Address</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.DepositorAddress"  placeholder="" required>
+                        <label >Depositor Address</label>
                     </div>
 
                     
-                    <div class="did-floating-label-content">
-                        <input type="text" class="did-floating-input" asp-for="@Model.Description"  placeholder="" />
+                    <div class="floating-group">
+                        <input type="text"  asp-for="@Model.Description"  placeholder="" />
                   
-                        <label class="did-floating-label">Additional Information</label>
+                        <label >Additional Information</label>
                     </div>
                         
-                        <div class="did-floating-label-content">
+                        <div class="floating-group">
                         <select id="selectDeceasedUser"  class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                        <label class="did-floating-label">Select Users</label>
+                        <label >Select Users</label>
                     </div>
              
 

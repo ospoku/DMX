@@ -13,17 +13,17 @@
              @using (Html.BeginForm("AddPermission", "Permission", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.ModuleName"  id="txtModule"  class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label" for="txtModule">Module</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.ModuleName"  id="txtModule"   placeholder="" />
+                        <label  for="txtModule">Module</label>
                     </div>
-                <div class="did-floating-label-content">
-                    <input type="text" asp-for="@Model.ActionName" id="txtAction" class="did-floating-input" placeholder="" />
-                    <label class="did-floating-label" for="txtAction">Action</label>
+                <div class="floating-group">
+                    <input type="text" asp-for="@Model.ActionName" id="txtAction"  placeholder="" />
+                    <label  for="txtAction">Action</label>
                 </div>
-                <div class="did-floating-label-content">
-                    <input type="text" asp-for="@Model.Description" id="txtDescription" class="did-floating-input" placeholder="" />
-                    <label class="did-floating-label" for="txtAction">Description</label>
+                <div class="floating-group">
+                    <input type="text" asp-for="@Model.Description" id="txtDescription"  placeholder="" />
+                    <label  for="txtAction">Description</label>
                 </div>
 
                     

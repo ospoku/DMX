@@ -13,21 +13,21 @@
              @using (Html.BeginForm("MeetingAttendance", "Training", FormMethod.Post))
             {
             <div class="modal-body">
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.EventName" class="did-floating-input" placeholder=""/>
-                        <label class="did-floating-label">Meeting Name</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.EventName"  placeholder=""/>
+                        <label >Meeting Name</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.EventId"  class="did-floating-input" placeholder=""/>
-                        <label class="did-floating-label">Meeting Description</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.EventId"   placeholder=""/>
+                        <label >Meeting Description</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="Date" asp-for="@Model.Date" class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label">Date</label>
+                    <div class="floating-group">
+                        <input type="Date" asp-for="@Model.Date"  placeholder="" />
+                        <label >Date</label>
                     </div>
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
                         <select id="UserList" class="did-floating-select" style="width:100%" required asp-items="@Model.Attendees" asp-for="@Model.SelectedParticipants"></select>
-                    <label class="did-floating-label">Select Attendees</label>
+                    <label >Select Attendees</label>
                     </div>
                     </div>
                     <div class="modal-footer"><button class="btn btn-block btn-primary">Save</button></div>

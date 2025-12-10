@@ -17,16 +17,16 @@
 
             
 
-                        <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.AdditionalNotes" class="did-floating-input" placeholder="">
-                            <label class="did-floating-label"></label>
+                        <div class="floating-group">
+                            <input type="text" asp-for="@Model.AdditionalNotes"  placeholder="">
+                            <label ></label>
                         </div>
 
 
 
-                        <div class="did-floating-label-content">
+                        <div class="floating-group">
                             <input type="text" asp-for="@Model.AdditionalNotes"  class="form-control" placeholder="">
-                        <label class="did-floating-label"></label>
+                        <label ></label>
                         </div>
                       
                           <div class="form-group">
@@ -36,9 +36,9 @@
 
 
                         </div>
-                        <div class="did-floating-label-content">
+                        <div class="floating-group">
                             <select  id="selectSickReportUser" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                            <label class="did-floating-label">Select Users</label>
+                            <label >Select Users</label>
                         </div>
 
 

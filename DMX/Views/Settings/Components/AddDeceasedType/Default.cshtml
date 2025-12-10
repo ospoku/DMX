@@ -13,18 +13,18 @@
              @using (Html.BeginForm("AddDeceasedType", "Settings", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Name" id="txtDTypeName"  class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label" for="txtDTypeName">Name</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Name" id="txtDTypeName"   placeholder="" />
+                        <label  for="txtDTypeName">Name</label>
                     </div>
 
-                    <div class="did-floating-label-content">
-                    <input type="text" asp-for="@Model.Code" id="txtDTypeCode" class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label">Code</label>
+                    <div class="floating-group">
+                    <input type="text" asp-for="@Model.Code" id="txtDTypeCode"  placeholder="" />
+                        <label >Code</label>
                     </div>
-                    <div class="did-floating-label-content">
-                    <input type="text" asp-for="@Model.Description" id="txtDTypeDesc"  class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label" for="txtAddDTypeDesc">Description</label>
+                    <div class="floating-group">
+                    <input type="text" asp-for="@Model.Description" id="txtDTypeDesc"   placeholder="" />
+                        <label  for="txtAddDTypeDesc">Description</label>
                     </div>
                     </div>
                     <div class="card-footer">

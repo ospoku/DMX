@@ -13,13 +13,13 @@
                
             <div class="modal-body">
             
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
                         <select id="selectTravelType1" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="did-floating-select" placeholder=""></select>
-                        <label class="did-floating-label">Select Travel Type</label>
+                        <label >Select Travel Type</label>
                     </div>
-                    <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.Purpose"  class="did-floating-input" placeholder="" required/>
-                            <label class="did-floating-label">Purpose</label>
+                    <div class="floating-group">
+                            <input type="text" asp-for="@Model.Purpose"   placeholder="" required/>
+                            <label >Purpose</label>
                     </div>
                   
                         @foreach (var mode in Model.TransportModes)
@@ -33,42 +33,42 @@
 
                     <div class="row">
                         <div class="col">
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
 
 
-                        <input type="date" asp-for="@Model.StartDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
-                        <label class="did-floating-label">Start Date</label>
+                        <input type="date" asp-for="@Model.StartDate"  asp-format="{0:dd/MMM/yyyy}" required />
+                        <label >Start Date</label>
 
                     </div>
                     </div>
                     <div class="col">
-                            <div class="did-floating-label-content">
-                                <input type="date" asp-for="@Model.EndDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" required />
-                                <label class="did-floating-label">End Date</label>
+                            <div class="floating-group">
+                                <input type="date" asp-for="@Model.EndDate"  asp-format="{0:dd/MMM/yyyy}" required />
+                                <label >End Date</label>
                             </div>
                             </div>
                             </div>
                     <div class="row">
                         <div class="col">
-                            <div class="did-floating-label-content">
+                            <div class="floating-group">
 
-                                <input type="number" step="0.0001" asp-for="@Model.ConferenceFee" class="did-floating-input" required />
-                                <label class="did-floating-label">Seminar/Conference Fees</label>
-
-                            </div>
-                        </div>
-                        <div class="col">
-
-                            <div class="did-floating-label-content">
-                                <input type="number" step="0.0001" asp-for="@Model.FuelClaim" class="did-floating-input" required />
-                                <label class="did-floating-label">Fuel Claim</label>
+                                <input type="number" step="0.0001" asp-for="@Model.ConferenceFee"  required />
+                                <label >Seminar/Conference Fees</label>
 
                             </div>
                         </div>
                         <div class="col">
-                            <div class="did-floating-label-content">
-                                <input type="number" step="0.0001" asp-for="@Model.OtherExpenses" class="did-floating-input" required />
-                                <label class="did-floating-label">Other Expenses</label>
+
+                            <div class="floating-group">
+                                <input type="number" step="0.0001" asp-for="@Model.FuelClaim"  required />
+                                <label >Fuel Claim</label>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="floating-group">
+                                <input type="number" step="0.0001" asp-for="@Model.OtherExpenses"  required />
+                                <label >Other Expenses</label>
 
                             </div>
                         </div>
@@ -77,15 +77,15 @@
 
 
 
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
 
-                        <input class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="" required/>
-                        <label class="did-floating-label">AdditionalNotes</label>
+                        <input  asp-for="@Model.AdditionalNotes" type="text" placeholder="" required/>
+                        <label >AdditionalNotes</label>
                         </div>
                    
-                      <div class="did-floating-label-content">
+                      <div class="floating-group">
                             <select id="selectUserTravelRequest" class="did-floating-select" type="select"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                        <label class="did-floating-label">Select Approver(s)</label>
+                        <label >Select Approver(s)</label>
                       </div>
                     
 

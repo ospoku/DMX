@@ -14,16 +14,18 @@
             <div class="modal-body">
 
            
-                    <div class="did-floating-label-content">
-                        <input type="number" step="0.0001" asp-for="@Model.Amount" class="did-floating-input" max="@Model.Maximum" required />
-                        <label class="did-floating-label">Amount</label>
+                    <div class="floating-group">
+                        <input type="number" step="0.0001" asp-for="@Model.Amount"  max="@Model.Maximum" required />
+                        <label >Amount</label>
+                        <i class="fas fa-money-check"></i>
                     </div>
-                        <div class="did-floating-label-content">
-                            <input type="text" asp-for="@Model.Purpose"  class="did-floating-input" placeholder="" required/>
-                            <label class="did-floating-label">Purpose</label>
+                        <div class="floating-group">
+                            <input type="text" asp-for="@Model.Purpose"   placeholder="" required/>
+                            <label >Purpose</label>
+                            <i class="fas fa-ideal"></i>
                         </div>
             
-                        <select id="selectPettyCashUser" class="dmx-choices did-floating-select"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectPettyCashUser" class="dmx-choices"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         
                       </div>
             <div class="modal-footer">

@@ -9,7 +9,7 @@
                 itemSelectText: '',
                 shouldSort: false,
                 placeholder: true,
-                placeholderValue: 'Select Approver(s)',
+               /* placeholderValue: 'Select Approver(s)'*/
             });
     });
 });    

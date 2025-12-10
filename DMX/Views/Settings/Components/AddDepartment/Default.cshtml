@@ -13,18 +13,18 @@
              @using (Html.BeginForm("AddDepartment", "Settings", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Name" id="txtAddDeptName" class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label" for="txtAddDeptName">Name</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Name" id="txtAddDeptName"  placeholder="" />
+                        <label  for="txtAddDeptName">Name</label>
                     </div>
 
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Code"id="txtAddDeptCode"  class="did-floating-input" placeholder="" />
-                        <label class="did-floating-label" for="txtAddDeptCode">Code</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Code"id="txtAddDeptCode"   placeholder="" />
+                        <label  for="txtAddDeptCode">Code</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Description" id="txtAddDeptDescription"  class="did-floating-input" placeholder=""/>
-                        <label class="did-floating-label" for="txtAddDeptDescription">Description</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Description" id="txtAddDeptDescription"   placeholder=""/>
+                        <label  for="txtAddDeptDescription">Description</label>
                     </div>
                     </div>
                     <div class="card-footer">

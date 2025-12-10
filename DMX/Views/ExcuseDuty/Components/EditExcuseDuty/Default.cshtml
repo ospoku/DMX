@@ -17,35 +17,35 @@
                     
                     <div class="row">
                         <div class="col-md-8">
-                            <div class="did-floating-label-content">
-                                <input type="text" class="did-floating-input" asp-for="@Model.Name" placeholder="" required />
+                            <div class="floating-group">
+                                <input type="text"  asp-for="@Model.Name" placeholder="" required />
 
-                                <label class="did-floating-label">Patient Name</label>
+                                <label >Patient Name</label>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="did-floating-label-content">
-                                <input type="text" class="did-floating-input" asp-for="@Model.PatientId" placeholder="" required />
+                            <div class="floating-group">
+                                <input type="text"  asp-for="@Model.PatientId" placeholder="" required />
 
-                                <label class="did-floating-label">Patient Id</label>
+                                <label >Patient Id</label>
                             </div>
                         </div>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" class="did-floating-input" asp-for="@Model.Diagnosis" placeholder=""/>
-                        <label class="did-floating-label">Diagnosis</label>
+                    <div class="floating-group">
+                        <input type="text"  asp-for="@Model.Diagnosis" placeholder=""/>
+                        <label >Diagnosis</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.DateofDischarge" class="did-floating-input" />
-                        <label class="did-floating-label">Date of Discharge</label>
+                    <div class="floating-group">
+                        <input type="date" asp-for="@Model.DateofDischarge"  />
+                        <label >Date of Discharge</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="number" class="did-floating-input" asp-for="@Model.ExcuseDays" placeholder="" />
-                        <label class="did-floating-label">Excuse Days</label>
+                    <div class="floating-group">
+                        <input type="number"  asp-for="@Model.ExcuseDays" placeholder="" />
+                        <label >Excuse Days</label>
                     </div>
-                    <div class="did-floating-label-content">
+                    <div class="floating-group">
                         <select id="usersEditExcuseDuty" type="select" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" placeholder="" required></select>
-                        <label class="did-floating-label"> Select Users</label>
+                        <label > Select Users</label>
                     </div>
                     <div class="form-group">
                         <button id="btnEditExcuseDuty" class="btn btn-block btn-primary">Update</button>

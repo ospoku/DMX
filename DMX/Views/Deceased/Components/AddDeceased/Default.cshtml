@@ -14,21 +14,23 @@
             {
                 <div class="modal-body">
                     
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.DeceasedName" class="did-floating-input" placeholder="" required/>
-                        <label class="did-floating-label">Deceased</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.DeceasedName"  placeholder="" required/>
+                        <label>Deceased</label>
+                        <i class="fas fa-bed-pulse"></i>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.FolderNo" class="did-floating-input" placeholder="" required/>
-                                <label class="did-floating-label">Folder No</label>
+                            <div class="floating-group">
+                                <input type="text" asp-for="@Model.FolderNo"  placeholder="" required/>
+                                <label >Folder No</label>
+                                <i class="fas fa-folder-plus"></i>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="did-floating-label-content">
-                                <input type="text" asp-for="@Model.TagNo" class="did-floating-input" placeholder="" required/>
-                                <label class="did-floating-label">Tag No</label>
+                            <div class="floating-group">
+                                <input type="text" asp-for="@Model.TagNo"  placeholder="" required/>
+                        <label>Tag No</label>  <i class="fas fa-tag"></i>
                             </div>
                         </div>
                         <div class="col">
@@ -50,22 +52,25 @@
 
                     </div>
                   
-                        <div class="did-floating-label-content">
-                        <input class="did-floating-input vh-15" asp-for="@Model.Diagnoses" placeholder="" required/>
-                            <label class="did-floating-label">Final Diagnoses</label>
-                 
+                        <div class="floating-group">
+                        <input class="vh-15" asp-for="@Model.Diagnoses" placeholder="" required/>
+                            <label >Final Diagnoses</label>
+                 <i class="fas fa-diagnoses"></i>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.WardInCharge" class="did-floating-input" placeholder="" required />
-                        <label class="did-floating-label">In-Charge</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.WardInCharge"  placeholder="" required />
+                        <label >In-Charge</label>
+                        <i class="fas fa-user-nurse"></i>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Depositor" class="did-floating-input" placeholder="" required>
-                        <label class="did-floating-label">Depositor</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Depositor"  placeholder="" required>
+                        <label >Depositor</label>
+                        <i class="fas fa-user-alt"></i>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" title="xxxxxxxxxx"  asp-for="@Model.DepositorAddress" class="did-floating-input" placeholder="" required>
-                        <label class="did-floating-label">Depositor Address</label>
+                    <div class="floating-group">
+                        <input type="text" title="Depositor Address"  asp-for="@Model.DepositorAddress"  placeholder="" required>
+                        <label >Depositor Address</label>
+                        <i class="fas fa-location-arrow"></i>
                     </div>
 
                     <div class="form-group">

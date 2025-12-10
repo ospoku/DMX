@@ -4,25 +4,29 @@
             <div class="modal-header">
                 <h6>Add Letter</h6>
         <button type="button" aria-label="Close" class="btn btn-sm btn-outline-danger" onclick="document.getElementById('AddLetterDialog').close()">Close</button>
-            </div>
-            <div class="modal-body">
-                @using (Html.BeginForm("AddLetter", "Letter", FormMethod.Post, new { id = "addLetterForm", enctype = "multipart/form-data" }))
+            </div>   @using (Html.BeginForm("AddLetter", "Letter", FormMethod.Post, new { id = "addLetterForm", enctype = "multipart/form-data" }))
                 {
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Subject" class="did-floating-input" placeholder="" required />
-                        <label class="did-floating-label">Subject</label>
+            <div class="modal-body">
+             
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Subject"  placeholder="" required />
+                        <label >Subject</label>
+                        <i class="fas fa-heading"></i>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="Source" class="did-floating-input" placeholder="" required />
-                        <label class="did-floating-label">Document Source</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="Source"  placeholder="" required />
+                        <label >Document Source</label>
+                        <i class="fas fa-map-location"></i>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.ReceiptDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" placeholder="" required />
-                        <label class="did-floating-label">Receipt Date</label>
+                    <div class="floating-group">
+                        <input type="date" asp-for="@Model.ReceiptDate"  asp-format="{0:dd/MMM/yyyy}" placeholder="" required />
+                        <label >Receipt Date</label>
+                        <i class="fas fa-calendar-minus"></i>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="date" asp-for="@Model.DocumentDate" class="did-floating-input" asp-format="{0:dd/MMM/yyyy}" placeholder="" required />
-                        <label class="did-floating-label">Document Date</label>
+                    <div class="floating-group">
+                        <input type="date" asp-for="@Model.DocumentDate"   placeholder="" required />
+                        <label >Document Date</label>
+                        <i class="fas fa-calendar-check"></i>
                     </div>
                     <div class="form-group">
                         <input type="file" id="formFile" name="formFile" asp-for="UploadFile" hidden />
@@ -32,17 +36,20 @@
                     <span id="file-chosen" class="ellipsed-text">No file chosen</span>
                         </label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" asp-for="@Model.AdditionalNotes" type="text" placeholder="" required />
-                        <label class="did-floating-label">Additional Notes</label>
+                    <div class="floating-group">
+                        <input  asp-for="@Model.AdditionalNotes" type="text" placeholder="" required />
+                        <label >Additional Notes</label>
+                        <i class="fas fa-comment"></i>
                     </div>
-                
-                        <select id="usersAddLetter" class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                       
-                   
-                    <button id="saveButton" type="button" class="btn btn-block btn-primary">Save</button>
-                }
+            <div class="floating-group">
+                        <select id="usersAddMemo" class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                <label >Select Users</label>
             </div>
+                   </div>
+                   <div class="modal-footer">
+                    <button id="saveButton" type="button" class="btn btn-block btn-primary">Save</button></div>
+                }
+            
       
 </dialog>
 

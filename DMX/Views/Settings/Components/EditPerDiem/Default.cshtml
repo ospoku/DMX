@@ -15,23 +15,23 @@
              @using (Html.BeginForm("EditPerDiem", "Settings", FormMethod.Post, new{id="editPerdiemForm"}))
             {
             <div class="modal-body">
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Name" class="did-floating-input" readonly>
-                        <label class="did-floating-label">Name</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Name"  readonly>
+                        <label >Name</label>
                     </div>
 
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" asp-for="@Model.Department" type="text" readonly>
-                        <label class="did-floating-label">Department</label>
+                    <div class="floating-group">
+                        <input  asp-for="@Model.Department" type="text" readonly>
+                        <label >Department</label>
                     </div>
-                    <div class="did-floating-label-content">
-                        <input type="text" asp-for="@Model.Rank" class="did-floating-input" readonly>
-                        <label class="did-floating-label">Rank</label>
+                    <div class="floating-group">
+                        <input type="text" asp-for="@Model.Rank"  readonly>
+                        <label >Rank</label>
                     </div>
 
-                    <div class="did-floating-label-content">
-                        <input type="number" step="0.0001" asp-for="@Model.Amount" class="did-floating-input" required>
-                        <label class="did-floating-label">Rate/Amount</label>
+                    <div class="floating-group">
+                        <input type="number" step="0.0001" asp-for="@Model.Amount"  required>
+                        <label >Rate/Amount</label>
                     </div>
                     </div>
                     <div class="modal-footer">

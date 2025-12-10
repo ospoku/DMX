@@ -21,7 +21,7 @@ namespace DMX.Controllers
         public JsonResult GetMessages(bool bIsGetOnlyRead = false)
         {
 
-            Task<AppUser> Receiver = usm.FindByNameAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
+            Task<AppUser> Receiver = await usm.GetUserId().FindByNameAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
             string ReceiverId = Receiver.Result.UserName;
             oMessages = new List<Message>();
             oMessages = ms.GetMessages(ReceiverId, bIsGetOnlyRead);
@@ -52,14 +52,13 @@ namespace DMX.Controllers
         public async Task<IActionResult> UpdateMessage(string Id)
         {
 
-            var msg = ctx.Messages.Where(m => m.MessageId == Id).FirstOrDefault();
+            var msg = await ctx.Messages.Where(m => m.MessageId == Id).FirstOrDefaultAsync();
             if (msg != null)
             {
                 msg.MessageId = Id;
                 msg.IsRead = 1;
-                 ctx.Messages.Attach(msg);
-               ctx.Entry(msg).State = EntityState.Modified;
-                ctx.SaveChanges();
+                 ctx.Entry(msg).State = EntityState.Modified;
+              ctx.SaveChanges();
             }
             return RedirectToAction("UserMessages");
         }

@@ -14,7 +14,7 @@ namespace DMX.Services
     public class EntityService
     {
         private readonly UserManager<AppUser> usm;
-        private readonly INotyfService notyf;
+
 
         private readonly XContext dcx;
 
@@ -27,19 +27,19 @@ namespace DMX.Services
 
         public async Task<bool> AddEntityAsync<T>(T entity, ClaimsPrincipal userClaim) where T : class
         {
-            var user = (await usm.GetUserAsync(userClaim)).Id;
+            var user = await usm.GetUserAsync(userClaim);
             if (user == null)
             {
                 return false;
             }
 
-            entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user);
+            entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user.Id);
             entity.GetType().GetProperty("CreatedDate")?.SetValue(entity, DateTime.UtcNow);
 
             try
             {
                 dcx.Set<T>().Add(entity);
-                if (await dcx.SaveChangesAsync(user) > 0)
+                if (await dcx.SaveChangesAsync(user.Id) > 0)
                 {
                    
                     return true;
@@ -107,14 +107,14 @@ namespace DMX.Services
             {
                 return false;
             }
-            model.GetType().GetProperty("ModifiedBy")?.SetValue(model, user.UserName);
+            model.GetType().GetProperty("ModifiedBy")?.SetValue(model, user.Id);
             model.GetType().GetProperty("ModifiedDate")?.SetValue(model, DateTime.UtcNow);
             model.GetType().GetProperty("IsDeleted")?.SetValue(model,true);
             try
             {
                 dcx.Set<T>().Update(model);
 
-                if (await dcx.SaveChangesAsync(user.UserName) > 0)
+                if (await dcx.SaveChangesAsync(user.Id) > 0)
                 {
                     return true;
                 }
@@ -124,7 +124,7 @@ namespace DMX.Services
                 }
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -156,7 +156,7 @@ namespace DMX.Services
             {
                 dcx.Set<T>().Update(model);
 
-                if (await dcx.SaveChangesAsync(user.UserName) > 0)
+                if (await dcx.SaveChangesAsync(user.Id) > 0)
                 {
                   
                     return true;
@@ -167,7 +167,7 @@ namespace DMX.Services
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
                 return false;

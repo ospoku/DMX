@@ -18,8 +18,8 @@
 @{
     // Optional: create protector in view (same purpose string)
     var protector = DataProtectionProvider.CreateProtector("IdProtector");
-    var canEditMemo = await auth.AuthorizeAsync(User,"EditMemo");
-    var canPrintMemo = await auth.AuthorizeAsync(User, "PrintMemo");
+    var canEditMemo = await auth.AuthorizeAsync(User,"MemoOwnerPolicy");
+    var canPrintMemo =  @User.HasClaim("Permission","Permission.Memo.Print");
 }
 <div class="card shadow mb-4">
     <div class="card-header py-3"><i class="fas fa-fw fa-file-alt"></i>
@@ -72,11 +72,13 @@
                                         <button type="button" class="dropdown-item-custom" data-bs-url="@Url.Action("CommentMemo", new { Id= @protector.Protect(Memo.PublicId.ToString())})"  data-bs-target="#CommentMemo"><i style="width:15px; height:15px" class="fa fa-comments mr-3"></i>Comment</button>
 
 
- 
+ @if(canPrintMemo)
+ {
 
                                         <button type="button" class="dropdown-item-custom" onclick="printMemoIframe('@protector.Protect(Memo.PublicId.ToString())')">
                                             <i style="width:15px; height:15px" class="fa fa-print mr-3 text-primary"></i>Print
                                         </button>
+ }
     
                                              
                                                 <button type="button" onclick="de" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3 text-danger"></i>Delete</button>

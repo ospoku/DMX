@@ -15,27 +15,165 @@
         <div class="modal-body">
             <!-- Memo Title -->
             <div class="did-floating-label-content">
-                <input type="text" asp-for="@Model.Title" class="did-floating-input" required />
+                <i class="fas fa-fw fa-heading input-icon"></i>
+                <input type="text" asp-for="@Model.Title" class="did-floating-input" placeholder="" required />
                 <label class="did-floating-label">Memo Title</label>
             </div>
 
             <!-- Memo Content -->
             <div class="form-group">
+               
                 <textarea id="MemoContent" class="dmx-textarea" asp-for="@Model.Content" placeholder="Memo Content"></textarea>
+                    
             </div>
 
             <!-- Select Approvers -->
-         
-                <select id="selectMemoUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-            
-         
-        </div>
+        <div class="did-floating-label-content choices-container">
+            <i class="fas fa-globe input-icon"></i>
+                <select id="selectMemoUser" class="choices-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
 
-        <!-- Footer -->
-        <div class="modal-footer">
-            <button id="btnAddMemo"  class="btn btn-primary w-100">Save</button>
+                <label class="did-floating-label">Country</label>
+            </div> <div class="did-floating-label-content">
+                <i class="fas fa-user input-icon"></i>
+                <input class="did-floating-input" type="text" placeholder=" " id="username" required>
+                <label class="did-floating-label">Username</label>
+            </div>
+            </div>
+            }
+   
+       
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+            .form-container {
+                max-width: 500px;
+                width: 100%;
+                padding: 50px 30px;
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+            .form-container h2 {
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 30px;
+                color: #333;
+            }
+            .form-group {
+                position: relative;
+                margin-bottom: 20px;
+            }
+
+            /* Input Styling: Padding-left increased to 40px for the icon space */
+            .form-group input {
+                width: 100%;
+                padding: 10px 10px 10px 40px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 16px;
+                transition: border-color 0.3s ease;
+            }
+
+            /* Label Styling: Initial left position moved to 40px to start after the icon */
+            .form-group label {
+                position: absolute;
+                left: 40px;
+                top: 12px;
+                font-size: 14px;
+                color: #777;
+                transition: top 0.3s ease, font-size 0.3s ease, color 0.3s ease;
+                pointer-events: none;
+            }
+            .form-group input:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+
+            /* Floating Label Effect adjustments: Floating left position is now 36px */
+            .form-group input:focus + label,
+            .form-group input:not(:placeholder-shown) + label {
+                top: -6px;
+                font-size: 12px;
+                color: #007bff;
+                background-color: #ffffff;
+                padding: 0 4px;
+                border-radius: 4px;
+                left: 36px;
+            }
+
+            /* Icon Styling: Positioned on the left */
+            .form-group i {
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #777;
+                font-size: 18px;
+                pointer-events: none;
+                transition: color 0.3s ease;
+            }
+
+            /* Icon Color Change on Focus */
+            .form-group input:focus ~ i {
+                color: #007bff;
+            }
+
+            .submit-button {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .submit-button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+   
+        <div class="form-container">
+            <h2>Custom Floating Label Form</h2>
+            <div class="form-group">
+                <input type="text" placeholder=" " id="name">
+                <label for="name">First Name</label>
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder=" " id="lastname">
+                <label for="lastname">Last Name</label>
+                <i class="fas fa-user-friends"></i>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder=" " id="inputField">
+                <label for="inputField">Email Address</label>
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="form-group">
+                <input type="number" placeholder=" " id="number">
+                <label for="number">Phone</label>
+                <i class="fas fa-phone"></i>
+            </div>
+            <button class="submit-button" type="submit">Submit</button>
         </div>
-    }
-</dialog>
+    
+    </dialog>
+    
+          
+
 
   

@@ -40,13 +40,26 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddAuthorization(options => options.AddPolicy("TravelRequestOwnerPolicy", policy => policy.Requirements.Add(new TravelRequestOwnerRequirement())));
-builder.Services.AddSingleton<IAuthorizationHandler, TravelRequestOwnerHandler>();
-builder.Services.AddAuthorization(options => options.AddPolicy("MemoOwnerPolicy", policy => policy.Requirements.Add(new MemoOwnerRequirement())));
-builder.Services.AddScoped<IAuthorizationHandler, MemoOwnerHandler>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("TravelRequestOwnerPolicy", policy =>
+        policy.Requirements.Add(new TravelRequestOwnerRequirement()));
 
-builder.Services.AddAuthorization(options => options.AddPolicy("ExcuseDutyOwnerPolicy", policy => policy.Requirements.Add(new ExcuseDutyOwnerRequirement())));
+    options.AddPolicy("MemoOwnerPolicy", policy =>
+        policy.Requirements.Add(new MemoOwnerRequirement()));
+
+    options.AddPolicy("ExcuseDutyOwnerPolicy", policy =>
+        policy.Requirements.Add(new ExcuseDutyOwnerRequirement()));
+    options.AddPolicy("DeceasedOwnerPolicy", policy =>
+        policy.Requirements.Add(new DeceasedOwnerRequirement()));
+    
+});
+
+// Register handlers
+builder.Services.AddSingleton<IAuthorizationHandler, TravelRequestOwnerHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, MemoOwnerHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, ExcuseDutyOwnerHandler>();
+
 
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();

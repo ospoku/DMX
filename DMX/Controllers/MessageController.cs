@@ -21,7 +21,7 @@ namespace DMX.Controllers
         public JsonResult GetMessages(bool bIsGetOnlyRead = false)
         {
 
-            Task<AppUser> Receiver = await usm.GetUserId().FindByNameAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
+            var Receiver =  usm.FindByNameAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
             string ReceiverId = Receiver.Result.UserName;
             oMessages = new List<Message>();
             oMessages = ms.GetMessages(ReceiverId, bIsGetOnlyRead);

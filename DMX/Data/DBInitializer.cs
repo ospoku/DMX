@@ -169,6 +169,7 @@ namespace DMX.Data
                 new(ClaimTypes.Name,"SuperAdmin"),
                 new Claim(ClaimTypes.Email,"ospoku@gmail.com"),
                 new Claim(ClaimTypes.Role,"SuperAdmin"),
+                
 
 
             ];
@@ -204,6 +205,7 @@ namespace DMX.Data
                 {
                     await usm.AddToRoleAsync(superUser, "SuperAdmin");
                     await usm.AddClaimsAsync(superUser, claimlist);
+                    await usm.AddClaimAsync(superUser, new Claim(ClaimTypes.NameIdentifier,superUser.Id));
                 };
 
             };

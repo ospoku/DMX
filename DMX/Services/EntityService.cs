@@ -1,4 +1,4 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿
 using DMX.Data;
 
 using DMX.Helpers;
@@ -11,19 +11,12 @@ using System.Security.Claims;
 
 namespace DMX.Services
 {
-    public class EntityService
+    public class EntityService(UserManager<AppUser> userManager, XContext context)
     {
-        private readonly UserManager<AppUser> usm;
+        private readonly UserManager<AppUser> usm = userManager;
 
 
-        private readonly XContext dcx;
-
-        public EntityService(UserManager<AppUser> userManager, XContext context)
-        {
-            usm = userManager;
-         
-            dcx = context;
-        }
+        private readonly XContext dcx = context;
 
         public async Task<bool> AddEntityAsync<T>(T entity, ClaimsPrincipal userClaim) where T : class
         {
@@ -50,7 +43,7 @@ namespace DMX.Services
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -144,7 +137,7 @@ namespace DMX.Services
 
             if (modifiedByProp != null)
             {
-                modifiedByProp.SetValue(model, user.UserName);
+                modifiedByProp.SetValue(model, user.Id);
             }
 
             if (modifiedDateProp != null)
@@ -214,7 +207,7 @@ namespace DMX.Services
             }
 
             // Save changes after updating assignments
-            return await dcx.SaveChangesAsync(user?.UserName) > 0;
+            return await dcx.SaveChangesAsync(user?.Id) > 0;
         }
     }
 }

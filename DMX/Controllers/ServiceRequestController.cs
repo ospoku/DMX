@@ -93,7 +93,7 @@ namespace DMX.Controllers
                 _notyfService.Success("Service Request and assignments successfully processed.", 5);
                 return RedirectToAction(nameof(ViewServiceRequests));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _notyfService.Error("An error occurred while processing the request.", 5);
                 return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request." });

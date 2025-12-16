@@ -1,14 +1,11 @@
 ﻿
 @model DMX.ViewModels.MemoCommentVM;
 
-<div class="modal fade" id="CommentMemo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="CommentMemoLabel">
-    <div class="modal-dialog modal-lg">
 
-        <div class="modal-content">
             <div class="modal-header">
 
                 <h6 id="CommentMemoLabel">Add Comment</h6>
-                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
+                <button type="button" onclick="document.getElementById('CommentMemoDialog').close()" aria-label="Close" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
             <div class="modal-body">
             <div class="container mt-0">
@@ -81,7 +78,7 @@
                         <form method="post" asp-action="CommentMemo" asp-controller="Memo">
                     
                             <div class="mb-3">
-                                <textarea  id="newComment" asp-for="NewComment" placeholder="write your comment here........"></textarea>
+                                <textarea  id="newComment" class="dmx-textarea" asp-for="NewComment" placeholder="write your comment here........"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit Comment</button>
                             </form>
@@ -91,10 +88,9 @@
              
 
             </div>
-    </div>
-    </div>
-    </div>
-    </div>
+</div> <div class="modal-footer"></div>
+   
+  
 <script>
       $(document).ready(function () {
         // Initialize timeago for comment timestamps

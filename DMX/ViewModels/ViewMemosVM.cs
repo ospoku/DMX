@@ -13,6 +13,9 @@ namespace DMX.ViewModels
         public string ReferenceNumber { get; set; }
         public string CreatedBy { get; set; }
         public Guid PublicId { get; set; }
+        public bool CanPrint { get; set; }
+        public bool CanDelete { get; set; }
+        public bool CanEdit { get; set; }
         public DateTime? CreatedDate { get;  set; }
     }
 }

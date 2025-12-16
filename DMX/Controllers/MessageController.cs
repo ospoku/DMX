@@ -4,6 +4,7 @@ using DMX.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DMX.Controllers
 {
@@ -18,11 +19,11 @@ namespace DMX.Controllers
         {
             return View();
         }
-        public JsonResult GetMessages(bool bIsGetOnlyRead = false)
+        public async Task<JsonResult> GetMessages(bool bIsGetOnlyRead = false)
         {
 
-            var Receiver =  usm.FindByNameAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
-            string ReceiverId = Receiver.Result.UserName;
+            var Receiver =  usm.FindByIdAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
+            string ReceiverId =  Receiver.Result.UserName;
             oMessages = new List<Message>();
             oMessages = ms.GetMessages(ReceiverId, bIsGetOnlyRead);
 

@@ -26,7 +26,7 @@ namespace DMX.Authorization
             }
 
             // Compare logged-in user with memo owner
-            if (user.Id == resource.CreatedBy)
+            if (context.User.HasClaim(x=>x.Type==ClaimTypes.NameIdentifier && x.Value== resource.CreatedBy))
             {
                 context.Succeed(requirement);
             }

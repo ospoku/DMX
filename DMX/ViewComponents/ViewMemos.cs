@@ -10,36 +10,65 @@ using static DMX.Constants.Permissions;
 
 namespace DMX.ViewComponents
 {
-    public class ViewMemos(XContext dContext, UserManager<AppUser>userManager, IAuthorizationService authorization ) : ViewComponent
+    public class ViewMemos : ViewComponent
     {
-        public readonly XContext dcx = dContext;
+        private readonly XContext _context;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IAuthorizationService _authorization;
 
-        private readonly UserManager<AppUser> usm = userManager;
-        public readonly IAuthorizationService auth = authorization; 
-        public async Task<IViewComponentResult>InvokeAsync()
+        public ViewMemos(
+            XContext context,
+            UserManager<AppUser> userManager,
+            IAuthorizationService authorization)
         {
-            var currentUser = (await usm.GetUserAsync(HttpContext.User));
+            _context = context;
+            _userManager = userManager;
+            _authorization = authorization;
+        }
 
-            var memoList = dcx.MemoAssignments.Include(a => a.Memo).Where(a => a.AppUser.Id == currentUser.Id || a.Memo.CreatedBy == currentUser.Id & a.Memo.IsDeleted == false).ToList();
-            var viewModel = new List<ViewMemosVM>
-            {
-                new() { PublicId = memo.PublicId,
-                Content = a.Memo.Content,
-                ReferenceNumber = a.Memo.ReferenceId,
-                Assignees = (from u in usm.Users where u.Id == a.UserId select u.UserName).ToList(),
-                Title = a.Memo.Title,
-                CreatedDate = a.CreatedDate,
-                CreatedBy = a.CreatedBy,
-        CanEdit=auth.AuthorizeAsync(user,a.Memo,"MemoOwnerPolicy"),
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
-            }).OrderByDescending(a=>a.CreatedDate).ToList();
-            foreach (var memo in memoList)
+            var memoAssignments = await _context.MemoAssignments
+                .Include(a => a.Memo)
+                .Include(a => a.AppUser)
+                .Where(a =>
+                    a.AppUser.Id == currentUser.Id ||
+                    (a.Memo.CreatedBy == currentUser.Id && !a.Memo.IsDeleted))
+                .OrderByDescending(a => a.CreatedDate)
+                .ToListAsync();
+
+            var viewModel = new List<ViewMemosVM>();
+
+            foreach (var assignment in memoAssignments)
             {
-                var canEdit = auth.AuthorizeAsync(user, memo, "MemoOwnerPolicy");
-                var senderUser = await usm.FindByIdAsync(memo.CreatedBy);
-                memo.Sender = senderUser?.Fullname;
-             
+                var authorizationResult = await _authorization.AuthorizeAsync(
+                    HttpContext.User,
+                    assignment.Memo,
+                    "MemoOwnerPolicy");
+
+                var sender = await _userManager.FindByIdAsync(assignment.Memo.CreatedBy);
+
+                viewModel.Add(new ViewMemosVM
+                {
+                    PublicId = assignment.Memo.PublicId,
+                    Title = assignment.Memo.Title,
+                    Content = assignment.Memo.Content,
+                    ReferenceNumber = assignment.Memo.ReferenceId,
+                    CreatedDate = assignment.CreatedDate,
+                    CreatedBy = assignment.Memo.CreatedBy,
+                    Sender = sender?.Fullname,
+                    Assignees = memoAssignments
+                        .Where(x => x.MemoId == assignment.MemoId)
+                        .Select(x => x.AppUser.UserName)
+                        .Distinct()
+                        .ToList(),
+                    CanEdit = authorizationResult.Succeeded
+                    
+                });
             }
+
             return View(viewModel);
         }
     }

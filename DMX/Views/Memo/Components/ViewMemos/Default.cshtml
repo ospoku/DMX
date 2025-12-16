@@ -15,8 +15,7 @@
 @{
     // Optional: create protector in view (same purpose string)
     var protector = DataProtectionProvider.CreateProtector("IdProtector");
-    var canEditMemo = (await auth.AuthorizeAsync(User, "MemoOwnerPolicy"));
-    var canPrintMemo =  @User.HasClaim("Permission","Permission.Memo.Print");
+  
 }
 <div class="card shadow mb-4">
     <div class="card-header py-3"><i class="fas fa-fw fa-file-alt"></i>
@@ -60,7 +59,7 @@
                                         Select Action
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    @if(canEditMemo.Succeeded)
+                                    @if(Memo.CanEdit)
                                     {
 
                                         <button  onclick="openDialogFromData(this)" data-url="EditMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="EditMemoDialog" class="dropdown-item-custom"><i style="width:15px; height:15px" class=" fa fa-edit mr-3 text-warning"></i>Edit</button>

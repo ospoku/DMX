@@ -15,9 +15,10 @@
         <div class="modal-body">
             <!-- Memo Title -->
             <div class="floating-group">
+                <i class="fas fa-fw fa-heading"></i>
                 <input type="text" asp-for="@Model.Title"  placeholder="" required />
                 <label>Memo Title</label>
-                <i class="fas fa-fw fa-heading"></i>
+                
             </div>
 
             <!-- Memo Content -->
@@ -30,7 +31,7 @@
             <!-- Select Approvers -->
         <div class="floating-group">
       
-                <select id="selectMemoUser"  asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                <select id="selectMemoUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                 <label>Select Users</label>
                 
                 <i class="fas fa-users"></i>

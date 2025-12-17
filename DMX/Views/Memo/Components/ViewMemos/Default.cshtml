@@ -68,7 +68,7 @@
                                        <button  onclick="openDialogFromData(this)" data-url="CommentMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="CommentMemoDialog" class="dropdown-item-custom"><i style="width:15px; height:15px" class=" fa fa-comment mr-3 text-dark"></i>Comment</button>
 
 
-                                        @if(canPrintMemo)
+                                        @if(Memo.CanPrint)
  {
 
                                         <button type="button" class="dropdown-item-custom" onclick="printMemoIframe('@protector.Protect(Memo.PublicId.ToString())')">

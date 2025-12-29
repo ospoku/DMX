@@ -10,27 +10,20 @@ using static DMX.Constants.Permissions;
 
 namespace DMX.ViewComponents
 {
-    public class ViewMemos : ViewComponent
+    public class ViewMemos(
+        XContext context,
+        UserManager<AppUser> userManager,
+        IAuthorizationService authorization) : ViewComponent
     {
-        private readonly XContext _context;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IAuthorizationService _authorization;
-
-        public ViewMemos(
-            XContext context,
-            UserManager<AppUser> userManager,
-            IAuthorizationService authorization)
-        {
-            _context = context;
-            _userManager = userManager;
-            _authorization = authorization;
-        }
+        private readonly XContext ctx = context;
+        private readonly UserManager<AppUser> usm = userManager;
+        private readonly IAuthorizationService auth = authorization;
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await usm.GetUserAsync(HttpContext.User);
 
-            var memoAssignments = await _context.MemoAssignments
+            var memoAssignments = await ctx.MemoAssignments
                 .Include(a => a.Memo)
                 .Include(a => a.AppUser)
                 .Where(a =>
@@ -43,12 +36,12 @@ namespace DMX.ViewComponents
 
             foreach (var assignment in memoAssignments)
             {
-                var authorizationResult = await _authorization.AuthorizeAsync(
+                var authorizationResult = await auth.AuthorizeAsync(
                     HttpContext.User,
                     assignment.Memo,
                     "MemoOwnerPolicy");
-
-                var sender = await _userManager.FindByIdAsync(assignment.Memo.CreatedBy);
+                var canPrint = HttpContext.User.HasClaim("Permission", "Permission.Print.Memo");
+                var sender = await usm.FindByIdAsync(assignment.Memo.CreatedBy);
 
                 viewModel.Add(new ViewMemosVM
                 {
@@ -64,7 +57,8 @@ namespace DMX.ViewComponents
                         .Select(x => x.AppUser.UserName)
                         .Distinct()
                         .ToList(),
-                    CanEdit = authorizationResult.Succeeded
+                    CanEdit = authorizationResult.Succeeded,
+                    CanPrint=canPrint
                     
                 });
             }

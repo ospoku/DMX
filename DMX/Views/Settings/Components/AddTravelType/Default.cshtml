@@ -13,16 +13,17 @@
             {
             <div class="card-body">
                     <div class="floating-group">
-                        <input type="text" asp-for="@Model.Name" id="txtAddTravelName"    required>
+                        <input type="text" asp-for="@Model.Name" id="txtAddTravelName" placeholder=""   required>
                         <label  for="txtAddTravelName">Name</label>
+                    <i class="fas fa-header"></i>
                     </div>
                     <div class="floating-group">
-                        <input type="text" asp-for="@Model.Code"id="txtAddTravelCode"   required>
-                        <label  for="txtAddTravelCode">Code</label>
+                        <input type="text" asp-for="@Model.Code"id="txtAddTravelCode" placeholder=""  required>
+                    <label for="txtAddTravelCode">Code</label> <i class="fas fa-code"></i>
                     </div>
                     <div class="floating-group">
                         <input type="text" asp-for="@Model.Description"  id="txtAddTravelDescription"  placeholder="" required>
-                        <label  for="txtAddTravelDescription">Description</label>
+                    <label for="txtAddTravelDescription">Description</label> <i class="fas fa-edit"></i>
                     </div>
                    
                     </div>

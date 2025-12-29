@@ -68,13 +68,18 @@
                                        <button  onclick="openDialogFromData(this)" data-url="CommentMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="CommentMemoDialog" class="dropdown-item-custom"><i style="width:15px; height:15px" class=" fa fa-comment mr-3 text-dark"></i>Comment</button>
 
 
+<<<<<<< HEAD
                                         @if(Memo.CanPrint)
  {
 
+=======
+                                       @if(Memo.CanPrint)
+                                       {
+>>>>>>> still testing floating text with icons
                                         <button type="button" class="dropdown-item-custom" onclick="printMemoIframe('@protector.Protect(Memo.PublicId.ToString())')">
                                             <i style="width:15px; height:15px" class="fa fa-print mr-3 text-primary"></i>Print
                                         </button>
- }
+                                       }
  
                                              
                                                 <button type="button" onclick="de" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3 text-danger"></i>Delete</button>

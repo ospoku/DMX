@@ -4,14 +4,14 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using System.Web
-
+@using Microsoft.AspNetCore.DataProtection
 @inject UserManager<AppUser> usm;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model IEnumerable<DMX.ViewModels.ViewMemosVM>;
 @inject Microsoft.AspNetCore.DataProtection.IDataProtectionProvider DataProtectionProvider
-@using Microsoft.AspNetCore.DataProtection
+
 @{
     // Optional: create protector in view (same purpose string)
     var protector = DataProtectionProvider.CreateProtector("IdProtector");
@@ -25,7 +25,7 @@
         <button id="btnAddMemo" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" onclick="document.getElementById('AddMemoDialog').showModal()"><i class="fa fa-fw fa-plus-circle"></i>Add Memo</button>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+         
             <table class="table dataTables_wrapper">
                 <thead>
                     <tr><th>SN</th>
@@ -67,15 +67,9 @@
 
                                        <button  onclick="openDialogFromData(this)" data-url="CommentMemo" data-user-id="@protector.Protect(Memo.PublicId.ToString())" data-dialog-id="CommentMemoDialog" class="dropdown-item-custom"><i style="width:15px; height:15px" class=" fa fa-comment mr-3 text-dark"></i>Comment</button>
 
-
-<<<<<<< HEAD
-                                        @if(Memo.CanPrint)
- {
-
-=======
                                        @if(Memo.CanPrint)
                                        {
->>>>>>> still testing floating text with icons
+
                                         <button type="button" class="dropdown-item-custom" onclick="printMemoIframe('@protector.Protect(Memo.PublicId.ToString())')">
                                             <i style="width:15px; height:15px" class="fa fa-print mr-3 text-primary"></i>Print
                                         </button>
@@ -84,11 +78,8 @@
                                              
                                                 <button type="button" onclick="de" class="dropdown-item-custom"><i style="width:15px; height:15px" class="fa fa-trash mr-3 text-danger"></i>Delete</button>
                                           
-                                        
-                                       
                                   </div>
-                                  </div>
-                        
+                        </div>
 
                         </td>
                     </tr>
@@ -100,7 +91,7 @@
 
     <div class="card-footer">
     </div>
-</div>
+
 
 <iframe id="printFrame" style="display:none;"></iframe>
 

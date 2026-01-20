@@ -12,10 +12,10 @@
              @using (Html.BeginForm("AddTravelType", "Settings", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="floating-group">
-                        <input type="text" asp-for="@Model.Name" id="txtAddTravelName" placeholder=""   required>
-                        <label  for="txtAddTravelName">Name</label>
-                    <i class="fas fa-header"></i>
+                    <div class="floating-label-content">
+                        <input type="text" asp-for="@Model.Name" id="txtAddTravelName" placeholder=""   required class="input-group did-floating-input">
+                        <label class="did-floating-label"  for="txtAddTravelName">Name</label>
+                    <i class="input-group-text fas fa-header"></i>
                     </div>
                     <div class="floating-group">
                         <input type="text" asp-for="@Model.Code"id="txtAddTravelCode" placeholder=""  required>

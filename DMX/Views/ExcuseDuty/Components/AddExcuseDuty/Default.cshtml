@@ -112,30 +112,60 @@
     </div>  @using (Html.BeginForm("AddExcuseDuty", "ExcuseDuty", FormMethod.Post, new { id = "addExcuseDutyForm" }))
     {
             <div class="modal-body">
-              
+
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="floating-group">
-                                <input type="text" id="txtPatientName"  asp-for="@Model.PatientName" placeholder="" />
-                                <label >Patient Name</label>
-                                <i class="fas fa-user-doctor"></i>
-                            </div>
-                        </div>
+                <div class="col-md-8">
+             
+                <div class="input-group">
+               
+                    <div class="input-group-text">
+                     
+                        <i class="fas fa-user-doctor"></i>        
+                    </div>
+
+                  
+                    <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.PatientName"
+                               class="did-floating-input"
+                                   id="txtPatientName"
+                               placeholder=" " />
+                            <label class="did-floating-label" for="txtPatientName">Patient Name</label>
+                    </div>
+                </div>
+                </div>
                         <div class="col-md-4">
-                            <div class="floating-group">
-                                <input type="text"  asp-for="@Model.PatientId" placeholder="" required />
-                                <label >Patient Id</label>
-                                <i class="fas fa-user-check"></i>
-                            </div>
+                
+
+
+                    <div class="input-group">
+                    
+                        <div class="input-group-text">
+                        
+                            <i class="fas fa-user-check"></i>   
+                        </div>
+
+                     
+                        <div class="did-floating-label-content">
+                            <input type="text" asp-for="@Model.PatientId"
+                                   class="did-floating-input"
+                                   id="txtPatientId"
+                                   placeholder=" " />
+                            <label class="did-floating-label" for="txtPatientId">Patient Id</label>
+                        </div>
+                    </div>
                         </div>
                     </div>
 
-                    <div class="floating-group">
-                        <input type="text"  asp-for="@Model.Diagnosis" placeholder="" required />
-                        <label >Diagnosis</label>
-                        <i class="fas fa-diagnoses"></i>
+            <div class="input-group">
+                <div class="input-group-text">
+                <i class="fas fa-diagnoses"></i>
+                </div>
+                <div class="did-floating-label-content">
+                <input type="text" class="did-floating-input" asp-for="@Model.Diagnosis" placeholder="" required />
+                    <label class="did-floating-label">Diagnosis</label>
+                    
                     </div>
-
+                    </div>
                     <div class="floating-group">
                         <input type="date" asp-for="@Model.DateofDischarge"  required />
                         <label >Date of Discharge</label>

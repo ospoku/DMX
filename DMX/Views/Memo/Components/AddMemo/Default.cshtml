@@ -14,12 +14,31 @@
     {
         <div class="modal-body">
             <!-- Memo Title -->
-            <div class="floating-group">
-                <i class="fas fa-fw fa-heading"></i>
-                <input type="text" asp-for="@Model.Title"  placeholder="" required />
-                <label>Memo Title</label>
-                
-            </div>
+    
+ 
+       
+       
+     
+           
+            <div class="input-group">
+  <!-- Left icon addon -->
+  <div class="input-group-text">
+    <!-- Use any icon here: Font Awesome, SVG, emoji, etc. -->
+    <i class="fas fa-heading"></i>          <!-- example: user icon -->
+    <!-- or SVG: <svg ...> ... </svg> -->
+    <!-- or just text/emoji: 👤 -->
+  </div>
+
+  <!-- Floating label + input -->
+  <div class="did-floating-label-content">
+                    <input type="text" asp-for="@Model.Title"
+      class="did-floating-input" 
+      id="title" 
+      placeholder=" "           
+    />
+    <label class="did-floating-label" for="title">Title</label>
+  </div>
+</div>
 
             <!-- Memo Content -->
             <div class="form-group">

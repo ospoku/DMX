@@ -13,18 +13,27 @@
             {
             <div class="modal-body">
 
-           
-                    <div class="floating-group">
-                        <input type="number" step="0.0001" asp-for="@Model.Amount"  max="@Model.Maximum" required />
-                        <label >Amount</label>
-                        <i class="fas fa-money-check"></i>
+
+            <div class="input-group">
+                <div class="input-group-text">
+                    <i class="fas fa-money-check"></i>
+                </div>
+                <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="number" step="0.0001" asp-for="@Model.Amount"  max="@Model.Maximum" required />
+                        <label class="did-floating-label" >Amount</label>
+                    
                     </div>
-                        <div class="floating-group">
-                            <input type="text" asp-for="@Model.Purpose"   placeholder="" required/>
-                            <label >Purpose</label>
-                            <i class="fas fa-ideal"></i>
+                    </div>
+            <div class="input-group">
+                <div class="input-group-text">
+                    <i class="fas fa-ideal"></i>
+                </div>
+                <div class="did-floating-label-content">
+                            <input class="did-floating-input" type="text" asp-for="@Model.Purpose"   placeholder="" required/>
+                            <label class="did-floating-label" >Purpose</label>
+                          
                         </div>
-            
+            </div>
                         <select id="selectPettyCashUser" class="dmx-choices"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
                         
                       </div>

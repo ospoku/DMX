@@ -112,18 +112,12 @@
     </div>  @using (Html.BeginForm("AddExcuseDuty", "ExcuseDuty", FormMethod.Post, new { id = "addExcuseDutyForm" }))
     {
             <div class="modal-body">
-
                     <div class="row">
                 <div class="col-md-8">
-             
                 <div class="input-group">
-               
                     <div class="input-group-text">
-                     
                         <i class="fas fa-user-doctor"></i>        
                     </div>
-
-                  
                     <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.PatientName"
                                class="did-floating-input"
@@ -134,17 +128,10 @@
                 </div>
                 </div>
                         <div class="col-md-4">
-                
-
-
                     <div class="input-group">
-                    
                         <div class="input-group-text">
-                        
                             <i class="fas fa-user-check"></i>   
                         </div>
-
-                     
                         <div class="did-floating-label-content">
                             <input type="text" asp-for="@Model.PatientId"
                                    class="did-floating-input"
@@ -155,7 +142,6 @@
                     </div>
                         </div>
                     </div>
-
             <div class="input-group">
                 <div class="input-group-text">
                 <i class="fas fa-diagnoses"></i>
@@ -163,34 +149,41 @@
                 <div class="did-floating-label-content">
                 <input type="text" class="did-floating-input" asp-for="@Model.Diagnosis" placeholder="" required />
                     <label class="did-floating-label">Diagnosis</label>
-                    
                     </div>
                     </div>
-                    <div class="floating-group">
-                        <input type="date" asp-for="@Model.DateofDischarge"  required />
-                        <label >Date of Discharge</label>
-                        <i class="fas fa-calendar"></i>
+                    <div class="input-group">
+                <div class="input-group-text">
+                    <i class="fas fa-calendar"></i>
+                </div>      
+                <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="date" asp-for="@Model.DateofDischarge"  required name="dtDateofDischarge" />
+                        <label class="did-floating-label" for="dtDateofDischarge">Date of Discharge</label>
+                       </div>
                     </div>
-
-                    <div class="floating-group">
-                        <input type="number"  asp-for="@Model.ExcuseDays" placeholder="" required />
-                        <label >Excuse Days</label>
-                        <i class="fas fa-calendar-day"></i>
+            <div class="input-group">
+                <div class="input-group-text">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="number"  asp-for="@Model.ExcuseDays" placeholder="" required />
+                        <label class="did-floating-label" >Excuse Days</label>
+                     
                     </div>
-
-                    <div class="floating-group">
+                    </div>
+            <div class="input-group">
+                <div class="input-group-text">
+                    <i class="fas fa-diagnoses"></i>
+                </div>
+                <div class="did-floating-label-content">
                         <select id="usersAddExcuseDuty" class="did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                        <label >Select Users</label>
+                        <label class="did-floating-label" >Select Users</label>
+                    </div>
                     </div>
                     </div>
                     <div class="modal-footer">
-                    
                         <button id="btnAddExcuseDuty" class="btn btn-primary btn-block">Save</button>
-                  
                     </div>
                 }
-          
-   
 </dialog>
 
 

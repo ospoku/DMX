@@ -13,11 +13,15 @@
              @using (Html.BeginForm("AddDeceasedType", "Settings", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="floating-group">
-                        <input type="text" asp-for="@Model.Name" id="txtDTypeName"   placeholder="" />
-                        <label  for="txtDTypeName">Name</label>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-heading"></i>
                     </div>
-
+                    <div class="did-floating-label-content">
+                        <input type="text" class="did-floating-input" asp-for="@Model.Name" id="txtDTypeName"   placeholder="" />
+                        <label class="did-floating-label" for="txtDTypeName">Name</label>
+                    </div>
+                    </div>
                     <div class="floating-group">
                     <input type="text" asp-for="@Model.Code" id="txtDTypeCode"  placeholder="" />
                         <label >Code</label>

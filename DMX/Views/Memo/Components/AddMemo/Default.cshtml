@@ -2,7 +2,7 @@
 
 <dialog id="AddMemoDialog" class="col-md-6 border-0 rounded p-0">
     <div class="modal-header">
-        <h6 class="m-0 font-weight-bold text-primary d-inline">   <i class="fas fa-fw fa-file-alt text-primary"></i>Add Memo</h6>
+        <h6 class="m-0 font-weight-bold d-inline">   <i class="fas fa-fw fa-file-alt"></i>Add Memo</h6>
         <button type="button" aria-label="Close"
                 class="btn btn-sm btn-outline-danger"
                 onclick="document.getElementById('AddMemoDialog').close()">
@@ -48,13 +48,10 @@
             </div>
 
             <!-- Select Approvers -->
-        <div class="floating-group">
+ 
       
                 <select id="selectMemoUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                <label>Select Users</label>
-                
-                <i class="fas fa-users"></i>
-            </div> 
+            
          </div>
          <div class="modal-footer">
           

@@ -7,9 +7,10 @@
                 removeItemButton: true,
                 searchEnabled: true,
                 itemSelectText: '',
-                shouldSort: false,
+                shouldSort: true,
                 placeholder: true,
-               /* placeholderValue: 'Select Approver(s)'*/
+         
+               
             });
     });
 });    

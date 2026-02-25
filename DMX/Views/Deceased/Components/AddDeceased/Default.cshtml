@@ -6,7 +6,7 @@
 
             <div class="modal-header">
 
-                <h6>Add Deceased</h6>
+                <h6 class="fw-bold">Add Deceased</h6>
         <button type="button" aria-label="Close" class="btn btn-sm btn-outline-danger" onclick="document.getElementById('AddDeceasedDialog').close()">Close</button>
             </div>
 
@@ -121,7 +121,7 @@
                         </fieldset>
                     </div>
                     
-                        <select id="selectPatientUser"  class="dmx-choices did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectPatientUser"  class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"><option value="">Select User(s)</option></select>
               
               
                 </div>

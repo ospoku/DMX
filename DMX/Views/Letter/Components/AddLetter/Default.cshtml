@@ -66,16 +66,13 @@
                        
                     </div>
                     </div>
-            <div class="input-group">
-                <div class="input-group-text">
-                    <i class="fas fa-diagnoses"></i>
-                </div>
-                <div class="did-floating-label-content">
-                        <select id="usersAddMemo" class=" did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
-                <label class="did-floating-label" >Select Users</label>
-                </div>
+        
+                
+                        <select id="usersAddMemo" class=" dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"><option value="">Selected User(s)</option></select>
+               
+               
             </div>
-                   </div>
+                
                    <div class="modal-footer">
                     <button id="saveButton" class="btn btn-block btn-primary">Save</button></div>
                 }

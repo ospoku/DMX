@@ -6,7 +6,7 @@
    
             <div class="modal-header">
 
-                <h6>Add Petty Cash</h6>
+                <h6 class="fw-bold">Add Petty Cash</h6>
                 <button type="button" aria-label="Close" class="btn btn-sm btn-outline-danger" onclick="document.getElementById('AddPettyCashDialog').close()">Close</button>
             </div> 
             @using (Html.BeginForm("AddPettyCash", "PettyCash", FormMethod.Post, new{id="addPettyCashForm"}))
@@ -34,7 +34,7 @@
                           
                         </div>
             </div>
-                        <select id="selectPettyCashUser" class="dmx-choices"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"></select>
+                        <select id="selectPettyCashUser" class="dmx-choices"   asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers"><option value="">Select User(s)</option></select>
                         
                       </div>
             <div class="modal-footer">

@@ -62,7 +62,7 @@ namespace DMX.Controllers
                 Email = addUserVM.Email,
                 PhoneNumber = addUserVM.Telephone,
                 Firstname = addUserVM.Firstname,
-                Surname = addUserVM.Surname
+                Lastname = addUserVM.Lastname
             };
 
             var createResult = await usm.CreateAsync(newUser, addUserVM.Password);

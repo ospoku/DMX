@@ -191,7 +191,7 @@ namespace DMX.Data
                 AppUser superUser = new()
                 {
                     UserName = "SuperAdmin",
-                    Surname = "SuperAdmin",
+                    Lastname = "SuperAdmin",
                     Firstname = "SuperAdmin",
                     Email = "ospoku@gmail.com",
                     PhoneNumber = "0244139692",
@@ -214,7 +214,7 @@ namespace DMX.Data
                 AppUser superUser = new()
                 {
                     UserName = "Admin",
-                    Surname = "Admin",
+                    Lastname = "Admin",
                     Firstname = "Admin",
                     Email = "kofipoku84@gmail.com",
                     PhoneNumber = "0244139692",

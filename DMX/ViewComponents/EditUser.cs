@@ -27,7 +27,7 @@ namespace DMX.ViewComponents
                 Email = userToEdit.Email,
                 Firstname = userToEdit.Firstname,
                 Username = userToEdit.UserName,
-                Surname = userToEdit.Surname,
+                Lastname = userToEdit.Lastname,
                 PhoneNumber = userToEdit.PhoneNumber,
             };
 

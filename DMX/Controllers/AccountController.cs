@@ -113,7 +113,7 @@ namespace DMX.Controllers
            
 
             profileToEdit.Firstname = editProfileVM.Firstname;
-            profileToEdit.Surname = editProfileVM.Surname;
+            profileToEdit.Lastname = editProfileVM.Lastname;
             profileToEdit.PhoneNumber = editProfileVM.Telephone;
 
             if (formFile != null)

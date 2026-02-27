@@ -24,17 +24,17 @@ namespace DMX.ViewComponents
             }
             else
             {
-                if (!string.IsNullOrEmpty(user.Firstname) && !string.IsNullOrEmpty(user.Surname))
+                if (!string.IsNullOrEmpty(user.Firstname) && !string.IsNullOrEmpty(user.Lastname))
                 {
-                    userInitials = $"{user.Firstname[0]}{user.Surname[0]}".ToUpper();
+                    userInitials = $"{user.Firstname[0]}{user.Lastname[0]}".ToUpper();
                 }
                 else if (!string.IsNullOrEmpty(user.Firstname))
                 {
                     userInitials = user.Firstname[0].ToString().ToUpper();
                 }
-                else if (!string.IsNullOrEmpty(user.Surname))
+                else if (!string.IsNullOrEmpty(user.Lastname))
                 {
-                    userInitials = user.Surname[0].ToString().ToUpper();
+                    userInitials = user.Lastname[0].ToString().ToUpper();
                 }
 
             }

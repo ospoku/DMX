@@ -22,7 +22,7 @@ namespace DMX.ViewComponents
                 editUserVM.Email = userToEdit.Email;
                 editUserVM.Firstname = userToEdit.Firstname;
                 editUserVM.Username = userToEdit.UserName;
-                editUserVM.Surname = userToEdit.Surname;
+                editUserVM.Lastname = userToEdit.Lastname;
                 editUserVM.Telephone = userToEdit.PhoneNumber;
 
 

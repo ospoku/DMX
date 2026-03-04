@@ -12,20 +12,31 @@
              @using (Html.BeginForm("AddTravelType", "Settings", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="floating-label-content">
-                        <input type="text" asp-for="@Model.Name" id="txtAddTravelName" placeholder=""   required class="input-group did-floating-input">
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-code"></i>
+                    </div>  <div class="did-floating-label-content">
+                        <input type="text" asp-for="@Model.Name" id="txtAddTravelName" placeholder=""   required class=" did-floating-input">
                         <label class="did-floating-label"  for="txtAddTravelName">Name</label>
-                    <i class="input-group-text fas fa-header"></i>
+                    
                     </div>
-                    <div class="floating-group">
-                        <input type="text" asp-for="@Model.Code"id="txtAddTravelCode" placeholder=""  required>
-                    <label for="txtAddTravelCode">Code</label> <i class="fas fa-code"></i>
                     </div>
-                    <div class="floating-group">
-                        <input type="text" asp-for="@Model.Description"  id="txtAddTravelDescription"  placeholder="" required>
-                    <label for="txtAddTravelDescription">Description</label> <i class="fas fa-edit"></i>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-code"></i>
+                    </div>  <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" asp-for="@Model.Code"id="txtAddTravelCode" placeholder=""  required>
+                    <label class="did-floating-label" for="txtAddTravelCode">Code</label>
                     </div>
-                   
+                    </div>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-code"></i>
+                    </div>  <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" asp-for="@Model.Description"  id="txtAddTravelDescription"  placeholder="" required>
+                    <label class="did-floating-label" for="txtAddTravelDescription">Description</label>
+                    </div>
+                   </div>
                     </div>
 
                     <div class="card-footer"><button class="btn btn-block btn-primary">Save</button></div>

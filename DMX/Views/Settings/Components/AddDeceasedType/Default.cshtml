@@ -22,13 +22,21 @@
                         <label class="did-floating-label" for="txtDTypeName">Name</label>
                     </div>
                     </div>
-                    <div class="floating-group">
-                    <input type="text" asp-for="@Model.Code" id="txtDTypeCode"  placeholder="" />
-                        <label >Code</label>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-code"></i>
+                    </div>  <div class="did-floating-label-content">
+                    <input type="text" class="did-floating-input" asp-for="@Model.Code" id="txtDTypeCode" placeholder="" />
+                    <label class="did-floating-label">Code</label>
                     </div>
-                    <div class="floating-group">
-                    <input type="text" asp-for="@Model.Description" id="txtDTypeDesc"   placeholder="" />
-                        <label  for="txtAddDTypeDesc">Description</label>
+                    </div>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-edit"></i>
+                    </div>  <div class="did-floating-label-content">
+                    <input type="text" class="did-floating-input" asp-for="@Model.Description" id="txtDTypeDesc"   placeholder="" />
+                        <label  class="did-floating-label" for="txtAddDTypeDesc">Description</label>
+                    </div>
                     </div>
                     </div>
                     <div class="card-footer">

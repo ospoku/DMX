@@ -14,10 +14,7 @@
             <div class="modal-body">
 
 
-            <select id="selectTravelType1" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="dmx-choices">   <option value="">Select TravelType</option></select>
-                
-                   
-               
+            <select id="selectTravelType" type="select" asp-for="@Model.TravelTypeId" asp-items="@Model.TravelTypes" class="dmx-choices" multiple="multiple"><option value="">Select TravelType</option></select>
                     <div class="input-group">
                         <did class="input-group-text">
                             <i class="fas fa-arrows-spin"></i>
@@ -130,10 +127,7 @@
 <script>
     $(document).ready(function () {
      const addTravelRequestFormSelector = '#addTravelRequestForm';
-        $('#selectUserTravelRequest').select2({ dropdownParent: $('#AddTravelRequest') });
-        $('#selectTravelType1').select2({ dropdownParent: $('#AddTravelRequest') });
-          $('#selectTravelType2').select2({ dropdownParent: $('#AddTravelRequest') });
-        $('#selectDept').select2({ dropdownParent: $('#AddTravelRequest') });
+   
          document.getElementById("btnAddTravelRequest").addEventListener("click", function (event) {
             event.preventDefault();
 

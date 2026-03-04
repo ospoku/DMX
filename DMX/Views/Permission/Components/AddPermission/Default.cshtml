@@ -13,19 +13,33 @@
              @using (Html.BeginForm("AddPermission", "Permission", FormMethod.Post))
             {
             <div class="card-body">
-                    <div class="floating-group">
-                        <input type="text" asp-for="@Model.ModuleName"  id="txtModule"   placeholder="" />
-                        <label  for="txtModule">Module</label>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-calendar-check"></i>
                     </div>
-                <div class="floating-group">
-                    <input type="text" asp-for="@Model.ActionName" id="txtAction"  placeholder="" />
-                    <label  for="txtAction">Action</label>
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" asp-for="@Model.ModuleName"  id="txtModule"   placeholder="" />
+                        <label class="did-floating-label" for="txtModule">Module</label>
+                    </div>
+                    </div>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" asp-for="@Model.ActionName" id="txtAction"  placeholder="" />
+                    <label  class="did-floating-label" for="txtAction">Action</label>
                 </div>
-                <div class="floating-group">
-                    <input type="text" asp-for="@Model.Description" id="txtDescription"  placeholder="" />
-                    <label  for="txtAction">Description</label>
                 </div>
-
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" asp-for="@Model.Description" id="txtDescription"  placeholder="" />
+                    <label class="did-floating-label"  for="txtAction">Description</label>
+                </div>
+                </div>
                     
                     </div>
                     <div class="card-footer">

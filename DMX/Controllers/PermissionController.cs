@@ -254,7 +254,7 @@ namespace DMX.Controllers
                 }
 
                 // Add new claims
-                var selectedClaims = model.SelectedClaimValues?.ToList() ?? [];
+                var selectedClaims =  model.SelectedClaimValues?.ToList() ?? [];
                 foreach (var claim in selectedClaims)
                 {
                     await rol.AddPermissionClaim(role, claim);

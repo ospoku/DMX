@@ -18,13 +18,13 @@ namespace DMX.ViewComponents
             {
                 UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
                 DeceasedTypes = new SelectList(dcx.DeceasedTypes.ToList(), nameof(DeceasedType.DeceasedTypeId),nameof(DeceasedType.Code)),
-                MorgueServices = dcx.MorgueServices.Select(d => new CheckBoxItem
+                MorgueServices = [.. dcx.MorgueServices.Select(d => new CheckBoxItem
                 {
                     Id = d.MorgueServiceId.ToString(), // Map the Id property
                     Name = d.ServiceName, // Map the Name property
                     IsChecked = false, // Default value for IsSelected}).ToList()
                     Description=d.Description,
-               Amount=d.Amount }).ToList(),
+               Amount=d.Amount })],
             };
             return View(addDeceasedVM);
         }

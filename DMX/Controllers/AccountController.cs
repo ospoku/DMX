@@ -20,6 +20,7 @@ namespace DMX.Controllers
 {
     public class AccountController(XContext dContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment, INotyfService  notification, IDataProtectionProvider protectionProvider) : Controller
     {
+        
         public readonly XContext dcx = dContext;
         public readonly INotyfService notyf = notification;
         public readonly UserManager<AppUser> usm = userManager;
@@ -92,42 +93,50 @@ namespace DMX.Controllers
 
             return RedirectToAction("Login");
         }
-        public async Task<IActionResult> ForgetPassword() =>  View();
+        public IActionResult ForgetPassword() => View();
         [HttpGet]
-        public async Task<IActionResult>UserProfile()
+        public IActionResult UserProfile()
         {
             return ViewComponent(nameof(UserProfile));
         }
         [HttpGet]
-        public async Task<IActionResult> EditProfile()
+        public IActionResult EditProfile()
         {
             return ViewComponent(nameof(EditProfile));
         }
         [HttpPost]
         public async Task<IActionResult>EditProfile(EditProfileVM editProfileVM,IFormFile? formFile)
         {
-            AppUser profileToEdit= (from u in usm.Users
-                                    where u.Id == usm.GetUserId(HttpContext.User)
-                                    select u).FirstOrDefault();
+            //AppUser profileToEdit = (from u in usm.Users
+            //                        where u.Id == usm.GetUserId(htx.User)
+            //                         select u=>new EditProfileVM { Email = editProfileVM.Email }).FirstOrDefault();
 
-           
 
+         
+            var userId = usm.GetUserId(HttpContext.User);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            var profileToEdit =  await usm.FindByIdAsync(userId);
+
+            if (profileToEdit == null)
+            {
+                return NotFound();
+            }
             profileToEdit.Firstname = editProfileVM.Firstname;
             profileToEdit.Lastname = editProfileVM.Lastname;
             profileToEdit.PhoneNumber = editProfileVM.Telephone;
 
             if (formFile != null)
             {
-                using (var memoryStream = new MemoryStream())
-                {
+                using var memoryStream = new MemoryStream();
 
 
-                    await formFile.CopyToAsync(memoryStream);
+                await formFile.CopyToAsync(memoryStream);
 
 
-                    profileToEdit.Picture = memoryStream.ToArray();
-
-                }
+                profileToEdit.Picture = memoryStream.ToArray();
             }
 
             await usm.UpdateAsync(profileToEdit);
@@ -136,17 +145,28 @@ namespace DMX.Controllers
 
             return  RedirectToActionPermanent("Login");
         }
-      
+
         [HttpPost]
         public async Task<IActionResult> DeletePhoto(string Id)
         {
-            var photoToDelete = (from u in usm.Users where u.Id == protector.Protect(Id) select u).FirstOrDefault();
-            photoToDelete.Picture=null;
+            var userId = protector.Unprotect(Id);
+
+            var photoToDelete = await usm.FindByIdAsync(userId);
+
+            if (photoToDelete == null)
+            {
+                return NotFound();
+            }
+
+            photoToDelete.Picture = null;
 
             await usm.UpdateAsync(photoToDelete);
+
             notyf.Success("Photo successfully deleted", 5);
-            return RedirectToActionPermanent("UserProfile");
+
+            return RedirectToAction("UserProfile");
         }
+
         [AllowAnonymous]
         public IActionResult Splash()
         {

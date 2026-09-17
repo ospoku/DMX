@@ -50,7 +50,7 @@ namespace DMX.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 104857600)] // 100MB limit
         public async Task<IActionResult> AddLetter(AddLetterVM addLetterVm, IFormFile formFile)
         {
-            if (addLetterVm.SelectedUsers == null || !addLetterVm.SelectedUsers.Any())
+            if (addLetterVm.SelectedUsers == null || addLetterVm.SelectedUsers.Count == 0)
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction("ViewLetters");

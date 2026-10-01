@@ -14,7 +14,7 @@
     // Optional: create protector in view (same purpose string)
     var protector = DataProtectionProvider.CreateProtector("IdProtector");
 }
-@model IEnumerable<DMX.ViewModels.ViewExcuseDutiesVM>;
+@model IEnumerable<DMX.ViewModels.ViewExcuseDutiesVM>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -82,7 +82,7 @@
     <div class="card-footer"></div>
 </div>
 <dialog id="EditExcuseDutyDialog" class="rounded border-0 col-md-4"><div id="EditExcuseDutyDialogContent"></div></dialog>
-@await Component.InvokeAsync(nameof(AddExcuseDuty));
+@await Component.InvokeAsync(nameof(AddExcuseDuty))
 <iframe id="printFrame" style="display:none;"></iframe>
 
     <script type="text/javascript">

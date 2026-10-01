@@ -22,7 +22,7 @@ namespace DMX.Controllers
         public async Task<JsonResult> GetMessages(bool bIsGetOnlyRead = false)
         {
 
-            var Receiver =  usm.FindByIdAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
+            Task<AppUser?> Receiver =  usm.FindByIdAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Name")).Value);
             string ReceiverId =  Receiver.Result.UserName;
             oMessages = new List<Message>();
             oMessages = ms.GetMessages(ReceiverId, bIsGetOnlyRead);

@@ -1,0 +1,6 @@
+@DMXApi_HostAddress = http://localhost:5261
+
+GET {{DMXApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

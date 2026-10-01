@@ -1,11 +1,6 @@
 ﻿
 @model DMX.ViewModels.EditMemoVM;
-
-  
-
-      
             <div class="modal-header">
-
                 <h6>Edit Memo</h6>
                 <button type="button"  aria-label="Close" onclick="document.getElementById('EditMemoDialog').close()" class="btn btn-sm btn-outline-danger">Close</button>
             </div>
@@ -13,25 +8,27 @@
 
 
                         @using(Html.BeginForm("EditMemo", "Memo", FormMethod.Post,new{id="editMemoForm"}))
-                        {
-                            <div class="floating-group">
-                                <input  asp-for="@Model.Title" placeholder="" />
-                                <label >Title</label>
+{
+        <div class="input-group">
+            <div class="input-group-text">
+                <i class="fas fa-heading"></i>
+            </div>
+                            <div class="did-floating-label-content">
+                                <input class="did-floating-input"  asp-for="@Model.Title" placeholder="" />
+                                <label class="did-floating-label" >Title</label>
+                            </div>
                             </div>
                      <div class="form-group">     
                     <textarea id="MemoContent"  type="text"  asp-for="@Model.Content" required="required" style="min-height:300px"></textarea>
                     </div>
                             
-                                    <select id="selectUser" class="dmx-choices did-floating-select" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple ></select>
+                                    <select id="selectUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="@Model.SelectedUsers" multiple ></select>
                         
                            
-                       
+      
                                 <button id="btnEditMemo" class="btn btn-block btn-primary">Update</button>         
       }
      </div>
-
- 
-    
 <script>
     $(document).ready(function () {
         // Initialize Select2 for dropdowns within the modal

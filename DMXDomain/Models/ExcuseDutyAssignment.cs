@@ -1,8 +1,7 @@
-﻿using DMXDomain.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DMX.Models
+namespace DMXDomain.Models
 {
     public class ExcuseDutyAssignment : TableAudit
     {

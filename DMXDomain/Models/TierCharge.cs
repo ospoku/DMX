@@ -1,4 +1,4 @@
-﻿namespace DMX.Models
+﻿namespace DMXDomain.Models
 {
     
         public class TierCharge

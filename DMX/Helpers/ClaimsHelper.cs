@@ -1,8 +1,7 @@
 using System.Reflection;
 using System.Security.Claims;
-using DMX.Models;
-using DMX.ViewModels;
 using DMXDomain.Models;
+using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace DMX.Helpers

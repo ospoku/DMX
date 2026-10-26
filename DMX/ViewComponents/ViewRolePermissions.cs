@@ -1,7 +1,7 @@
-﻿using DMX.Constants;
-using DMX.Data;
+﻿
+using DMXInfrastructure.Data;
 using DMX.Helpers;
-using DMX.Models;
+using DMXDomain.Models;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

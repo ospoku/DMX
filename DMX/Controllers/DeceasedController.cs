@@ -1,8 +1,10 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using DMX.Data;
+
 using DMX.ViewModels;
 using DMXApplication.Services;
+using DMXApplication.Services.DMXApplication.Services;
 using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

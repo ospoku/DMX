@@ -1,11 +1,11 @@
-﻿using DMX.Data;
+﻿using DMXInfrastructure.Data;
 using DMX.ViewModels;
 using DMXDomain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static DMX.Constants.Permissions;
+using static DMXApplication.Constants.Permissions;
 
 
 namespace DMX.ViewComponents

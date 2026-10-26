@@ -1,6 +1,7 @@
-﻿using DMX.Data;
+﻿
 using DMX.ViewModels;
 using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -30,7 +31,7 @@ namespace DMX.ViewComponents
             LeaveCommentVM addCommentVM = new()
             {
                
-                Comments = leaveToEdit.Comments,
+                Comments = (ICollection<LeaveComment>)leaveToEdit.Comments,
                 
                 SelectedUsers = AssignedUsers,
 

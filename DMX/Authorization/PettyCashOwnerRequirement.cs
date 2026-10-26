@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DMX.Authorization
+namespace DMXApplication.Authorization
 {
-    public class MemoOwnerRequirement : IAuthorizationRequirement
+    public class PettyCashOwnerRequirement : IAuthorizationRequirement
     {
-        public MemoOwnerRequirement()
+        public PettyCashOwnerRequirement()
         {
             // Add any properties needed for the requirement if necessary
         }

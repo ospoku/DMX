@@ -1,19 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using DMX.Data;
 using DMX.ViewModels;
 using AspNetCoreHero.ToastNotification.Abstractions;
-using AspNetCoreHero.ToastNotification.Notyf;
 using Microsoft.AspNetCore.Identity;
-using DMX.ViewComponents;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-
-using DMX.Helpers;
-using Microsoft.AspNetCore.Components.Web;
 using DMXInfrastructure.Data;
 using DMXDomain.Models;
-using DMXApplication.Services;
+using DMXApplication.Services.DMXApplication.Services;
 
 
 namespace DMX.Controllers

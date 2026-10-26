@@ -1,4 +1,5 @@
-﻿using DMX.Models;
+﻿using DMXDomain.Models;
+using DMXDomain.Models;
 
 namespace DMX.ViewModels
 {

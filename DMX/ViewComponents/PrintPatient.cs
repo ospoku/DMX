@@ -1,5 +1,5 @@
 ﻿using DMX.Controllers;
-using DMX.Data;
+using DMXInfrastructure.Data;
 using DMX.ViewModels;
 using DMXApplication.Services;
 using Microsoft.AspNetCore.DataProtection;

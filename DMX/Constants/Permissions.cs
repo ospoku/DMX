@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DMX.Constants
+namespace DMXApplication.Constants
 {
     public class Permissions
     {
         public static List<string> GeneratePermissionsForModule(string module)
         {
-            return new List<string>()
-            {
+            return
+            [
                 $"Permissions.{module}.Create",
                 $"Permissions.{module}.View",
                 $"Permissions.{module}.Edit",
@@ -18,7 +13,7 @@ namespace DMX.Constants
                 $"Permissions.{module}.Comment",
                 $"Permissions.{module}.Download",
                 $"Permissions.{module}.Print",
-            };
+            ];
         }
 
         public static class Modules

@@ -14,7 +14,7 @@ namespace DMXApplication.Services
             IEntityPersistence persistence)
         {
             private readonly UserManager<AppUser> usm = userManager;
-            private readonly IEntityPersistence dcx = persistence;
+            private readonly IEntityPersistence entPer = persistence;
 
             public async Task<bool> AddEntityAsync<T>(
                 T entity,
@@ -38,9 +38,9 @@ namespace DMXApplication.Services
                     entityType.GetProperty("IsDeleted")
                         ?.SetValue(entity, false);
 
-                    dcx.Add(entity);
+                    entPer.Add(entity);
 
-                    await dcx.SaveChangesAsync(user.Id);
+                    await entPer.SaveChangesAsync(user.Id);
 
                     return true;
                 }
@@ -69,9 +69,9 @@ namespace DMXApplication.Services
                     entityType.GetProperty("ModifiedDate")
                         ?.SetValue(model, DateTime.UtcNow);
 
-                    dcx.Update(model);
+                    entPer.Update(model);
 
-                    await dcx.SaveChangesAsync(user.Id);
+                    await entPer.SaveChangesAsync(user.Id);
 
                     return true;
                 }
@@ -103,9 +103,9 @@ namespace DMXApplication.Services
                     entityType.GetProperty("IsDeleted")
                         ?.SetValue(model, true);
 
-                    dcx.Update(model);
+                    entPer.Update(model);
 
-                    await dcx.SaveChangesAsync(user.Id);
+                    await entPer.SaveChangesAsync(user.Id);
 
                     return true;
                 }

@@ -1,4 +1,4 @@
-﻿using DMX.Data;
+﻿using DMXInfrastructure.Data;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 

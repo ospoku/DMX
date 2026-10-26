@@ -1,11 +1,12 @@
-﻿using DMX.Data;
+﻿
 using DMX.ViewModels;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DMX.ViewComponents
 {
-    public class EditPerDiem(XContext dContext,IDataProtector protector):ViewComponent
+    public class EditPerDiem(XContext dContext, IDataProtector protector) : ViewComponent
     {
         public readonly XContext ctx=dContext;
         public readonly IDataProtectionProvider provider;

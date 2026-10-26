@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace DMX.Authorization
+namespace DMXApplication.Authorization
 {
-    internal class PermissionPolicyProvider : IAuthorizationPolicyProvider
+   public class PermissionPolicyProvider(IOptions<AuthorizationOptions> options) : IAuthorizationPolicyProvider
     {
-        public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
-        public PermissionPolicyProvider(IOptions<AuthorizationOptions> options)
-        {
-            FallbackPolicyProvider = new DefaultAuthorizationPolicyProvider(options);
-        }
+        public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; } = new DefaultAuthorizationPolicyProvider(options);
+
         public Task<AuthorizationPolicy> GetDefaultPolicyAsync() => FallbackPolicyProvider.GetDefaultPolicyAsync();
         public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
         {

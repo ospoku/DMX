@@ -1,5 +1,4 @@
-﻿using DMX.Authorization;
-using DMXDomain.Models;
+﻿using DMXDomain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;

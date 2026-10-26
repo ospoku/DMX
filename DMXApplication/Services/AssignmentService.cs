@@ -1,42 +1,48 @@
-﻿using DMXDomain.Models;
+﻿using DMXApplication.Interfaces;
+using DMXDomain.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace DMXApplication.Services
 {
-    public class AssignmentService(UserManager<AppUser> userManager, XContext context, INotyfService notyfService)
+    public class AssignmentService(
+        UserManager<AppUser> userManager,
+       
+        IAssignmentRepository assignmentRepository)
     {
         private readonly UserManager<AppUser> usm = userManager;
-        private readonly INotyfService notyf = notyfService;
+  
+        private readonly IAssignmentRepository assRep = assignmentRepository;
 
-        private readonly DbContext dcx = context;
-
-        public async Task<bool> AssignUsers<T>(T model, ClaimsPrincipal userClaims) where T : class
+        public async Task<bool> AssignUsers<T>(
+            T model,
+            ClaimsPrincipal userClaims) where T : class
         {
             var userId = usm.GetUserId(userClaims);
 
-            model.GetType().GetProperty("CreatedBy")?.SetValue(model, userId, null);
-            model.GetType().GetProperty("CreatedDate")?.SetValue(model, DateTime.UtcNow);
+            if (string.IsNullOrEmpty(userId))
+            {
+              
+                return false;
+            }
+
             try
             {
-                dcx.Set<T>().Add(model);
-                if (await dcx.SaveChangesAsync(userId) > 0)
-                { 
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                model.GetType().GetProperty("CreatedBy")
+                    ?.SetValue(model, userId);
+
+                model.GetType().GetProperty("CreatedDate")
+                    ?.SetValue(model, DateTime.UtcNow);
+
+                assRep.Add(model);
+
+                return await assRep.SaveChangesAsync(userId) > 0;
             }
             catch (Exception ex)
             {
-                notyf.Error("An error occurred: " + ex.Message, 5);
+               
                 return false;
             }
         }
-
     }
 }
-

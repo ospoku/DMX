@@ -1,7 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using DMX.Data;
+using DMXInfrastructure.Data;
 
-using DMX.Models;
+using DMXDomain.Models;
 using DMX.ViewModels;
 using DMXApplication.Services;
 using DMXDomain.Models;
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DMXApplication.Services.DMXApplication.Services;
 
 namespace DMX.ViewComponents
 {

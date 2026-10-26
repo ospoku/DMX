@@ -1,6 +1,7 @@
-﻿using DMX.Data;
+﻿
 using DMX.ViewModels;
 using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared;
@@ -9,15 +10,10 @@ using System.Web;
 
 namespace DMX.ViewComponents
 {
-    public class EditServiceRequest:ViewComponent
+    public class EditServiceRequest(XContext dContext, IDataProtectionProvider provider) : ViewComponent
     {
-        public readonly XContext dcx;
-        public readonly IDataProtector protector;
-        public EditServiceRequest(XContext dContext,IDataProtectionProvider provider)
-        {
-            dcx = dContext;  
-            protector = provider.CreateProtector("IdProtector");
-        }
+        public readonly XContext dcx = dContext;
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
         public IViewComponentResult Invoke(string Id)
         {

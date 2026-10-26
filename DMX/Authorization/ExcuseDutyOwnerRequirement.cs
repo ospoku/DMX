@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DMX.Authorization
+namespace DMXApplication.Authorization
 {
-    public class TravelRequestOwnerRequirement : IAuthorizationRequirement
+    public class ExcuseDutyOwnerRequirement : IAuthorizationRequirement
     {
-        public TravelRequestOwnerRequirement()
+        public ExcuseDutyOwnerRequirement()
         {
             // Add any properties needed for the requirement if necessary
         }

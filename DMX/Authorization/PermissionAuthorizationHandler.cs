@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DMX.Authorization
+namespace DMXApplication.Authorization
 {
-    internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
+    public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
     {
         public PermissionAuthorizationHandler() { }
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)

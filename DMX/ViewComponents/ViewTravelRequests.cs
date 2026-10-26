@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DMX.Data;
+using DMXInfrastructure.Data;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -48,10 +48,10 @@ namespace DMX.ViewComponents
                 var numberOfDays = (int)(travel.EndDate - travel.StartDate).TotalDays;
 
                 // Calculate total allowance using the TotalAllowance method
-                var totalAllowance = als.TotalAllowance(travel.ConferenceFee, travel.FuelClaim, numberOfDays, travel.CreatedBy);
+                var totalAllowance = als.TotalAllowanceAsync(travel.ConferenceFee, travel.FuelClaim, numberOfDays, travel.CreatedBy);
 
                 // Assign the calculated total allowance to the travel object
-                travel.TotalAllowance = totalAllowance;
+                //travel.TotalAllowance = totalAllowance;
             }
 
             // Return the view with the travel list

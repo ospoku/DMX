@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DMX.Data;
 using DMX.ViewModels;
-using static DMX.Constants.Permissions;
 using Microsoft.AspNetCore.Identity;
 using DMXDomain.Models;
+using DMXInfrastructure.Data;
 
 namespace DMX.ViewComponents
 {

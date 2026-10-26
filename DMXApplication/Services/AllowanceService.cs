@@ -3,15 +3,10 @@ using DMXApplication.Interfaces;
 
 namespace DMXApplication.Services
 {
-    public class AllowanceService
+    public class AllowanceService(
+        IAllowanceRepository allowanceRepository)
     {
-        private readonly IAllowanceRepository _allowanceRepository;
-
-        public AllowanceService(
-            IAllowanceRepository allowanceRepository)
-        {
-            _allowanceRepository = allowanceRepository;
-        }
+        private readonly IAllowanceRepository allowRep = allowanceRepository;
 
         public async Task<decimal> PerdiemCalculatorAsync(
             int noOfDays,
@@ -32,14 +27,8 @@ namespace DMXApplication.Services
             }
 
             decimal? perDiem =
-                await _allowanceRepository.GetPerDiemAmountAsync(userId);
-
-            if (perDiem == null)
-            {
-                throw new InvalidOperationException(
+                await allowRep.GetPerDiemAmountAsync(userId) ?? throw new InvalidOperationException(
                     $"Per diem not found for user ID: {userId}");
-            }
-
             if (perDiem.Value < 0)
             {
                 throw new InvalidOperationException(

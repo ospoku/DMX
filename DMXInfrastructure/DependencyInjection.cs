@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using DMXApplication.Interfaces;
+using DMXInfrastructure.Repositories;
 
 namespace DMXInfrastructure
 {
@@ -16,6 +18,10 @@ namespace DMXInfrastructure
                 options.UseSqlServer(
                     configuration.GetConnectionString(
                         "DefaultConnection")));
+            services.AddScoped<IFeeRepository, FeeRepository>();
+             services.AddScoped<IEntityPersistence>();
+            services.AddScoped<IAssignmentRepository, AssignmentRepository>();
+            services.AddScoped<IAllowanceRepository, AllowanceRepository>();
 
             return services;
         }

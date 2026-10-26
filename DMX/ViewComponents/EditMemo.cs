@@ -1,15 +1,10 @@
-﻿using DMX.Data;
-using DMX.ViewModels;
+﻿using DMX.ViewModels;
 using DMXDomain.Models;
-using Microsoft.AspNetCore.Authorization;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.DotNet.Scaffolding.Shared;
-using Microsoft.EntityFrameworkCore;
-using System.Web;
 
 namespace DMX.ViewComponents
 {

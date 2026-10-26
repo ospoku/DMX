@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using DMX.Models;
+using DMXDomain.Models;
+using DMX.ViewComponents;
 namespace DMX.ViewModels
 {
     public class LeaveCommentVM
@@ -9,7 +10,7 @@ namespace DMX.ViewModels
         public string Title { get; set; }
 
         public string NewComment { get; set; }
-    public virtual ICollection<LeaveComment> Comments { get; set; } 
+    public virtual ICollection<ViewComponents.LeaveComment> Comments { get; set; } 
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
     }

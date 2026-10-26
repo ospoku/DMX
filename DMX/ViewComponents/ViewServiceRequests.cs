@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DMX.Data;
 using DMX.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using DMXDomain.Models;
+using DMXInfrastructure.Data;
 namespace DMX.ViewComponents
 {
-    public class ViewServiceRequests(XContext dContext, UserManager<AppUser>userManager) : ViewComponent
+    public class ViewServiceRequests(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly  UserManager<AppUser> usm=userManager;

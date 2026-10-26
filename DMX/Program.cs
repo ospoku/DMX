@@ -1,16 +1,14 @@
 
-using DMX.Authorization;
-using DMX.Services;
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 using DMXApplication.Authorization;
 using DMXApplication.Services;
+using DMXApplication.Services.DMXApplication.Services;
 using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,12 +18,13 @@ string? settingsMail = builder.Configuration["Settings:AppEmail"];
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 
-builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<SMSService>();
+//builder.Services.AddScoped<IMessageService, MessageService>();
+//builder.Services.AddScoped<SMSService>();
 builder.Services.AddScoped<FeeService>();
 builder.Services.AddScoped<EntityService>();
 builder.Services.AddScoped<AssignmentService>();
 builder.Services.AddScoped<AllowanceService>();
+
 
 builder.Services.AddScoped<EmailService>();
 

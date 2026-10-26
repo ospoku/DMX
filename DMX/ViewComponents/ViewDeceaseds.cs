@@ -1,5 +1,5 @@
-﻿using DMX.Data;
-using DMX.Models;
+﻿using DMXInfrastructure.Data;
+using DMXDomain.Models;
 using DMX.ViewModels;
 using DMXApplication.Services;
 using Microsoft.AspNetCore.Mvc;

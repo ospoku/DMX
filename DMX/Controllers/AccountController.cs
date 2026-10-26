@@ -1,7 +1,9 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using DMX.Data;
+
 using DMX.ViewModels;
+using DMXApplication.DTO;
 using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -71,9 +73,9 @@ namespace DMX.Controllers
                 loginVM.Password,
                 loginVM.RememberMe,
                 lockoutOnFailure: false);
+            {
 
             if (result.Succeeded)
-            {
 
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
@@ -89,7 +91,16 @@ namespace DMX.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var logoutDTO = new LogoutDTO
+            {
+                Success = true,
+                Message = "Logout successful."
+            };
+
+            TempData["Message"] = logoutDTO.Message;
 
             return RedirectToAction("Login");
         }

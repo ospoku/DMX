@@ -1,18 +1,10 @@
-﻿
-using DMX.Constants;
-using DMX.Data;
-
-using DMX.Helpers;
-using DMX.Models;
+﻿using DMXDomain.Models;
 using DMX.ViewModels;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Web;
+using DMXInfrastructure.Data;
 namespace DMX.ViewComponents
 {
     //public class ManageRolePermissions(RoleManager<AppRole>roleManager, XContext xContext) : ViewComponent

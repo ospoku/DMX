@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using DMX.Models;
+using DMXDomain.Models;
 using DMX.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

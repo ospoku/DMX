@@ -1,8 +1,6 @@
-﻿using DMX.Data;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMX.Models
+namespace DMXDomain.Models
 {
     public class MeetingAttendance : TableAudit
     {

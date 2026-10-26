@@ -1,5 +1,5 @@
-﻿using DMX.Models;
-using DMX.ViewModels;
+﻿using DMX.ViewModels;
+using DMXDomain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

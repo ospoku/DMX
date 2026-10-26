@@ -1,4 +1,4 @@
-﻿using DMX.Data;
+﻿using DMXDomain.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

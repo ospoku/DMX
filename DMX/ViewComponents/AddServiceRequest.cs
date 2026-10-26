@@ -1,6 +1,6 @@
-﻿using DMX.Data;
-using DMX.Models;
-using DMX.ViewModels;
+﻿using DMX.ViewModels;
+using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,15 +8,11 @@ using System.Xml.Linq;
 
 namespace DMX.ViewComponents
 {
-    public class AddServiceRequest:ViewComponent
+    public class AddServiceRequest(UserManager<AppUser> userManager, XContext context) : ViewComponent
     {
-        public readonly UserManager<AppUser> usm;
-        public readonly XContext xct;
-        public AddServiceRequest(UserManager<AppUser> userManager,XContext context)
-        {
-            usm = userManager;
-            xct = context;
-        }
+        public readonly UserManager<AppUser> usm = userManager;
+        public readonly XContext xct = context;
+
         public IViewComponentResult Invoke()
         {
             AddServiceRequestVM addServiceRequest = new AddServiceRequestVM

@@ -2,8 +2,9 @@
 using DMX.Data;
 
 using DMX.Models;
-using DMX.Services;
 using DMX.ViewModels;
+using DMXApplication.Services;
+using DMXDomain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;

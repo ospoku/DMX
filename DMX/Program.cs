@@ -1,14 +1,16 @@
-using AspNetCoreHero.ToastNotification;
-using AspNetCoreHero.ToastNotification.Extensions;
+
 using DMX.Authorization;
-using DMX.Data;
-using DMX.Helpers;
-using DMX.Models;
 using DMX.Services;
+using DMXApplication.Authorization;
+using DMXApplication.Services;
+using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
 
 
 var builder = WebApplication.CreateBuilder(args);

@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Security.Claims;
 using DMX.Models;
 using DMX.ViewModels;
+using DMXDomain.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace DMX.Helpers

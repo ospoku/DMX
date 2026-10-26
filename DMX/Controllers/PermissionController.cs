@@ -1,12 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 
-using DMX.Data;
 
 
 using DMX.Helpers;
-using DMX.Models;
-using DMX.Services;
 using DMX.ViewModels;
+using DMXApplication.Services;
+using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -288,7 +288,7 @@ namespace DMX.Controllers
         public async Task<IActionResult> ManageUserRoles(string Id, ManageUserRolesVM model)
         {
             var unprotectedId = protector.Unprotect(Id);
-            var user = await usm.FindByIdAsync((unprotectedId));
+            var user = await usm.FindByIdAsync(unprotectedId);
             var roles = await usm.GetRolesAsync(user);
             var result = await usm.RemoveFromRolesAsync(user, roles);
             result = await usm.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));

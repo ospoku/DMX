@@ -1,9 +1,7 @@
-﻿using DMX.Data;
-using DMX.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DMX
+namespace DMXDomain.Models
 {
     public class Deceased : TableAudit
     { 

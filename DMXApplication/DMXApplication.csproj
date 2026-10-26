@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.3.12" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DMXDomain\DMXDomain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DTO\" />
   </ItemGroup>
 

@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DMX.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace DMX.Models
+namespace DMXDomain.Models
 {
     public class TravelRequest:TableAudit
     {

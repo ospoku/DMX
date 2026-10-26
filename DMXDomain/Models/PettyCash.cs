@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using DMX.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace DMX.Models
+namespace DMXDomain.Models
 {
     public class PettyCash : TableAudit
     {
@@ -11,9 +9,10 @@ namespace DMX.Models
         [Key]
         public int Id { get; set; }
     public Guid PublicId { get; set; } = Guid.NewGuid();
-        public string ReferenceNumber { get; set; } = "P" + Guid.NewGuid().ToString("N").Substring(0, 5);  
+        public string ReferenceNumber { get; set; } = string.Concat("P", Guid.NewGuid().ToString("N").AsSpan(0, 5));  
      
         public string Purpose { get; set; }
+
         [Precision(10, 4)]
         public decimal Amount { get; set; }
       

@@ -1,42 +1,29 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using DMX.Data;
-
 using DMX.Models;
-using DMX.Services;
 using DMX.ViewModels;
+using DMXApplication.Services;
+using DMXDomain.Models;
+using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DMX.Controllers
 {
-    public class PettyCashController : Controller
+    public class PettyCashController(
+        XContext context,
+        UserManager<AppUser> userManager,
+        INotyfService notyfService,
+        EntityService entityService,
+        AssignmentService assignmentService, IDataProtectionProvider provider) : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly XContext _context;
-        private readonly INotyfService _notyfService;
-        private readonly EntityService _entityService;
-        private readonly AssignmentService _assignmentService;
-        public readonly IDataProtector protector;
-        public PettyCashController(
-            XContext context,
-            UserManager<AppUser> userManager,
-            INotyfService notyfService,
-            EntityService entityService,
-            AssignmentService assignmentService, IDataProtectionProvider provider)
-        {
-            _userManager = userManager;
-            _context = context;
-            _notyfService = notyfService;
-            _entityService = entityService;
-            _assignmentService = assignmentService;
-            protector = provider.CreateProtector("IdProtector");
-        }
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly XContext _context = context;
+        private readonly INotyfService _notyfService = notyfService;
+        private readonly EntityService _entityService = entityService;
+        private readonly AssignmentService _assignmentService = assignmentService;
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
         [HttpGet]
         public IActionResult ViewPettyCash() => ViewComponent(nameof(ViewPettyCash));

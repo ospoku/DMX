@@ -1,7 +1,7 @@
 ﻿using DMX.Controllers;
 using DMX.Data;
-using DMX.Services;
 using DMX.ViewModels;
+using DMXApplication.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared;

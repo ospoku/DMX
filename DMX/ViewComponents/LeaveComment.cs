@@ -1,6 +1,6 @@
 ﻿using DMX.Data;
-using DMX.Models;
 using DMX.ViewModels;
+using DMXDomain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class LeaveComment(XContext dContext, UserManager<Models.AppUser> userManager) : ViewComponent
+    public class LeaveComment(XContext dContext, UserManager<AppUser> userManager) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;

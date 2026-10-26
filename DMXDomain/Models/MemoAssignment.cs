@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DMX.Data;
 
-namespace DMX.Models
+
+namespace DMXDomain.Models
 {
     public class MemoAssignment : TableAudit
     {

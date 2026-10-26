@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DMX.Data;
-using DMX.Models;
 using DMX.ViewModels;
+using DMXDomain.Models;
 
 
 namespace DMX.ViewComponents

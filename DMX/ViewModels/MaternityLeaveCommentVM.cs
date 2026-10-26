@@ -1,4 +1,4 @@
-﻿using DMX.Models;
+﻿using DMXDomain.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewModels

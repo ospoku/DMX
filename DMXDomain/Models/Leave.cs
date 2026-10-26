@@ -1,6 +1,4 @@
-﻿using DMX.Data;
-
-namespace DMX.Models
+﻿namespace DMXDomain.Models
 {
     public class Leave : TableAudit
     {

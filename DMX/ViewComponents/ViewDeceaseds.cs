@@ -1,7 +1,7 @@
 ﻿using DMX.Data;
 using DMX.Models;
-using DMX.Services;
 using DMX.ViewModels;
+using DMXApplication.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;

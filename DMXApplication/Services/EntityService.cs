@@ -9,7 +9,7 @@ namespace DMXApplication.Services
 {
     namespace DMXApplication.Services
     {
-        public class EntityService(
+        public class IEntityService(
             UserManager<AppUser> userManager,
             IEntityPersistence persistence)
         {

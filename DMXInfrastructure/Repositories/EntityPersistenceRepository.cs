@@ -1,4 +1,5 @@
-﻿using DMXDomain.Models;
+﻿using DMXApplication.Interfaces;
+using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using System.Security.Claims;
 
 namespace DMXInfrastructure.Repositories
 {
-    public class EntityPersistenceRepository(UserManager<AppUser> userManager, XContext context) : IEntityPersistenceRepository
+    public class EntityPersistenceRepository(UserManager<AppUser> userManager, XContext context) : IEntityPersistence
     {
         private readonly UserManager<AppUser> usm = userManager;
 
@@ -160,6 +161,21 @@ namespace DMXInfrastructure.Repositories
                 
                 return false;
             }
+        }
+
+        void IEntityPersistence.Add<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<int> IEntityPersistence.SaveChangesAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IEntityPersistence.Update<T>(T entity)
+        {
+            throw new NotImplementedException();
         }
 
         //public async Task<bool> EditMemoAsync(string Id, EditMemoVM editMemoVM, ClaimsPrincipal userClaim)

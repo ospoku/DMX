@@ -25,14 +25,14 @@ using System.Web;
 
 namespace DMX.Controllers
 {
-    public class PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment, EntityService entityService, INotyfService notyfService, IDataProtectionProvider dataProvider) : Controller
+    public class PermissionController(XContext xContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signinmanager, IWebHostEnvironment environment, IEntityService entityService, INotyfService notyfService, IDataProtectionProvider dataProvider) : Controller
     {
         public readonly XContext xct = xContext;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = roleManager;
         public readonly SignInManager<AppUser> sim = signinmanager;
         public readonly IWebHostEnvironment env = environment;
-        public readonly EntityService ens = entityService;
+        public readonly IEntityService ens = entityService;
         public readonly INotyfService notyf = notyfService;
         public readonly IDataProtector protector = dataProvider.CreateProtector("IdProtector");
 

@@ -14,12 +14,12 @@ namespace DMXInfrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDbContext<AuditableIdentityContext>(options =>
+            services.AddDbContext<XContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString(
-                        "DefaultConnection")));
+                        "DMX")));
             services.AddScoped<IFeeRepository, FeeRepository>();
-             services.AddScoped<IEntityPersistence>();
+             services.AddScoped<IEntityPersistence,EntityPersistenceRepository>();
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
             services.AddScoped<IAllowanceRepository, AllowanceRepository>();
 

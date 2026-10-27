@@ -18,14 +18,14 @@ namespace DMX.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
-        private readonly EntityService _entityService;
+        private readonly IEntityService _entityService;
         private readonly IAuthorizationService _authorizationService; private readonly AssignmentService _assignmentService;
         public TravelRequestController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService, IAuthorizationService authorizationService,
              AssignmentService assignmentService,
-            EntityService entityService)
+            IEntityService entityService)
         {
             _userManager = userManager;
             _context = context; _assignmentService = assignmentService;

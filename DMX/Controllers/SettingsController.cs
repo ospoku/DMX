@@ -12,12 +12,12 @@ using DMXApplication.Services.DMXApplication.Services;
 namespace DMX.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, EntityService entityService) : Controller
+    public class SettingsController(XContext context, INotyfService notyfService, UserManager<AppUser> userManager, IEntityService entityService) : Controller
     {
         public readonly XContext dcx = context;
         public readonly INotyfService notyf = notyfService;
         public readonly UserManager<AppUser> usm = userManager;
-        public readonly EntityService entityServ = entityService;
+        public readonly IEntityService entityServ = entityService;
 
    
         public IActionResult SystemSetup()

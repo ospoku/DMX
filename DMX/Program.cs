@@ -2,9 +2,8 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using DMXApplication.Authorization;
-using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
 using DMXDomain.Models;
+using DMXInfrastructure;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -17,16 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 string? settingsMail = builder.Configuration["Settings:AppEmail"];
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
-
-//builder.Services.AddScoped<IMessageService, MessageService>();
-//builder.Services.AddScoped<SMSService>();
-builder.Services.AddScoped<FeeService>();
-builder.Services.AddScoped<EntityService>();
-builder.Services.AddScoped<AssignmentService>();
-builder.Services.AddScoped<AllowanceService>();
-
-
-builder.Services.AddScoped<EmailService>();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -68,11 +58,11 @@ builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler
 // Add services to the container.
 builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Monster")));
+//builder.Services.AddDbContext<XContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Monster")));
 
-builder.Services.AddIdentity<AppUser,AppRole>()
+builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<XContext>();
-                                                                                                                   
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<DBInitializer>();

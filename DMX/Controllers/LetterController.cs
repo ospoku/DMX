@@ -17,13 +17,13 @@ namespace DMX.Controllers
         XContext context,
         UserManager<AppUser> userManager,
         INotyfService notyfService,
-        EntityService entityService,
+        IEntityService entityService,
         AssignmentService assignmentService, IDataProtectionProvider provider) : Controller
     {
         private readonly UserManager<AppUser> _userManager = userManager;
         private readonly XContext _context = context;
         private readonly INotyfService _notyfService = notyfService;
-        private readonly EntityService _entityService = entityService;
+        private readonly IEntityService _entityService = entityService;
         private readonly AssignmentService _assignmentService = assignmentService;
         public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 

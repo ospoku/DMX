@@ -23,14 +23,14 @@ namespace DMX.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
-        private readonly EntityService _entityService;
+        private readonly IEntityService _entityService;
         private readonly AssignmentService _assignmentService;
         public readonly IDataProtector protector;
         public ServiceRequestController(
             XContext context,
             UserManager<AppUser> userManager,
             INotyfService notyfService,
-            EntityService entityService,
+            IEntityService entityService,
             AssignmentService assignmentService,IDataProtectionProvider provider)
         {
             _userManager = userManager;

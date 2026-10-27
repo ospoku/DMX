@@ -14,12 +14,12 @@ using Microsoft.EntityFrameworkCore;
 namespace DMX.Controllers
 {
     public class DeceasedController(XContext dContext, UserManager<AppUser> userManager, INotyfService notyfService, EmailService emailService,
-          EntityService entityService, AssignmentService assignmentService) : Controller
+          IEntityService entityService, AssignmentService assignmentService) : Controller
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
         private readonly INotyfService notyf = notyfService;
-        public readonly EntityService entityServ = entityService;
+        public readonly IEntityService entityServ = entityService;
         public readonly EmailService email = emailService;
         public readonly AssignmentService assignmentServ = assignmentService;
 

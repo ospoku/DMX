@@ -10,36 +10,27 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DMXApplication.Services.DMXApplication.Services;
+using DMXApplication.Interfaces;
 
 namespace DMX.Controllers
 {
     [Authorize]
-    public class MemoController : Controller
+    public class MemoController(
+        XContext context,
+        UserManager<AppUser> userManager,
+        INotyfService notyfService,
+        IAuthorizationService authorizationService,
+        IDataProtectionProvider provider,
+        IEntityPersistence entityService,
+        AssignmentService assignmentService) : Controller
     {
-        private readonly XContext _context;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly INotyfService _notyfService;
-        private readonly IAuthorizationService _authorizationService;
-        private readonly EntityService _entityService;
-        private readonly AssignmentService _assignmentService;
-        public readonly IDataProtector protector;
-        public MemoController(
-            XContext context,
-            UserManager<AppUser> userManager,
-            INotyfService notyfService,
-            IAuthorizationService authorizationService,
-            IDataProtectionProvider provider,
-            EntityService entityService,
-            AssignmentService assignmentService)
-        {
-            _context = context;
-            _userManager = userManager;
-            _notyfService = notyfService;
-            _authorizationService = authorizationService;
-            _entityService = entityService;
-            _assignmentService = assignmentService;
-            protector = provider.CreateProtector("IdProtector");
-        }
+        private readonly XContext _context = context;
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly INotyfService _notyfService = notyfService;
+        private readonly IAuthorizationService _authorizationService = authorizationService;
+        private readonly IEntityPersistence _entityService = entityService;
+        private readonly AssignmentService _assignmentService = assignmentService;
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
         [HttpGet]
         public IActionResult ViewMemos() => ViewComponent(nameof(ViewMemos));

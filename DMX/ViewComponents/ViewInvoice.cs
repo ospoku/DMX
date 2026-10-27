@@ -24,7 +24,7 @@ namespace DMX.ViewComponents
         private readonly UserManager<AppUser> _userManager;
         private readonly INotyfService _notyfService;
         private readonly IAuthorizationService _authorizationService;
-        private readonly EntityService _entityService;
+        private readonly IEntityService _entityService;
         private readonly AssignmentService _assignmentService;
         public readonly IDataProtector protector;
 
@@ -33,7 +33,7 @@ namespace DMX.ViewComponents
             UserManager<AppUser> userManager,
             INotyfService notyfService,
             IAuthorizationService authorizationService,
-            EntityService entityService,
+            IEntityService entityService,
             AssignmentService assignmentService, IDataProtectionProvider provider)
         {
             _context = context;

@@ -23,7 +23,7 @@ namespace DMX.Controllers
         private readonly UserManager<AppUser> _userManager = userManager;
         private readonly XContext _context = context;
         private readonly INotyfService _notyfService = notyfService;
-        private readonly IEntityService _entityService = entityService;
+        private readonly IEntityService ens = entityService;
         private readonly AssignmentService _assignmentService = assignmentService;
         public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
@@ -81,7 +81,7 @@ namespace DMX.Controllers
                     newLetter.PDF = memoryStream.ToArray();
                 }
 
-                bool result = await _entityService.AddEntityAsync(newLetter, User);
+                bool result = await ens.Add(newLetter, User);
                 if (!result)
                 {
                 
@@ -187,7 +187,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.AddEntityAsync(newComment, User);
+                bool result = await ens.Add(newComment, User);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved!!!");

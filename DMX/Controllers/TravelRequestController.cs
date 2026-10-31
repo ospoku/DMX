@@ -81,7 +81,7 @@ namespace DMX.Controllers
                 };
 
                 // Add travel request to the database
-                bool requestAdded = await _entityService.AddEntityAsync(newTravelRequest, User);
+                bool requestAdded = await _entityService.Add(newTravelRequest, User);
                 if (!requestAdded)
                 {
                     _notyfService.Error("Failed to create travel request.", 5);
@@ -97,7 +97,7 @@ namespace DMX.Controllers
                         AppUserId = userId
                     };
 
-                    bool assignmentAdded = await _entityService.AddEntityAsync(assignment, User);
+                    bool assignmentAdded = await _entityService.Add(assignment, User);
                     if (!assignmentAdded)
                     {
                         _notyfService.Error($"Failed to assign user {userId}.", 5);
@@ -137,7 +137,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.AddEntityAsync(newComment, User);
+                bool result = await _entityService.Add(newComment, User);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);

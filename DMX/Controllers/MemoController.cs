@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DMXApplication.Services.DMXApplication.Services;
 using DMXApplication.Interfaces;
 
 namespace DMX.Controllers
@@ -18,17 +17,17 @@ namespace DMX.Controllers
     public class MemoController(
         XContext context,
         UserManager<AppUser> userManager,
-        INotyfService notyfService,
+        INotyfService notifyService,
         IAuthorizationService authorizationService,
         IDataProtectionProvider provider,
-        IEntityPersistence entityService,
+        IEntityRepository entityService,
         AssignmentService assignmentService) : Controller
     {
         private readonly XContext _context = context;
         private readonly UserManager<AppUser> _userManager = userManager;
-        private readonly INotyfService _notyfService = notyfService;
+        private readonly INotyfService _notifyService = notifyService;
         private readonly IAuthorizationService _authorizationService = authorizationService;
-        private readonly IEntityPersistence _entityService = entityService;
+        private readonly IEntityRepository ens = entityService;
         private readonly AssignmentService _assignmentService = assignmentService;
         public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
@@ -41,9 +40,9 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
         {
-            if (addMemoVm.SelectedUsers == null || !addMemoVm.SelectedUsers.Any())
+            if (addMemoVm.SelectedUsers == null || addMemoVm.SelectedUsers.Count == 0)
             {
-                _notyfService.Error("You must select at least one user for assignment.", 5);
+                _notifyService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction(nameof(ViewMemos));
             }
 
@@ -55,12 +54,7 @@ namespace DMX.Controllers
                     Title = addMemoVm.Title
                 };
 
-                bool result = await _entityService.AddEntityAsync(newMemo, User);
-                if (!result)
-                {
-                    _notyfService.Error("Failed to add the memo. Please try again.", 5);
-                    return RedirectToAction(nameof(ViewMemos));
-                }
+                await ens.Add(newMemo);
 
                 foreach (var userId in addMemoVm.SelectedUsers)
                 {
@@ -73,16 +67,16 @@ namespace DMX.Controllers
                     bool assignResult = await _assignmentService.AssignUsers(assignment, User);
                     if (!assignResult)
                     {
-                        _notyfService.Error($"Failed to assign memo to user {userId}.", 5);
+                        _notifyService.Error($"Failed to assign memo to user {userId}.", 5);
                     }
                 }
 
-                _notyfService.Success("Memo and assignments successfully processed.", 5);
+                _notifyService.Success("Memo and assignments successfully processed.", 5);
                 return RedirectToAction(nameof(ViewMemos));
             }
             catch (Exception ex)
             {
-                _notyfService.Error("An error occurred: " + ex.Message, 5);
+                _notifyService.Error("An error occurred: " + ex.Message, 5);
                 return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
             }
         }
@@ -105,7 +99,7 @@ namespace DMX.Controllers
            var authorizationResult = await _authorizationService.AuthorizeAsync(User, memo, "MemoOwnerPolicy");
            if (!authorizationResult.Succeeded)
            {
-               _notyfService.Error("You do not have access to this resource!", 5);
+               _notifyService.Error("You do not have access to this resource!", 5);
               return Json(new { success = false, message = "You do not have access to this resource!" });
            }
 
@@ -117,7 +111,7 @@ namespace DMX.Controllers
         {
             if (editMemoVm.SelectedUsers == null || !editMemoVm.SelectedUsers.Any())
             {
-                _notyfService.Error("You must select at least one user for assignment.", 5);
+                _notifyService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction(nameof(ViewMemos));
             }
 
@@ -133,17 +127,17 @@ namespace DMX.Controllers
                 var memoToUpdate =  _context.Memos.FirstOrDefault(m => m.PublicId == memoGuid);
                 if (memoToUpdate == null)
                 {
-                    _notyfService.Error("Memo not found.", 5);
+                    _notifyService.Error("Memo not found.", 5);
                     return RedirectToAction(nameof(ViewMemos));
                 }
 
                 memoToUpdate.Content = editMemoVm.Content;
                 memoToUpdate.Title = editMemoVm.Title;
 
-                bool isEdited = await _entityService.EditEntityAsync(memoToUpdate, User);
+                bool isEdited = await ens.Update(memoToUpdate);
                 if (!isEdited)
                 {
-                    _notyfService.Error("Failed to update memo. Please try again.", 5);
+                    _notifyService.Error("Failed to update memo. Please try again.", 5);
                     return RedirectToAction(nameof(ViewMemos));
                 }
 
@@ -171,18 +165,18 @@ namespace DMX.Controllers
 
                 if (atLeastOneFailed)
                 {
-                    _notyfService.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
+                    _notifyService.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
                 }
                 else
                 {
-                    _notyfService.Success("Record successfully updated", 5);
+                    _notifyService.Success("Record successfully updated", 5);
                 }
 
                 return RedirectToAction(nameof(ViewMemos));
             }
             catch (Exception ex)
             {
-                _notyfService.Error("An unexpected error occurred. Please try again.", 5);
+                _notifyService.Error("An unexpected error occurred. Please try again.", 5);
                 Console.WriteLine($"Error updating Memo: {ex.Message}");
                 return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
             }
@@ -208,14 +202,14 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.AddEntityAsync(newComment, User);
+                bool result = await ens.Add(newComment);
                 if (result)
                 {
-                    _notyfService.Success("Comment successfully saved", 5);
+                    _notifyService.Success("Comment successfully saved", 5);
                 }
                 else
                 {
-                    _notyfService.Error("Comment could not be saved!!!", 5);
+                    _notifyService.Error("Comment could not be saved!!!", 5);
                 }
 
                 return RedirectToAction(nameof(ViewMemos));
@@ -242,14 +236,14 @@ namespace DMX.Controllers
                     return NotFound();
                 }
 
-                bool isDeleted = await _entityService.DeleteEntityAsync(memoToDelete, User);
+                bool isDeleted = await ens.Delete(memoToDelete);
                 if (isDeleted)
                 {
-                    _notyfService.Success("Record successfully deleted", 5);
+                    _notifyService.Success("Record successfully deleted", 5);
                 }
                 else
                 {
-                    _notyfService.Error("Record could not be deleted!!!", 5);
+                    _notifyService.Error("Record could not be deleted!!!", 5);
                 }
 
                 return RedirectToAction(nameof(ViewMemos));

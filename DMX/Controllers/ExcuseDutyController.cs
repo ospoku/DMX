@@ -83,7 +83,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.AddEntityAsync(newComment, User);
+                bool result = await _entityService.Add(newComment, User);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);
@@ -162,7 +162,7 @@ namespace DMX.Controllers
                     Diagnosis = addExcuseDutyVm.Diagnosis
                 };
 
-                bool result = await _entityService.AddEntityAsync(newExcuseDuty, User);
+                bool result = await _entityService.Add       (newExcuseDuty, User);
                 if (!result)
                 {
                     _notyfService.Error("Excuse Duty creation failed.", 5);
@@ -177,7 +177,7 @@ namespace DMX.Controllers
                         UserId = user
                     };
 
-                    bool assignResult = await _entityService.AddEntityAsync(assignment, User);
+                    bool assignResult = await _entityService.Add(assignment, User);
                     if (!assignResult)
                     {
                         _notyfService.Error("Error, record could not be saved.", 5);

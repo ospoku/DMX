@@ -19,7 +19,7 @@ namespace DMXInfrastructure
                     configuration.GetConnectionString(
                         "DMX")));
             services.AddScoped<IFeeRepository, FeeRepository>();
-             services.AddScoped<IEntityPersistence,EntityPersistenceRepository>();
+             services.AddScoped<IEntityRepository,EntityRepository>();
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
             services.AddScoped<IAllowanceRepository, AllowanceRepository>();
 

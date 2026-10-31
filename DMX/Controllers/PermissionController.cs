@@ -304,12 +304,12 @@ namespace DMX.Controllers
                 Module=addPermissionVM.ModuleName,
                 Description= addPermissionVM.Description,
             };
-            bool result = await ens.AddEntityAsync(addThisPermission, User);
+            bool result = await ens.Add(addThisPermission, User);
             if (!result)
             {
                 notyf.Error("An error occurred while processing the request.", 5);
-              
-                return ViewComponent(nameof(UserManagement),addPermissionVM);
+
+                return ViewComponent(nameof(UserManagement), addPermissionVM);
             }
             else
             {

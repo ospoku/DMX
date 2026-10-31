@@ -72,7 +72,7 @@ namespace DMX.Controllers
                     newServiceRequest.Attachments = memoryStream.ToArray();
                 }
 
-                bool result = await _entityService.AddEntityAsync(newServiceRequest, User);
+                bool result = await _entityService.Add(newServiceRequest, User);
                 if (!result)
                 {
                     _notyfService.Error("Failed to add service request. Please try again.", 5);
@@ -133,7 +133,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.AddEntityAsync(newComment, User);
+                bool result = await _entityService.Add(newComment, User);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);
@@ -183,7 +183,7 @@ namespace DMX.Controllers
                 // Update service request properties
 
 
-                bool isEdited = await _entityService.EditEntityAsync(serviceRequestToUpdate, User);
+                bool isEdited = await _entityService.Update(serviceRequestToUpdate, User);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update service request. Please try again.", 5);

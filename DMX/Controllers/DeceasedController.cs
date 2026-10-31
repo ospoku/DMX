@@ -84,7 +84,7 @@ namespace DMX.Controllers
                     Name=addDeceasedVM.DeceasedName
                 };
 
-                var patientAdded = await entityServ.AddEntityAsync(deceased, User);
+                var patientAdded = await entityServ.Add(deceased, User);
                 if (!patientAdded)
                 {
                     notyf.Error("Failed to add patient.", 5);
@@ -101,7 +101,7 @@ namespace DMX.Controllers
                             UserId = userId,
                         };
 
-                        var assignmentAdded = await entityServ.AddEntityAsync(assignment, User);
+                        var assignmentAdded = await entityServ.Add(assignment, User);
                         if (!assignmentAdded)
                         {
                             notyf.Error("Failed to assign user.", 5);

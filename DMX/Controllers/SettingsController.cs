@@ -35,7 +35,7 @@ namespace DMX.Controllers
                 Description = addTravelTypeVM.Description,
             };
 
-            if (await entityServ.AddEntityAsync(travelType, User))
+            if (await entityServ.Add(travelType, User))
             {
                 return RedirectToAction("SystemSetup");
             }
@@ -60,7 +60,7 @@ namespace DMX.Controllers
 
             };
             // Call the service method, which returns a bool
-            bool result = await entityServ.AddEntityAsync(addThisStructure, User);
+            bool result = await entityServ.Add(addThisStructure, User);
 
             // Based on the result, redirect or return the appropriate response
             if (result)
@@ -92,7 +92,7 @@ namespace DMX.Controllers
                 Description = addDeceasedTypeVM.Description
             };
             // Call the service method, which returns a bool
-            bool result = await entityServ.AddEntityAsync(addThisDeceasedType, User);
+            bool result = await entityServ.Add(addThisDeceasedType, User);
 
             // Based on the result, redirect or return the appropriate response
             if (result)
@@ -122,7 +122,7 @@ namespace DMX.Controllers
                 Description = addDepartmentVM.Description
             };
             // Call the service method, which returns a bool
-            bool result = await entityServ.AddEntityAsync(addThisDepartment, User);
+            bool result = await entityServ.Add(addThisDepartment, User);
 
             // Based on the result, redirect or return the appropriate response
             if (result)
@@ -153,7 +153,7 @@ namespace DMX.Controllers
                 Amount = cashLimit.Amount,
             };
 
-            bool result = await entityServ.AddEntityAsync(addThisLimit, User);
+            bool result = await entityServ.Add(addThisLimit, User);
 
             // Based on the result, redirect or return the appropriate response
             if (result)
@@ -187,7 +187,7 @@ namespace DMX.Controllers
                 limitToUpdate.Amount = editLimitVM.Amount;
                
 
-                bool isEdited = await entityServ.EditEntityAsync(limitToUpdate, User);
+                bool isEdited = await entityServ.Update(limitToUpdate, User);
                 if (!isEdited)
                 {
                     notyf.Error("Failed to update memo. Please try again.", 5);
@@ -223,7 +223,7 @@ else
                 Description = addTransportVM.Description,
             };
             // Call the service method, which returns a bool
-            bool result = await entityServ.AddEntityAsync(addThisTransport, User);
+            bool result = await entityServ.Add(addThisTransport, User);
 
             // Based on the result, redirect or return the appropriate response
             if (result)
@@ -257,7 +257,7 @@ else
                         Amount = editPerdiemVM.Amount
                     };
 
-                    bool isAdded = await entityServ.AddEntityAsync(newPerDiem, User);
+                    bool isAdded = await entityServ.Add(newPerDiem, User);
                     if (!isAdded)
                     {
                         notyf.Error("Failed to add perdiem. Please try again.", 5);
@@ -272,8 +272,8 @@ else
                 {
                     // User found, update the existing PerDiem record
                     perdiemToUpdate.Amount = editPerdiemVM.Amount;
-
-                    bool isEdited = await entityServ.EditEntityAsync(perdiemToUpdate, User);
+                        
+                    bool isEdited = await entityServ.Update(perdiemToUpdate, User);
                     if (!isEdited)
                     {
                         notyf.Error("Failed to update perdiem. Please try again.", 5);

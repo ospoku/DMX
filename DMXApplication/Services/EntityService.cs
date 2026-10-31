@@ -11,12 +11,12 @@ namespace DMXApplication.Services
     {
         public class IEntityService(
             UserManager<AppUser> userManager,
-            IEntityPersistence persistence)
+            IEntityRepository persistence)
         {
             private readonly UserManager<AppUser> usm = userManager;
-            private readonly IEntityPersistence entPer = persistence;
+            private readonly IEntityRepository entPer = persistence;
 
-            public async Task<bool> AddEntityAsync<T>(
+            public async Task<bool> Add<T>(
                 T entity,
                 ClaimsPrincipal userClaim) where T : class
             {
@@ -50,7 +50,7 @@ namespace DMXApplication.Services
                 }
             }
 
-            public async Task<bool> EditEntityAsync<T>(
+            public async Task<bool> Update<T>(
                 T model,
                 ClaimsPrincipal userClaim) where T : class
             {

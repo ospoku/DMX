@@ -10,25 +10,25 @@ namespace DMXInfrastructure.Repositories
     public class EntityRepository(XContext dxc) : IEntityRepository
     {
 
-        public async Task Add<T>(T entity) where T : class
+        public void Add<T>(T entity) where T : class
         {
-             await dxc.AddAsync(entity);
+            dxc.Add(entity);
         }
 
-        public async Task  Delete<T>(T model) where T : class
+        public void Delete<T>(T model) where T : class
         {
-            await Task.Run(() => dxc.Remove(model));
+            dxc.Remove(model);
        
         }
 
-        public async Task Update<T>(T model) where T : class
+        public void Update<T>(T model) where T : class
         {
             dxc.Update(model);
-            await dxc.SaveChangesAsync();   
+        
         }
-        Task<int> IEntityRepository.SaveChangesAsync(string userId)
+     public   Task<int> SaveChangesAsync(string userId)
         {
-            throw new NotImplementedException();
+            return dxc.SaveChangesAsync(userId);
         }
 
 

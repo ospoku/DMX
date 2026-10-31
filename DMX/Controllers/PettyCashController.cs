@@ -48,7 +48,7 @@ namespace DMX.Controllers
                     Purpose = addPettyCashVm.Purpose
                 };
 
-                bool result = await entityService.Add(newPettyCash, User);
+                bool result = await ens.Add(newPettyCash, User);
                 if (!result)
                 {
                     notyfService.Error("An error occurred while processing the request.", 5);

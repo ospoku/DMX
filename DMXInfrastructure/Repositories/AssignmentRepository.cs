@@ -10,7 +10,7 @@ namespace DMXInfrastructure.Repositories
 
         public void Add<T>(T model) where T : class
         {
-            dcx.Set<T>().Add(model);
+           dcx.Set<T>().Add(model);
         }
 
         public Task<int> SaveChangesAsync(string userId)

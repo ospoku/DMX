@@ -38,7 +38,7 @@ namespace DMXApplication.Services
 
                 return await assRep.SaveChangesAsync(userId) > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                
                 return false;

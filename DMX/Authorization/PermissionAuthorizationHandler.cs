@@ -15,7 +15,7 @@ namespace DMXApplication.Authorization
             {
                 return;
             }
-            var permissionss =   context.User.Claims.Where(x => x.Type == "Permission" &&
+            var permissionss =  context.User.Claims.Where(x => x.Type == "Permission" &&
                                                                 x.Value == requirement.Permission &&
                                                                 x.Issuer == "LOCAL AUTHORITY");
             if ( permissionss.Any())

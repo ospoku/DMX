@@ -205,7 +205,7 @@ namespace DMX.Controllers
                 memoToUpdate.Content = editMemoVm.Content;
                 memoToUpdate.Title = editMemoVm.Title;
 
-                bool isEdited = await _entityService.EditEntityAsync(memoToUpdate, User);
+                bool isEdited = await _entityService.Update(memoToUpdate, User);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update memo. Please try again.", 5);

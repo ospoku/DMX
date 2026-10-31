@@ -132,7 +132,7 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddExcuseDuty(AddExcuseDutyVM addExcuseDutyVm)
         {
-            if (addExcuseDutyVm.SelectedUsers == null || !addExcuseDutyVm.SelectedUsers.Any())
+            if (addExcuseDutyVm.SelectedUsers == null || addExcuseDutyVm.SelectedUsers.Count == 0)
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction(nameof(ViewExcuseDuties));
@@ -226,7 +226,7 @@ namespace DMX.Controllers
                 excuseDutyToUpdate.PatientName = editExcuseDutyVm.Name;
                 excuseDutyToUpdate.PatientId = editExcuseDutyVm.PatientId;
 
-                bool isEdited = await _entityService.EditEntityAsync(excuseDutyToUpdate, User);
+                bool isEdited = await _entityService.Update(excuseDutyToUpdate, User);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update memo. Please try again.", 5);

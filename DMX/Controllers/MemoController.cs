@@ -1,6 +1,9 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.ViewComponents;
 using DMX.ViewModels;
+using DMXApplication.DTO;
+using DMXApplication.DTO.Memos;
+using DMXApplication.Interfaces;
 using DMXApplication.Services;
 using DMXDomain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -8,71 +11,90 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize]
-public class MemoController(
-    IMemoService memoService,
-    INotyfService notifyService,
-    IAuthorizationService authorizationService,
-    IDataProtectionProvider provider,
-    UserManager<AppUser> userManager) : Controller
+namespace DMX.Controllers
 {
-    private readonly IMemoService _memoService = memoService;
-
-    private readonly INotyfService _notifyService = notifyService;
-
-    private readonly IAuthorizationService _authorizationService =
-        authorizationService;
-
-    private readonly UserManager<AppUser> _userManager = userManager;
-
-    private readonly IDataProtector _protector =
-        provider.CreateProtector("IdProtector");
-
-    [HttpPost]
-    public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
+    [Authorize]
+    public class MemoController(
+        IMemoService memoService,
+        INotyfService notifyService,
+        IAuthorizationService authorizationService,
+        IDataProtectionProvider provider,
+        UserManager<AppUser> userManager) : Controller
     {
-        if (!ModelState.IsValid)
-            return View(addMemoVm);
+        private readonly IMemoService memoServ = memoService;
 
-        if (addMemoVm.SelectedUsers == null ||
-            addMemoVm.SelectedUsers.Count == 0)
+        private readonly INotyfService _notifyService = notifyService;
+
+        private readonly IAuthorizationService _authorizationService =
+            authorizationService;
+
+        private readonly UserManager<AppUser> usm = userManager;
+
+        private readonly IDataProtector _protector =
+            provider.CreateProtector("IdProtector");
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
         {
-            _notifyService.Error(
-                "You must select at least one user for assignment.", 5);
+            if (!ModelState.IsValid)
+                return View(addMemoVm);
 
-            return RedirectToAction(nameof(ViewMemos));
-        }
-
-        try
-        {
-            var userId = _userManager.GetUserId(User);
-
-            if (string.IsNullOrEmpty(userId))
-                return Challenge();
-
-            var dto = new MemoCreateDTO
+            if (addMemoVm.SelectedUsers == null ||
+                addMemoVm.SelectedUsers.Count == 0)
             {
-                Title = addMemoVm.Title,
-                Content = addMemoVm.Content,
-                SelectedUsers = addMemoVm.SelectedUsers
+                _notifyService.Error(
+                    "You must select at least one user for assignment.", 5);
+
+                return View(addMemoVm);
+            }
+
+            try
+            {
+                var userId = usm.GetUserId(User);
+
+                if (string.IsNullOrEmpty(userId))
+                    return Challenge();
+
+                var dto = new AddMemoDTO
+                {
+                    Title = addMemoVm.Title,
+                    Content = addMemoVm.Content,
+                    SelectedUserIds = addMemoVm.SelectedUsers
+                };
+
+                bool result = await memoServ.AddMemo(dto, userId);
+
+                if (result)
+                    _notifyService.Success("Memo successfully created.", 5);
+                else
+                    _notifyService.Error("Memo could not be created.", 5);
+
+                return RedirectToAction(nameof(ViewMemos));
+            }
+            catch (Exception)
+            {
+                _notifyService.Error(
+                    "An error occurred while creating the memo.", 5);
+
+                return RedirectToAction("Error", "Home");
+            }
+            
+
+            
+        }
+        [HttpPost]
+        public async Task<IActionResult> ViewMemos(ViewMemosVM viewMemosVM)
+        {
+            var dto = new ViewMemosDTO
+            {
+                Message=viewMemosVM.
             };
 
-            bool result = await _memoService.AddMemoAsync(dto, userId);
-
-            if (result)
-                _notifyService.Success("Memo successfully created.", 5);
-            else
-                _notifyService.Error("Memo could not be created.", 5);
-
-            return RedirectToAction(nameof(ViewMemos));
+            return memoServ.GetAllAsync(dto,);
         }
-        catch (Exception)
-        {
-            _notifyService.Error(
-                "An error occurred while creating the memo.", 5);
 
-            return RedirectToAction("Error", "Home");
-        }
+
         [HttpPost]
         public async Task<IActionResult> EditMemo(
         string id,
@@ -85,7 +107,7 @@ public class MemoController(
             }
 
             if (editMemoVm.SelectedUsers == null ||
-                !editMemoVm.SelectedUsers.Any())
+                editMemoVm.SelectedUsers.Count == 0)
             {
                 _notifyService.Error(
                     "You must select at least one user for assignment.", 5);
@@ -95,25 +117,26 @@ public class MemoController(
 
             try
             {
+
                 var unprotectedId = _protector.Unprotect(id);
 
                 if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
                     return BadRequest("Invalid memo ID.");
 
-                var userId = _userManager.GetUserId(User);
+                var userId = usm.GetUserId(User);
 
                 if (string.IsNullOrEmpty(userId))
                     return Challenge();
 
-                var dto = new MemoUpdateDTO
+                var dto = new UpdateMemoDTO
                 {
                     PublicId = memoGuid,
                     Title = editMemoVm.Title,
                     Content = editMemoVm.Content,
-                    SelectedUsers = editMemoVm.SelectedUsers
+                    SelectedUserIds = editMemoVm.SelectedUsers
                 };
 
-                bool result = await _memoService.UpdateMemoAsync(dto, userId);
+                bool result = await memoServ.UpdateMemo(dto, userId);
 
                 if (result)
                     _notifyService.Success("Memo successfully updated.", 5);
@@ -128,41 +151,42 @@ public class MemoController(
                 return RedirectToAction("Error", "Home");
             }
         }
-    }
-            [HttpPost]
-            public async Task<IActionResult> DeleteMemo(string id)
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteMemo(string id)
+        {
+            try
             {
-                try
-                {
-                    var unprotectedId = _protector.Unprotect(id);
+                var unprotectedId = _protector.Unprotect(id);
 
-                    if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
-                        return BadRequest("Invalid memo ID.");
+                if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
+                    return BadRequest("Invalid memo ID.");
 
-                    var userId = _userManager.GetUserId(User);
+                var userId = usm.GetUserId(User);
 
-                    if (string.IsNullOrEmpty(userId))
-                        return Challenge();
+                if (string.IsNullOrEmpty(userId))
+                    return Challenge();
 
-                    bool result = await _memoService.DeleteMemoAsync(
-                        memoGuid, userId);
+                bool result = await memoServ.DeleteMemo(
+                    new DeleteMemoDTO { PublicId = memoGuid }, userId);
 
-                    if (result)
-                        _notifyService.Success("Record successfully deleted.", 5);
-                    else
-                        _notifyService.Error("Memo could not be deleted.", 5);
+                if (result)
+                    _notifyService.Success("Record successfully deleted.", 5);
+                else
+                    _notifyService.Error("Memo could not be deleted.", 5);
 
-                    return RedirectToAction(nameof(ViewMemos));
-                }
-                catch (Exception)
-                {
-                    _notifyService.Error(
-                        "An error occurred while deleting the memo.", 5);
-
-                    return RedirectToAction(nameof(ViewMemos));
-                }
+                return RedirectToAction(nameof(ViewMemos));
             }
-        
+            catch (Exception)
+            {
+                _notifyService.Error(
+                    "An error occurred while deleting the memo.", 5);
+
+                return RedirectToAction(nameof(ViewMemos));
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CommentMemo(
     string id,
@@ -175,19 +199,19 @@ public class MemoController(
                 if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
                     return BadRequest("Invalid memo ID.");
 
-                var userId = _userManager.GetUserId(User);
+                var userId = usm.GetUserId(User);
 
                 if (string.IsNullOrEmpty(userId))
                     return Challenge();
 
-                var dto = new MemoCommentCreateDTO
+                var dto = new CommentMemoDTO
                 {
-                    MemoPublicId = memoGuid,
+                    PublicId = memoGuid,
                     Message = commentVm.NewComment,
                     UserId = userId
                 };
 
-                bool result = await _memoService.AddCommentAsync(dto, userId);
+                bool result = await memoServ.CommentMemo(dto, userId);
 
                 if (result)
                     _notifyService.Success("Comment successfully saved.", 5);
@@ -203,4 +227,6 @@ public class MemoController(
 
                 return RedirectToAction(nameof(ViewMemos));
             }
-        } } }}
+        }
+    }
+}

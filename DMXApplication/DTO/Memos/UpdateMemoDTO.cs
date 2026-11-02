@@ -1,6 +1,6 @@
 namespace DMXApplication.DTO.Memos;
 
-public class MemoUpdateDTO
+public class UpdateMemoDTO
 {
     public Guid Id { get; set; }
 
@@ -9,4 +9,5 @@ public class MemoUpdateDTO
     public string Content { get; set; } = string.Empty;
 
     public List<string> SelectedUserIds { get; set; } = new();
+    public Guid PublicId { get; set; }
 }

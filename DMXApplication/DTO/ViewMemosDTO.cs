@@ -8,5 +8,7 @@ namespace DMXApplication.DTO
 {
    public  class ViewMemosDTO
     {
+        public string Id { get; set; }
+        public string Message { get; set; }
     }
 }

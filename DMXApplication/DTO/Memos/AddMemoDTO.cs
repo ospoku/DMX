@@ -1,6 +1,6 @@
 namespace DMXApplication.DTO.Memos;
 
-public class MemoCreateDTO
+public class AddMemoDTO
 {
     public string Title { get; set; } = string.Empty;
 

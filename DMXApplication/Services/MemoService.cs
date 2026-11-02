@@ -1,52 +1,92 @@
-﻿using DMXApplication.Interfaces;
+﻿using DMXApplication.DTO.Memos;
+using DMXApplication.Interfaces;
 using DMXDomain.Models;
 
-namespace DMXApplication.Services
+namespace DMXApplication.Services;
+
+public class MemoService(IMemoRepository rep) : IMemoService
 {
-    public class MemoService(IMemoRepository repository) 
+    public async Task<bool> AddMemo(
+        AddMemoDTO dto, string userId)
     {
-        private readonly IMemoRepository rep = repository;
-
-        public async Task<bool> AddMemoAsync(Memo memo, string userId)
+        var memo = new Memo
         {
-            rep.AddMemo(memo);
+            Title = dto.Title,
+            Content = dto.Content
+        };
 
-            int result = await rep.SaveChangesAsync(userId);
+        rep.AddMemo(memo);
 
-            return result > 0;
-        }
+        int result = await rep.SaveChangesAsync(userId);
 
-        public async Task<bool> DeleteMemoAsync(Guid id, string userId)
+        return result > 0;
+    }
+
+    public async Task<bool> DeleteMemo(DeleteMemoDTO dto, string userId)
+    {
+        var memo = await rep.GetByIdAsync(dto.PublicId);
+
+        if (memo == null)
+            return false;
+
+        rep.DeleteMemo(memo);
+
+        int result = await rep.SaveChangesAsync(userId);
+
+        return result > 0;
+    }
+
+    public async Task<List<MemoDTO>> GetAllAsync()
+    {
+        var memos = await rep.GetAllAsync();
+
+        return [.. memos.Select(memo => new MemoDTO
         {
-            var memo = await rep.GetByIdAsync(id);
+            Id = memo.PublicId,
+            Title = memo.Title,
+            Content = memo.Content
+        })];
+    }
 
-            if (memo == null)
-                return false;
+    public async Task<MemoDTO?> GetByIdAsync(Guid id)
+    {
+        var memo = await rep.GetByIdAsync(id);
 
-            rep.DeleteMemo(memo);
+        if (memo == null)
+            return null;
 
-            int result = await rep.SaveChangesAsync(userId);
-
-            return result > 0;
-        }
-
-        public async Task<bool> UpdateMemoAsync(Memo memo, string userId)
+        return new MemoDTO
         {
-            rep.UpdateMemo(memo);
+            Id = memo.PublicId,
+            Title = memo.Title,
+            Content = memo.Content
+        };
+    }
 
-            int result = await rep  .SaveChangesAsync(userId);
-
-            return result > 0;
-        }
-
-        public Task<List<Memo>> GetAllAsync()
+    public async Task<bool> UpdateMemo(UpdateMemoDTO dto, string userId)
+    {
+        var memo = await rep.GetByIdAsync(dto.PublicId);
+        if (memo == null)
+            return false;
+        memo.Title = dto.Title;
+        memo.Content = dto.Content;
+        rep.UpdateMemo(memo);
+        int result = await rep.SaveChangesAsync(userId);
+        return result > 0;
+    }
+    public async Task<bool> CommentMemo(CommentMemoDTO dto, string userId)
+    {
+        var memo = await rep.GetByIdAsync(dto.PublicId);
+        if (memo == null)
+            return false;
+        var memoComment = new MemoComment
         {
-            return rep.GetAllAsync();
-        }
-
-        public Task<Memo?> GetByIdAsync(Guid id)
-        {
-            return rep.GetByIdAsync(id);
-        }
+            MemoId = memo.Id,
+            Message = dto.Message,
+            UserId = userId
+        };
+        rep.CommentMemo(memoComment);
+        int result = await rep.SaveChangesAsync(userId);
+        return result > 0;
     }
 }

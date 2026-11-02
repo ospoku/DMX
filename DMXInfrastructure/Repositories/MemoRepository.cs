@@ -40,5 +40,9 @@ namespace DMXInfrastructure.Repositories
         {
             return dcx.SaveChangesAsync(userId);
         }
+        public void CommentMemo(MemoComment memoComment)
+        {
+            dcx.MemoComments.Add(memoComment);
+        }
     }
 }

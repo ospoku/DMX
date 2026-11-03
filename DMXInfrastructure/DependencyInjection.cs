@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using DMXApplication.Interfaces;
 using DMXInfrastructure.Repositories;
+using DMXApplication.Services;
 
 namespace DMXInfrastructure
 {
@@ -22,6 +23,10 @@ namespace DMXInfrastructure
              services.AddScoped<IEntityRepository,EntityRepository>();
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
             services.AddScoped<IAllowanceRepository, AllowanceRepository>();
+            services.AddScoped<IMemoService, MemoService>();
+            services.AddScoped<
+     DMXApplication.Interfaces.IMemoRepository,
+     Repositories.MemoRepository>();
 
             return services;
         }

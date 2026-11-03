@@ -36,9 +36,9 @@ namespace DMXInfrastructure.Repositories
             return await dcx.Memos.ToListAsync();
         }
 
-        public Task<int> SaveChangesAsync(string userId)
+        public Task<int> SaveChangesAsync()
         {
-            return dcx.SaveChangesAsync(userId);
+            return dcx.SaveChangesAsync();
         }
         public void CommentMemo(MemoComment memoComment)
         {

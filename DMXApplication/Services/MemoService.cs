@@ -7,7 +7,7 @@ namespace DMXApplication.Services;
 public class MemoService(IMemoRepository rep) : IMemoService
 {
     public async Task<bool> AddMemo(
-        AddMemoDTO dto, string userId)
+        AddMemoDTO dto)
     {
         var memo = new Memo
         {
@@ -17,12 +17,12 @@ public class MemoService(IMemoRepository rep) : IMemoService
 
         rep.AddMemo(memo);
 
-        int result = await rep.SaveChangesAsync(userId);
+        int result = await rep.SaveChangesAsync();
 
         return result > 0;
     }
 
-    public async Task<bool> DeleteMemo(DeleteMemoDTO dto, string userId)
+    public async Task<bool> DeleteMemo(DeleteMemoDTO dto)
     {
         var memo = await rep.GetByIdAsync(dto.PublicId);
 
@@ -31,7 +31,7 @@ public class MemoService(IMemoRepository rep) : IMemoService
 
         rep.DeleteMemo(memo);
 
-        int result = await rep.SaveChangesAsync(userId);
+        int result = await rep.SaveChangesAsync();
 
         return result > 0;
     }
@@ -63,7 +63,7 @@ public class MemoService(IMemoRepository rep) : IMemoService
         };
     }
 
-    public async Task<bool> UpdateMemo(UpdateMemoDTO dto, string userId)
+    public async Task<bool> UpdateMemo(UpdateMemoDTO dto)
     {
         var memo = await rep.GetByIdAsync(dto.PublicId);
         if (memo == null)
@@ -71,10 +71,10 @@ public class MemoService(IMemoRepository rep) : IMemoService
         memo.Title = dto.Title;
         memo.Content = dto.Content;
         rep.UpdateMemo(memo);
-        int result = await rep.SaveChangesAsync(userId);
+        int result = await rep.SaveChangesAsync();
         return result > 0;
     }
-    public async Task<bool> CommentMemo(CommentMemoDTO dto, string userId)
+    public async Task<bool> CommentMemo(CommentMemoDTO dto)
     {
         var memo = await rep.GetByIdAsync(dto.PublicId);
         if (memo == null)
@@ -82,11 +82,10 @@ public class MemoService(IMemoRepository rep) : IMemoService
         var memoComment = new MemoComment
         {
             MemoId = memo.Id,
-            Message = dto.Message,
-            UserId = userId
+            Message = dto.Message
         };
         rep.CommentMemo(memoComment);
-        int result = await rep.SaveChangesAsync(userId);
+        int result = await rep.SaveChangesAsync();
         return result > 0;
     }
 }

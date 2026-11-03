@@ -63,7 +63,7 @@ namespace DMX.Controllers
                     SelectedUserIds = addMemoVm.SelectedUsers
                 };
 
-                bool result = await memoServ.AddMemo(dto, userId);
+                bool result = await memoServ.AddMemo(dto);
 
                 if (result)
                     _notifyService.Success("Memo successfully created.", 5);
@@ -83,17 +83,14 @@ namespace DMX.Controllers
 
             
         }
-        [HttpPost]
-        public async Task<IActionResult> ViewMemos(ViewMemosVM viewMemosVM)
+      
+        [HttpGet]
+        public async Task<IActionResult> ViewMemos()
         {
-            var dto = new ViewMemosDTO
-            {
-                Message=viewMemosVM.
-            };
+            var memos = await memoServ.GetAllAsync();
 
-            return memoServ.GetAllAsync(dto,);
+            return ViewComponent(nameof(ViewMemos),memos);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> EditMemo(
@@ -136,7 +133,7 @@ namespace DMX.Controllers
                     SelectedUserIds = editMemoVm.SelectedUsers
                 };
 
-                bool result = await memoServ.UpdateMemo(dto, userId);
+                bool result = await memoServ.UpdateMemo(dto);
 
                 if (result)
                     _notifyService.Success("Memo successfully updated.", 5);
@@ -169,7 +166,7 @@ namespace DMX.Controllers
                     return Challenge();
 
                 bool result = await memoServ.DeleteMemo(
-                    new DeleteMemoDTO { PublicId = memoGuid }, userId);
+                    new DeleteMemoDTO { PublicId = memoGuid });
 
                 if (result)
                     _notifyService.Success("Record successfully deleted.", 5);
@@ -211,7 +208,7 @@ namespace DMX.Controllers
                     UserId = userId
                 };
 
-                bool result = await memoServ.CommentMemo(dto, userId);
+                bool result = await memoServ.CommentMemo(dto);
 
                 if (result)
                     _notifyService.Success("Comment successfully saved.", 5);

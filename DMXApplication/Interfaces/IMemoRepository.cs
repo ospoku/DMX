@@ -15,7 +15,7 @@ namespace DMXApplication.Interfaces
 
         Task<List<Memo>> GetAllAsync();
 
-        Task<int> SaveChangesAsync(string userId);
+        Task<int> SaveChangesAsync();
         void CommentMemo(MemoComment memoComment);
     }
 }

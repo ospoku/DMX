@@ -4,13 +4,13 @@ namespace DMXApplication.Interfaces
 {
     public interface IMemoService
     {
-        Task<bool> AddMemo(AddMemoDTO dto, string userId);
+        Task<bool> AddMemo(AddMemoDTO dto);
 
-        Task<bool> DeleteMemo(DeleteMemoDTO dto, string userId);
+        Task<bool> DeleteMemo(DeleteMemoDTO dto);
 
-        Task<bool> UpdateMemo(UpdateMemoDTO dto, string userId);
+        Task<bool> UpdateMemo(UpdateMemoDTO dto);
 
-        Task<bool> CommentMemo(CommentMemoDTO dto, string userId);
+        Task<bool> CommentMemo(CommentMemoDTO dto);
 
         Task<List<MemoDTO>> GetAllAsync();
 

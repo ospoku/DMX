@@ -10,37 +10,34 @@ using System.Threading.Tasks;
 
 namespace DMXInfrastructure.Repositories
 {
-    public class LetterRepository(XContext dcx) : ILetterRepository
+    public class LetterRepository(IEntityRepository ent, XContext dcx) : ILetterRepository
     {
 
     public void AddLetter(Letter letter)
     {
-        dcx.Letters.Add(letter);
+        ent.Add(letter);
 
     }
     public void DeleteLetter(Letter letter)
         { 
-        dcx.Letters.Remove(letter);
+        ent.Delete(letter);
     }
     public List<Letter> GetLetterList()
     {
-        return dcx.Letters.ToList();
+        return [.. dcx.Letters];
     }
     public void UpdateLetter(Letter letter)
     {
-        dcx.Letters.Update(letter);
-    }
+        ent.Update(letter);
+        }
         public async Task<Letter?> GetByIdAsync(Guid id)
         {
-            return await dcx.Letters.FindAsync(id);
+            return await dcx.Letters.AsNoTracking().FirstOrDefaultAsync(x=>x.PublicId == id);
         }
         public async Task<List<Letter>> GetAllAsync()
         {
-            return await dcx.Letters.ToListAsync();
+            return await dcx.Letters.AsNoTracking().ToListAsync();
         }
-        public async Task<int> SaveChangesAsync(string userId)
-        {
-            return await  dcx.SaveChangesAsync();
-        }
+     
     }
 }

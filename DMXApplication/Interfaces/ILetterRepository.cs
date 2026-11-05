@@ -14,6 +14,6 @@ namespace DMXApplication.Interfaces
         void UpdateLetter(Letter letter);
         Task<Letter?> GetByIdAsync(Guid id);
         Task<List<Letter>> GetAllAsync();
-        Task<int> SaveChangesAsync();
+     
     }
 }

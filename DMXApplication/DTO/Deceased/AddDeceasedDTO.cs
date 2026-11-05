@@ -1,4 +1,4 @@
-namespace DMXApplication.DTO;
+namespace DMXApplication.DTO.Deceased;
 
 public sealed class AddDeceasedDTO
 {

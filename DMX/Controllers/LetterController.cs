@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.ViewModels;
+using DMXApplication.Interfaces;
 using DMXApplication.Services;
 using DMXApplication.Services.DMXApplication.Services;
 using DMXDomain.Models;
@@ -24,6 +25,7 @@ namespace DMX.Controllers
         private readonly XContext _context = context;
         private readonly INotyfService _notyfService = notyfService;
         private readonly IEntityService ens = entityService;
+        public readonly ILetterServices letServ = new LetterService(context, userManager);
         private readonly AssignmentService _assignmentService = assignmentService;
         public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
@@ -55,8 +57,8 @@ namespace DMX.Controllers
                 }
 
                 var existingLetter = await _context.Letters.FirstOrDefaultAsync(l =>
-                    l.Subject.ToLower() == addLetterVm.Subject.ToLower() &&
-                    l.Source.ToLower() == addLetterVm.Source.ToLower() &&
+                    l.Subject.Equals(addLetterVm.Subject, StringComparison.CurrentCultureIgnoreCase) &&
+                    l.Source.Equals(addLetterVm.Source, StringComparison.CurrentCultureIgnoreCase) &&
                     l.DateReceived == addLetterVm.ReceiptDate &&
                     l.DocumentDate == addLetterVm.DocumentDate);
 
@@ -66,7 +68,7 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewLetters");
                 }
 
-                var newLetter = new Letter
+                var AddLetterDTO = new Letter
                 {
                     Source = addLetterVm.Source,
                     Subject = addLetterVm.Subject,
@@ -78,10 +80,10 @@ namespace DMX.Controllers
                 using (var memoryStream = new MemoryStream())
                 {
                     await formFile.CopyToAsync(memoryStream);
-                    newLetter.PDF = memoryStream.ToArray();
+                    AddLetterDTO.PDF = memoryStream.ToArray();
                 }
 
-                bool result = await ens.Add(newLetter, User);
+                bool result = await _letterService.AddAsync(AddLetterDTO, User);
                 if (!result)
                 {
                 

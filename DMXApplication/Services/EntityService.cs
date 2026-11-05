@@ -9,8 +9,10 @@ namespace DMXApplication.Services
 {
     namespace DMXApplication.Services
     {
+        
+       
         public class IEntityService(
-            UserManager<AppUser> userManager,
+            UserManager<AppUser> userManager, ICurrentUserService currentUser,
             IEntityRepository persistence)
         {
             private readonly UserManager<AppUser> usm = userManager;
@@ -71,7 +73,7 @@ namespace DMXApplication.Services
 
                     entPer.Update(model);
 
-                    await entPer.SaveChangesAsync(user.Id);
+                    await entPer.SaveChangesAsync(currentUser.UserId);
 
                     return true;
                 }
@@ -105,7 +107,7 @@ namespace DMXApplication.Services
 
                     entPer.Update(model);
 
-                    await entPer.SaveChangesAsync(user.Id);
+                    await entPer.SaveChangesAsync(currentUser.UserId);
 
                     return true;
                 }

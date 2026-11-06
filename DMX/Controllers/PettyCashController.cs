@@ -2,12 +2,12 @@
 using DMXDomain.Models;
 using DMX.ViewModels;
 using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using DMXApplication.Interfaces;
 
 namespace DMX.Controllers
 {
@@ -110,7 +110,7 @@ namespace DMX.Controllers
                 pettyCashToUpdate.Purpose = editPettyCashVm.Purpose;
                 pettyCashToUpdate.Amount = editPettyCashVm.Amount;
 
-                bool isEdited = await ens.Update(pettyCashToUpdate, User);
+                bool isEdited = await ens.Update(pettyCashToUpdate);
                 if (!isEdited)
                 {
                     notyfService.Error("Failed to update petty cash record. Please try again.", 5);
@@ -185,7 +185,7 @@ namespace DMX.Controllers
                     CreatedDate = DateTime.Now
                 };
 
-                bool result = await ens.Add(newComment, User);
+                bool result = await ens.Add(newComment);
                 if (result)
                 {
                     notyfService.Success("Comment successfully saved", 5);

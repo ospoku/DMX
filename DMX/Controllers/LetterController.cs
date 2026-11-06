@@ -2,7 +2,6 @@
 using DMX.ViewModels;
 using DMXApplication.Interfaces;
 using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
 using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +24,7 @@ namespace DMX.Controllers
         private readonly XContext _context = context;
         private readonly INotyfService _notyfService = notyfService;
         private readonly IEntityService ens = entityService;
-        public readonly ILetterServices letServ = new LetterService(context, userManager);
+        public readonly ILetterServices letServ;
         private readonly AssignmentService _assignmentService = assignmentService;
         public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
@@ -83,7 +82,7 @@ namespace DMX.Controllers
                     AddLetterDTO.PDF = memoryStream.ToArray();
                 }
 
-                bool result = await _letterService.AddAsync(AddLetterDTO, User);
+                bool result = await ens.Add(AddLetterDTO);
                 if (!result)
                 {
                 
@@ -189,7 +188,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await ens.Add(newComment, User);
+                bool result = await ens.Add(newComment);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved!!!");

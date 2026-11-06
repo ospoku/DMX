@@ -8,9 +8,14 @@ namespace DMXApplication.Services
         public class CurrentUserService(
     IHttpContextAccessor httpContextAccessor) : ICurrentUserService
         {
-            public string? UserId =>
-                httpContextAccessor.HttpContext?
-                    .User.FindFirstValue(ClaimTypes.NameIdentifier);
+            public string UserId
+        {
+            get
+            {
+                ClaimsPrincipal user = httpContextAccessor.HttpContext.User;
+                return user?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            }
+        }
         }
     }
 

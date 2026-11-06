@@ -5,16 +5,11 @@ using DMXDomain.Models;
 
 using DMX.ViewModels;
 using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
-using DMXDomain.Models;
-using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using DMXApplication.Interfaces;
 
 namespace DMX.Controllers
 {
@@ -72,7 +67,7 @@ namespace DMX.Controllers
                     newServiceRequest.Attachments = memoryStream.ToArray();
                 }
 
-                bool result = await _entityService.Add(newServiceRequest, User);
+                bool result = await _entityService.Add(newServiceRequest);
                 if (!result)
                 {
                     _notyfService.Error("Failed to add service request. Please try again.", 5);
@@ -133,7 +128,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.Add(newComment, User);
+                bool result = await _entityService.Add(newComment);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);
@@ -183,7 +178,7 @@ namespace DMX.Controllers
                 // Update service request properties
 
 
-                bool isEdited = await _entityService.Update(serviceRequestToUpdate, User);
+                bool isEdited = await _entityService.Update(serviceRequestToUpdate);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update service request. Please try again.", 5);

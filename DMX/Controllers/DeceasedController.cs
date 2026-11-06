@@ -1,14 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 
 using DMX.ViewModels;
+using DMXApplication.Interfaces;
 using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
 using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMX.Controllers
@@ -29,9 +27,9 @@ namespace DMX.Controllers
             return ViewComponent(nameof(EditDeceased), Id);
         }
 
-        public IActionResult ViewDeceaseds()
+        public IActionResult ViewDeceases()
         {
-            return ViewComponent(nameof(ViewDeceaseds));
+            return ViewComponent(nameof(ViewDeceases));
         }
 
         public async Task<string> GetUserEmailAsync(string userId)
@@ -51,12 +49,12 @@ namespace DMX.Controllers
             if (addDeceasedVM.SelectedUsers?.Any() != true)
             {
                 notyf.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction(nameof(ViewDeceaseds));
+                return RedirectToAction(nameof(ViewDeceases));
             }
             if (dcx.FeeStructures?.Any() != true)
             {
                 notyf.Error("You must set Fee structures", 5);
-                return RedirectToAction(nameof(ViewDeceaseds));
+                return RedirectToAction(nameof(ViewDeceases));
             }
 
             try
@@ -68,7 +66,7 @@ namespace DMX.Controllers
                 if (existingPatient != null)
                 {
                     notyf.Error("This record already exists.");
-                    return RedirectToAction(nameof(ViewDeceaseds));
+                    return RedirectToAction(nameof(ViewDeceases));
                 }
 
                 Deceased deceased = new()
@@ -84,7 +82,7 @@ namespace DMX.Controllers
                     Name=addDeceasedVM.DeceasedName
                 };
 
-                var patientAdded = await entityServ.Add(deceased, User);
+                var patientAdded = await entityServ.Add(deceased);
                 if (!patientAdded)
                 {
                     notyf.Error("Failed to add patient.", 5);
@@ -101,7 +99,7 @@ namespace DMX.Controllers
                             UserId = userId,
                         };
 
-                        var assignmentAdded = await entityServ.Add(assignment, User);
+                        var assignmentAdded = await entityServ.Add(assignment);
                         if (!assignmentAdded)
                         {
                             notyf.Error("Failed to assign user.", 5);
@@ -115,7 +113,7 @@ namespace DMX.Controllers
                     notyf.Success("Patient created successfully, no users assigned.", 5);
                 }
 
-                return RedirectToAction(nameof(ViewDeceaseds));
+                return RedirectToAction(nameof(ViewDeceases));
             }
             catch (Exception ex)
             {

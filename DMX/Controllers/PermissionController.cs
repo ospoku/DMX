@@ -4,23 +4,14 @@
 
 using DMX.Helpers;
 using DMX.ViewModels;
-using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
+using DMXApplication.Interfaces;
 using DMXDomain.Models;
 using DMXInfrastructure.Data;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
-using System.Security.Claims;
-using System.Web;
 
 
 namespace DMX.Controllers
@@ -304,7 +295,7 @@ namespace DMX.Controllers
                 Module=addPermissionVM.ModuleName,
                 Description= addPermissionVM.Description,
             };
-            bool result = await ens.Add(addThisPermission, User);
+            bool result = await ens.Add(addThisPermission);
             if (!result)
             {
                 notyf.Error("An error occurred while processing the request.", 5);

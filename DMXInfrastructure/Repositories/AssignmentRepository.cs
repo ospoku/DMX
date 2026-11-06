@@ -1,5 +1,7 @@
 ﻿using DMXApplication.Interfaces;
 using DMXInfrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DMXInfrastructure.Repositories
 {
@@ -8,14 +10,18 @@ namespace DMXInfrastructure.Repositories
     {
         private readonly XContext dcx = context;
 
-        public void Add<T>(T model) where T : class
+     
+        public async Task<T?> GetByIdAsync<T>(Guid id) where T : class
         {
-           dcx.Set<T>().Add(model);
+            return await dcx.Set<T>().FindAsync(id);
         }
-
-        public Task<int> SaveChangesAsync(string userId)
+        public async Task<List<T>> GetAllAsync<T>() where T : class
         {
-            return dcx.SaveChangesAsync(userId);
+            return await dcx.Set<T>().ToListAsync();
         }
+        public async Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            return await dcx.Set<T>().Where(predicate).ToListAsync();
+        } 
     }
 }

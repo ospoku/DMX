@@ -1,9 +1,11 @@
-﻿namespace DMXApplication.Interfaces
+﻿using System.Linq.Expressions;
+
+namespace DMXApplication.Interfaces
 {
     public interface IAssignmentRepository
     {
-        void Add<T>(T model) where T : class;
-
-        Task<int> SaveChangesAsync(string userId);
+       public Task<T?> GetByIdAsync<T>(Guid id) where T : class;
+        public Task<List<T>> GetAllAsync<T>() where T : class;
+        public Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>> predicate) where T : class;
     }
 }

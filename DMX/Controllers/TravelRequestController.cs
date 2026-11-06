@@ -3,13 +3,12 @@
 using DMXDomain.Models;
 using DMX.ViewModels;
 using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
-using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using DMXApplication.Interfaces;
 
 namespace DMX.Controllers
 {
@@ -81,7 +80,7 @@ namespace DMX.Controllers
                 };
 
                 // Add travel request to the database
-                bool requestAdded = await _entityService.Add(newTravelRequest, User);
+                bool requestAdded = await _entityService.Add(newTravelRequest);
                 if (!requestAdded)
                 {
                     _notyfService.Error("Failed to create travel request.", 5);
@@ -97,7 +96,7 @@ namespace DMX.Controllers
                         AppUserId = userId
                     };
 
-                    bool assignmentAdded = await _entityService.Add(assignment, User);
+                    bool assignmentAdded = await _entityService.Add(assignment);
                     if (!assignmentAdded)
                     {
                         _notyfService.Error($"Failed to assign user {userId}.", 5);
@@ -137,7 +136,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.Add(newComment, User);
+                bool result = await _entityService.Add(newComment);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);
@@ -205,7 +204,7 @@ namespace DMX.Controllers
                 memoToUpdate.Content = editMemoVm.Content;
                 memoToUpdate.Title = editMemoVm.Title;
 
-                bool isEdited = await _entityService.Update(memoToUpdate, User);
+                bool isEdited = await _entityService.Update(memoToUpdate);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update memo. Please try again.", 5);

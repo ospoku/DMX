@@ -1,7 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DMX.ViewModels;
+using DMXApplication.Interfaces;
 using DMXApplication.Services;
-using DMXApplication.Services.DMXApplication.Services;
 using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -162,7 +162,7 @@ namespace DMX.Controllers
                     Diagnosis = addExcuseDutyVm.Diagnosis
                 };
 
-                bool result = await _entityService.Add       (newExcuseDuty, User);
+                bool result = await _entityService.Add       (newExcuseDuty);
                 if (!result)
                 {
                     _notyfService.Error("Excuse Duty creation failed.", 5);
@@ -177,7 +177,7 @@ namespace DMX.Controllers
                         UserId = user
                     };
 
-                    bool assignResult = await _entityService.Add(assignment, User);
+                    bool assignResult = await _entityService.Add(assignment);
                     if (!assignResult)
                     {
                         _notyfService.Error("Error, record could not be saved.", 5);

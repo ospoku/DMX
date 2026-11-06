@@ -10,20 +10,7 @@ namespace DMXInfrastructure.Repositories
     {
         private readonly XContext dcx = context;
 
-        public void AddMemo(Memo memo)
-        {
-            dcx.Memos.Add(memo);
-        }
 
-        public void UpdateMemo(Memo memo)
-        {
-            dcx.Memos.Update(memo);
-        }
-
-        public void DeleteMemo(Memo memo)
-        {
-            dcx.Memos.Remove(memo);
-        }
 
         public async Task<Memo?> GetByIdAsync(Guid id)
         {
@@ -36,10 +23,7 @@ namespace DMXInfrastructure.Repositories
             return await dcx.Memos.ToListAsync();
         }
 
-        public Task<int> SaveChangesAsync()
-        {
-            return dcx.SaveChangesAsync();
-        }
+     
         public void CommentMemo(MemoComment memoComment)
         {
             dcx.MemoComments.Add(memoComment);

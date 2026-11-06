@@ -1,38 +1,29 @@
 ﻿
 using DMXApplication.Interfaces;
-using DMXDomain.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+
 
 
 namespace DMXApplication.Services
 {
-    namespace DMXApplication.Services
-    {
-        
-       
-        public class IEntityService(
-            UserManager<AppUser> userManager, ICurrentUserService currentUser,
-            IEntityRepository persistence)
+   
+        public class EntityService( ICurrentUserService currentUser,
+            IEntityRepository persistence):IEntityService
         {
-            private readonly UserManager<AppUser> usm = userManager;
+       
             private readonly IEntityRepository entPer = persistence;
 
             public async Task<bool> Add<T>(
-                T entity,
-                ClaimsPrincipal userClaim) where T : class
+                T entity) where T : class
             {
                 try
                 {
-                    var user = await usm.GetUserAsync(userClaim);
+          
 
-                    if (user == null)
-                        return false;
 
                     var entityType = typeof(T);
 
                     entityType.GetProperty("CreatedBy")
-                        ?.SetValue(entity, user.Id);
+                        ?.SetValue(entity, currentUser.UserId);
 
                     entityType.GetProperty("CreatedDate")
                         ?.SetValue(entity, DateTime.UtcNow);
@@ -42,7 +33,7 @@ namespace DMXApplication.Services
 
                     entPer.Add(entity);
 
-                    await entPer.SaveChangesAsync(user.Id);
+                    await entPer.SaveChangesAsync(currentUser.UserId);
 
                     return true;
                 }
@@ -53,20 +44,16 @@ namespace DMXApplication.Services
             }
 
             public async Task<bool> Update<T>(
-                T model,
-                ClaimsPrincipal userClaim) where T : class
+                T model) where T : class
             {
                 try
                 {
-                    var user = await usm.GetUserAsync(userClaim);
-
-                    if (user == null)
-                        return false;
+               
 
                     var entityType = typeof(T);
 
                     entityType.GetProperty("ModifiedBy")
-                        ?.SetValue(model, user.Id);
+                        ?.SetValue(model, currentUser.UserId);
 
                     entityType.GetProperty("ModifiedDate")
                         ?.SetValue(model, DateTime.UtcNow);
@@ -83,21 +70,16 @@ namespace DMXApplication.Services
                 }
             }
 
-            public async Task<bool> DeleteEntityAsync<T>(
-                T model,
-                ClaimsPrincipal userClaim) where T : class
+            public async Task<bool> Delete<T>(
+                T model) where T : class
             {
                 try
                 {
-                    var user = await usm.GetUserAsync(userClaim);
-
-                    if (user == null)
-                        return false;
-
+              
                     var entityType = typeof(T);
 
                     entityType.GetProperty("ModifiedBy")
-                        ?.SetValue(model, user.Id);
+                        ?.SetValue(model, currentUser.UserId);
 
                     entityType.GetProperty("ModifiedDate")
                         ?.SetValue(model, DateTime.UtcNow);
@@ -117,6 +99,7 @@ namespace DMXApplication.Services
                 }
             }
         }
-    }
+
+
 
 }

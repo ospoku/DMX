@@ -4,7 +4,7 @@ using DMXDomain.Models;
 
 namespace DMXApplication.Services;
 
-public class MemoService(IMemoRepository rep) : IMemoService
+public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
 {
     public async Task<bool> AddMemo(
         AddMemoDTO dto)
@@ -15,11 +15,11 @@ public class MemoService(IMemoRepository rep) : IMemoService
             Content = dto.Content
         };
 
-        rep.AddMemo(memo);
+    return     await ent.Add(memo);
 
-        int result = await rep.SaveChangesAsync();
+     
 
-        return result > 0;
+     
     }
 
     public async Task<bool> DeleteMemo(DeleteMemoDTO dto)
@@ -29,11 +29,10 @@ public class MemoService(IMemoRepository rep) : IMemoService
         if (memo == null)
             return false;
 
-        rep.DeleteMemo(memo);
+     return   await ent.Delete(memo);
 
-        int result = await rep.SaveChangesAsync();
 
-        return result > 0;
+  
     }
 
     public async Task<List<MemoDTO>> GetAllAsync()
@@ -70,9 +69,8 @@ public class MemoService(IMemoRepository rep) : IMemoService
             return false;
         memo.Title = dto.Title;
         memo.Content = dto.Content;
-        rep.UpdateMemo(memo);
-        int result = await rep.SaveChangesAsync();
-        return result > 0;
+     return await   ent.Update(memo);
+      
     }
     public async Task<bool> CommentMemo(CommentMemoDTO dto)
     {
@@ -84,8 +82,6 @@ public class MemoService(IMemoRepository rep) : IMemoService
             MemoId = memo.Id,
             Message = dto.Message
         };
-        rep.CommentMemo(memoComment);
-        int result = await rep.SaveChangesAsync();
-        return result > 0;
+        return await ent.Add(memoComment);
     }
 }

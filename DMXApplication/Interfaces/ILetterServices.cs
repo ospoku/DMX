@@ -10,9 +10,7 @@ namespace DMXApplication.Interfaces
 {
    public interface ILetterServices
     {
-        void AddLetter(AddLetterDTO letter);
-        void DeleteLetter(DeleteLetterDTO letter);
-        void UpdateLetter(UpdateLetterDTO letter);
+   
         Task<LetterDTO?> GetByIdAsync(Guid id);
         Task<List<LetterDTO>> GetAllAsync();
 

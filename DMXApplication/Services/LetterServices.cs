@@ -1,38 +1,40 @@
 ﻿using DMXApplication.DTO.Letters;
 using DMXApplication.Interfaces;
 using DMXDomain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DMXApplication.Services
 {
-   public  class LetterServices(ILetterRepository rep):ILetterServices
+   public  class LetterServices(ILetterRepository rep, IEntityService ent):ILetterServices
     {
      
 
-        public void AddLetter(AddLetterDTO addLetterDto)
+
+        public async Task<bool> AddLetter(AddLetterDTO dto)
         {
-            rep.AddLetter(new Letter
+            var letter = new Letter
             {
-                Source = addLetterDto.Source,
-                Subject = addLetterDto.Subject,
-                DateReceived = addLetterDto.ReceiptDate,
-                DocumentDate = addLetterDto.DocumentDate,
-                AdditionalNotes = addLetterDto.AdditionalNotes
-            });
+                Source = dto.Source,
+                Subject = dto.Subject,
+                DateReceived = dto.ReceiptDate,
+                DocumentDate = dto.DocumentDate,
+                AdditionalNotes = dto.AdditionalNotes
+            };
+
+            return await ent.Add(letter);
         }
-        public void DeleteLetter(DeleteLetterDTO deleteLetterDto) 
-        { rep.DeleteLetter(new Letter
+        public async Task<bool> DeleteLetter(DeleteLetterDTO deleteLetterDto) 
+        { 
+
+
+            return await ent.Delete(new Letter
             {
                 PublicId = deleteLetterDto.Id
             });
         }
-        public void UpdateLetter(UpdateLetterDTO updateLetterDto)
+        public async Task<bool> UpdateLetter(UpdateLetterDTO updateLetterDto)
         {
-        rep.UpdateLetter(new Letter
+        return await ent.Update(new Letter
             {
                 PublicId = updateLetterDto.Id,
                 Source = updateLetterDto.Source,
@@ -71,11 +73,7 @@ namespace DMXApplication.Services
                 AdditionalNotes = letter.AdditionalNotes
             }).ToList();
         }
-        public async Task<bool> SaveChangesAsync()
-        {
-            int result = await rep.SaveChangesAsync();
-            return result > 0;
-        }
+    
 
 
     }

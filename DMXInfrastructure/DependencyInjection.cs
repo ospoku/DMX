@@ -1,11 +1,10 @@
+using DMXApplication.Interfaces;
+using DMXApplication.Services;
 using DMXInfrastructure.Data;
+using DMXInfrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using DMXApplication.Interfaces;
-using DMXInfrastructure.Repositories;
-using DMXApplication.Services;
 
 namespace DMXInfrastructure
 {
@@ -24,10 +23,10 @@ namespace DMXInfrastructure
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
             services.AddScoped<IAllowanceRepository, AllowanceRepository>();
             services.AddScoped<IMemoService, MemoService>();
-            services.AddScoped<
-     DMXApplication.Interfaces.IMemoRepository,
-     Repositories.MemoRepository>();
-
+            services.AddScoped<IMemoRepository,
+     MemoRepository>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            var serviceCollection = services.AddScoped<IEntityService, EntityService>();
             return services;
         }
     }

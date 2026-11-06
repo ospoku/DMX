@@ -4,16 +4,11 @@ using DMXInfrastructure.Data;
 using DMXDomain.Models;
 using DMX.ViewModels;
 using DMXApplication.Services;
-using DMXDomain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DMXApplication.Services.DMXApplication.Services;
+using DMXApplication.Interfaces;
 
 namespace DMX.ViewComponents
 {

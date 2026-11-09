@@ -19,7 +19,7 @@ namespace DMX.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
-        private readonly IEntityService _entityService;
+        private readonly IEntityService ens;
         private readonly AssignmentService _assignmentService;
         public readonly IDataProtector protector;
 
@@ -35,7 +35,7 @@ namespace DMX.Controllers
             _userManager = userManager;
             _context = context;
             _notyfService = notyfService;
-            _entityService = entityService;
+            ens = entityService;
             _assignmentService = assignmentService;
             protector = protectionProvider.CreateProtector("IdProtector");
         }
@@ -83,7 +83,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.Add(newComment, User);
+                bool result = await ens.Add(newComment);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);
@@ -162,7 +162,7 @@ namespace DMX.Controllers
                     Diagnosis = addExcuseDutyVm.Diagnosis
                 };
 
-                bool result = await _entityService.Add       (newExcuseDuty);
+                bool result = await ens.Add       (newExcuseDuty);
                 if (!result)
                 {
                     _notyfService.Error("Excuse Duty creation failed.", 5);
@@ -177,7 +177,7 @@ namespace DMX.Controllers
                         UserId = user
                     };
 
-                    bool assignResult = await _entityService.Add(assignment);
+                    bool assignResult = await ens.Add(assignment);
                     if (!assignResult)
                     {
                         _notyfService.Error("Error, record could not be saved.", 5);
@@ -226,7 +226,7 @@ namespace DMX.Controllers
                 excuseDutyToUpdate.PatientName = editExcuseDutyVm.Name;
                 excuseDutyToUpdate.PatientId = editExcuseDutyVm.PatientId;
 
-                bool isEdited = await _entityService.Update(excuseDutyToUpdate, User);
+                bool isEdited = await ens.Update(excuseDutyToUpdate);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update memo. Please try again.", 5);
@@ -238,7 +238,7 @@ namespace DMX.Controllers
 
                 foreach (var userId in editExcuseDutyVm.SelectedUsers)
                 {
-                    bool reassign = await _assignmentService.AssignUsers(new ExcuseDutyAssignment { Id = excuseDutyToUpdate.Id, UserId = userId }, User);
+                    bool reassign = await ens.Add(new ExcuseDutyAssignment { Id = excuseDutyToUpdate.Id, UserId = userId });
                     if (!reassign)
                     {
                         _notyfService.Error("Failed to reassign users.", 5);

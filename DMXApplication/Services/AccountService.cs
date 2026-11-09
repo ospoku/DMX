@@ -1,4 +1,5 @@
 using DMXApplication.DTO;
+using DMXApplication.DTO.User;
 using DMXApplication.Interfaces;
 using DMXDomain.Models;
 using Microsoft.AspNetCore.Identity;

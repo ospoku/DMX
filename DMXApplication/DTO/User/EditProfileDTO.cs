@@ -1,4 +1,4 @@
-namespace DMXApplication.DTO;
+namespace DMXApplication.DTO.User;
 
 public sealed class EditProfileDTO
 {

@@ -1,7 +1,6 @@
 ﻿
 using DMXDomain.Models;
 using DMX.ViewModels;
-using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

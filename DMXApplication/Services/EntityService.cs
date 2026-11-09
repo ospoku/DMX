@@ -18,8 +18,6 @@ namespace DMXApplication.Services
                 try
                 {
           
-
-
                     var entityType = typeof(T);
 
                     entityType.GetProperty("CreatedBy")

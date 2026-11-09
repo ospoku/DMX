@@ -48,7 +48,7 @@ namespace DMX.Controllers
                     Purpose = addPettyCashVm.Purpose
                 };
 
-                bool result = await ens.Add(newPettyCash, User);
+                bool result = await ens.Add(newPettyCash);
                 if (!result)
                 {
                     notyfService.Error("An error occurred while processing the request.", 5);
@@ -63,7 +63,7 @@ namespace DMX.Controllers
                         UserId = userId
                     };
 
-                    bool assignResult = await ens.Add(assignment, User);
+                    bool assignResult = await ens.Add(assignment);
                     if (!assignResult)
                     {
                         notyfService.Error($"Failed to assign petty cash to user {userId}.", 5);
@@ -131,7 +131,7 @@ namespace DMX.Controllers
                         UserId = userId
                     };
 
-                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    bool assignResult = await ens.Add(assignment);
                     if (!assignResult)
                     {
                         atLeastOneFailed = true;

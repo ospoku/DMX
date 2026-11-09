@@ -17,19 +17,17 @@ namespace DMX.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly XContext _context;
         private readonly INotyfService _notyfService;
-        private readonly IEntityService _entityService;
+        private readonly IEntityService ens;
         private readonly IAuthorizationService _authorizationService; private readonly AssignmentService _assignmentService;
-        public TravelRequestController(
-            XContext context,
-            UserManager<AppUser> userManager,
-            INotyfService notyfService, IAuthorizationService authorizationService,
-             AssignmentService assignmentService,
-            IEntityService entityService)
+        public TravelRequestController(XContext context, UserManager<AppUser> userManager, INotyfService notyfService,
+                                       IAuthorizationService authorizationService, AssignmentService assignmentService,
+                                       IEntityService ens)
         {
-            _userManager = userManager;
-            _context = context; _assignmentService = assignmentService;
-            _notyfService = notyfService;
-            _entityService = entityService; _authorizationService = authorizationService;
+            ArgumentNullException.ThrowIfNull(ens);
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _context = context ?? throw new ArgumentNullException(nameof(context)); _assignmentService = assignmentService ?? throw new ArgumentNullException(nameof(assignmentService));
+            _notyfService = notyfService ?? throw new ArgumentNullException(nameof(notyfService));
+             _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
         }
 
         [HttpGet]
@@ -41,12 +39,12 @@ namespace DMX.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVm)
         {
-            if (addTravelRequestVm.SelectedUsers?.Any() != true)
+            if ((addTravelRequestVm.SelectedUsers?.Any()) != true)
             {
                 _notyfService.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction(nameof(ViewTravelRequests));
             }
-            if (_context.PerDiems.Where(x=>x.UserId== _userManager.GetUserId(User)).Any() != true)
+            if (_context.PerDiems.Where(x => x.UserId == _userManager.GetUserId(User)).Any() != true)
             {
                 _notyfService.Error($"You must set perdiem rate for {_userManager.GetUserAsync(User).Result.Fullname} to allow for Travel request", 5);
                 return RedirectToAction(nameof(ViewTravelRequests));
@@ -71,7 +69,7 @@ namespace DMX.Controllers
                 {
                     EndDate = addTravelRequestVm.EndDate,
                     StartDate = addTravelRequestVm.StartDate,
-                    
+
                     ConferenceFee = addTravelRequestVm.ConferenceFee,
                     FuelClaim = addTravelRequestVm.FuelClaim,
                     OtherExpenses = addTravelRequestVm.OtherExpenses,
@@ -80,7 +78,7 @@ namespace DMX.Controllers
                 };
 
                 // Add travel request to the database
-                bool requestAdded = await _entityService.Add(newTravelRequest);
+                bool requestAdded = await ens.Add(newTravelRequest);
                 if (!requestAdded)
                 {
                     _notyfService.Error("Failed to create travel request.", 5);
@@ -96,7 +94,7 @@ namespace DMX.Controllers
                         AppUserId = userId
                     };
 
-                    bool assignmentAdded = await _entityService.Add(assignment);
+                    bool assignmentAdded = await ens.Add(assignment);
                     if (!assignmentAdded)
                     {
                         _notyfService.Error($"Failed to assign user {userId}.", 5);
@@ -136,7 +134,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.Add(newComment);
+                bool result = await ens.Add(newComment);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);
@@ -204,7 +202,7 @@ namespace DMX.Controllers
                 memoToUpdate.Content = editMemoVm.Content;
                 memoToUpdate.Title = editMemoVm.Title;
 
-                bool isEdited = await _entityService.Update(memoToUpdate);
+                bool isEdited = await ens.Update(memoToUpdate);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update memo. Please try again.", 5);
@@ -225,7 +223,7 @@ namespace DMX.Controllers
                         UserId = userId
                     };
 
-                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    bool assignResult = await ens.Add(assignment);
                     if (!assignResult)
                     {
                         atLeastOneFailed = true;

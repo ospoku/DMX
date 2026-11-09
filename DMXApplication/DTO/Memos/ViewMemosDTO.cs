@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DMXApplication.DTO
+namespace DMXApplication.DTO.Memos
 {
    public  class ViewMemosDTO
     {

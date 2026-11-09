@@ -19,12 +19,12 @@ namespace DMX.Controllers
         INotyfService notifyService,
         IAuthorizationService authorizationService,
         IDataProtectionProvider provider,
-        UserManager<AppUser> userManager) : Controller
+        UserManager<AppUser> userManager, IEntityService entityService) : Controller
     {
         private readonly IMemoService memoServ = memoService;
 
         private readonly INotyfService _notifyService = notifyService;
-
+        private readonly IEntityService ens = entityService;
         private readonly IAuthorizationService _authorizationService =
             authorizationService;
 
@@ -34,11 +34,16 @@ namespace DMX.Controllers
             provider.CreateProtector("IdProtector");
 
 
-        [HttpPost]
-        public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
+      
+[HttpPost]
+public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
         {
             if (!ModelState.IsValid)
+            {
+             
+
                 return View(addMemoVm);
+            }
 
             if (addMemoVm.SelectedUsers == null ||
                 addMemoVm.SelectedUsers.Count == 0)
@@ -51,40 +56,58 @@ namespace DMX.Controllers
 
             try
             {
-                var userId = usm.GetUserId(User);
-
-                if (string.IsNullOrEmpty(userId))
-                    return Challenge();
-
                 var dto = new AddMemoDTO
                 {
                     Title = addMemoVm.Title,
-                    Content = addMemoVm.Content,
+                    Content = addMemoVm.Content
+                };
+
+                // Create the memo and retrieve its ID
+                bool memoId = await memoServ.AddMemo(dto);
+
+                if (!memoId)
+                {
+                    _notifyService.Error("Memo could not be created.", 5);
+                    return View(addMemoVm);
+                }
+
+                // Prepare the assignment DTO
+                var assignDto = new AssignMemoDTO
+                {
+                    MemoId = dto.id,
                     SelectedUserIds = addMemoVm.SelectedUsers
                 };
 
-                bool result = await memoServ.AddMemo(dto);
+                // Assign the memo to the selected users
+                bool assign = await assignServ.Assign(assignDto);
 
-                if (result)
-                    _notifyService.Success("Memo successfully created.", 5);
-                else
-                    _notifyService.Error("Memo could not be created.", 5);
+                if (!assign)
+                {
+                    _notifyService.Error(
+                        "Memo was created, but assignment failed.", 5);
+
+                    return RedirectToAction(nameof(ViewMemos));
+                }
+
+                _notifyService.Success(
+                    "Memo successfully created and assigned.", 5);
 
                 return RedirectToAction(nameof(ViewMemos));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
+
                 _notifyService.Error(
                     "An error occurred while creating the memo.", 5);
 
                 return RedirectToAction("Error", "Home");
             }
-            
-
-            
         }
-      
-        [HttpGet]
+
+
+
+[HttpGet]
         public async Task<IActionResult> ViewMemos()
         {
             var memos = await memoServ.GetAllAsync();
@@ -133,7 +156,7 @@ namespace DMX.Controllers
                     SelectedUserIds = editMemoVm.SelectedUsers
                 };
 
-                bool result = await memoServ.UpdateMemo(dto);
+                bool result = await ens.Update(dto);
 
                 if (result)
                     _notifyService.Success("Memo successfully updated.", 5);
@@ -165,7 +188,7 @@ namespace DMX.Controllers
                 if (string.IsNullOrEmpty(userId))
                     return Challenge();
 
-                bool result = await memoServ.DeleteMemo(
+                bool result = await ens.Delete(
                     new DeleteMemoDTO { PublicId = memoGuid });
 
                 if (result)

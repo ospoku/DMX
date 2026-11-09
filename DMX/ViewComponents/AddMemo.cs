@@ -6,15 +6,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMX.ViewComponents
 {
-    public class AddMemo : ViewComponent
+    public class AddMemo(UserManager<AppUser> userManager) : ViewComponent
     {
-        public readonly UserManager<AppUser> usm;
+        public readonly UserManager<AppUser> usm = userManager;
 
-        public AddMemo(UserManager<AppUser> userManager)
-        {
-            usm = userManager;
-
-        }
         public IViewComponentResult Invoke()
         {
             AddMemoVM addMemoVM = new()

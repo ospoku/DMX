@@ -1,4 +1,5 @@
 using DMXApplication.DTO;
+using DMXApplication.DTO.User;
 
 namespace DMXApplication.Interfaces;
 

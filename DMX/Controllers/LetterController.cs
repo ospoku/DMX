@@ -93,11 +93,11 @@ namespace DMX.Controllers
                 {
                     var assignment = new LetterAssignment
                     {
-                        LetterId = newLetter.Id,
+                        LetterId = AddLetterDTO.Id,
                         UserId = userId
                     };
 
-                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    bool assignResult = await ens.Add(assignment);
                     if (!assignResult)
                     {
                         _notyfService.Error($"Failed to assign Letter to user {userId}.", 5);

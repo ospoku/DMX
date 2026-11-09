@@ -13,29 +13,19 @@ using DMXApplication.Interfaces;
 
 namespace DMX.Controllers
 {
-    public class ServiceRequestController : Controller
+    public class ServiceRequestController(
+        XContext context,
+        UserManager<AppUser> userManager,
+        INotyfService notyfService,
+        IEntityService entityService,
+        AssignmentService assignmentService, IDataProtectionProvider provider) : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly XContext _context;
-        private readonly INotyfService _notyfService;
-        private readonly IEntityService _entityService;
-        private readonly AssignmentService _assignmentService;
-        public readonly IDataProtector protector;
-        public ServiceRequestController(
-            XContext context,
-            UserManager<AppUser> userManager,
-            INotyfService notyfService,
-            IEntityService entityService,
-            AssignmentService assignmentService,IDataProtectionProvider provider)
-        {
-            _userManager = userManager;
-            _context = context;
-            _notyfService = notyfService;
-            _entityService = entityService;
-            _assignmentService = assignmentService;
-
-            protector = provider.CreateProtector("IdProtector");
-        }
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly XContext _context = context;
+        private readonly INotyfService _notyfService = notyfService;
+        private readonly IEntityService ens = entityService;
+        private readonly AssignmentService _assignmentService = assignmentService;
+        public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 
         [HttpGet]
         public IActionResult ViewServiceRequests() => ViewComponent(nameof(ViewServiceRequests));
@@ -67,7 +57,7 @@ namespace DMX.Controllers
                     newServiceRequest.Attachments = memoryStream.ToArray();
                 }
 
-                bool result = await _entityService.Add(newServiceRequest);
+                bool result = await ens.Add(newServiceRequest);
                 if (!result)
                 {
                     _notyfService.Error("Failed to add service request. Please try again.", 5);
@@ -82,7 +72,7 @@ namespace DMX.Controllers
                         UserId = userId
                     };
 
-                    bool assignResult = await _assignmentService.AssignUsers(assignment, User);
+                    bool assignResult = await ens.Add(assignment);
                     if (!assignResult)
                     {
                         _notyfService.Error($"Failed to assign request to user {userId}.", 5);
@@ -128,7 +118,7 @@ namespace DMX.Controllers
                     UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await _entityService.Add(newComment);
+                bool result = await ens.Add(newComment);
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved", 5);
@@ -178,7 +168,7 @@ namespace DMX.Controllers
                 // Update service request properties
 
 
-                bool isEdited = await _entityService.Update(serviceRequestToUpdate);
+                bool isEdited = await ens.Update(serviceRequestToUpdate);
                 if (!isEdited)
                 {
                     _notyfService.Error("Failed to update service request. Please try again.", 5);

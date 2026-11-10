@@ -5,7 +5,7 @@ namespace DMXApplication.Interfaces
     public interface IMemoService
     {
 
-        Task<bool> AddMemo(AddMemoDTO dto); 
+        Task<int> AddMemo(AddMemoDTO dto); 
         Task<bool> CommentMemo(CommentMemoDTO dto);
 
         Task<List<MemoDTO>> GetAllAsync();

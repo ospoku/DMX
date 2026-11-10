@@ -12,6 +12,6 @@ namespace DMXApplication.Interfaces
     {
         Task<bool>AddDeceased(AddDeceasedDTO dto);
         Task<bool> DeleteDeceased(DeleteDeceasedDTO dto);
-        Task<bool> UpdateDeceased(UpdateDeleteDTO dto);
+        Task<bool> UpdateDeceased(UpdateDeceasedDTO dto);
     }
 }

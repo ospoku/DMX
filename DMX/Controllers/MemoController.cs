@@ -19,10 +19,10 @@ namespace DMX.Controllers
         INotyfService notifyService,
         IAuthorizationService authorizationService,
         IDataProtectionProvider provider,
-        UserManager<AppUser> userManager, IEntityService entityService) : Controller
+        UserManager<AppUser> userManager, IEntityService entityService,IAssignmentService assignService) : Controller
     {
         private readonly IMemoService memoServ = memoService;
-
+        private readonly IAssignmentService assignServ = assignService;
         private readonly INotyfService _notifyService = notifyService;
         private readonly IEntityService ens = entityService;
         private readonly IAuthorizationService _authorizationService =
@@ -63,32 +63,37 @@ public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
                 };
 
                 // Create the memo and retrieve its ID
-                bool memoId = await memoServ.AddMemo(dto);
+                int memoId = await memoServ.AddMemo(dto);
 
-                if (!memoId)
+                if (memoId<=0)
                 {
                     _notifyService.Error("Memo could not be created.", 5);
                     return View(addMemoVm);
                 }
 
                 // Prepare the assignment DTO
-                var assignDto = new AssignMemoDTO
+                foreach (var user in addMemoVm.SelectedUsers)
                 {
-                    MemoId = dto.id,
-                    SelectedUserIds = addMemoVm.SelectedUsers
-                };
 
-                // Assign the memo to the selected users
-                bool assign = await assignServ.Assign(assignDto);
 
-                if (!assign)
-                {
-                    _notifyService.Error(
-                        "Memo was created, but assignment failed.", 5);
+                    AssignMemoDTO assignDto = new()
+                    {
+                        MemoId = memoId,
+                        UserId = user
+                    };
 
-                    return RedirectToAction(nameof(ViewMemos));
+
+                    // Assign the memo to the selected users
+                    int assign = await assignServ.Assign(assignDto);
+
+                    if (assign <= 0)
+                    {
+                        _notifyService.Error(
+                            "Memo was created, but assignment failed.", 5);
+
+                        return RedirectToAction(nameof(ViewMemos));
+                    }
                 }
-
                 _notifyService.Success(
                     "Memo successfully created and assigned.", 5);
 

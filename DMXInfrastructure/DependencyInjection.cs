@@ -25,6 +25,7 @@ namespace DMXInfrastructure
             services.AddScoped<IMemoService, MemoService>();
             services.AddScoped<IMemoRepository,
      MemoRepository>();
+            services.AddScoped<IAssignmentRepository, AssignmentService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             var serviceCollection = services.AddScoped<IEntityService, EntityService>();
             return services;

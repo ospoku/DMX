@@ -8,7 +8,7 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
 {
 
 
-    public async Task<bool> AddMemo(AddMemoDTO dto)
+    public async Task<int> AddMemo(AddMemoDTO dto)
     {
         var memo = new Memo
         {
@@ -16,7 +16,8 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
             Content = dto.Content
         };
 
-        return await ent.Add(memo);
+        await ent.Add(memo);
+        return memo.Id;
     }
     public async Task<List<MemoDTO>> GetAllAsync()
     {

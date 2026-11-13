@@ -1,25 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace DMXDomain.Models
 {
-    public class MemoAssignment : TableAudit
+    public class Comment : TableAudit
     {
         [Key]
-
         public int Id { get; set; }
         public Guid PublicId { get; set; } = Guid.NewGuid();
-
-    
-       
-        public int MemoId { get; set; }
-        [ForeignKey("MemoId")]
-        public Memo Memo { get; set; }  
+        public string Message { get; set; }
+        public int MemoId {  get; set; } 
         public string UserId { get; set; }
+        [ForeignKey("MemoId")]
+        public Memo Memo { get; set; }
         [ForeignKey("UserId")]
-        public AppUser AppUser { get; set; }
-        public bool IsRead { get; set; } = false;
 
+        public AppUser AppUser { get; set; }
     }
 }

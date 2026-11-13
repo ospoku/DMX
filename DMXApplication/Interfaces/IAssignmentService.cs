@@ -1,5 +1,5 @@
 ﻿using DMXApplication.DTO;
-using DMXApplication.DTO.Memos;
+using DMXApplication.DTO.Assignment;
 using DMXDomain.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,8 @@ namespace DMXApplication.Interfaces
 {
     public interface IAssignmentService
     {
-        Task<int> Assign(AssignMemoDTO assignment);
+        Task<int> Assign(AssignDTO assignment);
+        Task<int> Update(AssignDTO assignment);
+        Task<int> Delete(int id);
     }
 }

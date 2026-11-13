@@ -16,8 +16,15 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
             Content = dto.Content
         };
 
-        await ent.Add(memo);
-        return memo.Id;
+        await rep.AddMemo(memo);
+
+
+  
+
+        bool result = await ent.sa;
+
+        return result ? memo.Id : 0;
+    
     }
     public async Task<List<MemoDTO>> GetAllAsync()
     {
@@ -52,7 +59,7 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
         var memo = await rep.GetByIdAsync(dto.PublicId);
         if (memo == null)
             return false;
-        var memoComment = new MemoComment
+        var memoComment = new Comment
         {
             MemoId = memo.Id,
             Message = dto.Message

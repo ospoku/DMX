@@ -16,6 +16,6 @@ namespace DMXApplication.Interfaces
         Task<List<Memo>> GetAllAsync();
 
   
-        void CommentMemo(MemoComment memoComment);
+        void CommentMemo(Comment memoComment);
     }
 }

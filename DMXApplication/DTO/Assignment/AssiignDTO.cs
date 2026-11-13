@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DMXApplication.DTO.Memos
+namespace DMXApplication.DTO.Assignment
 {
-   public class AssignMemoDTO
+   public class AssignmentDTO
     {
       public int   MemoId{get; set;}
     

@@ -2,6 +2,7 @@
 using DMX.ViewComponents;
 using DMX.ViewModels;
 using DMXApplication.DTO;
+using DMXApplication.DTO.Assignment;
 using DMXApplication.DTO.Memos;
 using DMXApplication.Interfaces;
 using DMXApplication.Services;
@@ -76,7 +77,7 @@ public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
                 {
 
 
-                    AssignMemoDTO assignDto = new()
+                    AssignDTO assignDto = new()
                     {
                         MemoId = memoId,
                         UserId = user

@@ -11,7 +11,7 @@ namespace DMX.ViewModels
        public int CommentCount { get; set; }
         public string NewComment { get; set; }  
         public DateTime CreatedDate { get; set; }
-        public ICollection<MemoComment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
        
         
     }

@@ -14,7 +14,7 @@ namespace DMXDomain.Models
         public string Title { get; set; }
         public string Content { get; set; }
         
-        public ICollection<MemoComment> MemoComments { get; set; }
+        public ICollection<Comment> MemoComments { get; set; }
     
       
     }

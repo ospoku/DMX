@@ -1,6 +1,8 @@
-﻿using DMXApplication.Interfaces;
+﻿using DMXApplication.DTO;
+using DMXApplication.Interfaces;
 using DMXDomain.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.Metrics;
 using System.Security.Claims;
 
 namespace DMXApplication.Services
@@ -12,10 +14,18 @@ namespace DMXApplication.Services
 
         private readonly IAssignmentRepository assRep = assignmentRepository;
 
-        //public Task<bool> AddAssignee()
-        //{
-        //    assRep.AddAssignee
+        public async Task<int> Assign(AssignDTO assignDTO)
+        {
+            var assign = new Assignment
+            {
+                AssignedDate = DateTime.UtcNow,
+                PublicId = assignDTO.PublicId,
 
+
+            };
+            await assRep.Assign(assign);
+           return assignDTO.Id;
+        }
 
 
     }

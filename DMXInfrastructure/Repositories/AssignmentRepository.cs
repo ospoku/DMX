@@ -1,4 +1,6 @@
-﻿using DMXApplication.Interfaces;
+﻿using DMXApplication.DTO;
+using DMXApplication.Interfaces;
+using DMXDomain.Models;
 using DMXInfrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -10,18 +12,13 @@ namespace DMXInfrastructure.Repositories
     {
         private readonly XContext dcx = context;
 
+       public  async Task<int> Assign(Assignment assignment)
+        {
+
+            return dcx.Assignments.Add(assignment);
+        }
      
-        public async Task<T?> GetByIdAsync<T>(Guid id) where T : class
-        {
-            return await dcx.Set<T>().FindAsync(id);
-        }
-        public async Task<List<T>> GetAllAsync<T>() where T : class
-        {
-            return await dcx.Set<T>().ToListAsync();
-        }
-        public async Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>> predicate) where T : class
-        {
-            return await dcx.Set<T>().Where(predicate).ToListAsync();
-        } 
+      
+
     }
 }

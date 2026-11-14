@@ -14,5 +14,7 @@ namespace DMXApplication.Interfaces
         Task<int> Assign(AssignDTO assignment);
         Task<int> Update(AssignDTO assignment);
         Task<int> Delete(int id);
+        Task<int> Get(int id);
+        
     }
 }

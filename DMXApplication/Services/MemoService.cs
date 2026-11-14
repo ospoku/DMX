@@ -18,14 +18,28 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
 
         await rep.AddMemo(memo);
 
-
-  
-
-        bool result = await ent.sa;
+        bool result = await ent.Save(memo);
 
         return result ? memo.Id : 0;
     
     }
+
+
+ 
+    public async Task<int> DeleteMemo(DeleteMemoDTO dto)
+    {
+        var memo = await rep.GetByIdAsync(dto.PublicId);
+
+        if (memo == null)
+            return 0;
+
+      await  rep.DeleteMemo(memo.Id);
+
+        bool result = await ent.Delete(memo);
+
+        return result ? memo.Id : 0;
+    }
+
     public async Task<List<MemoDTO>> GetAllAsync()
     {
         var memos = await rep.GetAllAsync();
@@ -64,6 +78,6 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
             MemoId = memo.Id,
             Message = dto.Message
         };
-        return await ent.Add(memoComment);
+        return await ent.Save(memoComment);
     }
 }

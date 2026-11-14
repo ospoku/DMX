@@ -13,9 +13,11 @@ namespace DMXInfrastructure.Repositories
     public class LetterRepository( XContext dcx) : ILetterRepository
     {
 
-   public async Task<Letter>AddLetter(Letter letter)
+   public async Task<int>AddLetter(Letter letter)
         {
-            return await dcx.Letters.Add(letter);
+             await dcx.AddAsync(letter);
+
+            return letter.Id;
         }
  
   

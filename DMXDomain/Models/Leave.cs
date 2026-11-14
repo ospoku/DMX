@@ -4,6 +4,6 @@
     {
         public string LeaveId { get; set; }
        
-    public virtual ICollection<LeaveComment>Comments { get; set; }  
+    public virtual ICollection<Comment>Comments { get; set; }  
     }
 }

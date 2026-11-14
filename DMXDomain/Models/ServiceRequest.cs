@@ -31,7 +31,7 @@ namespace DMXDomain.Models
            public Status Status { get; set; }
             public string StatusId { get; set; } // Current status (Pending, In Progress, Completed, Cancelled)
        
-        public virtual ICollection<ServiceComment>Comments { get; set; }    
+        public virtual ICollection<Comment>Comments { get; set; }    
        
       
     }

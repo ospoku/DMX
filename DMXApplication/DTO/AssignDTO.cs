@@ -11,6 +11,8 @@ namespace DMXApplication.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public Guid PublicId { get; internal set; }
+        public int MemoId { get; set; }
+        public string UserId { get; set; }
 
         public AssignDTO() { }
     }

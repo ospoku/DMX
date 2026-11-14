@@ -5,99 +5,80 @@ using DMXApplication.Interfaces;
 
 namespace DMXApplication.Services
 {
-   
-        public class EntityService( ICurrentUserService currentUser,
-            IEntityRepository persistence):IEntityService
+
+    public class EntityService(ICurrentUserService currentUser,
+        IEntityRepository persistence) : IEntityService
+    {
+
+        private readonly IEntityRepository entPer = persistence;
+
+        public async Task<bool> Save<T>(
+            T entity) where T : class
         {
-       
-            private readonly IEntityRepository entPer = persistence;
-
-            public async Task<bool> Add<T>(
-                T entity) where T : class
+            try
             {
-                try
-                {
-          
-                    var entityType = typeof(T);
 
-                    entityType.GetProperty("CreatedBy")
-                        ?.SetValue(entity, currentUser.UserId);
+                var entityType = typeof(T);
 
-                    entityType.GetProperty("CreatedDate")
-                        ?.SetValue(entity, DateTime.UtcNow);
+                entityType.GetProperty("CreatedBy")
+                    ?.SetValue(entity, currentUser.UserId);
 
-                    entityType.GetProperty("IsDeleted")
-                        ?.SetValue(entity, false);
+                entityType.GetProperty("CreatedDate")
+                    ?.SetValue(entity, DateTime.UtcNow);
 
-                    entPer.Add(entity);
 
-                    await entPer.SaveChangesAsync(currentUser.UserId);
 
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                entPer.Add(entity);
+
+                await entPer.SaveChangesAsync(currentUser.UserId);
+
+                return true;
             }
-
-            public async Task<bool> Update<T>(
-                T model) where T : class
+            catch (Exception)
             {
-                try
-                {
-               
-
-                    var entityType = typeof(T);
-
-                    entityType.GetProperty("ModifiedBy")
-                        ?.SetValue(model, currentUser.UserId);
-
-                    entityType.GetProperty("ModifiedDate")
-                        ?.SetValue(model, DateTime.UtcNow);
-
-                    entPer.Update(model);
-
-                    await entPer.SaveChangesAsync(currentUser.UserId);
-
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-
-            public async Task<bool> Delete<T>(
-                T model) where T : class
-            {
-                try
-                {
-              
-                    var entityType = typeof(T);
-
-                    entityType.GetProperty("ModifiedBy")
-                        ?.SetValue(model, currentUser.UserId);
-
-                    entityType.GetProperty("ModifiedDate")
-                        ?.SetValue(model, DateTime.UtcNow);
-
-                    entityType.GetProperty("IsDeleted")
-                        ?.SetValue(model, true);
-
-                    entPer.Update(model);
-
-                    await entPer.SaveChangesAsync(currentUser.UserId);
-
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                return false;
             }
         }
 
+        public async Task<bool> Update<T>(T entity) where T : class
+        {
+            try
+            {
+                var entityType = typeof(T);
 
+                entityType.GetProperty("UpdatedBy")
+                    ?.SetValue(entity, currentUser.UserId);
 
+                entityType.GetProperty("UpdatedDate")
+                    ?.SetValue(entity, DateTime.UtcNow);
+
+                await entPer.SaveChangesAsync(currentUser.UserId);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> Delete<T>(T entity) where T : class
+        {
+            try
+            {
+                var entityType = typeof(T);
+                entityType.GetProperty("DeletedBy")?.SetValue(entity, currentUser.UserId);
+                entityType.GetProperty("IsDeleted")?.SetValue(entity, true);
+                entityType.GetProperty("DeleteDate")?.SetValue(entity, DateTime.UtcNow);
+                await entPer.SaveChangesAsync(currentUser.UserId);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+    }
 }

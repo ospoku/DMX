@@ -29,7 +29,7 @@ namespace DMXDomain.Models
       public TravelType TravelType { get; set; }
         [ForeignKey(nameof(TravelType))]
         public string TravelTypeId  { get; set; }
-        public virtual ICollection<TravelRequestComment>Comments { get; set; }  
+        public virtual ICollection<Comment>Comments { get; set; }  
        
     }
 }

@@ -15,9 +15,10 @@ namespace DMXInfrastructure.Repositories
        public  async Task<int> Assign(Assignment assignment)
         {
 
-            return dcx.Assignments.Add(assignment);
+            await dcx.Assignments.AddAsync(assignment);
+            return assignment.Id;
         }
-     
+   
       
 
     }

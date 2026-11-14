@@ -16,6 +16,6 @@ namespace DMXDomain.Models
         public string MedicalOfficer { get; set; }
         public DateTime IssueDate { get; set; }
        
-       public virtual ICollection<MaternityLeaveComment> Comments { get; set; } 
+       public virtual ICollection<Comment> Comments { get; set; } 
     }
 }

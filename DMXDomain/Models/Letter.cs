@@ -18,7 +18,7 @@ namespace DMXDomain.Models
         [Required]
         public byte[] PDF { get; set; } = [];
         
-        public ICollection<LetterComment> LetterComments { get; set; } = [];
+        public ICollection<Comment> LetterComments { get; set; } = [];
 
        
     }

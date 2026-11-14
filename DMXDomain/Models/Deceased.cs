@@ -35,7 +35,7 @@ namespace DMXDomain.Models
         [RegularExpression(@"^[A-Zz-a\s]+")]
         public  string WardInCharge { get; set; }
         public string ReferenceNumber { get; set; } = Guid.NewGuid().ToString("N").Substring(0,5);
-        public  ICollection<DeceasedComment> DeceasedComments { get; set; } = [];
+    
     
     }
 }

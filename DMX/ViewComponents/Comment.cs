@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DMX.ViewComponents
 {
-    public class CommentMemo(XContext dContext, UserManager<AppUser> userManager, IDataProtectionProvider provider) : ViewComponent
+    public class Comment(XContext dContext, UserManager<AppUser> userManager, IDataProtectionProvider provider) : ViewComponent
     {
         public readonly XContext dcx = dContext;
         public readonly UserManager<AppUser> usm = userManager;
@@ -23,21 +23,21 @@ namespace DMX.ViewComponents
 
                 return View("Error", "Invalid Excuse Duty Id format");
             }
-                Memo memoToComment = new();
-                memoToComment = (from m in dcx.Memos.Include(m => m.MemoComments.OrderBy(m => m.CreatedDate)).ThenInclude(c => c.AppUser) where m.PublicId == memoGuid select m).FirstOrDefault();
+               
+               Comment comment = (from m in dcx.Comments.OrderBy(m => m.CreatedDate).ThenInclude(c => c.AppUser) where m.PublicId == memoGuid select m).FirstOrDefault();
 
-                MemoCommentVM addCommentVM = new()
+                CommentVM commentVM = new()
                 {
-                    MemoContent = memoToComment.Content,
+                    MemoContent = comment.Content,
 
                     Comments = memoToComment.MemoComments.OrderBy(m => m.CreatedDate).ToList(),
                     Title = memoToComment.Title,
-                    CommentCount = memoToComment.MemoComments.Count(),
+                    CommentCount = memoToComment.MemoComments.Count,
 
                 };
 
 
-                return View(addCommentVM);
+                return View(commentVM);
             }
         }
     }

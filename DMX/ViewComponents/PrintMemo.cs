@@ -27,7 +27,7 @@ namespace DMX.ViewComponents
            
          var   memoToEdit = (from m in dcx.Memos.Include(c => c.MemoComments.OrderBy(c => c.CreatedDate)) where m.PublicId == printGuid select m).FirstOrDefault();
 
-            MemoCommentVM addCommentVM = new()
+            CommentVM addCommentVM = new()
             {
                 MemoContent = memoToEdit.Content,
               Comments=memoToEdit.MemoComments,

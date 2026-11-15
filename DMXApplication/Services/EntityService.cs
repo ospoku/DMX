@@ -12,12 +12,10 @@ namespace DMXApplication.Services
 
         private readonly IEntityRepository entPer = persistence;
 
-        public async Task<bool> Save<T>(
+        public void Add<T>(
             T entity) where T : class
         {
-            try
-            {
-
+          
                 var entityType = typeof(T);
 
                 entityType.GetProperty("CreatedBy")
@@ -30,20 +28,12 @@ namespace DMXApplication.Services
 
                 entPer.Add(entity);
 
-                await entPer.SaveChangesAsync(currentUser.UserId);
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+      
         }
 
-        public async Task<bool> Update<T>(T entity) where T : class
+        public void Update<T>(T entity) where T : class
         {
-            try
-            {
+            
                 var entityType = typeof(T);
 
                 entityType.GetProperty("UpdatedBy")
@@ -52,26 +42,26 @@ namespace DMXApplication.Services
                 entityType.GetProperty("UpdatedDate")
                     ?.SetValue(entity, DateTime.UtcNow);
 
-                await entPer.SaveChangesAsync(currentUser.UserId);
+            
 
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
 
-        public async Task<bool> Delete<T>(T entity) where T : class
+        public void Delete<T>(T entity) where T : class
         {
-            try
-            {
+          
                 var entityType = typeof(T);
                 entityType.GetProperty("DeletedBy")?.SetValue(entity, currentUser.UserId);
                 entityType.GetProperty("IsDeleted")?.SetValue(entity, true);
                 entityType.GetProperty("DeleteDate")?.SetValue(entity, DateTime.UtcNow);
-                await entPer.SaveChangesAsync(currentUser.UserId);
+          
 
+        
+        }
+        public async Task<bool> SaveChangesAsync()
+        {
+            try
+            {
+                await entPer.SaveChangesAsync(currentUser.UserId);
                 return true;
             }
             catch (Exception)
@@ -79,6 +69,5 @@ namespace DMXApplication.Services
                 return false;
             }
         }
-
     }
 }

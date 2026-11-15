@@ -10,7 +10,7 @@ namespace DMXApplication.Services
      
 
 
-        public async Task<bool> AddLetter(AddLetterDTO dto)
+        public async Task<int> AddLetter(AddLetterDTO dto)
         {
             var letter = new Letter
             {
@@ -20,8 +20,9 @@ namespace DMXApplication.Services
                 DocumentDate = dto.DocumentDate,
                 AdditionalNotes = dto.AdditionalNotes
             };
-
-            return await ent.Add(letter);
+           await rep.AddLetter(letter);
+            bool result = await ent.Save();
+            return result ? letter.Id : 0;
         }
         public async Task<bool> DeleteLetter(DeleteLetterDTO deleteLetterDto) 
         { 

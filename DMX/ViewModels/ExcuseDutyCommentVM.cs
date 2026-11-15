@@ -6,7 +6,7 @@ namespace DMX.ViewModels
     public class ExcuseDutyCommentVM
     {
         public string NewComment { get; set; }
-        public ICollection<ExcuseDutyComment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
         public string Diagnosis { get; set; }
         public string PatientId { get;  set; }
         public string PatientName { get; set; }

@@ -9,6 +9,11 @@ namespace DMXApplication.Interfaces
     {
         public Task<int> Assign(Assignment assignment);
 public Task<int> Update(Assignment assignment);
+        public Task<int> Delete(Assignment assignment);
+       
+
+
+        
 
 
     }

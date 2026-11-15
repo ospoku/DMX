@@ -76,11 +76,11 @@ namespace DMX.Controllers
                     _notyfService.Error("The recoord could not be found");
                 }
 
-                var newComment = new ExcuseDutyComment
+                var newComment = new Comment
                 {
-                    ExcuseDutyId = dutyToComment.Id,
+                    //ExcuseDutyId = dutyToComment.Id,
                     Message = commentVm.NewComment,
-                    UserId = (await _userManager.GetUserAsync(User)).Id
+                    //UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
                 bool result = await ens.Add(newComment);
@@ -171,10 +171,10 @@ namespace DMX.Controllers
 
                 foreach (var user in addExcuseDutyVm.SelectedUsers)
                 {
-                    var assignment = new ExcuseDutyAssignment
+                    var assignment = new Assignment
                     {
-                        ExcuseDutyId = newExcuseDuty.Id,
-                        UserId = user
+                        //ExcuseDutyId = newExcuseDuty.Id,
+                        //UserId = user
                     };
 
                     bool assignResult = await ens.Add(assignment);
@@ -233,12 +233,12 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewMemos");
                 }
 
-                var existingAssignments = _context.ExcuseDutyAssignments.Where(x => x.PublicId == dutyGuid);
-                _context.ExcuseDutyAssignments.RemoveRange(existingAssignments);
+                var existingAssignments = _context.Assignments.Where(x => x.PublicId == dutyGuid);
+                _context.Assignments.RemoveRange(existingAssignments);
 
                 foreach (var userId in editExcuseDutyVm.SelectedUsers)
                 {
-                    bool reassign = await ens.Add(new ExcuseDutyAssignment { Id = excuseDutyToUpdate.Id, UserId = userId });
+                    bool reassign = await ens.Add(new Assignment { Id = excuseDutyToUpdate.Id });
                     if (!reassign)
                     {
                         _notyfService.Error("Failed to reassign users.", 5);

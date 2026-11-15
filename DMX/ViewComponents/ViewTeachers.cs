@@ -12,7 +12,7 @@ namespace DMX.ViewComponents
         public IViewComponentResult Invoke()
         {
             var user = usm.GetUserAsync(HttpContext.User).Result?.Id;
-            var pettyList = dcx.PettyCashAssignments.Where(a => a.AppUser.Id == user || a.CreatedBy == user).Select(a => 
+            var pettyList = dcx.Assignments.Where(a => a.AssignedTo == user || a.CreatedBy == user).Select(a => 
              new ViewPettyCashVM
             {
                 PettyCashId = a.PublicId,

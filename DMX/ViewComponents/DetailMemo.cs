@@ -30,7 +30,7 @@ namespace DMX.ViewComponents
            
 
                 
-               SelectedUsers = (from x in dcx.MemoAssignments where x.PublicId == memoGuid select x.UserId).ToList(),
+               SelectedUsers = (from x in dcx.Assignments where x.PublicId == memoGuid select x.UserId).ToList(),
                 UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
             };
             return View(detailMemoVM);

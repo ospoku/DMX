@@ -177,12 +177,11 @@ namespace DMX.Controllers
                     return NotFound();
                 }
 
-                var newComment = new PettyCashComment
+                var newComment = new Comment
                 {
-                    PettyCashId = pettyCashToComment.Id,
+                  
                     Message = commentVm.NewComment,
-                    UserId = (await _userManager.GetUserAsync(User)).Id,
-                    CreatedDate = DateTime.Now
+                   
                 };
 
                 bool result = await ens.Add(newComment);

@@ -88,10 +88,9 @@ namespace DMX.Controllers
                 // Assign selected users to the travel request
                 foreach (var userId in addTravelRequestVm.SelectedUsers)
                 {
-                    var assignment = new TravelRequestAssignment
+                    var assignment = new Assignment
                     {
-                        TravelRequestId = newTravelRequest.TravelRequestId,
-                        AppUserId = userId
+                    
                     };
 
                     bool assignmentAdded = await ens.Add(assignment);
@@ -113,7 +112,7 @@ namespace DMX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CommentTravelRequest(string Id, TravelRequestCommentVM commentVm)
+        public async Task<IActionResult> CommentTravelRequest(int Id, TravelRequestCommentVM commentVm)
         {
             try
             {
@@ -127,11 +126,11 @@ namespace DMX.Controllers
                 }
 
                 // Create a new comment
-                var newComment = new TravelRequestComment
+                var newComment = new Comment
                 {
-                    TravelRequestId = travelRequest.TravelRequestId,
+                    ModuleId = Id,
                     Message = commentVm.NewComment,
-                    UserId = (await _userManager.GetUserAsync(User)).Id
+                
                 };
 
                 bool result = await ens.Add(newComment);
@@ -209,18 +208,18 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewMemos");
                 }
 
-                var existingAssignments = _context.MemoAssignments.Where(a => a.PublicId == memoGuid);
-                _context.MemoAssignments.RemoveRange(existingAssignments);
+                var existingAssignments = _context.Assignments.Where(a => a.PublicId == memoGuid);
+                _context.Assignments.RemoveRange(existingAssignments);
 
                 bool atLeastOneFailed = false;
                 var failedUsers = new List<string>();
 
                 foreach (var userId in editMemoVm.SelectedUsers)
                 {
-                    var assignment = new MemoAssignment
+                    var assignment = new Assignment
                     {
-                        MemoId = memoToUpdate.Id,
-                        UserId = userId
+                        ModuleId = memoToUpdate.Id,
+                      
                     };
 
                     bool assignResult = await ens.Add(assignment);

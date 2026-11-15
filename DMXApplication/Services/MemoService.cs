@@ -16,11 +16,11 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
             Content = dto.Content
         };
 
-        await rep.AddMemo(memo);
+     int result=   await rep.AddMemo(memo);
 
-        bool result = await ent.Save(memo);
+        bool success = result == 0;
 
-        return result ? memo.Id : 0;
+        return success ? memo.Id : 0;
     
     }
 
@@ -78,6 +78,7 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
             MemoId = memo.Id,
             Message = dto.Message
         };
-        return await ent.Save(memoComment);
+         await  rep.CommentMemo(memoComment);
+        return true;
     }
 }

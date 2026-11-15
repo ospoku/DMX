@@ -32,7 +32,7 @@ namespace DMX.ViewComponents
             {
                 return View("Error", "Invalid Excuse Duty Id format");
             }
-            dutyToComment = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)).ThenInclude(u =>u.AppUser) where m.PublicId == dutyGuid select m).FirstOrDefault();
+            dutyToComment = (from m in dcx.ExcuseDuties.Include(m => m.Comments.OrderBy(m => m.CreatedDate)).ThenInclude(u =>u.AppUser) where m.PublicId == dutyGuid select m).FirstOrDefault();
 
             ExcuseDutyCommentVM addCommentVM = new()
             {
@@ -42,8 +42,8 @@ namespace DMX.ViewComponents
                Days=dutyToComment.ExcuseDays,
                DischargeDate=dutyToComment.DateofDischarge,
                 SelectedUsers = AssignedUsers,
-                CommentCount = dutyToComment.ExcuseDutyComments.Count(),
-                Comments = dutyToComment.ExcuseDutyComments.OrderBy(m => m.CreatedDate).ToList(),
+                //CommentCount = dutyToComment.ExcuseDutyComments.Count(),
+                //Comments = dutyToComment.ExcuseDutyComments.OrderBy(m => m.CreatedDate).ToList(),
 
                 UsersList = new SelectList(usm.Users.ToList(), (nameof(AppUser.Id),nameof(AppUser.Fullname))),
             };

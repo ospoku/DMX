@@ -2,7 +2,7 @@
 
 namespace DMX.ViewModels
 {
-    public class MemoCommentVM
+    public class CommentVM
     {
         public string MemoId { get; set; }
         public string MemoContent { get; set; }

@@ -40,7 +40,7 @@ namespace DMX.ViewComponents
                 Diagnoses=deceasedToEdit.Diagnoses,
                 WardInCharge=deceasedToEdit.WardInCharge,
                 DeceasedTypeId=deceasedToEdit.DeceasedTypeId,
-                 SelectedUsers = (from x in dcx.DeceasedAssignments where x.PublicId == deceasedGuid select x.UserId).ToList(),
+                 SelectedUsers = (from x in dcx.Assignments where x.PublicId == deceasedGuid select x.Id).ToList(),
 
             };
             

@@ -213,7 +213,7 @@ public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
         [HttpPost]
         public async Task<IActionResult> CommentMemo(
     string id,
-    MemoCommentVM commentVm)
+    CommentVM commentVm)
         {
             try
             {

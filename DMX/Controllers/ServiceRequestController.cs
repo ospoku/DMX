@@ -66,10 +66,9 @@ namespace DMX.Controllers
             
                 foreach (var userId in addServiceRequestVm.SelectedUsers)
                 {
-                    var assignment = new ServiceAssignment
+                    var assignment = new Assignment
                     {
-                        ServiceRequestId = newServiceRequest.ServiceRequestId,
-                        UserId = userId
+                     
                     };
 
                     bool assignResult = await ens.Add(assignment);
@@ -111,11 +110,11 @@ namespace DMX.Controllers
                     return NotFound();
                 }
 
-                var newComment = new ServiceComment
+                var newComment = new Comment
                 {
-                    ServiceRequestId = serviceRequest.ServiceRequestId,
+                  
                     Message = commentVm.NewComment,
-                    UserId = (await _userManager.GetUserAsync(User)).Id
+                  
                 };
 
                 bool result = await ens.Add(newComment);
@@ -176,15 +175,15 @@ namespace DMX.Controllers
                 }
 
                 // Remove existing assignments
-                var existingAssignments = _context.ServiceAssignments.Where(x => x.PublicId == guidUnprotectedId);
-                _context.ServiceAssignments.RemoveRange(existingAssignments);
+                var existingAssignments = _context.Assignments.Where(x => x.PublicId == guidUnprotectedId);
+                _context.Assignments.RemoveRange(existingAssignments);
 
                 // Add new assignments
                 var newAssignments = editServiceRequestVm.SelectedUsers
-                    .Select(userId => new ServiceAssignment { PublicId = guidUnprotectedId, UserId = userId })
+                    .Select(userId => new Assignment { PublicId = guidUnprotectedId })
                     .ToList();
 
-                await _context.ServiceAssignments.AddRangeAsync(newAssignments);
+                await _context.Assignments.AddRangeAsync(newAssignments);
                 await _context.SaveChangesAsync();
 
                 _notyfService.Success("Service request successfully updated.", 5);

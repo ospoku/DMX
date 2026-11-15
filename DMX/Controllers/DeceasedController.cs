@@ -93,10 +93,10 @@ namespace DMX.Controllers
                 {
                     foreach (var userId in addDeceasedVM.SelectedUsers)
                     {
-                        var assignment = new DeceasedAssignment
+                        var assignment = new Assignment
                         {
-                            DeceasedId = deceased.DeceasedId,
-                            UserId = userId,
+                            //DeceasedId = deceased.DeceasedId,
+                            //UserId = userId,
                         };
 
                         var assignmentAdded = await entityServ.Add(assignment);

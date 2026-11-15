@@ -28,7 +28,7 @@ namespace DMX.ViewComponents
             PrintDocumentVM printDocumentVM = new PrintDocumentVM
             {
                 AdditionalNotes = documentToEdit.AdditionalNotes,
-                Comments = (from c in dcx.LetterComments where c.LetterId == documentToEdit.Id select c).ToList(),
+                Comments = (from c in dcx.Comments where c.Id == documentToEdit.Id select c).ToList(),
                 ReferenceNumber = documentToEdit.ReferenceNumber,
                 //SelectedUsers = AssignedUsers,               
             };

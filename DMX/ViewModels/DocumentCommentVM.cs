@@ -12,7 +12,7 @@ namespace DMX.ViewModels
         public int CommentCount { get; set; }
         public string NewComment { get; set; }
         public DateTime CreatedDate { get; set; }
-        public ICollection<LetterComment> Comments { get; set; }  
+        public ICollection<Comment> Comments { get; set; }  
         public List<string> SelectedUsers { get; set; }
         public SelectList UsersList { get; set; }
     }

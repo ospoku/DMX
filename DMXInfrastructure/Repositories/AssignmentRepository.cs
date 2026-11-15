@@ -12,12 +12,23 @@ namespace DMXInfrastructure.Repositories
     {
         private readonly XContext dcx = context;
 
-       public  async Task<int> Assign(Assignment assignment)
+        public async Task<int> Assign(Assignment assignment)
         {
 
             await dcx.Assignments.AddAsync(assignment);
             return assignment.Id;
         }
+
+        public async Task<int> Update(Assignment assignment)
+        {
+            return assignment.Id;
+        }
+        public async Task<int> Delete(Assignment assignment)
+        {
+            return assignment.Id;
+        }
+   
+
    
       
 

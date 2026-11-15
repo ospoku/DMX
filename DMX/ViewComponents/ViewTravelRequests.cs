@@ -20,7 +20,7 @@ namespace DMX.ViewComponents
             var user = (await usm.GetUserAsync(HttpContext.User)).Id;
 
             // Fetch the travel list for the user
-            var travelList = await dcx.TravelRequestAssignments
+            var travelList = await dcx.Assignments
                 .Where(a => a.AppUser.Id == user || a.TravelRequest.CreatedBy == user && !a.TravelRequest.IsDeleted)
                 .Select(a => new ViewTravelRequestsVM
                 {

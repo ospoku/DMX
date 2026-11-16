@@ -118,62 +118,62 @@ public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
             return ViewComponent(nameof(ViewMemos),memos);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditMemo(
-        string id,
-        EditMemoVM editMemoVm)
-        {
-            if (!ModelState.IsValid)
-            {
-                _notifyService.Error("Please correct the submitted information.", 5);
-                return RedirectToAction(nameof(ViewMemos));
-            }
+        //[HttpPost]
+        //public async Task<IActionResult> EditMemo(
+        //string id,
+        //EditMemoVM editMemoVm)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        _notifyService.Error("Please correct the submitted information.", 5);
+        //        return RedirectToAction(nameof(ViewMemos));
+        //    }
 
-            if (editMemoVm.SelectedUsers == null ||
-                editMemoVm.SelectedUsers.Count == 0)
-            {
-                _notifyService.Error(
-                    "You must select at least one user for assignment.", 5);
+        //    if (editMemoVm.SelectedUsers == null ||
+        //        editMemoVm.SelectedUsers.Count == 0)
+        //    {
+        //        _notifyService.Error(
+        //            "You must select at least one user for assignment.", 5);
 
-                return RedirectToAction(nameof(ViewMemos));
-            }
+        //        return RedirectToAction(nameof(ViewMemos));
+        //    }
 
-            try
-            {
+        //    try
+        //    {
 
-                var unprotectedId = _protector.Unprotect(id);
+        //        var unprotectedId = _protector.Unprotect(id);
 
-                if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
-                    return BadRequest("Invalid memo ID.");
+        //        if (!Guid.TryParse(unprotectedId, out Guid memoGuid))
+        //            return BadRequest("Invalid memo ID.");
 
-                var userId = usm.GetUserId(User);
+        //        var userId = usm.GetUserId(User);
 
-                if (string.IsNullOrEmpty(userId))
-                    return Challenge();
+        //        if (string.IsNullOrEmpty(userId))
+        //            return Challenge();
 
-                var dto = new UpdateMemoDTO
-                {
-                    PublicId = memoGuid,
-                    Title = editMemoVm.Title,
-                    Content = editMemoVm.Content,
-                    SelectedUserIds = editMemoVm.SelectedUsers
-                };
+        //        var dto = new UpdateMemoDTO
+        //        {
+        //            PublicId = memoGuid,
+        //            Title = editMemoVm.Title,
+        //            Content = editMemoVm.Content,
+        //            SelectedUserIds = editMemoVm.SelectedUsers
+        //        };
 
-                bool result = await ens.Update(dto);
+        //        ens.Update(dto);
 
-                if (result)
-                    _notifyService.Success("Memo successfully updated.", 5);
-                else
-                    _notifyService.Error("Memo could not be updated.", 5);
+        //        //if (result)
+        //        //    _notifyService.Success("Memo successfully updated.", 5);
+        //        //else
+        //        //    _notifyService.Error("Memo could not be updated.", 5);
 
-                return RedirectToAction(nameof(ViewMemos));
-            }
-            catch (Exception)
-            {
-                _notifyService.Error("An error occurred while updating the memo.", 5);
-                return RedirectToAction("Error", "Home");
-            }
-        }
+        //        //return RedirectToAction(nameof(ViewMemos));
+        //    }
+        //    catch (Exception)
+        //    {
+        //        _notifyService.Error("An error occurred while updating the memo.", 5);
+        //        return RedirectToAction("Error", "Home");
+        //    }
+        //}
 
 
         [HttpPost]
@@ -191,13 +191,13 @@ public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
                 if (string.IsNullOrEmpty(userId))
                     return Challenge();
 
-                bool result = await ens.Delete(
+              ens.Delete(
                     new DeleteMemoDTO { PublicId = memoGuid });
 
-                if (result)
-                    _notifyService.Success("Record successfully deleted.", 5);
-                else
-                    _notifyService.Error("Memo could not be deleted.", 5);
+                //if (result)
+                //    _notifyService.Success("Record successfully deleted.", 5);
+                //else
+                //    _notifyService.Error("Memo could not be deleted.", 5);
 
                 return RedirectToAction(nameof(ViewMemos));
             }

@@ -1,255 +1,255 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿//using AspNetCoreHero.ToastNotification.Abstractions;
 
-using DMXDomain.Models;
-using DMX.ViewModels;
-using DMXApplication.Services;
-using DMXInfrastructure.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DMXApplication.Interfaces;
+//using DMXDomain.Models;
+//using DMX.ViewModels;
+//using DMXApplication.Services;
+//using DMXInfrastructure.Data;
+//using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using DMXApplication.Interfaces;
 
-namespace DMX.Controllers
-{
-    public class TravelRequestController : Controller
-    {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly XContext _context;
-        private readonly INotyfService _notyfService;
-        private readonly IEntityService ens;
-        private readonly IAuthorizationService _authorizationService; private readonly AssignmentService _assignmentService;
-        public TravelRequestController(XContext context, UserManager<AppUser> userManager, INotyfService notyfService,
-                                       IAuthorizationService authorizationService, AssignmentService assignmentService,
-                                       IEntityService ens)
-        {
-            ArgumentNullException.ThrowIfNull(ens);
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _context = context ?? throw new ArgumentNullException(nameof(context)); _assignmentService = assignmentService ?? throw new ArgumentNullException(nameof(assignmentService));
-            _notyfService = notyfService ?? throw new ArgumentNullException(nameof(notyfService));
-             _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
-        }
+//namespace DMX.Controllers
+//{
+//    public class TravelRequestController : Controller
+//    {
+//        private readonly UserManager<AppUser> _userManager;
+//        private readonly XContext _context;
+//        private readonly INotyfService _notyfService;
+//        private readonly IEntityService ens;
+//        private readonly IAuthorizationService _authorizationService; private readonly AssignmentService _assignmentService;
+//        public TravelRequestController(XContext context, UserManager<AppUser> userManager, INotyfService notyfService,
+//                                       IAuthorizationService authorizationService, AssignmentService assignmentService,
+//                                       IEntityService ens)
+//        {
+//            ArgumentNullException.ThrowIfNull(ens);
+//            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+//            _context = context ?? throw new ArgumentNullException(nameof(context)); _assignmentService = assignmentService ?? throw new ArgumentNullException(nameof(assignmentService));
+//            _notyfService = notyfService ?? throw new ArgumentNullException(nameof(notyfService));
+//             _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
+//        }
 
-        [HttpGet]
-        public IActionResult ViewTravelRequests() => ViewComponent(nameof(ViewTravelRequests));
+//        [HttpGet]
+//        public IActionResult ViewTravelRequests() => ViewComponent(nameof(ViewTravelRequests));
 
-        [HttpGet]
-        public IActionResult AddTravelRequest() => ViewComponent(nameof(AddTravelRequest));
+//        [HttpGet]
+//        public IActionResult AddTravelRequest() => ViewComponent(nameof(AddTravelRequest));
 
-        [HttpPost]
-        public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVm)
-        {
-            if ((addTravelRequestVm.SelectedUsers?.Any()) != true)
-            {
-                _notyfService.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction(nameof(ViewTravelRequests));
-            }
-            if (_context.PerDiems.Where(x => x.UserId == _userManager.GetUserId(User)).Any() != true)
-            {
-                _notyfService.Error($"You must set perdiem rate for {_userManager.GetUserAsync(User).Result.Fullname} to allow for Travel request", 5);
-                return RedirectToAction(nameof(ViewTravelRequests));
-            }
+//        [HttpPost]
+//        public async Task<IActionResult> AddTravelRequest(AddTravelRequestVM addTravelRequestVm)
+//        {
+//            if ((addTravelRequestVm.SelectedUsers?.Any()) != true)
+//            {
+//                _notyfService.Error("You must select at least one user for assignment.", 5);
+//                return RedirectToAction(nameof(ViewTravelRequests));
+//            }
+//            if (_context.PerDiems.Where(x => x.UserId == _userManager.GetUserId(User)).Any() != true)
+//            {
+//                _notyfService.Error($"You must set perdiem rate for {_userManager.GetUserAsync(User).Result.Fullname} to allow for Travel request", 5);
+//                return RedirectToAction(nameof(ViewTravelRequests));
+//            }
 
-            try
-            {
-                // Check for duplicate travel requests
-                var existingRequest = await _context.TravelRequests
-                    .FirstOrDefaultAsync(p =>
-                        p.TravelTypeId.ToLower() == addTravelRequestVm.TravelTypeId.ToLower() &&
-                        p.Purpose.ToLower() == addTravelRequestVm.Purpose.ToLower());
+//            try
+//            {
+//                // Check for duplicate travel requests
+//                var existingRequest = await _context.TravelRequests
+//                    .FirstOrDefaultAsync(p =>
+//                        p.TravelTypeId.ToLower() == addTravelRequestVm.TravelTypeId.ToLower() &&
+//                        p.Purpose.ToLower() == addTravelRequestVm.Purpose.ToLower());
 
-                if (existingRequest != null)
-                {
-                    _notyfService.Error("This record already exists.");
-                    return RedirectToAction("ViewTravelRequests");
-                }
+//                if (existingRequest != null)
+//                {
+//                    _notyfService.Error("This record already exists.");
+//                    return RedirectToAction("ViewTravelRequests");
+//                }
 
-                // Create new travel request
-                var newTravelRequest = new TravelRequest
-                {
-                    EndDate = addTravelRequestVm.EndDate,
-                    StartDate = addTravelRequestVm.StartDate,
+//                // Create new travel request
+//                var newTravelRequest = new TravelRequest
+//                {
+//                    EndDate = addTravelRequestVm.EndDate,
+//                    StartDate = addTravelRequestVm.StartDate,
 
-                    ConferenceFee = addTravelRequestVm.ConferenceFee,
-                    FuelClaim = addTravelRequestVm.FuelClaim,
-                    OtherExpenses = addTravelRequestVm.OtherExpenses,
-                    TravelTypeId = addTravelRequestVm.TravelTypeId,
-                    Purpose = addTravelRequestVm.Purpose
-                };
+//                    ConferenceFee = addTravelRequestVm.ConferenceFee,
+//                    FuelClaim = addTravelRequestVm.FuelClaim,
+//                    OtherExpenses = addTravelRequestVm.OtherExpenses,
+//                    TravelTypeId = addTravelRequestVm.TravelTypeId,
+//                    Purpose = addTravelRequestVm.Purpose
+//                };
 
-                // Add travel request to the database
-                bool requestAdded = await ens.Add(newTravelRequest);
-                if (!requestAdded)
-                {
-                    _notyfService.Error("Failed to create travel request.", 5);
-                    return RedirectToAction("Error", "Home", new { message = "Travel request creation failed." });
-                }
+//                // Add travel request to the database
+//                bool requestAdded = await ens.Add(newTravelRequest);
+//                if (!requestAdded)
+//                {
+//                    _notyfService.Error("Failed to create travel request.", 5);
+//                    return RedirectToAction("Error", "Home", new { message = "Travel request creation failed." });
+//                }
 
-                // Assign selected users to the travel request
-                foreach (var userId in addTravelRequestVm.SelectedUsers)
-                {
-                    var assignment = new Assignment
-                    {
+//                // Assign selected users to the travel request
+//                foreach (var userId in addTravelRequestVm.SelectedUsers)
+//                {
+//                    var assignment = new Assignment
+//                    {
                     
-                    };
+//                    };
 
-                    bool assignmentAdded = await ens.Add(assignment);
-                    if (!assignmentAdded)
-                    {
-                        _notyfService.Error($"Failed to assign user {userId}.", 5);
-                    }
-                }
+//                    bool assignmentAdded = await ens.Add(assignment);
+//                    if (!assignmentAdded)
+//                    {
+//                        _notyfService.Error($"Failed to assign user {userId}.", 5);
+//                    }
+//                }
 
-                _notyfService.Success("Travel request and assignments successfully processed.", 5);
-                return RedirectToAction("ViewTravelRequests");
-            }
-            catch (Exception ex)
-            {
-                _notyfService.Error("An unexpected error occurred.", 5);
-                Console.Error.WriteLine(ex);
-                return RedirectToAction("Error", "Home", new { message = "An unexpected error occurred." });
-            }
-        }
+//                _notyfService.Success("Travel request and assignments successfully processed.", 5);
+//                return RedirectToAction("ViewTravelRequests");
+//            }
+//            catch (Exception ex)
+//            {
+//                _notyfService.Error("An unexpected error occurred.", 5);
+//                Console.Error.WriteLine(ex);
+//                return RedirectToAction("Error", "Home", new { message = "An unexpected error occurred." });
+//            }
+//        }
 
-        [HttpPost]
-        public async Task<IActionResult> CommentTravelRequest(int Id, TravelRequestCommentVM commentVm)
-        {
-            try
-            {
-                // Find the travel request by ID
-                var travelRequest = await _context.TravelRequests
-                    .FirstOrDefaultAsync(t => t.TravelRequestId ==  (Id));
+//        [HttpPost]
+//        public async Task<IActionResult> CommentTravelRequest(int Id, TravelRequestCommentVM commentVm)
+//        {
+//            try
+//            {
+//                // Find the travel request by ID
+//                var travelRequest = await _context.TravelRequests
+//                    .FirstOrDefaultAsync(t => t.TravelRequestId ==  (Id));
 
-                if (travelRequest == null)
-                {
-                    return NotFound();
-                }
+//                if (travelRequest == null)
+//                {
+//                    return NotFound();
+//                }
 
-                // Create a new comment
-                var newComment = new Comment
-                {
-                    ModuleId = Id,
-                    Message = commentVm.NewComment,
+//                // Create a new comment
+//                var newComment = new Comment
+//                {
+//                    ModuleId = Id,
+//                    Message = commentVm.NewComment,
                 
-                };
+//                };
 
-                bool result = await ens.Add(newComment);
-                if (result)
-                {
-                    _notyfService.Success("Comment successfully saved", 5);
-                }
-                else
-                {
-                    _notyfService.Error("Comment could not be saved!!!", 5);
-                }
+//                bool result = await ens.Add(newComment);
+//                if (result)
+//                {
+//                    _notyfService.Success("Comment successfully saved", 5);
+//                }
+//                else
+//                {
+//                    _notyfService.Error("Comment could not be saved!!!", 5);
+//                }
 
-                return RedirectToAction(nameof(ViewTravelRequests));
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request.", ex.Message });
-            }
-        }
+//                return RedirectToAction(nameof(ViewTravelRequests));
+//            }
+//            catch (Exception ex)
+//            {
+//                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the request.", ex.Message });
+//            }
+//        }
 
 
-        [HttpGet]
-        public async Task<IActionResult> EditTravelRequestAsync(string Id)
-        {
-            var unprotectedId = (Id);
-            var travel = await _context.TravelRequests.FirstOrDefaultAsync(m => m.TravelRequestId == unprotectedId);
-            if (travel == null)
-            {
-                return NotFound();
-            }
+//        [HttpGet]
+//        public async Task<IActionResult> EditTravelRequestAsync(string Id)
+//        {
+//            var unprotectedId = (Id);
+//            var travel = await _context.TravelRequests.FirstOrDefaultAsync(m => m.TravelRequestId == unprotectedId);
+//            if (travel == null)
+//            {
+//                return NotFound();
+//            }
 
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User,travel, "TravelRequestOwnerPolicy");
-            if (!authorizationResult.Succeeded)
-            {
-                _notyfService.Error("You do not have access to this resource!", 5);
-                return Json(new { success = false, message = "You do not have access to this resource!" });
-            }
+//            var authorizationResult = await _authorizationService.AuthorizeAsync(User,travel, "TravelRequestOwnerPolicy");
+//            if (!authorizationResult.Succeeded)
+//            {
+//                _notyfService.Error("You do not have access to this resource!", 5);
+//                return Json(new { success = false, message = "You do not have access to this resource!" });
+//            }
 
-            return ViewComponent(nameof(EditTravelRequest), Id);
-        }
+//            return ViewComponent(nameof(EditTravelRequest), Id);
+//        }
 
-        [HttpPost]
-        public async Task<IActionResult> EditTravelRequest(string id, EditMemoVM editMemoVm)
-        {
+//        [HttpPost]
+//        public async Task<IActionResult> EditTravelRequest(string id, EditMemoVM editMemoVm)
+//        {
             
 
-            if (editMemoVm.SelectedUsers == null || !editMemoVm.SelectedUsers.Any())
-            {
-                _notyfService.Error("You must select at least one user for assignment.", 5);
-                return RedirectToAction("ViewMemos");
-            }
+//            if (editMemoVm.SelectedUsers == null || !editMemoVm.SelectedUsers.Any())
+//            {
+//                _notyfService.Error("You must select at least one user for assignment.", 5);
+//                return RedirectToAction("ViewMemos");
+//            }
 
-            try
-            {
-                if(!Guid.TryParse((id), out Guid memoGuid))
-                {
-                    _notyfService.Error("Invalid memo ID format.", 5);
-                    return RedirectToAction("ViewMemos");
-                }
+//            try
+//            {
+//                if(!Guid.TryParse((id), out Guid memoGuid))
+//                {
+//                    _notyfService.Error("Invalid memo ID format.", 5);
+//                    return RedirectToAction("ViewMemos");
+//                }
 
-                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
-                if (memoToUpdate == null)
-                {
-                    _notyfService.Error("Memo not found.", 5);
-                    return RedirectToAction("ViewMemos");
-                }
+//                var memoToUpdate = await _context.Memos.FirstOrDefaultAsync(m => m.PublicId == memoGuid);
+//                if (memoToUpdate == null)
+//                {
+//                    _notyfService.Error("Memo not found.", 5);
+//                    return RedirectToAction("ViewMemos");
+//                }
 
-                memoToUpdate.Content = editMemoVm.Content;
-                memoToUpdate.Title = editMemoVm.Title;
+//                memoToUpdate.Content = editMemoVm.Content;
+//                memoToUpdate.Title = editMemoVm.Title;
 
-                bool isEdited = await ens.Update(memoToUpdate);
-                if (!isEdited)
-                {
-                    _notyfService.Error("Failed to update memo. Please try again.", 5);
-                    return RedirectToAction("ViewMemos");
-                }
+//                bool isEdited = await ens.Update(memoToUpdate);
+//                if (!isEdited)
+//                {
+//                    _notyfService.Error("Failed to update memo. Please try again.", 5);
+//                    return RedirectToAction("ViewMemos");
+//                }
 
-                var existingAssignments = _context.Assignments.Where(a => a.PublicId == memoGuid);
-                _context.Assignments.RemoveRange(existingAssignments);
+//                var existingAssignments = _context.Assignments.Where(a => a.PublicId == memoGuid);
+//                _context.Assignments.RemoveRange(existingAssignments);
 
-                bool atLeastOneFailed = false;
-                var failedUsers = new List<string>();
+//                bool atLeastOneFailed = false;
+//                var failedUsers = new List<string>();
 
-                foreach (var userId in editMemoVm.SelectedUsers)
-                {
-                    var assignment = new Assignment
-                    {
-                        ModuleId = memoToUpdate.Id,
+//                foreach (var userId in editMemoVm.SelectedUsers)
+//                {
+//                    var assignment = new Assignment
+//                    {
+//                        ModuleId = memoToUpdate.Id,
                       
-                    };
+//                    };
 
-                    bool assignResult = await ens.Add(assignment);
-                    if (!assignResult)
-                    {
-                        atLeastOneFailed = true;
-                        failedUsers.Add(userId);
-                    }
-                }
+//                    bool assignResult = await ens.Add(assignment);
+//                    if (!assignResult)
+//                    {
+//                        atLeastOneFailed = true;
+//                        failedUsers.Add(userId);
+//                    }
+//                }
 
-                if (atLeastOneFailed)
-                {
-                    _notyfService.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
-                }
-                else
-                {
-                    _notyfService.Success("Record successfully updated", 5);
-                }
+//                if (atLeastOneFailed)
+//                {
+//                    _notyfService.Warning($"Record updated, but some assignments failed: {string.Join(", ", failedUsers)}", 7);
+//                }
+//                else
+//                {
+//                    _notyfService.Success("Record successfully updated", 5);
+//                }
 
-                return RedirectToAction("ViewMemos");
-            }
-            catch (Exception ex)
-            {
-                _notyfService.Error("An unexpected error occurred. Please try again.", 5);
-                Console.WriteLine($"Error updating Memo: {ex.Message}");
-                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
-            }
-        }
+//                return RedirectToAction("ViewMemos");
+//            }
+//            catch (Exception ex)
+//            {
+//                _notyfService.Error("An unexpected error occurred. Please try again.", 5);
+//                Console.WriteLine($"Error updating Memo: {ex.Message}");
+//                return RedirectToAction("Error", "Home", new { message = "An error occurred while processing the memo." });
+//            }
+//        }
 
-        [HttpGet]
-        public IActionResult CommentTravelRequest(string Id) => ViewComponent(nameof(CommentTravelRequest), Id);
-    }
-}
+//        [HttpGet]
+//        public IActionResult CommentTravelRequest(string Id) => ViewComponent(nameof(CommentTravelRequest), Id);
+//    }
+//}

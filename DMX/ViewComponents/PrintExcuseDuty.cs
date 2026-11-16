@@ -24,12 +24,12 @@ namespace DMX.ViewComponents
             {
 
             }
-         var   dutyToPrint = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)) where m.PublicId == dutyGuid select m).FirstOrDefault();
+         //var   dutyToPrint = (from m in dcx.ExcuseDuties.Include(m => m.ExcuseDutyComments.OrderBy(m => m.CreatedDate)) where m.PublicId == dutyGuid select m).FirstOrDefault();
 
             ExcuseDutyCommentVM addCommentVM = new()
             {
                 
-              Comments=dutyToPrint.ExcuseDutyComments,
+              //Comments=dutyToPrint.ExcuseDutyComments,
                
                // Sender = (await usm.FindByIdAsync(dutyToPrint.CreatedBy)).Fullname,    
             };

@@ -57,7 +57,7 @@ namespace DMXApplication.Services
 
         
         }
-        public async Task<bool> SaveChangesAsync()
+        public async Task<bool> Save()
         {
             try
             {
@@ -69,5 +69,7 @@ namespace DMXApplication.Services
                 return false;
             }
         }
+
+
     }
 }

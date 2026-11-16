@@ -19,8 +19,16 @@ namespace DMXInfrastructure.Repositories
 
             return letter.Id;
         }
- 
-  
+ public async Task<int>UpdateLetter(Letter letter)
+        {
+            await dcx.AddAsync<Letter>(letter);
+            return letter.Id;
+        }
+  public async Task<int>DeleteLetter(Letter letter)
+        {
+            await dcx.AddAsync($"{letter.Id}?");
+            return letter.Id    ;
+        }
         public async Task<Letter?> GetByIdAsync(Guid id)
         {
             return await dcx.Letters.AsNoTracking().FirstOrDefaultAsync(x=>x.PublicId == id);

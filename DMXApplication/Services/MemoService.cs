@@ -35,8 +35,8 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
 
       await  rep.DeleteMemo(memo.Id);
 
-        bool result = await ent.Delete(memo);
-
+         ent.Delete(memo);
+        bool result = await ent.Save();
         return result ? memo.Id : 0;
     }
 
@@ -75,7 +75,6 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
             return false;
         var memoComment = new Comment
         {
-            MemoId = memo.Id,
             Message = dto.Message
         };
          await  rep.CommentMemo(memoComment);

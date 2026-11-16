@@ -82,7 +82,7 @@ namespace DMX.Controllers
                     Name=addDeceasedVM.DeceasedName
                 };
 
-                var patientAdded = await entityServ.Add(deceased);
+                var patientAdded =  entityServ.Add(deceased);
                 if (!patientAdded)
                 {
                     notyf.Error("Failed to add patient.", 5);

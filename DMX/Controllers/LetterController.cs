@@ -91,10 +91,9 @@ namespace DMX.Controllers
                 }
                 foreach (var userId in addLetterVm.SelectedUsers)
                 {
-                    var assignment = new LetterAssignment
+                    var assignment = new Assignment
                     {
-                        LetterId = AddLetterDTO.Id,
-                        UserId = userId
+                      
                     };
 
                     bool assignResult = await ens.Add(assignment);

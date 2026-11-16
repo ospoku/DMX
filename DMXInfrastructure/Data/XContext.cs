@@ -7,14 +7,14 @@ namespace DMXInfrastructure.Data
     public class XContext(DbContextOptions<XContext> options) : AuditableIdentityContext(options)
     {
         public DbSet<TransportType> TransportTypes { get; set; }
-       public DbSet<CashLimit> CashLimits { get; set; }
+        public DbSet<CashLimit> CashLimits { get; set; }
         public DbSet<FeeStructure> FeeStructures { get; set; }
         public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
         public DbSet<DeceasedService> DeceasedServices { get; set; }
       
-     public DbSet<RequestType> RequestTypes { get; set; }
+        public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<DeceasedType> DeceasedTypes { get; set; }
         public DbSet<MaternityLeave> MaternityLeaves { get; set; }

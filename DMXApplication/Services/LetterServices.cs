@@ -28,14 +28,15 @@ namespace DMXApplication.Services
         { 
 
 
-            return await ent.Delete(new Letter
+             ent.Delete(new Letter
             {
                 PublicId = deleteLetterDto.Id
             });
+            return true;
         }
         public async Task<bool> UpdateLetter(UpdateLetterDTO updateLetterDto)
         {
-        return await ent.Update(new Letter
+       ent.Update(new Letter
             {
                 PublicId = updateLetterDto.Id,
                 Source = updateLetterDto.Source,
@@ -44,6 +45,7 @@ namespace DMXApplication.Services
                 DocumentDate = updateLetterDto.DocumentDate,
                 AdditionalNotes = updateLetterDto.AdditionalNotes
             });
+            return true;
         }
 
         public async Task<LetterDTO?> GetByIdAsync(Guid id)

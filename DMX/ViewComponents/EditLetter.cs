@@ -38,10 +38,10 @@ namespace DMX.ViewComponents
                 DateReceived = documentToEdit.DateReceived,
                 Subject = documentToEdit.Subject,
 
-                SelectedUsers = dcx.LetterAssignments
-                                   .Where(x => x.PublicId == letterGuid)
-                                   .Select(x => x.UserId)
-                                   .ToList(),
+                //SelectedUsers = dcx.LetterAssignments
+                //                   .Where(x => x.PublicId == letterGuid)
+                //                   .Select(x => x.UserId)
+                //                   .ToList(),
 
                 UsersList = new SelectList(usm.Users.ToList(), nameof(AppUser.Id), nameof(AppUser.Fullname))
             };

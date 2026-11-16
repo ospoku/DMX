@@ -83,15 +83,15 @@ namespace DMX.Controllers
                     //UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await ens.Add(newComment);
-                if (result)
-                {
-                    _notyfService.Success("Comment successfully saved", 5);
-                }
-                else
-                {
-                    _notyfService.Error("Comment could not be saved!!!", 5);
-                }
+                 ens.Add(newComment);
+                //if (result)
+                //{
+                //    _notyfService.Success("Comment successfully saved", 5);
+                //}
+                //else
+                //{
+                //    _notyfService.Error("Comment could not be saved!!!", 5);
+                //}
 
                 return RedirectToAction("ViewExcuseDuties");
             }
@@ -161,13 +161,12 @@ namespace DMX.Controllers
                     PatientId = addExcuseDutyVm.PatientId,
                     Diagnosis = addExcuseDutyVm.Diagnosis
                 };
-
-                bool result = await ens.Add       (newExcuseDuty);
-                if (!result)
-                {
-                    _notyfService.Error("Excuse Duty creation failed.", 5);
-                    return RedirectToAction("ErrorPage", new { message = "Failed to add the Excuse Duty. Please try again." });
-                }
+ ens.Add       (newExcuseDuty);
+                //if (!result)
+                //{
+                //    _notyfService.Error("Excuse Duty creation failed.", 5);
+                //    return RedirectToAction("ErrorPage", new { message = "Failed to add the Excuse Duty. Please try again." });
+                //}
 
                 foreach (var user in addExcuseDutyVm.SelectedUsers)
                 {
@@ -177,12 +176,12 @@ namespace DMX.Controllers
                         //UserId = user
                     };
 
-                    bool assignResult = await ens.Add(assignment);
-                    if (!assignResult)
-                    {
-                        _notyfService.Error("Error, record could not be saved.", 5);
-                        return RedirectToAction("ViewExcuseDuties");
-                    }
+             ens.Add(assignment);
+                    //if (!assignResult)
+                    //{
+                    //    _notyfService.Error("Error, record could not be saved.", 5);
+                    //    return RedirectToAction("ViewExcuseDuties");
+                    //}
                 }
 
                 _notyfService.Success("Record successfully saved", 5);
@@ -226,25 +225,25 @@ namespace DMX.Controllers
                 excuseDutyToUpdate.PatientName = editExcuseDutyVm.Name;
                 excuseDutyToUpdate.PatientId = editExcuseDutyVm.PatientId;
 
-                bool isEdited = await ens.Update(excuseDutyToUpdate);
-                if (!isEdited)
-                {
-                    _notyfService.Error("Failed to update memo. Please try again.", 5);
-                    return RedirectToAction("ViewMemos");
-                }
+                //bool isEdited = await ens.Update(excuseDutyToUpdate);
+                //if (!isEdited)
+                //{
+                //    _notyfService.Error("Failed to update memo. Please try again.", 5);
+                //    return RedirectToAction("ViewMemos");
+                //}
 
                 var existingAssignments = _context.Assignments.Where(x => x.PublicId == dutyGuid);
                 _context.Assignments.RemoveRange(existingAssignments);
 
-                foreach (var userId in editExcuseDutyVm.SelectedUsers)
-                {
-                    bool reassign = await ens.Add(new Assignment { Id = excuseDutyToUpdate.Id });
-                    if (!reassign)
-                    {
-                        _notyfService.Error("Failed to reassign users.", 5);
-                        return RedirectToAction("ViewMemos");
-                    }
-                }
+                //foreach (var userId in editExcuseDutyVm.SelectedUsers)
+                //{
+                //    bool reassign = await ens.Add(new Assignment { Id = excuseDutyToUpdate.Id });
+                //    if (!reassign)
+                //    {
+                //        _notyfService.Error("Failed to reassign users.", 5);
+                //        return RedirectToAction("ViewMemos");
+                //    }
+                //}
 
                 _notyfService.Success("Record successfully updated", 5);
                 return RedirectToAction("ViewMemos");

@@ -16,12 +16,6 @@ namespace DMX.ViewComponents
              new ViewPettyCashVM
             {
                 PettyCashId = a.PublicId,
-                Amount = a.PettyCash.Amount,
-
-               
-                
-                Purpose = a.PettyCash.Purpose,
-                ReferenceNumber=a.PettyCash.ReferenceNumber,
                 CreatedDate = a.CreatedDate,
                 Sender=a.CreatedBy
             }).OrderByDescending(a => a.CreatedDate).ToList();

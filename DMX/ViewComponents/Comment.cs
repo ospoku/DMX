@@ -24,15 +24,11 @@ namespace DMX.ViewComponents
                 return View("Error", "Invalid Excuse Duty Id format");
             }
                
-               Comment comment = (from m in dcx.Comments.OrderBy(m => m.CreatedDate).ThenInclude(c => c.AppUser) where m.PublicId == memoGuid select m).FirstOrDefault();
+               //Comment comment = (from m in dcx.Comments.OrderBy(m => m.CreatedDate).ThenInclude(c => c.AppUser) where m.PublicId == memoGuid select m).FirstOrDefault();
 
                 CommentVM commentVM = new()
                 {
-                    MemoContent = comment.Content,
-
-                    Comments = memoToComment.MemoComments.OrderBy(m => m.CreatedDate).ToList(),
-                    Title = memoToComment.Title,
-                    CommentCount = memoToComment.MemoComments.Count,
+             
 
                 };
 

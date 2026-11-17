@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace DMXInfrastructure.Repositories
 {
-    public class LetterRepository( XContext dcx) : ILetterRepository
+    public class LetterRepository(XContext dcx) : ILetterRepository
     {
 
-   public async Task<int>AddLetter(Letter letter)
+        public async Task<int>AddLetter(Letter letter)
         {
              await dcx.AddAsync(letter);
 

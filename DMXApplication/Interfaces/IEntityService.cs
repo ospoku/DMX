@@ -9,10 +9,10 @@ namespace DMXApplication.Interfaces
   public  interface IEntityService
     {
 
-        public void Add<T>(T entity) where T : class;
-        public void Delete<T>(T entity) where T : class;
-        public void Update<T>(T entity) where T : class;
-        public Task<bool> Save();
+        public void AddEntity<T>(T entity) where T : class;
+        public void DeleteEntity<T>(T entity) where T : class;
+        public void UpdateEntity<T>(T entity) where T : class;
+        public Task<bool> SaveEntity();
  
     }
 }

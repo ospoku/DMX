@@ -21,14 +21,14 @@ namespace DMXApplication.Services
                 AdditionalNotes = dto.AdditionalNotes
             };
            await rep.AddLetter(letter);
-            bool result = await ent.Save();
+            bool result = await ent.SaveEntity();
             return result ? letter.Id : 0;
         }
         public async Task<bool> DeleteLetter(DeleteLetterDTO deleteLetterDto) 
         { 
 
 
-             ent.Delete(new Letter
+             ent.DeleteEntity(new Letter
             {
                 PublicId = deleteLetterDto.Id
             });
@@ -36,7 +36,7 @@ namespace DMXApplication.Services
         }
         public async Task<bool> UpdateLetter(UpdateLetterDTO updateLetterDto)
         {
-       ent.Update(new Letter
+       ent.UpdateEntity(new Letter
             {
                 PublicId = updateLetterDto.Id,
                 Source = updateLetterDto.Source,

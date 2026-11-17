@@ -83,7 +83,7 @@ namespace DMX.Controllers
                     //UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                 ens.Add(newComment);
+                 ens.AddEntity(newComment);
                 //if (result)
                 //{
                 //    _notyfService.Success("Comment successfully saved", 5);
@@ -161,7 +161,7 @@ namespace DMX.Controllers
                     PatientId = addExcuseDutyVm.PatientId,
                     Diagnosis = addExcuseDutyVm.Diagnosis
                 };
- ens.Add       (newExcuseDuty);
+ ens.AddEntity       (newExcuseDuty);
                 //if (!result)
                 //{
                 //    _notyfService.Error("Excuse Duty creation failed.", 5);
@@ -176,7 +176,7 @@ namespace DMX.Controllers
                         //UserId = user
                     };
 
-             ens.Add(assignment);
+             ens.AddEntity(assignment);
                     //if (!assignResult)
                     //{
                     //    _notyfService.Error("Error, record could not be saved.", 5);

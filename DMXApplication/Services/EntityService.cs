@@ -12,7 +12,7 @@ namespace DMXApplication.Services
 
         private readonly IEntityRepository entPer = persistence;
 
-        public void Add<T>(
+        public void AddEntity<T>(
             T entity) where T : class
         {
           
@@ -31,7 +31,7 @@ namespace DMXApplication.Services
       
         }
 
-        public void Update<T>(T entity) where T : class
+        public void UpdateEntity<T>(T entity) where T : class
         {
             
                 var entityType = typeof(T);
@@ -46,7 +46,7 @@ namespace DMXApplication.Services
 
         }
 
-        public void Delete<T>(T entity) where T : class
+        public void DeleteEntity<T>(T entity) where T : class
         {
           
                 var entityType = typeof(T);
@@ -57,7 +57,7 @@ namespace DMXApplication.Services
 
         
         }
-        public async Task<bool> Save()
+        public async Task<bool> SaveEntity()
         {
             try
             {

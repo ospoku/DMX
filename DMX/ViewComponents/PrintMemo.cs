@@ -29,10 +29,10 @@ namespace DMX.ViewComponents
 
             CommentVM addCommentVM = new()
             {
-                MemoContent = memoToEdit.Content,
-              Comments=memoToEdit.MemoComments,
-                Title = memoToEdit.Title,
-                Sender = (await usm.FindByIdAsync(memoToEdit.CreatedBy)).Fullname,
+              //  MemoContent = memoToEdit.Content,
+              //Comments=memoToEdit.MemoComments,
+              //  Title = memoToEdit.Title,
+              //  Sender = (await usm.FindByIdAsync(memoToEdit.CreatedBy)).Fullname,
             
                 
             };

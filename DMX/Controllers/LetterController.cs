@@ -4,6 +4,7 @@ using DMXApplication.Interfaces;
 using DMXApplication.Services;
 using DMXDomain.Models;
 using DMXInfrastructure.Data;
+using DMXInfrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +25,7 @@ namespace DMX.Controllers
         private readonly XContext _context = context;
         private readonly INotyfService _notyfService = notyfService;
         private readonly IEntityService ens = entityService;
+        private readonly ILetterRepository rep = new LetterRepository(context);
         public readonly ILetterServices letServ;
         private readonly AssignmentService _assignmentService = assignmentService;
         public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
@@ -67,7 +69,7 @@ namespace DMX.Controllers
                     return RedirectToAction("ViewLetters");
                 }
 
-                var AddLetterDTO = new Letter
+                var AddLetter = new Letter
                 {
                     Source = addLetterVm.Source,
                     Subject = addLetterVm.Subject,
@@ -79,11 +81,13 @@ namespace DMX.Controllers
                 using (var memoryStream = new MemoryStream())
                 {
                     await formFile.CopyToAsync(memoryStream);
-                    AddLetterDTO.PDF = memoryStream.ToArray();
+                    AddLetter.PDF = memoryStream.ToArray();
                 }
 
-                bool result = await ens.Add(AddLetterDTO);
-                if (!result)
+               ens.AddEntity(AddLetter);
+                
+                bool results = await  ens.SaveEntity();
+                if (results==false)
                 {
                 
                     _notyfService.Error("Document saving failed.");
@@ -96,8 +100,9 @@ namespace DMX.Controllers
                       
                     };
 
-                    bool assignResult = await ens.Add(assignment);
-                    if (!assignResult)
+                   ens.AddEntity(assignment);
+                    bool assignResults = await ens.SaveEntity();
+                    if (!assignResults)
                     {
                         _notyfService.Error($"Failed to assign Letter to user {userId}.", 5);
                     }
@@ -180,14 +185,15 @@ namespace DMX.Controllers
                     return NotFound();
                 }
 
-                var newComment = new LetterComment
+                var newComment = new Comment
                 {
-                    LetterId = letterToComment.Id,
-                    Message = commentVm.NewComment,
-                    UserId = (await _userManager.GetUserAsync(User)).Id
+                    //LetterId = letterToComment.Id,
+                    //Message = commentVm.NewComment,
+                    //UserId = (await _userManager.GetUserAsync(User)).Id
                 };
 
-                bool result = await ens.Add(newComment);
+                 ens.AddEntity(newComment);
+                bool result = await ens.SaveEntity();
                 if (result)
                 {
                     _notyfService.Success("Comment successfully saved!!!");

@@ -19,7 +19,9 @@ namespace DMX.Controllers
         private readonly INotyfService notyf = notyfService;
         public readonly IEntityService entityServ = entityService;
         public readonly EmailService email = emailService;
+       
         public readonly AssignmentService assignmentServ = assignmentService;
+       
 
         [HttpGet]
         public IActionResult EditDeceased(Guid Id)
@@ -82,7 +84,8 @@ namespace DMX.Controllers
                     Name=addDeceasedVM.DeceasedName
                 };
 
-                var patientAdded =  entityServ.Add(deceased);
+                entityServ.AddEntity(deceased);
+                bool patientAdded = await entityServ.SaveEntity();
                 if (!patientAdded)
                 {
                     notyf.Error("Failed to add patient.", 5);
@@ -99,7 +102,8 @@ namespace DMX.Controllers
                             //UserId = userId,
                         };
 
-                        var assignmentAdded = await entityServ.Add(assignment);
+                         entityServ.AddEntity(assignment);
+                        bool assignmentAdded = await entityServ.SaveEntity();
                         if (!assignmentAdded)
                         {
                             notyf.Error("Failed to assign user.", 5);

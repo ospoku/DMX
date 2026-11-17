@@ -35,8 +35,8 @@ public class MemoService(IMemoRepository rep, IEntityService ent) : IMemoService
 
       await  rep.DeleteMemo(memo.Id);
 
-         ent.Delete(memo);
-        bool result = await ent.Save();
+         ent.DeleteEntity(memo);
+        bool result = await ent.SaveEntity();
         return result ? memo.Id : 0;
     }
 

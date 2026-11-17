@@ -1,5 +1,6 @@
 ﻿using DMXApplication.DTO.Deceased;
 using DMXApplication.DTO.Letters;
+using DMXDomain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,10 @@ namespace DMXApplication.Interfaces
 {
     public interface IDeceasedService
     {
-        Task<bool>AddDeceased(AddDeceasedDTO dto);
-        Task<bool> DeleteDeceased(DeleteDeceasedDTO dto);
-        Task<bool> UpdateDeceased(UpdateDeceasedDTO dto);
+      
+
+        public Task<List<Deceased>> GetFilteredAsync(DeceasedFilterDTO filter);
+        public Task<Deceased?> GetByIdAsync(Guid id);
+        public Task<List<Deceased>> GetAllAsync();
     }
 }

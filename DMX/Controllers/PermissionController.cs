@@ -295,7 +295,9 @@ namespace DMX.Controllers
                 Module=addPermissionVM.ModuleName,
                 Description= addPermissionVM.Description,
             };
-            bool result = await ens.Add(addThisPermission);
+      ens.AddEntity(addThisPermission);
+        await     ens.SaveEntity();
+            bool result = await ens.SaveEntity();
             if (!result)
             {
                 notyf.Error("An error occurred while processing the request.", 5);

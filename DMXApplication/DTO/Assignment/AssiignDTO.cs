@@ -12,7 +12,7 @@ namespace DMXApplication.DTO.Assignment
 
         public int ModuleRecordId { get; set; }
 
-        public string AssignedTo { get; set; }
+        public string? AssignedTo { get; set; }
 
         public string? Remarks { get; set; }
     }

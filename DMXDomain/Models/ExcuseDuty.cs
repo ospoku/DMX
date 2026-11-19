@@ -7,13 +7,13 @@ namespace DMXDomain.Models
         public int Id { get; set; }
         public Guid PublicId { get; set; }= Guid.NewGuid();
       
-        public string PatientName { get; set; }
-        public string PatientId { get; set; }
+        public string? PatientName { get; set; }
+        public string? PatientId { get; set; }
         public DateTime DateofDischarge { get; set; }
-        public string Diagnosis { get; set; }
+        public string? Diagnosis { get; set; }
         public int ExcuseDays { get; set; }
         public ICollection<Comment> Comments { get; set; }
-        public string ReferenceNumber { get; set; } = "E" + Guid.NewGuid().ToString("N").Substring(0, 5);
+        public string? ReferenceNumber { get; set; } = "E" + Guid.NewGuid().ToString("N").Substring(0, 5);
             
 
     }

@@ -35,7 +35,7 @@ namespace DMX.ViewComponents
 
                 // Fetch all services for the deceased records in a single query
                 var deceasedIds = deceasedRecords.Select(a => a.PublicId).ToList();
-                var allServices = await _context.DeceasedServices
+                var allServices = await _context.PMServices
                     .Include(d => d.MorgueService)
                     .Where(d => deceasedIds.Contains(d.PublicId))
                     .ToListAsync();
@@ -54,7 +54,7 @@ namespace DMX.ViewComponents
                     // Get the services for the current deceased record
                     var selectedServices = servicesByDeceasedId.ContainsKey(deceased.PublicId)
                         ? servicesByDeceasedId[deceased.PublicId]
-                        : new List<DeceasedService>();
+                        : new List<PMService>();
 
                     // Calculate the total amount of selected services
                     decimal totalServiceAmount = selectedServices.Sum(service => service.MorgueService.Amount);

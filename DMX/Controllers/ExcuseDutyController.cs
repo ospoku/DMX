@@ -13,32 +13,21 @@ using Microsoft.EntityFrameworkCore;
 namespace DMX.Controllers
 {
     [Authorize]
-    public class ExcuseDutyController : Controller
+    public class ExcuseDutyController(
+        XContext context,
+        UserManager<AppUser> userManager,
+        INotyfService notyfService,
+        IEntityService entityService,
+        IAuthorizationService authorizationService,
+        AssignmentService assignmentService, IDataProtectionProvider protectionProvider) : Controller
     {
-        private readonly IAuthorizationService _authorizationService;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly XContext _context;
-        private readonly INotyfService _notyfService;
-        private readonly IEntityService ens;
-        private readonly AssignmentService _assignmentService;
-        public readonly IDataProtector protector;
-
-        public ExcuseDutyController(
-            XContext context,
-            UserManager<AppUser> userManager,
-            INotyfService notyfService,
-            IEntityService entityService,
-            IAuthorizationService authorizationService,
-            AssignmentService assignmentService, IDataProtectionProvider protectionProvider)
-        {
-            _authorizationService = authorizationService;
-            _userManager = userManager;
-            _context = context;
-            _notyfService = notyfService;
-            ens = entityService;
-            _assignmentService = assignmentService;
-            protector = protectionProvider.CreateProtector("IdProtector");
-        }
+        private readonly IAuthorizationService _authorizationService = authorizationService;
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly XContext _context = context;
+        private readonly INotyfService _notyfService = notyfService;
+        private readonly IEntityService ens = entityService;
+        private readonly AssignmentService _assignmentService = assignmentService;
+        public readonly IDataProtector protector = protectionProvider.CreateProtector("IdProtector");
 
         [HttpGet]
         public IActionResult ViewExcuseDuties()

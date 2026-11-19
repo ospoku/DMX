@@ -15,9 +15,9 @@ namespace DMXDomain.Models
 
         public int ModuleRecordId { get; set; }
 
-        public string AssignedTo { get; set; }
+        public string? AssignedTo { get; set; }
 
-        public string AssignedBy { get; set; }
+        public string? AssignedBy { get; set; }
 
         public DateTime AssignedDate { get; set; }
 

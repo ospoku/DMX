@@ -6,7 +6,7 @@ namespace DMXDomain.Models
     {
         [Key]
         public int Id { get; set; }
-        public string CashLimitId { get; set; }
+        public string? CashLimitId { get; set; }
         [Required]
         [DataType(DataType.Currency)]
        

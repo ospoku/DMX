@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMXDomain.Models
 {
-    public class DeceasedService : TableAudit
+    public class PMService : TableAudit
     {
         [Key]
         public int Id { get; set; }
@@ -11,14 +11,14 @@ namespace DMXDomain.Models
 
         public int MorgueServiceId { get; set; }
         [ForeignKey(nameof(MorgueService.Id))]
-        public MorgueService MorgueService { get; set; }
+        public MorgueService? MorgueService { get; set; }
 
         // Foreign key to Deceased
         public  int DeceasedId { get; set; }
 
         // Navigation property to Deceased
         [ForeignKey(nameof(DeceasedId))]
-        public  Deceased Deceased { get; set; }
+        public  Deceased? Deceased { get; set; }
     }
     }
 

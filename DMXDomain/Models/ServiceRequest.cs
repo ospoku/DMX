@@ -21,10 +21,10 @@ namespace DMXDomain.Models
             public string Description { get; set; } // Detailed description of the request
            
             public byte[]? Attachments { get; set; } // File paths or links to attachments
-       public string RequestTypeId { get; set; }
+       public string? RequestTypeId { get; set; }
         [ForeignKey(nameof(RequestTypeId))]
         public RequestType RequestType { get; set; }
-        public string CategoryId { get; set; }
+        public string? CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
         [ForeignKey(nameof(StatusId))]

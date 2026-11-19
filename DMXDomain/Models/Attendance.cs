@@ -7,9 +7,9 @@ namespace DMXDomain.Models
         [Key]
         public int Id { get; set; }
         public Guid AttendanceId { get; set; } = Guid.NewGuid();
-        public string ParticipantId { get;  set; }
+        public string? ParticipantId { get;  set; }
         
-        public string EventId { get; set; }
+        public string? EventId { get; set; }
       
     }
 }

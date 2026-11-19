@@ -12,7 +12,7 @@ namespace DMXInfrastructure.Data
         public DbSet<MeetingAttendance> MeetingAttendance { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Letter> Letters { get; set; }
-        public DbSet<DeceasedService> DeceasedServices { get; set; }
+        public DbSet<PMService> PMServices { get; set; }
       
         public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<Leave> Leaves { get; set; }

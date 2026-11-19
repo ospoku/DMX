@@ -191,7 +191,7 @@ public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
                 if (string.IsNullOrEmpty(userId))
                     return Challenge();
 
-              ens.Delete(
+              ens.DeleteEntity(
                     new DeleteMemoDTO { PublicId = memoGuid });
 
                 //if (result)

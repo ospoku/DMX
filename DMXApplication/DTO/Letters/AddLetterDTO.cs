@@ -8,10 +8,10 @@ namespace DMXApplication.DTO.Letters
 {
     public class AddLetterDTO
     {
-        public string Source { get; internal set; }
-        public string Subject { get; internal set; }
+        public string? Source { get; internal set; }
+        public string? Subject { get; internal set; }
         public DateTime ReceiptDate { get; internal set; }
         public DateTime DocumentDate { get; internal set; }
-        public string AdditionalNotes { get; internal set; }
+        public string?   AdditionalNotes { get; internal set; }
     }
 }

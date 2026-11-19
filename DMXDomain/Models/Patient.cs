@@ -27,7 +27,7 @@ namespace DMXDomain.Models
         
         [Required]
         public  string Description { get; set; }
-        public  ICollection<DeceasedService> DeceasedServices { get; set; } = [];
+        public  ICollection<PMService> PMServices { get; set; } = [];
         [Required]
         public  string TagNo { get; set; }
       

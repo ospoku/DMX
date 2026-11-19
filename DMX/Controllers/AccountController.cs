@@ -323,7 +323,7 @@ namespace DMX.Controllers
         ILogger<AccountController> logger) : Controller
     {
         public readonly XContext dcx = dContext;
-        public readonly INotyfService notyf = notification;
+        public readonly INotyfService notify = notification;
         public readonly UserManager<AppUser> usm = userManager;
         public readonly RoleManager<AppRole> rol = roleManager;
         public readonly SignInManager<AppUser> sim = signinmanager;
@@ -561,7 +561,7 @@ namespace DMX.Controllers
                     "Profile successfully updated for user {UserId}.",
                     userId);
 
-                notyf.Success(
+                notify.Success(
                     "Profile successfully updated", 5);
 
                 return RedirectToAction("UserProfile");
@@ -572,7 +572,7 @@ namespace DMX.Controllers
                     ex,
                     "An unexpected error occurred while updating a user profile.");
 
-                notyf.Error(
+                notify.Error(
                     "Unable to update profile.", 5);
 
                 return RedirectToAction("Error", "Home");
@@ -629,7 +629,7 @@ namespace DMX.Controllers
                         string.Join("; ",
                             result.Errors.Select(e => e.Description)));
 
-                    notyf.Error(
+                    notify.Error(
                         "Unable to delete photo.", 5);
 
                     return RedirectToAction("UserProfile");
@@ -639,7 +639,7 @@ namespace DMX.Controllers
                     "Profile photo successfully deleted for user {UserId}.",
                     userId);
 
-                notyf.Success(
+                notify.Success(
                     "Photo successfully deleted", 5);
 
                 return RedirectToAction("UserProfile");
@@ -650,7 +650,7 @@ namespace DMX.Controllers
                     ex,
                     "An unexpected error occurred while deleting a profile photo.");
 
-                notyf.Error(
+                notify.Error(
                     "An error occurred while deleting the photo.", 5);
 
                 return RedirectToAction("Error", "Home");

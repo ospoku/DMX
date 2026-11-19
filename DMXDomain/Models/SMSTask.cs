@@ -7,9 +7,9 @@ namespace DMXDomain.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string SMSTaskId { get; set; }
-        public string MemberId { get; set; }
-        public string Telephone { get; set; }
+        public string? SMSTaskId { get; set; }
+        public string? MemberId { get; set; }
+        public string? Telephone { get; set; }
         public bool IsSent { get; set; }
     }
 }

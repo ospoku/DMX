@@ -66,7 +66,7 @@ namespace DMXApplication.Services
         public async Task<List<LetterDTO>> GetAllAsync()
         {
             var letters = await rep.GetAllAsync();
-            return letters.Select(letter => new LetterDTO
+            return [.. letters.Select(letter => new LetterDTO
             {
                 Id = letter.PublicId,
                 Source = letter.Source,
@@ -74,7 +74,7 @@ namespace DMXApplication.Services
                 ReceiptDate = letter.DateReceived,
                 DocumentDate = letter.DocumentDate,
                 AdditionalNotes = letter.AdditionalNotes
-            }).ToList();
+            })];
         }
     
 

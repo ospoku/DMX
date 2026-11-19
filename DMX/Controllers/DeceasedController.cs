@@ -16,7 +16,7 @@ namespace DMX.Controllers
     {
         public readonly UserManager<AppUser> usm = userManager;
         public readonly XContext dcx = dContext;
-        private readonly INotyfService notyf = notyfService;
+        private readonly INotyfService notify = notyfService;
         public readonly IEntityService entityServ = entityService;
         public readonly EmailService email = emailService;
        
@@ -50,12 +50,12 @@ namespace DMX.Controllers
 
             if (addDeceasedVM.SelectedUsers?.Any() != true)
             {
-                notyf.Error("You must select at least one user for assignment.", 5);
+                notify.Error("You must select at least one user for assignment.", 5);
                 return RedirectToAction(nameof(ViewDeceases));
             }
             if (dcx.FeeStructures?.Any() != true)
             {
-                notyf.Error("You must set Fee structures", 5);
+                notify.Error("You must set Fee structures", 5);
                 return RedirectToAction(nameof(ViewDeceases));
             }
 
@@ -67,7 +67,7 @@ namespace DMX.Controllers
 
                 if (existingPatient != null)
                 {
-                    notyf.Error("This record already exists.");
+                    notify.Error("This record already exists.");
                     return RedirectToAction(nameof(ViewDeceases));
                 }
 
@@ -88,7 +88,7 @@ namespace DMX.Controllers
                 bool patientAdded = await entityServ.SaveEntity();
                 if (!patientAdded)
                 {
-                    notyf.Error("Failed to add patient.", 5);
+                    notify.Error("Failed to add patient.", 5);
                     return RedirectToAction("Error", "Home", new { message = "Patient creation failed." });
                 }
 
@@ -106,15 +106,15 @@ namespace DMX.Controllers
                         bool assignmentAdded = await entityServ.SaveEntity();
                         if (!assignmentAdded)
                         {
-                            notyf.Error("Failed to assign user.", 5);
+                            notify.Error("Failed to assign user.", 5);
                             return RedirectToAction("Error", "Home", new { message = "User assignment failed." });
                         }
                     }
-                    notyf.Success("Patient and assignments successfully processed.", 5);
+                    notify.Success("Patient and assignments successfully processed.", 5);
                 }
                 else
                 {
-                    notyf.Success("Patient created successfully, no users assigned.", 5);
+                    notify.Success("Patient created successfully, no users assigned.", 5);
                 }
 
                 return RedirectToAction(nameof(ViewDeceases));
@@ -122,7 +122,7 @@ namespace DMX.Controllers
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex);
-                notyf.Error("An unexpected error occurred.", 5);
+                notify.Error("An unexpected error occurred.", 5);
                 return RedirectToAction("Error", "Home", new { message = "An unexpected error occurred." });
             }
         }

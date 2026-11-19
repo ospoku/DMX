@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DMXApplication.Services
 {
-    public class DeceasedService(
+    public class PatientService(
         DbContext dContext,
         UserManager<AppUser> userManager,
         

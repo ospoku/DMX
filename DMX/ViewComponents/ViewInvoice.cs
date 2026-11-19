@@ -61,7 +61,7 @@ namespace DMX.ViewComponents
             TimeSpan timeSpan = DateTime.Now - selectedDeceased.CreatedDate.Value;
             int numberOfDays = (int)timeSpan.TotalDays;
             // Fetch selected services (if any)
-            var selectedServices = _context.DeceasedServices
+            var selectedServices = _context.PMServices
                 .Where(s => s.PublicId == selectedDeceased.PublicId).Select(s=>s.MorgueService)
                 .ToList();
             // Calculate the tier charges

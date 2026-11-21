@@ -17,7 +17,7 @@ namespace DMXDomain.Models
 
         public string? AssignedTo { get; set; }
 
-        public string? AssignedBy { get; set; }
+      
 
         public DateTime AssignedDate { get; set; }
 

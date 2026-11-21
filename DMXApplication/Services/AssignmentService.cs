@@ -8,7 +8,7 @@ using System.Security.Claims;
 namespace DMXApplication.Services
 {
     public class AssignmentService(UserManager<AppUser> userManager,
-                                   IAssignmentRepository assignmentRepository)
+                                   IAssignmentRepository assignmentRepository): IAssignmentService
     {
         private readonly UserManager<AppUser> usm = userManager;
 
@@ -27,6 +27,22 @@ namespace DMXApplication.Services
            return assignDTO.Id;
         }
 
+        Task<int> IAssignmentService.Update(AssignDTO assignment)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<int> IAssignmentService.Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<int> IAssignmentService.Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+      
 
     }
     } 

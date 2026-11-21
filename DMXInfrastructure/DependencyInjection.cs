@@ -21,11 +21,12 @@ namespace DMXInfrastructure
             services.AddScoped<IFeeRepository, FeeRepository>();
              services.AddScoped<IEntityRepository,EntityRepository>();
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
+            services.AddScoped<IAssignmentService, AssignmentService>();
             services.AddScoped<IAllowanceRepository, AllowanceRepository>();
             services.AddScoped<IMemoService, MemoService>();
             services.AddScoped<IMemoRepository,
      MemoRepository>();
-            services.AddScoped<IAssignmentRepository, AssignmentRepository>();
+        
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             var serviceCollection = services.AddScoped<IEntityService, EntityService>();
             return services;

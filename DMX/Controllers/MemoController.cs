@@ -79,8 +79,6 @@ public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
                         MemoId = memoId,
                         UserId = user
                     };
-
-
                     // Assign the memo to the selected users
                     int assign = await assignServ.Assign(assignDto);
 

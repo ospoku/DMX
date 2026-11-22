@@ -26,7 +26,7 @@ namespace DMX.Controllers
         private readonly INotyfService _notyfService = notyfService;
         private readonly IEntityService ens = entityService;
         private readonly ILetterRepository rep = new LetterRepository(context);
-        public readonly ILetterServices letServ;
+        public readonly ILetterService letServ;
         private readonly AssignmentService _assignmentService = assignmentService;
         public readonly IDataProtector protector = provider.CreateProtector("IdProtector");
 

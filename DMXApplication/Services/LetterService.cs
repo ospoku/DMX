@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DMXApplication.Services
 {
-   public  class LetterServices(ILetterRepository rep, IEntityService ent):ILetterServices
+   public  class LetterService(ILetterRepository rep, IEntityService ent):ILetterService
     {
      
 

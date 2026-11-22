@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DMXApplication.Interfaces
 {
-   public interface ILetterServices
+   public interface ILetterService
     {
         Task<int> AddLetter(AddLetterDTO addLetterDTO);
         Task<LetterDTO?> GetByIdAsync(Guid id);

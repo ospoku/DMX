@@ -32,7 +32,16 @@ namespace DMX.Controllers
             provider.CreateProtector("IdProtector");
 
 
-      
+
+
+
+
+        [HttpGet]
+        public IActionResult AddMemo()
+        {
+
+            return ViewComponent(nameof(AddMemo));
+        }
 [HttpPost]
 public async Task<IActionResult> AddMemo(AddMemoVM addMemoVm)
         {

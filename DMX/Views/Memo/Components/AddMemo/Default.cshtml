@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @* @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model DMX.ViewModels.AddMemoVM;
@@ -12,34 +12,30 @@
             Close
         </button>
     </div> *@
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
+@* <div class="card col-md-6 rounded p-0 d-flex justify-content-center">
+        <div class="card-header py-3 px-0">
             <i class="fas fa-fw fa-file-alt"></i>
             <h6 class="m-0 font-weight-bold text-primary d-inline">Memos</h6>
 
 
            @*  <button id="btnAddMemo" class="btn btn-sm btn-rounded  btn-outline-primary fa-pull-right" onclick="document.getElementById('AddMemoDialog').showModal()"><i class="fa fa-fw fa-plus-circle"></i>Add Memo</button> *@
         </div>
-        <div class="card-body">
-    @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post, new { id = "addMemoForm" }))
-    {
-        <div class="modal-body">
+  @*   <div class="card-body"> *@
+    @* @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post, new { id = "addMemoForm" }))
+    { *@
+        @* <div class="modal-body"> *@
             <!-- Memo Title -->
-    
- 
-       
-   
-            <div class="input-group">
+     @*        <div class="input-group"> *@
   <!-- Left icon addon -->
-  <div class="input-group-text">
+@*   <div class="input-group-text"> *@
     <!-- Use any icon here: Font Awesome, SVG, emoji, etc. -->
-    <i class="fas fa-heading"></i>          <!-- example: user icon -->
+@*     <i class="fas fa-heading"></i>    *@       <!-- example: user icon -->
     <!-- or SVG: <svg ...> ... </svg> -->
     <!-- or just text/emoji: 👤 -->
-  </div>
+ @*  </div> *@
 
   <!-- Floating label + input -->
-  <div class="did-floating-label-content">
+ @*  <div class="did-floating-label-content">
                     <input type="text" asp-for="Title"
       class="did-floating-input" 
       id="title" 
@@ -48,18 +44,18 @@
     <label class="did-floating-label" for="title">Title</label>
   </div>
 </div>
-
+ *@
             <!-- Memo Content -->
-            <div class="form-group">
+           @*  <div class="form-group">
                
                 <textarea id="MemoContent" class="dmx-textarea" asp-for="Content" placeholder="Memo Content"></textarea>
                     
-            </div>
+            </div> *@
 
             <!-- Select Approvers -->
  
       
-                <select id="selectMemoUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="SelectedUsers" multiple>Select Approver(s)</select>
+               @*  <select id="selectMemoUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="SelectedUsers" multiple>Select Approver(s)</select>
             
          </div>
          <div class="modal-footer">
@@ -70,15 +66,64 @@
      
             }
    
-    
    
-   
-      
-    
     </div>
-    </div>
+    </div> *@ 
     
           
 
 
   
+ 
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model DMX.ViewModels.AddMemoVM
+
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card rounded shadow-sm">
+                <div class="card-header py-3 px-3">
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <h6 class="m-0 fw-bold text-primary d-inline">Memos</h6>
+                </div>
+
+                <div class="card-body">
+                    @using (Html.BeginForm("AddMemo", "Memo", FormMethod.Post, new { id = "addMemoForm" }))
+                    {
+                        <!-- Memo Title -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="fas fa-heading"></i>
+                            </span>
+                            <div class="did-floating-label-content flex-grow-1">
+                                <input type="text" asp-for="Title"
+                                       class="did-floating-input"
+                                       id="title"
+                                       placeholder=" " />
+                                <label class="did-floating-label" for="title">Title</label>
+                            </div>
+                        </div>
+
+                        <!-- Memo Content -->
+                        <div class="mb-3">
+                            <textarea id="MemoContent" class="dmx-textarea form-control" asp-for="Content" placeholder="Memo Content"></textarea>
+                        </div>
+
+                        <!-- Select Approvers -->
+                        <div class="mb-3">
+                            <select id="selectMemoUser" class="dmx-choices" asp-items="@Model.UsersList" asp-for="SelectedUsers" multiple>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button id="saveButton" type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
